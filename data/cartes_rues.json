@@ -1,0 +1,13 @@
+{
+    "cartesRues": [
+        {
+            "titre": "Avenue Champs-Elysées", 
+            "couleur": "bleu", 
+            "prix": 350, 
+            "loyers": [35,175,500,1100,1300,1500,70], 
+            "prixMaison": 200,
+            "prixHotel": 200,
+            "hypotheque": 175
+        }
+    ]
+}

@@ -1,0 +1,25 @@
+MVC ?
+
+Factory 
+
+carte
+ - nom 
+ - category (category: chance, fonds communs, rue )
+
+carte chance
+ - titre_numero, description
+
+carte fonds communs 
+ - titre_numero, description
+
+carte rue 
+ - titre
+ - couleur 
+ - prix
+ - loyer 
+ - maisons 
+ - hotels 
+
+ 
+matrice : largeur = 11 X 11 (cases)
+X X X X X X X X X X X 
