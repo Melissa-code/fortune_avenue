@@ -1,3 +1,5 @@
+@import url('https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100..900;1,100..900&display=swap');
+
 *,
 ::before,
 ::after {
@@ -8,6 +10,8 @@
 
 html, body {
     height: 100%;
+    font-family: "Roboto", sans-serif;
+    font-size: 18px;
 }
 
 h1 {
@@ -66,7 +70,7 @@ h1 {
 button {
     padding: 5px;
     background-color: #E63946;
-    border: 1px solid#2C6E49;
+    border: 1px solid#A8D5BA;
     border-radius: 5px;
     color: #FFFFFF;
     min-width: 130px;
