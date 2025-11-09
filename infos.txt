@@ -20,6 +20,71 @@ carte rue
  - maisons 
  - hotels 
 
+
+
+/* 
+carte chance (num, description)=> deplacement (nb de pas), argent(debit, credit), prison(entree/sortie)
+*/
+
+class CarteChance extends CarteAction {
+    constructor(type, titre, numero) {
+        super(type);
+        this.titre = titre;
+        this.numero = numero;
+    }
+}
+
+class CarteChanceDeplacement extends CarteChance {
+    constructor(titre, numero, nbPas) {
+        super(titre, numero); 
+        this.nbPas = nbPas;
+    }
+}
+
+class CarteChanceArgent extends CarteChance {
+    constructor(titre, numero, somme) {
+        super(titre, numero); 
+        this.somme = somme; 
+    }
+}
+
+class CarteChancePrison extends CarteChance {
+    constructor(titre, numero, allerEnPrison) {
+        super(titre, numero); 
+        this.allerEnPrison = allerEnPrison; 
+    }
+}
+
+/* fonds communs  */
+
+class CarteFondsCommun extends CarteAction {
+    constructor(type, titre, numero) {
+        this.titre = titre;
+        this.numero = numero;
+    }
+}
+
+class CarteFondsCommunDeplacement extends CarteFondsCommun {
+    constructor(titre, numero, nbPas) {
+        super(titre, numero); 
+        this.nbPas = nbPas;
+    }
+}
+
+class CarteFondsCommunArgent extends CarteFondsCommun {
+    constructor(titre, numero, somme) {
+        super(titre, numero); 
+        this.somme = somme; 
+    }
+}
+
+class CarteFondsCommunPrison extends CarteFondsCommun {
+    constructor(titre, numero, allerEnPrison) {
+        super(titre, numero); 
+        this.allerEnPrison = allerEnPrison; 
+    }
+}
+
  
 matrice : largeur = 11 X 11 (cases)
 X X X X X X X X X X X 
