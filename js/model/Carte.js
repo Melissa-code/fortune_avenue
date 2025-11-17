@@ -1,23 +1,34 @@
 class Carte {
-    constructor(category) {
-        this.category = category; 
+    constructor(titre) {
+        this.titre = titre; 
+    }
+
+    executer(joueur, plateauJeu)
+    {
+
     }
 }
 
 class CarteAction extends Carte {
-    constructor(type) {
-        super("action"); 
-        this.type = type; 
+    constructor(titre) {
+        super(titre); 
         this.effets = [];
     }
 
     ajouterEffet(effet) {
         this.effets.push(effet);
     }
+
+    executer(joueur,plateauJeu)
+    {
+        for (let effet of this.effets) {
+            effet.appliquer(joueur, plateauJeu)
+        }
+    }
 }
 
 class Effet {
-    //classe abstraite (modele pour classefille, polymorphisme)
+    //classe abstraite modele pour classefille, polymorphisme
     appliquer(joueur, plateauJeu) {
         // surcharger la methd 
     }
@@ -72,36 +83,48 @@ class PrisonEffet extends Effet {
 
 
 class CarteImmobiliere extends Carte {
-    constructor(type, titre, couleur = null, prixAchat, loyers, prixHypotheque) {
-        super("immobiliere"); 
-        this.type = type;  
-        this.titre = titre; 
-        this.couleur = couleur;
+    constructor(titre, prixAchat, loyers, prixHypotheque) {
+        super(titre);  
         this.prixAchat = prixAchat; 
         this.loyers = loyers; 
         this.prixHypotheque = prixHypotheque;
         this.proprietaire = null;
         this.hypothequee = false;
     }
+
+    calculerLoyer(plateauJeu)
+    {
+        return this.loyers;
+    }
+
+    executer(joueur,plateauJeu)
+    {
+        // tester dans plateauJeu si elle disponible ou possedee
+        // si possedee, alors payer un loyer a son proprietaire
+        // sinon, proposer de l'acheter
+    }
 }
 
 class CarteRue extends CarteImmobiliere {
-    constructor(titre, prixAchat, loyers, prixHypotheque, couleur, prixMaison, prixHotel) {
-        super("rue", titre, prixAchat, loyers, prixHypotheque, couleur);
+    constructor(titre, couleur, prixAchat, loyers, prixHypotheque, prixMaison, prixHotel) {
+        super(titre, prixAchat, loyers, prixHypotheque);
+        this.couleur = couleur;
         this.prixMaison = prixMaison; 
         this.prixHotel = prixHotel;
-        this.nbMaisons = 0;
     }
 }
 
 class CarteGare extends CarteImmobiliere {
     constructor(titre, prixAchat, loyers, prixHypotheque) {
-        super("gare", titre, prixAchat, loyers, prixHypotheque);
+        super(titre, prixAchat, loyers, prixHypotheque);
     }
 }
 
 class CarteSociete extends CarteImmobiliere {
     constructor(titre, prixAchat, prixHypotheque) {
-        super("societe", titre, prixAchat, [4, 10], prixHypotheque);
+        super( titre, prixAchat, prixHypotheque);
     }
 }
+
+// faire PlateauJeu
+// Joueur
