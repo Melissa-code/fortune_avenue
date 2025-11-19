@@ -1,4 +1,4 @@
-import PionsDisponibles from './PionsDisponibles.js'; 
+import PionsDisponibles from './enums/PionsDisponibles.js'; 
 
 class Joueur {
 
@@ -9,7 +9,7 @@ class Joueur {
         this.position = 0; 
         this.proprietes = []; 
         this.etreEnPrison = false; 
-
+        this.carteSortiePrison = 0; 
     }
 
     avancer(nombreCases) {

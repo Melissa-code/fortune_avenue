@@ -1,4 +1,4 @@
-export class Carte {
+class Carte {
     constructor(titre) {
         this.titre = titre; 
     }
@@ -9,9 +9,7 @@ export class Carte {
     }
 }
 
-
-
-export class CarteAction extends Carte {
+class CarteAction extends Carte {
     constructor(titre) {
         super(titre); 
         this.effets = [];
@@ -29,8 +27,7 @@ export class CarteAction extends Carte {
     }
 }
 
-
-export class Effet {
+class Effet {
     //classe abstraite modele pour classefille, polymorphisme
     appliquer(joueur, plateauJeu) {
         // surcharger la methd 
@@ -39,7 +36,7 @@ export class Effet {
 
 // nombre de pas ( + ou negatif)
 // bonus de passage
-export class DeplacementEffet extends Effet {
+class DeplacementEffet extends Effet {
     constructor(nombreDePas, bonusDePassage = null) {
         super(); 
         this.nombreDePas = nombreDePas; 
@@ -54,7 +51,7 @@ export class DeplacementEffet extends Effet {
 }
 
 // montant, source(banque/joueur), destinationbanque/joueur)
-export class VersementEffet extends Effet {
+class VersementEffet extends Effet {
     constructor(montant, source, destination) {
         super(); 
         this.montant = montant; 
@@ -69,7 +66,7 @@ export class VersementEffet extends Effet {
 }
 
 // Entree/Sortie
-export class PrisonEffet extends Effet {
+class PrisonEffet extends Effet {
     constructor(allerEnPrison) {
         super(); 
         this.allerEnPrison = allerEnPrison; 
@@ -85,7 +82,7 @@ export class PrisonEffet extends Effet {
 }
 
 
-export class CarteImmobiliere extends Carte {
+class CarteImmobiliere extends Carte {
     constructor(titre, prixAchat, loyers, prixHypotheque) {
         super(titre);  
         this.prixAchat = prixAchat; 
@@ -108,7 +105,7 @@ export class CarteImmobiliere extends Carte {
     }
 }
 
-export class CarteRue extends CarteImmobiliere {
+class CarteRue extends CarteImmobiliere {
     constructor(titre, couleur, prixAchat, loyers, prixHypotheque, prixMaison, prixHotel) {
         super(titre, prixAchat, loyers, prixHypotheque);
         this.couleur = couleur;
@@ -117,13 +114,13 @@ export class CarteRue extends CarteImmobiliere {
     }
 }
 
-export class CarteGare extends CarteImmobiliere {
+class CarteGare extends CarteImmobiliere {
     constructor(titre, prixAchat, loyers, prixHypotheque) {
         super(titre, prixAchat, loyers, prixHypotheque);
     }
 }
 
-export class CarteSociete extends CarteImmobiliere {
+class CarteSociete extends CarteImmobiliere {
     constructor(titre, prixAchat, prixHypotheque) {
         super( titre, prixAchat, prixHypotheque);
     }

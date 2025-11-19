@@ -6,7 +6,9 @@ class Jeu {
 
     constructor() {
         this.joueurActuel = 1;
-        this.plateauJeu = new PlateauJeu()
+        this.joueurs = []; 
+        this.plateauJeu = new PlateauJeu(); 
+        this.partieFinie = false; 
     }
 
     async initialiserJeu() {

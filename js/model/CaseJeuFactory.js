@@ -1,4 +1,4 @@
-import TypesCases from "./TypesCases.js";
+import TypesCases from "./enums/TypesCases.js";
 import { CaseJeu, CaseRue, CaseChance, CaseFondsCommun, CaseTaxe, CaseDepart, CaseParcGratuit, CasePrison, CaseAllerEnPrison } from "./CaseJeu.js";
 
 class CaseJeuFactory {
