@@ -88,3 +88,7 @@ class CarteFondsCommunPrison extends CarteFondsCommun {
  
 matrice : largeur = 11 X 11 (cases)
 X X X X X X X X X X X 
+
+---
+
+enum immutable pour les pions disponibles car Object.freeze() empêche les modifications, lisible et léger

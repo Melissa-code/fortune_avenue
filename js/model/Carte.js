@@ -1,4 +1,4 @@
-class Carte {
+export class Carte {
     constructor(titre) {
         this.titre = titre; 
     }
@@ -9,7 +9,9 @@ class Carte {
     }
 }
 
-class CarteAction extends Carte {
+
+
+export class CarteAction extends Carte {
     constructor(titre) {
         super(titre); 
         this.effets = [];
@@ -27,7 +29,8 @@ class CarteAction extends Carte {
     }
 }
 
-class Effet {
+
+export class Effet {
     //classe abstraite modele pour classefille, polymorphisme
     appliquer(joueur, plateauJeu) {
         // surcharger la methd 
@@ -36,7 +39,7 @@ class Effet {
 
 // nombre de pas ( + ou negatif)
 // bonus de passage
-class DeplacementEffet extends Effet {
+export class DeplacementEffet extends Effet {
     constructor(nombreDePas, bonusDePassage = null) {
         super(); 
         this.nombreDePas = nombreDePas; 
@@ -51,7 +54,7 @@ class DeplacementEffet extends Effet {
 }
 
 // montant, source(banque/joueur), destinationbanque/joueur)
-class VersementEffet extends Effet {
+export class VersementEffet extends Effet {
     constructor(montant, source, destination) {
         super(); 
         this.montant = montant; 
@@ -66,7 +69,7 @@ class VersementEffet extends Effet {
 }
 
 // Entree/Sortie
-class PrisonEffet extends Effet {
+export class PrisonEffet extends Effet {
     constructor(allerEnPrison) {
         super(); 
         this.allerEnPrison = allerEnPrison; 
@@ -82,7 +85,7 @@ class PrisonEffet extends Effet {
 }
 
 
-class CarteImmobiliere extends Carte {
+export class CarteImmobiliere extends Carte {
     constructor(titre, prixAchat, loyers, prixHypotheque) {
         super(titre);  
         this.prixAchat = prixAchat; 
@@ -105,7 +108,7 @@ class CarteImmobiliere extends Carte {
     }
 }
 
-class CarteRue extends CarteImmobiliere {
+export class CarteRue extends CarteImmobiliere {
     constructor(titre, couleur, prixAchat, loyers, prixHypotheque, prixMaison, prixHotel) {
         super(titre, prixAchat, loyers, prixHypotheque);
         this.couleur = couleur;
@@ -114,13 +117,13 @@ class CarteRue extends CarteImmobiliere {
     }
 }
 
-class CarteGare extends CarteImmobiliere {
+export class CarteGare extends CarteImmobiliere {
     constructor(titre, prixAchat, loyers, prixHypotheque) {
         super(titre, prixAchat, loyers, prixHypotheque);
     }
 }
 
-class CarteSociete extends CarteImmobiliere {
+export class CarteSociete extends CarteImmobiliere {
     constructor(titre, prixAchat, prixHypotheque) {
         super( titre, prixAchat, prixHypotheque);
     }

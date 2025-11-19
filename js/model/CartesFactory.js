@@ -2,7 +2,7 @@ import "../../data/cartes_chance.json";
 import "../../data/cartes_fonds_communs.json";
 import "../../data/cartes_rues.json";
 
-class CartesFactory {
+export class CartesFactory {
 
     static async createCartesChance() {
         try {
@@ -40,5 +40,3 @@ class CartesFactory {
 
 
 }
-
-export default CartesFactory; 
