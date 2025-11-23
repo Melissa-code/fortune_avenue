@@ -15,6 +15,13 @@ class Jeu {
         await this.plateauJeu.chargerDataCasesJeu('../../data/cases_jeu.json');
     }
 
+    determinerPremierJoueur() {
+
+    }
+
+    distribuerArgent() {
+
+    }
 
     lancerDes() {
 

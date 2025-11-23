@@ -22,73 +22,40 @@ carte rue
 
 
 
-/* 
-carte chance (num, description)=> deplacement (nb de pas), argent(debit, credit), prison(entree/sortie)
-*/
 
-class CarteChance extends CarteAction {
-    constructor(type, titre, numero) {
-        super(type);
-        this.titre = titre;
-        this.numero = numero;
-    }
-}
 
-class CarteChanceDeplacement extends CarteChance {
-    constructor(titre, numero, nbPas) {
-        super(titre, numero); 
-        this.nbPas = nbPas;
-    }
-}
+/*
 
-class CarteChanceArgent extends CarteChance {
-    constructor(titre, numero, somme) {
-        super(titre, numero); 
-        this.somme = somme; 
-    }
-}
+CaseJeu
 
-class CarteChancePrison extends CarteChance {
-    constructor(titre, numero, allerEnPrison) {
-        super(titre, numero); 
-        this.allerEnPrison = allerEnPrison; 
-    }
-}
+CaseRue
+CaseGare
+CaseSociete
 
-/* fonds communs  */
+CaseDepart
+CaseTaxe
 
-class CarteFondsCommun extends CarteAction {
-    constructor(type, titre, numero) {
-        this.titre = titre;
-        this.numero = numero;
-    }
-}
+CaseChance
+CaseFondsCommun
+CaseAllerEnPRison
 
-class CarteFondsCommunDeplacement extends CarteFondsCommun {
-    constructor(titre, numero, nbPas) {
-        super(titre, numero); 
-        this.nbPas = nbPas;
-    }
-}
+CasePrison 
+CaseParcGratuit
+--------
 
-class CarteFondsCommunArgent extends CarteFondsCommun {
-    constructor(titre, numero, somme) {
-        super(titre, numero); 
-        this.somme = somme; 
-    }
-}
+CaseJeu. abstraite : nom, entrer()
 
-class CarteFondsCommunPrison extends CarteFondsCommun {
-    constructor(titre, numero, allerEnPrison) {
-        super(titre, numero); 
-        this.allerEnPrison = allerEnPrison; 
-    }
-}
+CasePropriete abstraite
+proprietaire, prixAchat
 
- 
-matrice : largeur = 11 X 11 (cases)
-X X X X X X X X X X X 
+estLibre(), achater(), calculerLoyer(), 
 
+
+- rue, gare, soc
+
+CaseAction
+- chance, fonds, aller en prison, depart , parc , taxe
+
+*/ 
 ---
 
-enum immutable pour les pions disponibles car Object.freeze() empêche les modifications, lisible et léger

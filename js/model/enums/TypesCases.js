@@ -1,6 +1,8 @@
 const TypesCases = Object.freeze({
     DEPART: "depart",
     RUE: "rue",
+    GARE: "gare", 
+    SOCIETE: "societe",
     CHANCE: "chance",
     FONDS_COMMUNS: "fonds communs",
     TAXE: "taxe",

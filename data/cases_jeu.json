@@ -5,15 +5,15 @@
             "type": "depart", 
             "nom": "Départ", 
             "couleur": null,
-            "prix": null,
+            "prixAchat": null,
             "loyers": null
         },
         {
             "numero": 1, 
             "type": "rue", 
-            "nom": "Boulevard de Bellevile", 
+            "nom": "Boulevard de Belleville", 
             "couleur": "marron",
-            "prix": 60,
+            "prixAchat": 60,
             "loyers": [2,10,30,90,160,250,4]
         },
         {
@@ -21,14 +21,15 @@
             "type": "fonds communs", 
             "nom": "Fonds communs", 
             "couleur": null,
-            "prix": null
+            "prixAchat": null,
+            "loyers": null
         },
         {
             "numero": 3, 
             "type": "rue", 
             "nom": "Rue Lecourbe", 
             "couleur": "marron",
-            "prix": 60,
+            "prixAchat": 60,
             "loyers": [4,20,60,180,320,450,8]
         },
         {
@@ -36,14 +37,15 @@
             "type": "taxe", 
             "nom": "Taxe sur le revenu", 
             "couleur": null,
-            "prix": 200
+            "prixAchat": 200,
+            "loyers": null
         },
         {
             "numero": 5, 
-            "type": "rue", 
+            "type": "gare", 
             "nom": "Gare Montparnasse", 
             "couleur": null,
-            "prix": 200,
+            "prixAchat": 200,
             "loyers": [25,50, 100, 200]
         },
         {
@@ -51,7 +53,7 @@
             "type": "rue", 
             "nom": "Rue de Vaugirard", 
             "couleur": "bleu_clair",
-            "prix": 100,
+            "prixAchat": 100,
             "loyers": [6,30,90,270,400,550,12]
         },
         {
@@ -59,14 +61,15 @@
             "type": "chance", 
             "nom": "Chance", 
             "couleur": null,
-            "prix": null
+            "prixAchat": null,
+            "loyers": null
         },
         {
             "numero": 8, 
             "type": "rue", 
             "nom": "Rue de Courcelles", 
             "couleur": "bleu_clair",
-            "prix": 100,
+            "prixAchat": 100,
             "loyers": [6,30,90,270,400,550,12]
         },
         {
@@ -74,7 +77,7 @@
             "type": "rue", 
             "nom": "Avenue de la République", 
             "couleur": "bleu_clair",
-            "prix": 120,
+            "prixAchat": 120,
             "loyers": [8,40,100,300,450,600,16]
         },
         {
@@ -82,22 +85,23 @@
             "type": "prison", 
             "nom": "Prison", 
             "couleur": null,
-            "prix": null
+            "prixAchat": null,
+            "loyers": null
         },
         {
             "numero": 11, 
             "type": "rue", 
             "nom": "Boulevard de la Villette", 
             "couleur": "rose",
-            "prix": 140,
+            "prixAchat": 140,
             "loyers": [10,50,150,450,620,750,70]
         },
         {
             "numero": 12, 
-            "type": "rue", 
+            "type": "societe", 
             "nom": "Société d'energie", 
             "couleur": null,
-            "prix": 150,
+            "prixAchat": 150,
             "loyers": ["4 fois les dés", "10 fois les dés"]
         },
         {
@@ -105,7 +109,7 @@
             "type": "rue", 
             "nom": "Avenue de Neuilly", 
             "couleur": "rose",
-            "prix": 140,
+            "prixAchat": 140,
             "loyers": [10,50,150,450,625,750,20]
         },
         {
@@ -113,15 +117,15 @@
             "type": "rue", 
             "nom": "Rue de Paradis", 
             "couleur": "rose",
-            "prix": 160, 
+            "prixAchat": 160, 
             "loyers": [12,60,180,500,700,900,24]
         },
         {
             "numero": 15, 
-            "type": "rue", 
+            "type": "gare", 
             "nom": "Gare de Lyon", 
             "couleur": null,
-            "prix": 200,
+            "prixAchat": 200,
             "loyers": [25,50, 100, 200]
         },
         {
@@ -129,7 +133,7 @@
             "type": "rue", 
             "nom": "Avenue Mozart", 
             "couleur": "orange",
-            "prix": 180,
+            "prixAchat": 180,
             "loyers": [14,70,200,550,750,950,28]
         },
         {
@@ -137,14 +141,15 @@
             "type": "fonds communs", 
             "nom": "Fonds communs", 
             "couleur": null,
-            "prix": null
+            "prixAchat": null,
+            "loyers": null
         },
         {
             "numero": 18, 
             "type": "rue", 
             "nom": "Boulevard Saint-Michel", 
             "couleur": "orange",
-            "prix": 180,
+            "prixAchat": 180,
             "loyers": [14,70,200,550,750,950,28]
         },
         {
@@ -152,7 +157,7 @@
             "type": "rue", 
             "nom": "Place Pigalle", 
             "couleur": "orange",
-            "prix": 200,
+            "prixAchat": 200,
             "loyers": [16,80,220,600,800,1000,32]
         },
         {
@@ -160,14 +165,15 @@
             "type": "parc gratuit", 
             "nom": "Parc gratuit", 
             "couleur": null,
-            "prix": null
+            "prixAchat": null,
+            "loyers": null
         },
         {
             "numero": 21, 
             "type": "rue", 
             "nom": "Avenue Matignon", 
             "couleur": "rouge",
-            "prix": 220,
+            "prixAchat": 220,
             "loyers": [18,90,250,700,875,1050,36]
         },
         {
@@ -175,14 +181,15 @@
             "type": "chance", 
             "nom": "Chance", 
             "couleur": null,
-            "prix": null
+            "prixAchat": null,
+            "loyers": null
         },
         {
             "numero": 23, 
             "type": "rue", 
             "nom": "Boulevard Malesherbes", 
             "couleur": "rouge",
-            "prix": 220,
+            "prixAchat": 220,
             "loyers": [18,90,250,700,875,1050,36]
         },
         {
@@ -190,15 +197,15 @@
             "type": "rue", 
             "nom": "Avenue Henri-Martin", 
             "couleur": "rouge",
-            "prix": 240,
+            "prixAchat": 240,
             "loyers": [20,100,300,750,925,1100,40]
         },
         {
             "numero": 25, 
-            "type": "rue", 
+            "type": "gare", 
             "nom": "Gare du Nord", 
             "couleur": null,
-            "prix": 200,
+            "prixAchat": 200,
             "loyers": [25,50, 100, 200]
         },
         {
@@ -206,7 +213,7 @@
             "type": "rue", 
             "nom": "Faubourg Saint-Honoré", 
             "couleur": "jaune",
-            "prix": 260,
+            "prixAchat": 260,
             "loyers": [22,100,330,800,975,1150,44]
         },
         {
@@ -214,15 +221,15 @@
             "type": "rue", 
             "nom": "Place de la Bourse", 
             "couleur": "jaune",
-            "prix": 260,
+            "prixAchat": 260,
             "loyers": [22,110,330,800,975,1150,44]
         },
         {
             "numero": 28, 
-            "type": "rue", 
+            "type": "societe", 
             "nom": "Société des eaux", 
             "couleur": null,
-            "prix": 150,
+            "prixAchat": 150,
             "loyers": ["4 fois les dés", "10 fois les dés"]
         },
         {
@@ -230,7 +237,7 @@
             "type": "rue", 
             "nom": "Rue la Fayette", 
             "couleur": "jaune",
-            "prix": 280,
+            "prixAchat": 280,
             "loyers": [24,120,360,850,1025,1200,48]
         },
         {
@@ -238,14 +245,15 @@
             "type": "aller en prison", 
             "nom": "Aller en prison", 
             "couleur": null,
-            "prix": null
+            "prixAchat": null,
+            "loyers": null
         },
         {
             "numero": 31, 
             "type": "rue", 
             "nom": "Avenue de Breteuil", 
             "couleur": "vert",
-            "prix": 300,
+            "prixAchat": 300,
             "loyers": [26,130,390,900,1100,1275,52]
         },
         {
@@ -253,7 +261,7 @@
             "type": "rue", 
             "nom": "Avenue Foch", 
             "couleur": "vert",
-            "prix": 300,
+            "prixAchat": 300,
             "loyers": [26,130,390,900,1100,1275,52]
         },
         {
@@ -261,22 +269,23 @@
             "type": "fonds communs", 
             "nom": "Fonds communs", 
             "couleur": null,
-            "prix": null
+            "prixAchat": null,
+            "loyers": null
         },
         {
             "numero": 34, 
             "type": "rue", 
             "nom": "Boulevard Capucines", 
             "couleur": "vert",
-            "prix": 320,
+            "prixAchat": 320,
             "loyers": [28,150,450,1000,1200,1400,56]
         },
         {
             "numero": 35, 
-            "type": "rue", 
+            "type": "gare", 
             "nom": "Gare Saint-Lazare", 
             "couleur": null,
-            "prix": 200,
+            "prixAchat": 200,
             "loyers": [25,50, 100, 200]
         },
         {
@@ -284,14 +293,15 @@
             "type": "chance", 
             "nom": "Chance", 
             "couleur": null,
-            "prix": null
+            "prixAchat": null,
+            "loyers": null
         },
         {
             "numero": 37, 
             "type": "rue", 
             "nom": "Avenue Champs-Elysées", 
             "couleur": "bleu",
-            "prix": 350,
+            "prixAchat": 350,
             "loyers": [35,175,500,1100,1300,1500,70]
         },
         {
@@ -299,15 +309,16 @@
             "type": "taxe", 
             "nom": "Taxe de luxe", 
             "couleur": null,
-            "prix": 100
+            "prixAchat": 100,
+            "loyers": null
         },
         {
             "numero": 39, 
             "type": "rue", 
             "nom": "Rue de la Paix", 
             "couleur": "bleu",
-            "prix": 400,
-             "loyers": [50,200,600,1400,1700,2000,100]
+            "prixAchat": 400,
+            "loyers": [50,200,600,1400,1700,2000,100]
         }
     ]
 }
