@@ -1,3 +1,4 @@
+import { CarteRue } from './Carte.js';
 import { Effet, DeplacementEffet, VersementEffet, PrisonEffet } from './Effet.js'; 
 
 export class CaseJeu {
@@ -19,18 +20,19 @@ export class CaseJeu {
 /* ******************  Cases de proprietes  ****************** */
 
 export class CasePropriete extends CaseJeu {
-    constructor(data) {
+    constructor(data, carte) {
         super(data); 
         this.proprietaire = null;
         this.prixAchat = data.prix || null;
         this.hypotheque = false; //venduà la banque temporairement -> pas de loyer (lever hyp en payant un suppl à banque)
+        this.carte = carte;
     }
 
     estLibre() {
         return !this.proprietaire;
     }
 
-    acheter() {
+    acheterPropriete() {
         if (this.estLibre()) {
             const versement = new VersementEffet(this.prixAchat, joueur, banque); 
             versement.appliquer(joueur, banque)
@@ -42,6 +44,13 @@ export class CasePropriete extends CaseJeu {
 
     calculerLoyer() {
         // methd abstraite (impl dans les cl filles)
+    }
+
+    /**
+     * toutes les rues de la meme couleur, toutes les gares ou toutes les sociétés
+     */
+    possederTouteLaCollection() {
+        // couleur, gare ou societe
     }
 
     hypothequer() {
@@ -57,8 +66,8 @@ export class CasePropriete extends CaseJeu {
 
     leverHypotheque(joueur, banque) {
         if (this.proprietaire === joueur && !this.hypotheque) {
-            const montantAPayé = (this.prixAchat / 2) * 10 / 100 ; //10% interet
-            const paiement = new VersementEffet(montantAPayé, joueur, banque);
+            const montantAPayer = (this.prixAchat / 2) * 10 / 100 ; //10% interet
+            const paiement = new VersementEffet(montantAPayer, joueur, banque);
             paiement.appliquer(joueur, banque);
             this.hypotheque = false;
             return true;
@@ -69,33 +78,65 @@ export class CasePropriete extends CaseJeu {
 
 
 export class CaseRue extends CasePropriete {
-    constructor(data, proprietaire, prixAchat) {
-        super(data, proprietaire, prixAchat);
+    constructor(data, proprietaire) {
+        super(data, proprietaire);
         this.nombreMaisons = 0; 
         this.nombreHotels = 0; 
         this.couleur = data.couleur || null;
     }
 
-    // TODO
+    acheter(typeConstruction) {
+        if (!this.proprietaire) { return; }
+
+        let prixConstruction = 0; 
+
+        switch(typeConstruction) {
+            case "maison":
+                prixConstruction = this.carte.prixMaison;
+                break;
+            case "hotel":
+                prixConstruction = this.carte.prixHotel;
+                break;
+            default: 
+                console.log('Aucun type de construction reconnu.'); 
+        }
+
+        let effet = new VersementEffet(prix, this.proprietaire.argent, banque);
+        effet.appliquer(this.proprietaire, banque);
+        console.log(`${this.proprietaire.nom} paye ${prixConstruction}€ pour construire un(e) ${typeConstruction}.`);
+    }
+
     construire(typeConstruction) {
         if (typeConstruction === "maison") {
             this.nombreMaisons++; 
+            this.acheter("maison");
         } else if (typeConstruction === "hotel") {
-            this.nombreHotels++; 
-            this.nombreMaisons = 0; //on ôte toutesles maisons
+            if (this.nombreMaisons === 4) {
+                this.nombreHotels++; 
+                this.nombreMaisons = 0; 
+                this.acheter("hotel");
+            }
         } else {
             console.log(`type de construction inconnu: ${type}`)
         }
     }
 
-    /**
-     * toutes les rues de la meme couleur, toutes les gares ou toutes les sociétés
-     */
     possederTouteLaCollection() {
-        // TODO if () {
-        //    return true; 
-        // }
-        return false;
+        if (!this.proprietaire) return false;
+
+        const couleurCase = this.couleur;
+        const totalParCouleur = this.data.totalParFamille;
+        let proprietes = this.proprietaire.proprietes; 
+        let compteur = 0;
+
+        for (let propriete of proprietes) {
+            if (propriete instanceof CaseRue) {
+                if (propriete.couleur === couleurCase) {
+                    compteur++;
+                }
+            }
+        }
+        return compteur === totalParCouleur;
     }
 
     calculerLoyer() {

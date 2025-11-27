@@ -38,7 +38,7 @@ export class VersementEffet extends Effet {
 
     appliquer(joueur, plateauJeu) {
         // si dest === joueur alors joueur.recevoir(sommeArgent)
-        // si source === joueur alors joueur.payer(sommeArgent)
+        // si source === joueur alors joueur.payer(sommeArgent) voir s il a assez d argent
     }
 }
 
