@@ -16,7 +16,7 @@ const PionsDisponibles = Object.freeze({
         image: "../../images/pions/levrier.svg"
     }, 
     MOTO: {
-        nom: "moto",
+        nom: "Moto",
         image: "../../images/pions/moto.svg"
     }, 
     SMARTPHONE: {

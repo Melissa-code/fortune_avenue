@@ -4,12 +4,7 @@ import { Effet, DeplacementEffet, VersementEffet, PrisonEffet } from './Effet.js
 export class CaseJeu {
 
     constructor(data) {
-        // this.numero = data.numero;
-        // this.type = data.type;
         this.nom = data.nom;
-        // this.couleur = data.couleur || null;
-        // this.prix = data.prix || null;
-        // this.loyers = data.loyers || null;
     }
 
     arriver() {
@@ -26,6 +21,11 @@ export class CasePropriete extends CaseJeu {
         this.prixAchat = data.prix || null;
         this.hypotheque = false; //venduà la banque temporairement -> pas de loyer (lever hyp en payant un suppl à banque)
         this.carte = carte;
+        this.listePropositionsPropriete = [];
+    }
+
+    filtrerPropositionsValables(joueur, jeu) {
+        // traverser listeProp et prendre celles valides ( estDisponible(jeu, joueur, caseJeu) true)
     }
 
     estLibre() {
@@ -186,6 +186,7 @@ export class CaseAction extends CaseJeu {
     constructor(data, nom) {
         super(data, nom); 
         this.effets = [];
+        
     }
 
     ajouterEffet(effet) {
@@ -198,4 +199,6 @@ export class CaseAction extends CaseJeu {
         }
     }
 }
+
+
 

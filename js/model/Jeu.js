@@ -9,6 +9,9 @@ class Jeu {
         this.joueurs = []; 
         this.plateauJeu = new PlateauJeu(); 
         this.partieFinie = false; 
+        this.piocheChance = [];
+        this.piocheFondsCommun = []; 
+       
     }
 
     async initialiserJeu() {

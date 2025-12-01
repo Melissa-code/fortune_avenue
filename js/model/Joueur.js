@@ -4,12 +4,12 @@ class Joueur {
 
     constructor(nom, pion, argent = 1500) {
         this.nom = nom;
-        this.pion = pion;
+        this.pion = pion; //img
         this.argent = argent;
         this.position = 0; 
-        this.proprietes = []; 
         this.etreEnPrison = false; 
         this.carteSortiePrison = 0; 
+        this.compteurPourSortirPrison = 0; // ap 3 tours
     }
 
     avancer(nombreCases) {
@@ -33,7 +33,7 @@ class Joueur {
     }
 
     sortirDePrison() {
-
+        
     }
 
     recevoirArgent(montant) {
@@ -46,6 +46,10 @@ class Joueur {
 
     acheterPropriete(propriete) {
 
+    }
+
+    acheterCartePrisonAdversaire() {
+        
     }
 
     payerLoyer(joueurAdv, montant) {
