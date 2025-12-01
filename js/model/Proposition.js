@@ -20,7 +20,7 @@ export class Proposition {
             new PropositionHypothequer(),
             new PropositionLeverHypotheque(),
             new PropositionConstruireMaison(),
-            new PropositionConstruireHotel(),
+            new PropositionConctruireHotel(),
             new PropositionPayerLoyer()
         ];
     }
@@ -121,10 +121,15 @@ export class PropositionPayerLoyer extends Proposition {
     }
 
     estDisponible(jeu, joueur, casePropriete) {
-        
+        if (casePropriete.proprietaire !== null && casePropriete.proprietaire !== joueur && casePropriete.hypotheque !== false) {
+            return true;
+        }
+        return false; 
     }
 
     valider(jeu, joueur, casePropriete) {
-        
+        const loyer = casePropriete.calculerLoyer(); 
+        joueur.argent -= loyer;
+        casePropriete.proprietaire.argent += loyer; 
     }
 }
