@@ -1,4 +1,8 @@
-import { CasePropriete } from "./CaseJeu.js";
+import { CaseJeu, CasePropriete, CaseRue } from "./CaseJeu.js";
+import Joueur from "./Joueur.js"; 
+import Jeu from "./Jeu.js";
+
+/* ********************* Proposition ************************ */
 
 export class Proposition {
     constructor(titre, description) {
@@ -14,7 +18,10 @@ export class Proposition {
         //
     }
 
-    getListePropositions() {
+    /**
+     * static car ne depend d'aucune donnee ou etat d'objet
+     */
+    static getListePropositions() {
         return [
             new PropositionAcheterPropriete(),
             new PropositionHypothequer(),
@@ -26,10 +33,11 @@ export class Proposition {
     }
 }
 
+/* ********************* Acheter propriete ************************ */
 
 export class PropositionAcheterPropriete extends Proposition{
-    constructor(titre, description) {
-        super(titre, description);
+    constructor() {
+        super("acheter", "Voulez-vous acheter cette propriété ? ");
     }
 
     estDisponible(jeu, joueur, casePropriete) {
@@ -45,10 +53,11 @@ export class PropositionAcheterPropriete extends Proposition{
     }
 }
 
+/* ********************* Hypothequer propriete ************************ */
 
 export class PropositionHypothequer extends Proposition {
-    constructor(titre, description) {
-        super(titre, description);
+    constructor() {
+        super("hypothéquer", "Voulez-vous hypothéquer cette propriété ? ");
     }
 
     estDisponible(jeu, joueur, casePropriete) {
@@ -60,10 +69,11 @@ export class PropositionHypothequer extends Proposition {
     }
 }
 
+/* ********************* Lever hypotheque propriete ************************ */
 
 export class PropositionLeverHypotheque extends Proposition{
-    constructor(titre, description) {
-        super(titre, description);
+    constructor() {
+        super("lever l'hypothèque", "Voulez-vous lever l'hypothèque sur cette propriété ? ");
     }
 
     estDisponible(jeu, joueur, casePropriete) {
@@ -75,10 +85,11 @@ export class PropositionLeverHypotheque extends Proposition{
     }
 }
 
+/* ********************* construire maison sur propriete ************************ */
 
 export class PropositionConstruireMaison extends Proposition{
-    constructor(titre, description) {
-        super(titre, description);
+    constructor() {
+        super("contruire une maison", "Voulez-vous construire une maison sur cette propriété ? ");
     }
 
     estDisponible(jeu, joueur, caseRue) {
@@ -94,10 +105,11 @@ export class PropositionConstruireMaison extends Proposition{
     }
 }
 
+/* ********************* construire hotel sur propriete ************************ */
 
 export class PropositionConctruireHotel extends Proposition {
-    constructor(titre, description) {
-        super(titre, description);
+    constructor() {
+        super("contruire un hôtel", "Voulez-vous construire un hôtel sur cette propriété ? ");
     }
 
     estDisponible(jeu, joueur, caseRue) {
@@ -114,10 +126,11 @@ export class PropositionConctruireHotel extends Proposition {
     }
 }
 
+/* ********************* payer loyer sur propriete adverse ************************ */
 
 export class PropositionPayerLoyer extends Proposition {
-    constructor(titre, description) {
-        super(titre, description);
+    constructor() {
+        super("payer un loyer", "Vous devez payer un loyer pour cette propriété ! ");
     }
 
     estDisponible(jeu, joueur, casePropriete) {

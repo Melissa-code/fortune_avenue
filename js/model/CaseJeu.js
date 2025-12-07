@@ -1,18 +1,20 @@
 import { CarteRue } from './Carte.js';
 import { Effet, DeplacementEffet, VersementEffet, PrisonEffet } from './Effet.js'; 
+import { Proposition, PropositionAcheterPropriete, PropositionHypothequer, PropositionLeverHypotheque, PropositionConstruireMaison, PropositionConctruireHotel, PropositionPayerLoyer } from './Proposition.js';
+
+/* ******************  Case (propriete, action) ****************** */
 
 export class CaseJeu {
-
     constructor(data) {
         this.nom = data.nom;
     }
 
     arriver() {
-
+        //
     }
 }
 
-/* ******************  Cases de proprietes  ****************** */
+/* ******************  Case de proprietes (rue, gare, societe) ****************** */
 
 export class CasePropriete extends CaseJeu {
     constructor(data, carte) {
@@ -25,7 +27,17 @@ export class CasePropriete extends CaseJeu {
     }
 
     filtrerPropositionsValables(joueur, jeu) {
-        // traverser listeProp et prendre celles valides ( estDisponible(jeu, joueur, caseJeu) true)
+        // traverser listeProp et prendre celles valides (estDisponible(jeu, joueur, caseJeu) true)
+        const propositions = Proposition.getListePropositions(); 
+        const propositionsValables = [];
+
+        for (let propositionValable of propositions) {
+            if (propositionValable.estDisponible(jeu, joueur, this)) { 
+                propositionsValables.push(propositionValable); 
+            }
+        }
+
+        return propositionsValables; 
     }
 
     estLibre() {
@@ -76,6 +88,7 @@ export class CasePropriete extends CaseJeu {
     }
 }
 
+/* ******************  Case rue ****************** */
 
 export class CaseRue extends CasePropriete {
     constructor(data, proprietaire) {
@@ -155,6 +168,7 @@ export class CaseRue extends CasePropriete {
     }
 }
 
+/* ******************  Case gare  ****************** */
 
 export class CaseGare extends CasePropriete {
     constructor(data, nom, proprietaire, prixAchat) {
@@ -167,6 +181,7 @@ export class CaseGare extends CasePropriete {
     }
 }
 
+/* ******************  Case societe  ****************** */
 
 export class CaseSociete extends CasePropriete {
     constructor(data, nom, proprietaire, prixAchat) {
@@ -180,7 +195,7 @@ export class CaseSociete extends CasePropriete {
 }
 
 
-/* ******************  Cases d'action  ****************** */
+/* ******************  Case d'action  ****************** */
 
 export class CaseAction extends CaseJeu {
     constructor(data, nom) {
