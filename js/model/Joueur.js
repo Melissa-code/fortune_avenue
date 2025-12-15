@@ -40,20 +40,16 @@ class Joueur {
 
     }
 
-    payerArgent(montant) {
+    payer(montant) {
 
     }
 
-    acheterPropriete(propriete) {
+    // acheterPropriete(propriete) {
 
-    }
+    // }
 
     acheterCartePrisonAdversaire() {
         
-    }
-
-    payerLoyer(joueurAdv, montant) {
-
     }
 }
 
