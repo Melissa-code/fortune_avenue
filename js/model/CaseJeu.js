@@ -24,6 +24,7 @@ export class CasePropriete extends CaseJeu {
         this.hypotheque = false; //venduà la banque temporairement -> pas de loyer (lever hyp en payant un suppl à banque)
         this.carte = carte;
         this.listePropositionsPropriete = [];
+        this.effet = null;
     }
 
     filtrerPropositionsValables(joueur, jeu) {
@@ -44,22 +45,24 @@ export class CasePropriete extends CaseJeu {
         return !this.proprietaire;
     }
 
-    acheterPropriete() {
-        if (this.estLibre()) {
-            const versement = new VersementEffet(this.prixAchat, joueur, banque); 
-            versement.appliquer(joueur, banque)
-            this.proprietaire = joueur;
-            return true;
-        }
-        return false;
-    }
 
     calculerLoyer() {
         // methd abstraite (impl dans les cl filles)
     }
 
+    arriver(joueur, jeu) {
+        // Payer un loyer
+        if (this.estLibre() && this.proprietaire !== joueur && !this.hypotheque) {
+            const montant = this.calculerLoyer();
+            //TODO jeu 
+            jeu.ajouterEffet(
+                new VersementEffet(montant, joueur, this.proprietaire)
+            );
+        }
+    }
+
     /**
-     * toutes les rues de la meme couleur, toutes les gares ou toutes les sociétés
+     * toutes les terrains nus de la meme couleur, toutes les gares ou toutes les sociétés
      */
     possederTouteLaCollection() {
         // couleur, gare ou societe
@@ -158,13 +161,13 @@ export class CaseRue extends CasePropriete {
         if (this.nombreHotels > 0) {
             return this.data.loyers[5]; 
         }
-        else if (this.nombreMaisons > 0) {
+        if (this.nombreMaisons > 0) {
             return this.data.loyers[this.nombreMaisons];
         } 
-        else if (this.possederTouteLaCollection()) {
+        if (this.possederTouteLaCollection()) {
             return this.data.loyers[this.data.loyers.length - 1]; 
         }
-        else return this.data.loyers[0];
+        return this.data.loyers[0];
     }
 }
 

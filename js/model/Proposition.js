@@ -28,7 +28,6 @@ export class Proposition {
             new PropositionLeverHypotheque(),
             new PropositionConstruireMaison(),
             new PropositionConctruireHotel(),
-            new PropositionPayerLoyer()
         ];
     }
 }
@@ -41,16 +40,21 @@ export class PropositionAcheterPropriete extends Proposition{
     }
 
     estDisponible(jeu, joueur, casePropriete) {
-        if (casePropriete.proprietaire === null && joueur.argent >= casePropriete.prixAchat) {
+        if (casePropriete.estLibre() && joueur.argent >= casePropriete.prixAchat) {
             return true; 
         }
         return false; 
     }
 
     valider(jeu, joueur, casePropriete) {
-        joueur.argent -= casePropriete.prixAchat; 
+        if (!this.estDisponible) return;
+
         casePropriete.proprietaire = joueur; 
+        const versement = new VersementEffet(this.prixAchat, joueur, banque); 
+        versement.appliquer(joueur, banque)
+        // joueur.argent -= casePropriete.prixAchat; 
     }
+
 }
 
 /* ********************* Hypothequer propriete ************************ */
@@ -88,7 +92,7 @@ export class PropositionLeverHypotheque extends Proposition{
 /* ********************* construire maison sur propriete ************************ */
 
 export class PropositionConstruireMaison extends Proposition{
-    constructor() {
+    constructor(quantite) {
         super("contruire une maison", "Voulez-vous construire une maison sur cette propriété ? ");
     }
 
@@ -100,6 +104,7 @@ export class PropositionConstruireMaison extends Proposition{
     }
 
     valider(jeu, joueur, caseRue) {
+
         joueur.argent -= caseRue.prixMaison; 
         caseRue.nombreMaisons++; 
     }
@@ -123,26 +128,5 @@ export class PropositionConctruireHotel extends Proposition {
         joueur.argent -= caseRue.priHotel; 
         caseRue.nombreMaisons = 0;
         caseRue.nombreHotels = 1; //1 hotel 
-    }
-}
-
-/* ********************* payer loyer sur propriete adverse ************************ */
-
-export class PropositionPayerLoyer extends Proposition {
-    constructor() {
-        super("payer un loyer", "Vous devez payer un loyer pour cette propriété ! ");
-    }
-
-    estDisponible(jeu, joueur, casePropriete) {
-        if (casePropriete.proprietaire !== null && casePropriete.proprietaire !== joueur && casePropriete.hypotheque !== false) {
-            return true;
-        }
-        return false; 
-    }
-
-    valider(jeu, joueur, casePropriete) {
-        const loyer = casePropriete.calculerLoyer(); 
-        joueur.argent -= loyer;
-        casePropriete.proprietaire.argent += loyer; 
     }
 }
