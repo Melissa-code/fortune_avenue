@@ -1,7 +1,6 @@
 import CaseJeuFactory from "./CaseJeuFactory.js";
 
 class PlateauJeu {
-
     constructor() {
         this.width = 11; 
         this.matrice = this.initialiserMatrice();
@@ -35,22 +34,19 @@ class PlateauJeu {
         return matrice; 
     }
 
-    /**
-     * 
-     */
     async chargerDataCasesJeu(url) {
+        // Load JSON data (casesJeu.json)
         try {
             const response = await fetch(url);
             if (!response.ok) {
-                throw new Error(`Erreur lors du chargement des données du jeu (fichier JSON): ${response.status}`);
+                throw new Error(`Erreur lors du chargement des données du plateau de jeu (fichier data/cases_jeu.json): ${response.status}`);
             }
 
             const data = await response.json();
             this.casesJeu = [];
 
-            // parcours du json data 
-            for (const caseDataJeu of data.casesJeu) {
-                const caseObjet = CaseJeuFactory.createCase(caseDataJeu); 
+            for (const caseDataJson of data.casesJeu) {
+                const caseObjet = CaseJeuFactory.generateCase(caseDataJson); 
                 this.casesJeu.push(caseObjet); 
             }
 

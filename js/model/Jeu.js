@@ -1,5 +1,6 @@
-import { Carte, CarteAction, Effet, DeplacementEffet, VersementEffet, PrisonEffet, CarteImmobiliere, CarteRue, CarteGare, CarteSociete } from './Carte.js'; 
+import { Carte, CarteAction, CarteImmobiliere, CarteRue, CarteGare, CarteSociete } from './Carte.js'; 
 import Joueur from './Joueur.js'; 
+import { Effet, DeplacementEffet, VersementEffet, PrisonEffet } from './Effet.js'
 import PlateauJeu from './PlateauJeu.js';
 
 class Jeu {
@@ -15,7 +16,8 @@ class Jeu {
     }
 
     async initialiserJeu() {
-        await this.plateauJeu.chargerDataCasesJeu('../../data/cases_jeu.json');
+        // on part de index.html pour le path 
+        await this.plateauJeu.chargerDataCasesJeu('data/cases_jeu.json');
     }
 
     determinerPremierJoueur() {

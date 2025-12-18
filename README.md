@@ -42,6 +42,10 @@ Ouvrir le fichier `index.html` dans le navigateur pour commencer à jouer
 - **[JavaScript](https://developer.mozilla.org/fr/docs/Web/JavaScript)**: logique du jeu 
 - **[Canvas API](https://developer.mozilla.org/en-US/docs/Web/API/Canvas_API)**: rendu du jeu
 
+### Outils
+
+- **[Validation JSON](https://jsonlint.com/)**
+
 
 ## 5. Contributions 
 

@@ -1,12 +1,12 @@
 import { CarteRue } from './Carte.js';
 import { Effet, DeplacementEffet, VersementEffet, PrisonEffet } from './Effet.js'; 
-import { Proposition, PropositionAcheterPropriete, PropositionHypothequer, PropositionLeverHypotheque, PropositionConstruireMaison, PropositionConctruireHotel, PropositionPayerLoyer } from './Proposition.js';
+import { Proposition, PropositionAcheterPropriete, PropositionHypothequer, PropositionLeverHypotheque, PropositionConstruireMaison, PropositionConctruireHotel } from './Proposition.js';
 
 /* ******************  Case (propriete, action) ****************** */
 
 export class CaseJeu {
-    constructor(data) {
-        this.nom = data.nom;
+    constructor(nom) {
+        this.nom = nom;
     }
 
     arriver() {
@@ -17,12 +17,12 @@ export class CaseJeu {
 /* ******************  Case de proprietes (rue, gare, societe) ****************** */
 
 export class CasePropriete extends CaseJeu {
-    constructor(data, carte) {
-        super(data); 
+    constructor(nom, prix, loyers) {
+        super(nom); 
         this.proprietaire = null;
-        this.prixAchat = data.prix || null;
+        this.prixAchat = prix || null;
         this.hypotheque = false; //venduà la banque temporairement -> pas de loyer (lever hyp en payant un suppl à banque)
-        this.carte = carte;
+        this.loyers = loyers;
         this.listePropositionsPropriete = [];
         this.effet = null;
     }
@@ -94,11 +94,11 @@ export class CasePropriete extends CaseJeu {
 /* ******************  Case rue ****************** */
 
 export class CaseRue extends CasePropriete {
-    constructor(data, proprietaire) {
-        super(data, proprietaire);
+    constructor(nom, prix, loyers, couleur) {
+        super(nom, prix, loyers);
         this.nombreMaisons = 0; 
         this.nombreHotels = 0; 
-        this.couleur = data.couleur || null;
+        this.couleur = couleur || null;
     }
 
     acheter(typeConstruction) {
@@ -174,8 +174,8 @@ export class CaseRue extends CasePropriete {
 /* ******************  Case gare  ****************** */
 
 export class CaseGare extends CasePropriete {
-    constructor(data, nom, proprietaire, prixAchat) {
-        super(data, nom, proprietaire, prixAchat);
+    constructor(nom, prix, loyers) {
+        super(nom, prix, loyers);
     }
 
     calculerLoyer() {
@@ -187,8 +187,8 @@ export class CaseGare extends CasePropriete {
 /* ******************  Case societe  ****************** */
 
 export class CaseSociete extends CasePropriete {
-    constructor(data, nom, proprietaire, prixAchat) {
-        super(data, nom, proprietaire, prixAchat);
+    constructor(nom, prix, loyers) {
+        super(nom, prix, loyers);
     }
 
     calculerLoyer() {
@@ -201,10 +201,10 @@ export class CaseSociete extends CasePropriete {
 /* ******************  Case d'action  ****************** */
 
 export class CaseAction extends CaseJeu {
-    constructor(data, nom) {
-        super(data, nom); 
+    constructor(nom) {
+        super(nom); 
         this.effets = [];
-        
+        this.prix = null; 
     }
 
     ajouterEffet(effet) {

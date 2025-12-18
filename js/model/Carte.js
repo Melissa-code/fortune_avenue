@@ -1,4 +1,4 @@
-import { Effet, DeplacementEffet, VersementEffet, PrisonEffet } from './Effet.js'; 
+
 
 export class Carte {
     constructor(titre) {
