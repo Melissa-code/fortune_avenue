@@ -1,40 +1,38 @@
 import { Carte, CarteAction, CarteImmobiliere, CarteRue, CarteGare, CarteSociete } from './Carte.js'; 
 import Joueur from './Joueur.js'; 
 import { Effet, DeplacementEffet, VersementEffet, PrisonEffet } from './Effet.js'
-import PlateauJeu from './PlateauJeu.js';
+import PionsDisponibles from "./enums/PionsDisponibles.js";
+import CaseJeuFactory from './CaseJeuFactory.js';
+
 
 class Jeu {
-
     constructor() {
-        this.joueurActuel = 1;
+        this.joueurActuelIndex = 0;
         this.joueurs = []; 
-        this.plateauJeu = new PlateauJeu(); 
         this.partieFinie = false; 
         this.piocheChance = [];
         this.piocheFondsCommun = []; 
-       
+        this.casesJeu = CaseJeuFactory.chargerDataCasesJeu(); 
     }
 
-    async initialiserJeu() {
-        // on part de index.html pour le path 
-        await this.plateauJeu.chargerDataCasesJeu('data/cases_jeu.json');
+    ajouterJoueur(nom, pion) {
+        const joueur = new Joueur(nom, pion); 
+        this.joueurs.push(joueur);
+    }
+    
+    lancerDes() {
+
     }
 
     determinerPremierJoueur() {
 
     }
 
-    distribuerArgent() {
-
-    }
-
-    lancerDes() {
-
-    }
-
     changerJoueur() {
-
+        this.joueurActuelIndex = (this.joueurActuelIndex + 1) % this.joueurs.length;
     }
+
+
 
     jouer() {
 
@@ -66,3 +64,6 @@ class Jeu {
 }
 
 export default Jeu; 
+
+// finir l'ajout des actions spour les cases d'action (effetChance)
+// faire factory pioches chances et fonds 

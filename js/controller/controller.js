@@ -5,8 +5,8 @@ async function demarrer() {
     const jeu = new Jeu(); 
     const view = new View(jeu, document, 0, 0); 
 
-    await jeu.initialiserJeu(); 
-    console.log('40 Cases du plateau:', jeu.plateauJeu.casesJeu);
+    jeu.casesJeu ;
+    console.log('40 Cases du plateau:', jeu.casesJeu);
 }
 
 demarrer();

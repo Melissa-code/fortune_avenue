@@ -1,7 +1,7 @@
 class De {
     constructor(nombreDes = 2) {
         this.nombreDes = nombreDes;
-        this.valeursAffichees = [1,1];
+        this.valeursAffichees = [1, 1];
     }
 
     /**

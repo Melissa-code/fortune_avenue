@@ -1,0 +1,364 @@
+const casesJeuJson = [
+    {
+        "numero": 0, 
+        "type": "depart", 
+        "nom": "Départ", 
+        "couleur": null,
+        "prixAchat": null,
+        "loyers": null,
+        "totalParFamille": null
+    },
+    {
+        "numero": 1, 
+        "type": "rue", 
+        "nom": "Boulevard de Belleville", 
+        "couleur": "marron",
+        "prixAchat": 60,
+        "loyers": [2,10,30,90,160,250,4],
+        "totalParFamille": 2
+    },
+    {
+        "numero": 2, 
+        "type": "fonds communs", 
+        "nom": "Fonds communs", 
+        "couleur": null,
+        "prixAchat": null,
+        "loyers": null,
+        "totalParFamille": null
+    },
+    {
+        "numero": 3, 
+        "type": "rue", 
+        "nom": "Rue Lecourbe", 
+        "couleur": "marron",
+        "prixAchat": 60,
+        "loyers": [4,20,60,180,320,450,8],
+        "totalParFamille": 2
+    },
+    {
+        "numero": 4, 
+        "type": "taxe", 
+        "nom": "Taxe sur le revenu", 
+        "couleur": null,
+        "prixAchat": 200,
+        "loyers": null,
+        "totalParFamille": null
+    },
+    {
+        "numero": 5, 
+        "type": "gare", 
+        "nom": "Gare Montparnasse", 
+        "couleur": null,
+        "prixAchat": 200,
+        "loyers": [25,50, 100, 200],
+        "totalParFamille": 4
+    },
+    {
+        "numero": 6, 
+        "type": "rue", 
+        "nom": "Rue de Vaugirard", 
+        "couleur": "bleu_clair",
+        "prixAchat": 100,
+        "loyers": [6,30,90,270,400,550,12],
+        "totalParFamille": 3
+    },
+    {
+        "numero": 7, 
+        "type": "chance", 
+        "nom": "Chance", 
+        "couleur": null,
+        "prixAchat": null,
+        "loyers": null,
+        "totalParFamille": null
+    },
+    {
+        "numero": 8, 
+        "type": "rue", 
+        "nom": "Rue de Courcelles", 
+        "couleur": "bleu_clair",
+        "prixAchat": 100,
+        "loyers": [6,30,90,270,400,550,12],
+        "totalParFamille": 3
+    },
+    {
+        "numero": 9, 
+        "type": "rue", 
+        "nom": "Avenue de la République", 
+        "couleur": "bleu_clair",
+        "prixAchat": 120,
+        "loyers": [8,40,100,300,450,600,16],
+        "totalParFamille": 3
+    },
+    {
+        "numero": 10, 
+        "type": "prison", 
+        "nom": "Prison", 
+        "couleur": null,
+        "prixAchat": null,
+        "loyers": null,
+        "totalParFamille": null
+    },
+    {
+        "numero": 11, 
+        "type": "rue", 
+        "nom": "Boulevard de la Villette", 
+        "couleur": "rose",
+        "prixAchat": 140,
+        "loyers": [10,50,150,450,620,750,70],
+        "totalParFamille": 3
+    },
+    {
+        "numero": 12, 
+        "type": "societe", 
+        "nom": "Société d'energie", 
+        "couleur": null,
+        "prixAchat": 150,
+        "loyers": ["4 fois les dés", "10 fois les dés"],
+        "totalParFamille": 2
+    },
+    {
+        "numero": 13, 
+        "type": "rue", 
+        "nom": "Avenue de Neuilly", 
+        "couleur": "rose",
+        "prixAchat": 140,
+        "loyers": [10,50,150,450,625,750,20],
+        "totalParFamille": 3
+    },
+    {
+        "numero": 14, 
+        "type": "rue", 
+        "nom": "Rue de Paradis", 
+        "couleur": "rose",
+        "prixAchat": 160, 
+        "loyers": [12,60,180,500,700,900,24],
+        "totalParFamille": 3
+    },
+    {
+        "numero": 15, 
+        "type": "gare", 
+        "nom": "Gare de Lyon", 
+        "couleur": null,
+        "prixAchat": 200,
+        "loyers": [25,50, 100, 200],
+        "totalParFamille": 4
+    },
+    {
+        "numero": 16, 
+        "type": "rue", 
+        "nom": "Avenue Mozart", 
+        "couleur": "orange",
+        "prixAchat": 180,
+        "loyers": [14,70,200,550,750,950,28],
+        "totalParFamille": 3
+    },
+    {
+        "numero": 17, 
+        "type": "fonds communs", 
+        "nom": "Fonds communs", 
+        "couleur": null,
+        "prixAchat": null,
+        "loyers": null,
+        "totalParFamille": null
+    },
+    {
+        "numero": 18, 
+        "type": "rue", 
+        "nom": "Boulevard Saint-Michel", 
+        "couleur": "orange",
+        "prixAchat": 180,
+        "loyers": [14,70,200,550,750,950,28],
+        "totalParFamille": 3
+    },
+    {
+        "numero": 19, 
+        "type": "rue", 
+        "nom": "Place Pigalle", 
+        "couleur": "orange",
+        "prixAchat": 200,
+        "loyers": [16,80,220,600,800,1000,32],
+        "totalParFamille": 3
+    },
+    {
+        "numero": 20, 
+        "type": "parc gratuit", 
+        "nom": "Parc gratuit", 
+        "couleur": null,
+        "prixAchat": null,
+        "loyers": null,
+        "totalParFamille": null
+    },
+    {
+        "numero": 21, 
+        "type": "rue", 
+        "nom": "Avenue Matignon", 
+        "couleur": "rouge",
+        "prixAchat": 220,
+        "loyers": [18,90,250,700,875,1050,36],
+        "totalParFamille": 3
+    },
+    {
+        "numero": 22, 
+        "type": "chance", 
+        "nom": "Chance", 
+        "couleur": null,
+        "prixAchat": null,
+        "loyers": null,
+        "totalParFamille": null
+    },
+    {
+        "numero": 23, 
+        "type": "rue", 
+        "nom": "Boulevard Malesherbes", 
+        "couleur": "rouge",
+        "prixAchat": 220,
+        "loyers": [18,90,250,700,875,1050,36],
+        "totalParFamille": 3
+    },
+    {
+        "numero": 24, 
+        "type": "rue", 
+        "nom": "Avenue Henri-Martin", 
+        "couleur": "rouge",
+        "prixAchat": 240,
+        "loyers": [20,100,300,750,925,1100,40],
+        "totalParFamille": 3
+    },
+    {
+        "numero": 25, 
+        "type": "gare", 
+        "nom": "Gare du Nord", 
+        "couleur": null,
+        "prixAchat": 200,
+        "loyers": [25,50, 100, 200],
+        "totalParFamille": 4
+    },
+    {
+        "numero": 26, 
+        "type": "rue", 
+        "nom": "Faubourg Saint-Honoré", 
+        "couleur": "jaune",
+        "prixAchat": 260,
+        "loyers": [22,100,330,800,975,1150,44],
+        "totalParFamille": 3
+    },
+    {
+        "numero": 27, 
+        "type": "rue", 
+        "nom": "Place de la Bourse", 
+        "couleur": "jaune",
+        "prixAchat": 260,
+        "loyers": [22,110,330,800,975,1150,44],
+        "totalParFamille": 3
+    },
+    {
+        "numero": 28, 
+        "type": "societe", 
+        "nom": "Société des eaux", 
+        "couleur": null,
+        "prixAchat": 150,
+        "loyers": ["4 fois les dés", "10 fois les dés"],
+        "totalParFamille": 2
+    },
+    {
+        "numero": 29, 
+        "type": "rue", 
+        "nom": "Rue la Fayette", 
+        "couleur": "jaune",
+        "prixAchat": 280,
+        "loyers": [24,120,360,850,1025,1200,48],
+        "totalParFamille": 3
+    },
+    {
+        "numero": 30, 
+        "type": "aller en prison", 
+        "nom": "Aller en prison", 
+        "couleur": null,
+        "prixAchat": null,
+        "loyers": null,
+        "totalParFamille": null
+    },
+    {
+        "numero": 31, 
+        "type": "rue", 
+        "nom": "Avenue de Breteuil", 
+        "couleur": "vert",
+        "prixAchat": 300,
+        "loyers": [26,130,390,900,1100,1275,52],
+        "totalParFamille": 3
+    },
+    {
+        "numero": 32, 
+        "type": "rue", 
+        "nom": "Avenue Foch", 
+        "couleur": "vert",
+        "prixAchat": 300,
+        "loyers": [26,130,390,900,1100,1275,52],
+        "totalParFamille": 3
+    },
+    {
+        "numero": 33, 
+        "type": "fonds communs", 
+        "nom": "Fonds communs", 
+        "couleur": null,
+        "prixAchat": null,
+        "loyers": null,
+        "totalParFamille": null
+    },
+    {
+        "numero": 34, 
+        "type": "rue", 
+        "nom": "Boulevard Capucines", 
+        "couleur": "vert",
+        "prixAchat": 320,
+        "loyers": [28,150,450,1000,1200,1400,56],
+        "totalParFamille": 3
+    },
+    {
+        "numero": 35, 
+        "type": "gare", 
+        "nom": "Gare Saint-Lazare", 
+        "couleur": null,
+        "prixAchat": 200,
+        "loyers": [25,50, 100, 200],
+        "totalParFamille": 4
+    },
+    {
+        "numero": 36, 
+        "type": "chance", 
+        "nom": "Chance", 
+        "couleur": null,
+        "prixAchat": null,
+        "loyers": null,
+        "totalParFamille": null
+    },
+    {
+        "numero": 37, 
+        "type": "rue", 
+        "nom": "Avenue Champs-Elysées", 
+        "couleur": "bleu",
+        "prixAchat": 350,
+        "loyers": [35,175,500,1100,1300,1500,70],
+        "totalParFamille": 2
+    },
+    {
+        "numero": 38, 
+        "type": "taxe", 
+        "nom": "Taxe de luxe", 
+        "couleur": null,
+        "prixAchat": 100,
+        "loyers": null,
+        "totalParFamille": null
+    },
+    {
+        "numero": 39, 
+        "type": "rue", 
+        "nom": "Rue de la Paix", 
+        "couleur": "bleu",
+        "prixAchat": 400,
+        "loyers": [50,200,600,1400,1700,2000,100],
+        "totalParFamille": 2
+    }
+]
+
+export default casesJeuJson ; 
