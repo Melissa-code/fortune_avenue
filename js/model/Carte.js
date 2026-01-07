@@ -1,4 +1,5 @@
 
+/* ****************** Carte ****************** */
 
 export class Carte {
     constructor(titre) {
@@ -10,6 +11,8 @@ export class Carte {
 
     }
 }
+
+/* ******************  Carte Action (chance, fonds commun) ****************** */
 
 export class CarteAction extends Carte {
     constructor(titre) {
@@ -29,6 +32,7 @@ export class CarteAction extends Carte {
     }
 }
 
+/* ******************  Carte immobiliere (rue, gare, societe) ****************** */
 
 export class CarteImmobiliere extends Carte {
     constructor(titre, prixAchat, loyers, prixHypotheque) {

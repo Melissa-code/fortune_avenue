@@ -36,7 +36,7 @@ class Joueur {
         
     }
 
-    recevoirArgent(montant) {
+    recevoir(montant) {
 
     }
 

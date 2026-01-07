@@ -1,4 +1,5 @@
 import { Carte, CarteAction, CarteImmobiliere, CarteRue, CarteGare, CarteSociete } from './Carte.js'; 
+import CarteJeuFactory from './CarteJeuFactory.js';
 import Joueur from './Joueur.js'; 
 import { Effet, DeplacementEffet, VersementEffet, PrisonEffet } from './Effet.js'
 import PionsDisponibles from "./enums/PionsDisponibles.js";
@@ -9,7 +10,7 @@ class Jeu {
     constructor() {
         this.joueurActuelIndex = 0;
         this.joueurs = []; 
-        this.partieFinie = false; 
+        this.estPartieFinie = false; 
         this.piocheChance = [];
         this.piocheFondsCommun = []; 
         this.casesJeu = CaseJeuFactory.chargerDataCasesJeu(); 

@@ -12,15 +12,19 @@ export class Effet {
  * bonus de passage
  */
 export class DeplacementEffet extends Effet {
-    constructor(nombreDePas, bonusDePassage = null) {
+    constructor(indexCase = null, nombreDePas = 0, bonusDePassage = null) {
         super(); 
+        this.indexCase = indexCase;
         this.nombreDePas = nombreDePas; 
         this.bonusDePassage = bonusDePassage;
     }
 
     appliquer(joueur, plateauJeu) {
-        joueur.deplacer(this.nombreDePas);
-        // si bonus de passage et passe par case départ joueur.recevoirAregnt(bonus de passage)
+        joueur.deplacer(this.indexCase, this.nombreDePas);
+        // si bonus de passage 
+        if (this.bonusDePassage) {
+        joueur.recevoir(this.bonusDePassage);
+    }
         
     }
 }
@@ -38,13 +42,12 @@ export class VersementEffet extends Effet {
 
     appliquer(joueur, plateauJeu) {
         // si dest === joueur alors joueur.recevoir(sommeArgent)
-        this.destination.recevoir(this.montant);
-        
-        // si source === joueur alors joueur.payer(sommeArgent) voir s il a assez d argent
-        this.source.payer(this.montant);
+        if (this.source === "joueur" && this.destination === "banque") {
+            joueur.payer(this.montant);
+        } else if (this.source === "banque" && this.destination === "joueur") {
+            joueur.recevoir(this.montant);
+        }
     }
-
-    
 }
 
 /**
@@ -62,5 +65,19 @@ export class PrisonEffet extends Effet {
         } else {
             joueur.sortirDePrison();
         }
+    }
+}
+
+/**
+ * Pioche une carte dans la pioche chance ou fonds commun
+ */
+export class PiocheEffet extends Effet {
+    constructor(typePioche) {
+        super();
+        this.typePioche = typePioche; 
+    }
+
+    appliquer(joueur, plateauJeu) {
+        //  piocher une carte de la pioche et l'excuter
     }
 }
