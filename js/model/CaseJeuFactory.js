@@ -1,22 +1,31 @@
 import TypesCases from "./enums/TypesCases.js";
-import { CaseJeu, CaseRue, CaseGare, CaseSociete, CaseAction } from "./CaseJeu.js";
-import { Effet, DeplacementEffet, VersementEffet, PrisonEffet, PiocheEffet } from "./Effet.js";
+import { CaseRue, CaseGare, CaseSociete, CaseAction } from "./CaseJeu.js";
+import { DeplacementEffet, VersementEffet, PrisonEffet, PiocheEffet } from "./Effet.js";
 import casesJeuJson from "../../data/cases_jeu.js";
 import effetsChanceJson from "../../data/effets_chance.js";
 
-
+/**
+ * Factory création des cases: transforme données brutes (JSON/Objets JS) en instances de classes 
+ */
 export class CaseJeuFactory {
 
+    /**
+     * parcourt les données de data/cases_jeu.js
+     * @returns {Array} contenant les 40 objets Case du jeu
+     */
     static chargerDataCasesJeu() {
         const casesJeu = [];
         
         for (const caseDataJson of casesJeuJson) {
-        const caseObjet = CaseJeuFactory.generateCase(caseDataJson);
-        casesJeu.push(caseObjet);
+            const caseObjet = CaseJeuFactory.generateCase(caseDataJson);
+            casesJeu.push(caseObjet);
         }
         return casesJeu;
     }
 
+    /**
+     * détermine le type de case à créer en fonction de la propriété type des données brutes
+     */
     static generateCase(jsonObj) {
         switch (jsonObj.type) {
             case TypesCases.RUE:
@@ -32,6 +41,7 @@ export class CaseJeuFactory {
                 return CaseJeuFactory.parseTaxe(jsonObj);
 
             default:
+                // création de l'objet CaseAction (qui va contenir des effets spécifiques)
                 let caseAction = CaseJeuFactory.parseAction(jsonObj);
 
                 switch (jsonObj.type) {
@@ -43,7 +53,7 @@ export class CaseJeuFactory {
                         caseAction.ajouterEffet(new PiocheEffet("fonds_commun"));
                         break;
                     case TypesCases.DEPART:
-                        caseAction.ajouterEffet(new VersementEffet(200, "banque", "joueur"));
+                        caseAction.ajouterEffet(new VersementEffet(200, "banque", "joueur")); // montant, source, destinataire
                         caseAction.ajouterEffet(new DeplacementEffet(0, 0, null)); //n°case , nbPas, bonusPassage
                         break;
                     case TypesCases.PARC_GRATUIT:
@@ -65,6 +75,7 @@ export class CaseJeuFactory {
             }
     }
 
+    // transformation des propriétés brutes en paramètres de constructeur
     static parseRue(dataObj) {
         return new CaseRue(dataObj.nom,dataObj.prixAchat,dataObj.loyers,dataObj.couleur);
     }
