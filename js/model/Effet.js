@@ -62,9 +62,18 @@ export class PrisonEffet extends Effet {
     appliquer(joueur, plateauJeu) {
         if (this.allerEnPrison) {
             joueur.allerEnPrison();
-        } else {
-            joueur.sortirDePrison();
         }
+    }
+}
+
+export class SortirDePrisonEffet extends Effet {
+    constructor() {
+        super();
+    }
+
+    appliquer(joueur, plateauJeu) {
+        //carte au joueur
+        joueur.ajouterCarteSortiePrison(); 
     }
 }
 
@@ -79,5 +88,28 @@ export class PiocheEffet extends Effet {
 
     appliquer(joueur, plateauJeu) {
         //  piocher une carte de la pioche et l'excuter
+    }
+}
+
+/**
+ * Paiement réparations maisons/hôtels
+ */
+export class ReparationsEffet extends Effet {       
+    constructor(montantParMaison, montantParHotel) {
+        super();
+        this.montantParMaison = montantParMaison;
+        this.montantParHotel = montantParHotel;
+    }
+
+    appliquer(joueur, plateauJeu) {
+        let totalMaison = 0; 
+        let totalHotel = 0;
+
+        // faire boucle sur toutes les cases
+        // check si c'est une rue et si le proprietaire est le joueur
+
+
+        // calculer le total des maisons et hotels
+        // puis payer le total
     }
 }

@@ -15,8 +15,9 @@ export class Carte {
 /* ******************  Carte Action (chance, fonds commun) ****************** */
 
 export class CarteAction extends Carte {
-    constructor(titre) {
+    constructor(titre, description) {
         super(titre); 
+        this.description = description;
         this.effets = [];
     }
 
