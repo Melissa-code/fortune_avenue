@@ -1,3 +1,5 @@
+import Jeu from 'Jeu.js';
+
 /**
  * classe abstraite modele pour classefille, polymorphisme
  */
@@ -12,20 +14,18 @@ export class Effet {
  * bonus de passage
  */
 export class DeplacementEffet extends Effet {
-    constructor(indexCase = null, nombreDePas = 0, bonusDePassage = null) {
+    constructor(typeDeplacement, valeurDeplacement, bonusDePassage = null) {
         super(); 
-        this.indexCase = indexCase;
-        this.nombreDePas = nombreDePas; 
+        this.typeDeplacement = typeDeplacement;
+        this.valeurDeplacement = valeurDeplacement; 
         this.bonusDePassage = bonusDePassage;
     }
 
-    appliquer(joueur, plateauJeu) {
-        joueur.deplacer(this.indexCase, this.nombreDePas);
+    appliquer(joueur, jeu) {
+        if (this.typeDeplacement === 'absolu') joueur.avancer(this.valeurDeplacement); // index de la case
+        else joueur.avancer(joueur.getPosition() + this.valeurDeplacement); //ou nb de pas 
         // si bonus de passage 
-        if (this.bonusDePassage) {
-        joueur.recevoir(this.bonusDePassage);
-    }
-        
+        if (this.bonusDePassage) joueur.recevoir(this.bonusDePassage);
     }
 }
 
@@ -40,10 +40,18 @@ export class VersementEffet extends Effet {
         this.destination = destination; 
     }
 
-    appliquer(joueur, plateauJeu) {
+    appliquer(joueur, jeu) {
         // si dest === joueur alors joueur.recevoir(sommeArgent)
         if (this.source === "joueur" && this.destination === "banque") {
             joueur.payer(this.montant);
+        } else if (this.source === "joueurs" && this.destination === "joueur") {
+            let joueurs = jeu.getJoueurs(); 
+            for (autreJoueur of joueurs) {
+                if (autreJoueur !== joueur) {
+                    autreJoueur.payer(this.montant);
+                    joueur.recevoir(this.montant); 
+                }
+            }
         } else if (this.source === "banque" && this.destination === "joueur") {
             joueur.recevoir(this.montant);
         }
@@ -51,31 +59,31 @@ export class VersementEffet extends Effet {
 }
 
 /**
- * Entree/Sortie
+ * Entree/Sortie: VOIR 
  */
-export class PrisonEffet extends Effet {
-    constructor(allerEnPrison) {
-        super(); 
-        this.allerEnPrison = allerEnPrison; 
-    }
+// export class PrisonEffet extends Effet {
+//     constructor(allerEnPrison) {
+//         super(); 
+//         this.allerEnPrison = allerEnPrison; 
+//     }
 
-    appliquer(joueur, plateauJeu) {
-        if (this.allerEnPrison) {
-            joueur.allerEnPrison();
-        }
-    }
-}
+//     appliquer(joueur, plateauJeu) {
+//         if (this.allerEnPrison) {
+//             joueur.allerEnPrison();
+//         }
+//     }
+// }
 
-export class SortirDePrisonEffet extends Effet {
-    constructor() {
-        super();
-    }
+// export class SortirDePrisonEffet extends Effet {
+//     constructor() {
+//         super();
+//     }
 
-    appliquer(joueur, plateauJeu) {
-        //carte au joueur
-        joueur.ajouterCarteSortiePrison(); 
-    }
-}
+//     appliquer(joueur, plateauJeu) {
+//         //carte au joueur
+//         joueur.ajouterCarteSortiePrison(); 
+//     }
+// }
 
 /**
  * Pioche une carte dans la pioche chance ou fonds commun
@@ -83,7 +91,7 @@ export class SortirDePrisonEffet extends Effet {
 export class PiocheEffet extends Effet {
     constructor(typePioche) {
         super();
-        this.typePioche = typePioche; 
+        this.typePioche = typePioche; // chance/fonds_commmun 
     }
 
     appliquer(joueur, plateauJeu) {

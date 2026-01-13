@@ -15,7 +15,7 @@ const effetsChanceJson = [
         "type": TypesEffets.DEPLACEMENT,
         "index_case": 0,
         "nombreDePas": 0,
-        "bonusPassage": 200
+        "bonusPassage": 0
     },
     {
         "titre": "Chance 3",

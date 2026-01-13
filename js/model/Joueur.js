@@ -12,8 +12,10 @@ class Joueur {
         this.compteurPourSortirPrison = 0; // ap 3 tours
     }
 
-    avancer(nombreCases) {
-
+    avancer(position) {
+        // si la nouvelle position traverse la case de depart % a la position d'avant
+        // et que l'ancienne position n'etais pas la prison alors crediter 200
+        // sinon this.aTraverserDepart==false;
     }
 
     reculer(nombreCases) {

@@ -1,5 +1,5 @@
-import "../../data/cartes_fonds_communs.json";
-import "../../data/cartes_rues.json";
+// import "../../data/cartes_fonds_communs.json";
+// import "../../data/cartes_rues.json";
 import effetsChanceJson from "../../data/effets_chance.js";
 import TypesEffets from "./enums/TypesEffets.js";
 import { CarteAction, CarteImmobiliere, CarteRue, CarteSociete, CarteGare, Carte } from "./Carte.js";
@@ -7,13 +7,13 @@ import { CarteAction, CarteImmobiliere, CarteRue, CarteSociete, CarteGare, Carte
 export class CarteFactory {
 
     static chargerDataEffetsChance() {
-        const effetsChance = [];
+        const cartesChance = [];
         
         for (const effetChanceJson of effetsChanceJson) {
             const carteChance = CarteFactory.generateCarteChance(effetChanceJson);
-            effetsChance.push(carteChance);
+            cartesChance.push(carteChance);
         }
-        return effetsChance;
+        return cartesChance;
     }
 
     static generateCarteChance(jsonObj) {
@@ -72,5 +72,17 @@ export class CarteFactory {
             jsonObj.description,    
             jsonObj.effet[ new SortirDePrisonEffet()]
         );    
+    }
+
+    static melangerCartesChance() {
+        let pioche = []; 
+        pioche = CarteFactory.chargerDataEffetsChance() 
+
+        // mélanger équitablement la pioche (Fisher-Yates)
+        for (let i = pioche.length -1; i > 0; i--) {
+            const j = Math.floor(Math.random() * (i + 1)); //nb de 0 à i
+            [pioche[i], pioche[j]] = [pioche[j], pioche[i]]; 
+        }
+        return pioche; 
     }
 }

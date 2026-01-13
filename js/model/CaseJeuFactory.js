@@ -53,8 +53,7 @@ export class CaseJeuFactory {
                         caseAction.ajouterEffet(new PiocheEffet("fonds_commun"));
                         break;
                     case TypesCases.DEPART:
-                        caseAction.ajouterEffet(new VersementEffet(200, "banque", "joueur")); // montant, source, destinataire
-                        caseAction.ajouterEffet(new DeplacementEffet(0, 0, null)); //n°case , nbPas, bonusPassage
+                        // caseAction.ajouterEffet(new VersementEffet(200, "banque", "joueur")); // montant, source, destinataire
                         break;
                     case TypesCases.PARC_GRATUIT:
                         console.log('Parc gratuit: aucune action');
@@ -68,7 +67,7 @@ export class CaseJeuFactory {
                         break;
                     case TypesCases.ALLEZ_EN_PRISON:
                         caseAction.ajouterEffet(new PrisonEffet(true));
-                        caseAction.ajouterEffet(new DeplacementEffet(10, 0, null)); 
+                        caseAction.ajouterEffet(new DeplacementEffet("absolu", 0, null)); 
                         break;
                     }
                 return caseAction;

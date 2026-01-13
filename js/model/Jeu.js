@@ -1,9 +1,9 @@
 import { Carte, CarteAction, CarteImmobiliere, CarteRue, CarteGare, CarteSociete } from './Carte.js'; 
-import CarteJeuFactory from './CarteJeuFactory.js';
 import Joueur from './Joueur.js'; 
 import { Effet, DeplacementEffet, VersementEffet, PrisonEffet } from './Effet.js'
 import PionsDisponibles from "./enums/PionsDisponibles.js";
-import CaseJeuFactory from './CaseJeuFactory.js';
+import { CaseJeuFactory } from './CaseJeuFactory.js';
+import { CarteFactory } from './CarteFactory.js';
 
 
 class Jeu {
@@ -14,6 +14,7 @@ class Jeu {
         this.piocheChance = [];
         this.piocheFondsCommun = []; 
         this.casesJeu = CaseJeuFactory.chargerDataCasesJeu(); 
+        this.cartesChances = CarteFactory.chargerDataEffetsChance();
     }
 
     ajouterJoueur(nom, pion) {
@@ -27,6 +28,10 @@ class Jeu {
 
     determinerPremierJoueur() {
 
+    }
+
+    getJoueurs() {
+        return this.joueurs;
     }
 
     changerJoueur() {
@@ -66,5 +71,7 @@ class Jeu {
 
 export default Jeu; 
 
-// finir l'ajout des actions spour les cases d'action (effetChance)
+// finir l'ajout des actions pour les cases d'action (effetChance)
 // faire factory pioches chances et fonds 
+// faire le test survoler/atterrir sur Case départ ->recevoir 200 joueur
+// vérifier si on peut remplacer entrée/sortie prison par effet déplacement 
