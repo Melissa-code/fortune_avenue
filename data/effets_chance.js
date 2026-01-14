@@ -5,6 +5,7 @@ const effetsChanceJson = [
         "titre": "Chance 1",
         "description": "Rendez-vous à la rue de la Paix.",
         "type": TypesEffets.DEPLACEMENT,
+        "type_deplacement": "absolu",
         "index_case": 39,
         "nombreDePas": 0,
         "bonusPassage": 0
@@ -13,6 +14,7 @@ const effetsChanceJson = [
         "titre": "Chance 2",
         "description": "Avancez jusqu'à la case départ.",
         "type": TypesEffets.DEPLACEMENT,
+        "type_deplacement": "absolu",
         "index_case": 0,
         "nombreDePas": 0,
         "bonusPassage": 0
@@ -21,6 +23,7 @@ const effetsChanceJson = [
         "titre": "Chance 3",
         "description": "Rendez-vous à l’Avenue Henri-Martin. Si vous passez par la case départ, recevez 200 M.",
         "type": TypesEffets.DEPLACEMENT,
+        "type_deplacement": "absolu",
         "index_case": 24,
         "nombreDePas": 0,
         "bonusPassage": 200
@@ -29,6 +32,7 @@ const effetsChanceJson = [
         "titre": "Chance 4",
         "description": "Avancez au Boulevard de La Villette. Si vous passez par la case départ, recevez 200 M.",
         "type": TypesEffets.DEPLACEMENT,
+        "type_deplacement": "absolu",
         "index_case": 11,
         "nombreDePas": 0,
         "bonusPassage": 200
@@ -46,6 +50,7 @@ const effetsChanceJson = [
         "titre": "Chance 6",
         "description": "Avancez jusqu’à la Gare de Lyon. Si vous passez par la case départ, recevez 200 M.",
         "type": TypesEffets.DEPLACEMENT,
+        "type_deplacement": "absolu",
         "index_case": 15,
         "nombreDePas": 0,
         "bonusPassage": 200
@@ -75,7 +80,8 @@ const effetsChanceJson = [
         "titre": "Chance 10",
         "description": "Reculez de trois cases.",
         "type": TypesEffets.DEPLACEMENT,
-        "index_case": null,
+        "type_deplacement": "relatif",
+        "index_case": 0,
         "nombreDePas": -3,
         "bonusPassage": 0
     },
@@ -83,6 +89,7 @@ const effetsChanceJson = [
         "titre": "Chance 11",
         "description": "Aller en prison. Rendez-vous directement à la prison. Ne passez pas par la case départ, ne touchez pas 200 M.",
         "type": TypesEffets.ALLER_EN_PRISON,
+        "type_deplacement": "absolu",
         "index_case": 10,
         "nombreDePas": 0,
         "bonusPassage": 0

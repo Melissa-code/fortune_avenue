@@ -3,6 +3,7 @@
 import effetsChanceJson from "../../data/effets_chance.js";
 import TypesEffets from "./enums/TypesEffets.js";
 import { CarteAction, CarteImmobiliere, CarteRue, CarteSociete, CarteGare, Carte } from "./Carte.js";
+import { DeplacementEffet, VersementEffet, PrisonEffet, ReparationsEffet } from "./Effet.js";
 
 export class CarteFactory {
 
@@ -38,7 +39,7 @@ export class CarteFactory {
         return new CarteAction(
             jsonObj.titre,
             jsonObj.description,    
-            jsonObj.effet[ new DeplacementEffet(jsonObj.index_case, jsonObj.nombreDePas, jsonObj.bonusPassage)]
+            [ new DeplacementEffet(jsonObj.type_deplacement, jsonObj.index_case, jsonObj.bonusPassage)]
         );    
     }
 
@@ -46,7 +47,7 @@ export class CarteFactory {
         return new CarteAction(
             jsonObj.titre,
             jsonObj.description,    
-            jsonObj.effet[ new VersementEffet(jsonObj.montant, jsonObj.source, jsonObj.destinataire)]
+            [ new VersementEffet(jsonObj.montant, jsonObj.source, jsonObj.destinataire)]
         );    
     }   
 
@@ -54,7 +55,7 @@ export class CarteFactory {
         return new CarteAction(
             jsonObj.titre,
             jsonObj.description,    
-            jsonObj.effet[ new AllerEnPrisonEffet()]
+            [ new PrisonEffet(true)]
         );    
     }   
 
@@ -62,7 +63,7 @@ export class CarteFactory {
         return new CarteAction(
             jsonObj.titre,
             jsonObj.description,    
-            jsonObj.effet[ new ReparationsEffet(jsonObj.montant_par_maison, jsonObj.montant_par_hotel, jsonObj.source, jsonObj.destinataire)]
+            [ new ReparationsEffet(jsonObj.montant_par_maison, jsonObj.montant_par_hotel, jsonObj.source, jsonObj.destinataire)]
         );    
     }
 
@@ -70,7 +71,7 @@ export class CarteFactory {
         return new CarteAction(
             jsonObj.titre,
             jsonObj.description,    
-            jsonObj.effet[ new SortirDePrisonEffet()]
+            [ new PrisonEffet(false)]
         );    
     }
 

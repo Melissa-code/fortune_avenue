@@ -1,4 +1,4 @@
-import Jeu from 'Jeu.js';
+import Jeu from './Jeu.js';
 
 /**
  * classe abstraite modele pour classefille, polymorphisme
@@ -10,7 +10,8 @@ export class Effet {
 }
 
 /**
- * nombre de pas ( + ou negatif)
+ * type de deplacement: absolu (index case) ou relatif (nb de pas)
+ * valeur de deplacement: index case ou nb de pas
  * bonus de passage
  */
 export class DeplacementEffet extends Effet {
@@ -33,18 +34,18 @@ export class DeplacementEffet extends Effet {
  * montant, source(banque/joueur), destinationbanque/joueur)
  */
 export class VersementEffet extends Effet {
-    constructor(montant, source, destination) {
+    constructor(montant, source, destinataire) {
         super(); 
         this.montant = montant; 
         this.source = source; 
-        this.destination = destination; 
+        this.destinataire = destinataire; 
     }
 
     appliquer(joueur, jeu) {
         // si dest === joueur alors joueur.recevoir(sommeArgent)
-        if (this.source === "joueur" && this.destination === "banque") {
+        if (this.source === "joueur" && this.destinataire === "banque") {
             joueur.payer(this.montant);
-        } else if (this.source === "joueurs" && this.destination === "joueur") {
+        } else if (this.source === "joueurs" && this.destinataire === "joueur") {
             let joueurs = jeu.getJoueurs(); 
             for (autreJoueur of joueurs) {
                 if (autreJoueur !== joueur) {
@@ -52,38 +53,31 @@ export class VersementEffet extends Effet {
                     joueur.recevoir(this.montant); 
                 }
             }
-        } else if (this.source === "banque" && this.destination === "joueur") {
+        } else if (this.source === "banque" && this.destinataire === "joueur") {
             joueur.recevoir(this.montant);
         }
     }
 }
 
 /**
- * Entree/Sortie: VOIR 
+ * Entree/Sortie: TODO VOIR TESTER
+ * - déplacement du joueur en prison
+ * - joueur.estEnPrison = true/false
  */
-// export class PrisonEffet extends Effet {
-//     constructor(allerEnPrison) {
-//         super(); 
-//         this.allerEnPrison = allerEnPrison; 
-//     }
+export class PrisonEffet extends Effet {
+    constructor(allerEnPrison) {
+        super(); 
+        this.allerEnPrison = allerEnPrison; //bool 
+    }
 
-//     appliquer(joueur, plateauJeu) {
-//         if (this.allerEnPrison) {
-//             joueur.allerEnPrison();
-//         }
-//     }
-// }
-
-// export class SortirDePrisonEffet extends Effet {
-//     constructor() {
-//         super();
-//     }
-
-//     appliquer(joueur, plateauJeu) {
-//         //carte au joueur
-//         joueur.ajouterCarteSortiePrison(); 
-//     }
-// }
+    appliquer(joueur, plateauJeu) {
+        if (this.allerEnPrison) {
+            joueur.allerEnPrison();
+        } else {
+            joueur.sortirDePrison(); 
+        }
+    }
+}
 
 /**
  * Pioche une carte dans la pioche chance ou fonds commun

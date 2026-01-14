@@ -7,7 +7,7 @@ class Joueur {
         this.pion = pion; //img
         this.argent = argent;
         this.position = 0; 
-        this.etreEnPrison = false; 
+        this.estEnPrison = false; 
         this.carteSortiePrison = 0; 
         this.compteurPourSortirPrison = 0; // ap 3 tours
     }
@@ -39,11 +39,13 @@ class Joueur {
     }
 
     recevoir(montant) {
-
+        this.argent += montant; 
+        console.log(`Le joueur reçoit ${montant}. Nouveau solde : ${this.argent}`);
     }
 
     payer(montant) {
-
+        this.argent -= montant;
+        console.log(`Le joueur paie ${montant}. Nouveau solde : ${this.argent}`);
     }
 
     // acheterPropriete(propriete) {
