@@ -46,18 +46,14 @@ export class CaseJeuFactory {
 
                 switch (jsonObj.type) {
                     case TypesCases.CHANCE:
-                        // ajouter action
                         caseAction.ajouterEffet(new PiocheEffet("chance"));
                         break;
                     case TypesCases.FONDS_COMMUNS:
                         caseAction.ajouterEffet(new PiocheEffet("fonds_commun"));
                         break;
                     case TypesCases.DEPART:
-                        // tester si passage par la case départ
-                        caseAction.ajouterEffet(new VersementEffet(200, "banque", "joueur")); // montant, source, destinataire
                         break;
                     case TypesCases.PARC_GRATUIT:
-                        //console.log('Parc gratuit: aucune action');
                         break;
                     case TypesCases.PRISON:
                         caseAction.ajouterEffet(new PrisonEffet(false));
