@@ -3,8 +3,9 @@ const TypesEffets = Object.freeze({
     VERSEMENT: "versement",
     PIOCHER: "piocher",
     REPARATIONS: "reparations",
-    ALLER_EN_PRISON: "aller_en_prison",
-    SORTIR_DE_PRISON: "sortir_de_prison"
+    ALLER_EN_PRISON: "aller en prison",
+    SORTIR_DE_PRISON: "sortir de prison",
+    CHOIX: "choix"
 })
 
 export default TypesEffets;

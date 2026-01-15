@@ -15,21 +15,6 @@ class Jeu {
         this.piocheFondsCommun = []; 
         this.casesJeu = CaseJeuFactory.chargerDataCasesJeu(); 
         this.cartesChances = CarteFactory.chargerDataEffetsChance();
-
-        // test case départ
-        console.log('Début du test de ka case départ');
-        const joueur1 = new Joueur("Mélissa", PionsDisponibles.VOITURE);
-        console.log(`Argent dispo de ${joueur1.nom} : ${joueur1.argent}`);  
-
-        const caseDepart = this.casesJeu[0]; 
-        console.log(`Nom de la case : ${caseDepart.nom}`); 
-        console.log(`case depart effets :  ${caseDepart.effets}`)
-        if (caseDepart.effets) {
-            caseDepart.effets.forEach( (effet) => effet.appliquer(joueur1));
-        }
-
-        console.log("Solde après passage au Départ :", joueur1.argent); 
-        // Devrait être 1700 (1500 + 200)
     }
 
     ajouterJoueur(nom, pion) {
