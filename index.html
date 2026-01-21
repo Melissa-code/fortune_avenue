@@ -10,36 +10,14 @@
 </head>
 
 <body>
-    <div class="game-grid">
-        <!-- <h1>Fortune Avenue</h1> -->
-        <!-- game board (left) -->
-        <div class="board-container">
-            <canvas id="board-canvas" class="board-canvas" width="1500" height="1000"></canvas>
+    <main class="game-grid">
+        <h1>Fortune Avenue</h1>
+
+        <!-- game canvas -->
+        <div class="game-container">
+            <canvas id="game-canvas" class="game-canvas" width="1500" height="1000"></canvas>
         </div>
-
-        <!-- Sidebar (right) -->
-        <!-- <div class="sidebar">
-            <h2>Joueur 1 - 1500 M</h2>
-            <h3 id="cards-player1">Cartes</h3>
-            <div id="houses-player1">Maisons: </div>
-            <div id="hostels-player1">Hôtels: </div>
-
-            <h2>Joueur 2 - 1500 M</h2>
-            <h3 id="cards-player2">Cartes</h3>
-            <div id="houses-player2">Maisons: </div>
-            <div id="hostels-player2">Hôtels: </div>
-        </div> -->
-
-        <!-- Footer: buttons -->
-        <!-- <div class="footer">
-            <button>Menu</button>
-            <button>Construire</button>
-            <button>Vendre</button>
-            <button>Hypothéquer</button>
-            <button>Lever hypothèque</button>
-            <button>Échanger</button>
-        </div> -->
-    </div>
+    </main>
 
     <script type="module" src="./js/controller/controller.js"></script>
 </body>
