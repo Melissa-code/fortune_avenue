@@ -44,18 +44,46 @@ class View {
     /**
      * Afficher les pions des joueurs sur le plateau de jeu 
      * https://developer.mozilla.org/en-US/docs/Web/API/Canvas_API/Tutorial/Using_images
+     * 0 à 12 cases par côté => dimensionPlateauJeu / 13 = unité de déplacement
      */
     afficherPionsJoueurs() {
         const joueurs = this.jeu.getJoueurs();
-        const tailleCase = this.dimensionPlateauJeu / 13; //13x13
+        const unite = this.dimensionPlateauJeu / 13; // unite case: 2 + 9 + 2 
+        const taillePion = 40;
 
         for (let i = 0; i < joueurs.length; i++) {
             const imagePion = this.imgPions[i];
+            const positionJoueur = joueurs[i].position;
 
             if (imagePion && imagePion.complete) {
-                const x = (joueurs[i].position % 13) * tailleCase; 
-                const y = Math.floor(joueurs[i].position / 13) * tailleCase;
-                this.ctx.drawImage(imagePion, x, y, 40, 40);
+                let x = 0;
+                let y = 0;
+
+                //bas (0->10) Y est fixe X change
+                if (positionJoueur >= 0 && positionJoueur <= 10) {
+                    // definir x y en fonction de la position
+                    x = (11 - positionJoueur) * unite; // 0=11 1=10 ... 10=1
+                    y = 11 * unite;
+                }
+                //gauche (11->20)  X est fixe Y change
+                else if (positionJoueur > 10 && positionJoueur <= 20) {
+                    x = 0 * unite;
+                    y= (21 - positionJoueur) * unite;
+                }
+
+                //haut (21->30) Y est fixe X change (1re case 21-2=19)
+                else if (positionJoueur > 20 && positionJoueur <= 30) {
+                    x = (positionJoueur - 19) * unite
+                    y = 0 * unite;
+                }
+
+                //droite (31->39) X est fixe Y change (1re case 31-2=29)
+                else {
+                    x = 11 * unite;
+                    y = (positionJoueur - 29) * unite
+                }
+
+                this.ctx.drawImage(imagePion, x, y, taillePion, taillePion);
             }
         }
     }
