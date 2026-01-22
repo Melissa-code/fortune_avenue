@@ -1,10 +1,10 @@
-
+import De from '../model/De.js';
 
 class View {
 
     static IMG_PLATEAU_JEU = './images/gameboard_v2.svg';
 
-    constructor(jeu, document, dimensionPlateauJeu) {
+    constructor(jeu, document, dimensionPlateauJeu) { //650
         this.jeu = jeu;
         this.dimensionPlateauJeu = dimensionPlateauJeu;
         this.myCanvas = document.querySelector("#game-canvas");
@@ -16,6 +16,16 @@ class View {
 
         this.imgPions = []; 
         this.chargerImagesPions();
+
+        this.imageDe = new Image();
+        this.imageDe.src = './images/de.png'; 
+        console.log(this.imageDe.src)
+
+        this.imageDe.onload = () => {
+            if (this.imageDe.complete) {
+                this.ctx.drawImage(this.imageDe, 680, 0, this.dimensionPlateauJeu/10, this.dimensionPlateauJeu/10);
+            }
+        }
     }
 
     /**
@@ -24,6 +34,12 @@ class View {
     afficherPlateauJeu(imagePlateau) {
         if (this.imagePlateau.complete) {
          this.ctx.drawImage(imagePlateau, 0, 0, this.dimensionPlateauJeu, this.dimensionPlateauJeu);
+        }
+    }
+
+    identifierCible(x, y) {
+        if (x === 680 && y === 0) {
+            return new De(2);
         }
     }
 
@@ -92,7 +108,8 @@ class View {
      * Rafraîchir l'affichage du plateau de jeu et des pions des joueurs    
      */
     refresh() {
-        this.ctx.clearRect(0, 0, this.myCanvas.width, this.myCanvas.height);
+        // this.ctx.clearRect(0, 0, this.myCanvas.width, this.myCanvas.height);
+
         this.afficherPlateauJeu(this.imagePlateau); // plateau jeu
         this.afficherPionsJoueurs(); //pions par-dessus
     }

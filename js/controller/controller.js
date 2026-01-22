@@ -1,5 +1,6 @@
 import PionsDisponibles from '../model/enums/PionsDisponibles.js';
 import Jeu from '../model/Jeu.js';
+import De from '../model/De.js';
 import View from '../view/View.js';
 
 function demarrer() {
@@ -20,7 +21,25 @@ function demarrer() {
 
     const view = new View(jeu, document, 650); 
     jeu.view = view;
-    view.refresh();
+
+
+    const canvas = document.querySelector("#game-canvas");
+    canvas.addEventListener("click", (event) => {
+      const rect = canvas.getBoundingClientRect();
+      const x = event.clientX - rect.left; //x coin gauche du canvas
+      const y = event.clientY - rect.top; //y haut du canvas
+    
+      let cible = view.identifierCible(x, y); //return type de Cible);
+       // si la cible est le de, jouer le des dans le modele (jeu)
+       // jouer le des dans le modele consiste a ler lancer, recuperer le total et faire avancer 
+       // le joureur courant de la position du des
+
+      console.log("Clic sur la cible : ", cible)
+     
+    
+      view.refresh();
+    });
+
 }
 
 demarrer();

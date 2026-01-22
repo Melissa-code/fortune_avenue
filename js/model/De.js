@@ -1,7 +1,7 @@
 class De {
-    constructor(nombreDes = 2) {
+    constructor(nombreDes = 1) {
         this.nombreDes = nombreDes;
-        this.valeursAffichees = [1, 1];
+        this.valeursAffichees = []; 
     }
 
     /**
@@ -19,6 +19,7 @@ class De {
             total += this.valeursAffichees[i];
         }
 
+        console.log(total)
         return total;
     }
 
