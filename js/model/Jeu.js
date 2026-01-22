@@ -20,6 +20,8 @@ class Jeu {
     ajouterJoueur(nom, pion) {
         const joueur = new Joueur(nom, pion); 
         this.joueurs.push(joueur);
+
+        return joueur;
     }
 
 
@@ -72,8 +74,3 @@ class Jeu {
 }
 
 export default Jeu; 
-
-// finir l'ajout des actions pour les cases d'action (effetChance)
-// faire factory pioches chances et fonds 
-// faire le test survoler/atterrir sur Case départ ->recevoir 200 joueur
-// vérifier si on peut remplacer entrée/sortie prison par effet déplacement 

@@ -15,7 +15,7 @@ export class Effet {
  * bonus de passage
  */
 export class DeplacementEffet extends Effet {
-    constructor(typeDeplacement, valeurDeplacement, bonusDePassage = null) {
+    constructor(typeDeplacement, valeurDeplacement, bonusDePassage = 0) {
         super(); 
         this.typeDeplacement = typeDeplacement;
         this.valeurDeplacement = valeurDeplacement; 

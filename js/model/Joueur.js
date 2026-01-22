@@ -12,11 +12,14 @@ class Joueur {
         this.aTraverseCaseDepart = false; 
     }
 
-    gererArrivee(anciennePosition) {
+    gererArriveeSurCase(anciennePosition) {
+        // case "allez en prison" 
         if (this.position === 30) {
             this.allerEnPrison();
             this.aTraverseCaseDepart = false;
-        } else if (this.position < anciennePosition) {
+            return;
+        } 
+        if (this.position < anciennePosition) {
             this.recevoir(200);
             this.aTraverseCaseDepart = true;
         } else {
@@ -24,18 +27,18 @@ class Joueur {
         }
     }
 
-    avancer(nombreDePas) {
+    avancer(typeDeplacement, valeurDeplacement, bonusDePassage = 0) {
         const anciennePosition = this.position; 
-        this.position = (this.position + nombreDePas) % 40; //repart après 40
-        this.gererArrivee(anciennePosition);
-    }
-
-    // si la nouvelle position traverse la case de depart % a la position d'avant
-    // et que l'ancienne position n'etais pas la prison alors crediter 200
-    allerDirectementSurCase(position) {
-        const anciennePosition = this.position; 
-        this.position = position; 
-        this.gererArrivee(anciennePosition);
+        if (typeDeplacement === 'absolu') {
+            this.position = valeurDeplacement; // index case 
+            this.gererArriveeSurCase(anciennePosition);
+        } else {
+            this.position = (this.position + valeurDeplacement) % 40; //repart après 40
+            this.gererArriveeSurCase(anciennePosition);
+        }
+        if (bonusDePassage !== 0) {
+            this.recevoir(bonusDePassage);
+        }
     }
 
     allerEnPrison() {
@@ -44,15 +47,6 @@ class Joueur {
         this.estEnPrison = true; 
     }
 
-    reculer(nombreDePas) {
-        anciennePosition = this.position; 
-        this.position = (anciennePosition - nombreDePas +40) % 40; //+40: tour complet pas de nb neg et %40: ne pas depasser 40 cases
-
-        if (this.position === 30) {
-            this.allerEnPrison();
-        }
-        this.aTraverseCaseDepart = false;
-    }
 
     passerSonTour() {
 

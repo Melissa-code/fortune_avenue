@@ -43,10 +43,11 @@ class View {
 
     /**
      * Afficher les pions des joueurs sur le plateau de jeu 
+     * https://developer.mozilla.org/en-US/docs/Web/API/Canvas_API/Tutorial/Using_images
      */
     afficherPionsJoueurs() {
         const joueurs = this.jeu.getJoueurs();
-        const tailleCase = this.dimensionPlateauJeu/13; //13x13
+        const tailleCase = this.dimensionPlateauJeu / 13; //13x13
 
         for (let i = 0; i < joueurs.length; i++) {
             const imagePion = this.imgPions[i];
@@ -54,7 +55,7 @@ class View {
             if (imagePion && imagePion.complete) {
                 const x = (joueurs[i].position % 13) * tailleCase; 
                 const y = Math.floor(joueurs[i].position / 13) * tailleCase;
-                this.ctx.drawImage(imagePion, x, y, 35, 35);
+                this.ctx.drawImage(imagePion, x, y, 40, 40);
             }
         }
     }
@@ -63,7 +64,6 @@ class View {
      * Rafraîchir l'affichage du plateau de jeu et des pions des joueurs    
      */
     refresh() {
-
         this.ctx.clearRect(0, 0, this.myCanvas.width, this.myCanvas.height);
         this.afficherPlateauJeu(this.imagePlateau); // plateau jeu
         this.afficherPionsJoueurs(); //pions par-dessus
