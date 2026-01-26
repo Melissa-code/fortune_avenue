@@ -38,9 +38,13 @@ class View {
     }
 
     identifierCible(x, y) {
-        if (x === 680 && y === 0) {
-            return new De(2);
+         console.log(` X: ${x}, Y: ${y}`); 
+         // definir une zone 
+        if (x >= 650 && x <= 800 && y >= 0 && y <= 400) {
+            return "DE";
         }
+       
+        return null;
     }
 
     /**
@@ -65,7 +69,7 @@ class View {
     afficherPionsJoueurs() {
         const joueurs = this.jeu.getJoueurs();
         const unite = this.dimensionPlateauJeu / 13; // unite case: 2 + 9 + 2 
-        const taillePion = 40;
+        const taillePion = 35;
 
         for (let i = 0; i < joueurs.length; i++) {
             const imagePion = this.imgPions[i];

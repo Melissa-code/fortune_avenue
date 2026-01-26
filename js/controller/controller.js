@@ -34,12 +34,15 @@ function demarrer() {
        // jouer le des dans le modele consiste a ler lancer, recuperer le total et faire avancer 
        // le joureur courant de la position du des
 
-      console.log("Clic sur la cible : ", cible)
-     
-    
-      view.refresh();
-    });
+      if (cible === "DE") {
+        console.log('cible: ' + cible);
+        
 
+        
+          //view.refresh();
+      }
+    });
+     
 }
 
 demarrer();
