@@ -112,7 +112,7 @@ class View {
      * Rafraîchir l'affichage du plateau de jeu et des pions des joueurs    
      */
     refresh() {
-        // this.ctx.clearRect(0, 0, this.myCanvas.width, this.myCanvas.height);
+        //this.ctx.clearRect(0, 0, this.myCanvas.width, this.myCanvas.height);
 
         this.afficherPlateauJeu(this.imagePlateau); // plateau jeu
         this.afficherPionsJoueurs(); //pions par-dessus

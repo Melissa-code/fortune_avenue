@@ -1,35 +1,37 @@
 class De {
-    constructor(nombreDes = 1) {
-        this.nombreDes = nombreDes;
-        this.valeursAffichees = []; 
+    constructor() {
+        this.nombreDes = 1;
+        this.valeurAffichee = 0; 
     }
 
     /**
-     * return pour chaque dé un chiffre entre 1 et 6
+     * return chiffre entre 1 et 6
      */
     lancer() {
-        for (let i = 0; i < this.nombreDes; i++ ) {
-            this.valeursAffichees[i] = Math.floor(Math.random() * 6) +1;
-        }
+        // entre 1-6 pas 0
+        this.valeurAffichee = Math.floor(Math.random() * 6) +1;
+        console.log("Résultat du dé après le lancé : " + this.valeurAffichee);
+
+        return this.valeurAffichee;
     }
 
-    getTotal() {
-        let total = 0;
-        for (let i = 0; i < this.nombreDes; i++ ) {
-            total += this.valeursAffichees[i];
-        }
+    // getTotal() {
+    //     let total = 0;
+    //     for (let i = 0; i < this.nombreDes; i++ ) {
+    //         total += this.valeursAffichees[i];
+    //     }
 
-        console.log(total)
-        return total;
-    }
+    //     console.log(total)
+    //     return total;
+    // }
 
-    verifierSiDouble() {
-        if (this.nombreDes === 2) {
-            return this.valeurs[0] === this.valeurs[1];//true
-        }
+    // verifierSiDouble() {
+    //     if (this.nombreDes === 2) {
+    //         return this.valeurs[0] === this.valeurs[1];//true
+    //     }
 
-        return false;
-    }
+    //     return false;
+    // }
 
 }
 

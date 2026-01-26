@@ -4,6 +4,7 @@ import { Effet, DeplacementEffet, VersementEffet, PrisonEffet } from './Effet.js
 import PionsDisponibles from "./enums/PionsDisponibles.js";
 import { CaseJeuFactory } from './CaseJeuFactory.js';
 import { CarteFactory } from './CarteFactory.js';
+import De from './De.js';
 
 
 class Jeu {
@@ -11,6 +12,7 @@ class Jeu {
         this.joueurActuelIndex = 0;
         this.joueurs = []; 
         this.estPartieFinie = false; 
+        this.de = new De();
         this.piocheChance = [];
         this.piocheFondsCommun = []; 
         this.casesJeu = CaseJeuFactory.chargerDataCasesJeu(); 
@@ -24,11 +26,6 @@ class Jeu {
         return joueur;
     }
 
-
-    
-    lancerDes() {
-
-    }
 
     determinerPremierJoueur() {
 

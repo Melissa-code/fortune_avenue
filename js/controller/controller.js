@@ -11,10 +11,10 @@ function demarrer() {
     const joueur2 = jeu.ajouterJoueur("Pierre", PionsDisponibles.DRONE)
     console.table(jeu.getJoueurs());
 
-    joueur1.avancer('relatif', 5);
-    joueur2.avancer('absolu', 38);
-    console.log(`Position de ${joueur1.nom} = ${joueur1.position}`);
-    console.log(`Position de ${joueur2.nom} = ${joueur2.position}`);
+    //joueur1.avancer('relatif', 5);
+    //joueur2.avancer('absolu', 38);
+    //console.log(`Position de ${joueur1.nom} = ${joueur1.position}`);
+    //console.log(`Position de ${joueur2.nom} = ${joueur2.position}`);
 
     jeu.casesJeu ;
     //console.log('40 Cases du plateau:', jeu.casesJeu);
@@ -36,10 +36,13 @@ function demarrer() {
 
       if (cible === "DE") {
         console.log('cible: ' + cible);
-        
+        const resultatDe = jeu.de.lancer();
 
-        
-          //view.refresh();
+        joueur1.avancer('relatif', resultatDe);
+        console.log(`Position de ${joueur1.nom} = ${joueur1.position}`);
+  
+
+        view.refresh();
       }
     });
      
