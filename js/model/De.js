@@ -8,10 +8,10 @@ class De {
      * return chiffre entre 1 et 6
      */
     lancer() {
-        // entre 1-6 pas 0
-        this.valeurAffichee = Math.floor(Math.random() * 6) +1;
+        // entre 1-12 pas 0
+        this.valeurAffichee = Math.floor(Math.random() * 12) +1;
         console.log("Résultat du dé après le lancé : " + this.valeurAffichee);
-
+        
         return this.valeurAffichee;
     }
 

@@ -19,6 +19,8 @@ body {
     flex-direction: column;
     min-height: 100vh; /* 100% hauteur */
     margin: .5rem;
+    background-color: #2C6E49;
+    ;
 }
 
 main {

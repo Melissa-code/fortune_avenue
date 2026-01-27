@@ -9,19 +9,13 @@ function demarrer() {
     //joueurs
     const joueur1 = jeu.ajouterJoueur("Melissa", PionsDisponibles.BASKET)
     const joueur2 = jeu.ajouterJoueur("Pierre", PionsDisponibles.DRONE)
-    console.table(jeu.getJoueurs());
-
-    //joueur1.avancer('relatif', 5);
-    //joueur2.avancer('absolu', 38);
-    //console.log(`Position de ${joueur1.nom} = ${joueur1.position}`);
-    //console.log(`Position de ${joueur2.nom} = ${joueur2.position}`);
+    console.log(jeu.getJoueurs());
 
     jeu.casesJeu ;
     //console.log('40 Cases du plateau:', jeu.casesJeu);
 
     const view = new View(jeu, document, 650); 
     jeu.view = view;
-
 
     const canvas = document.querySelector("#game-canvas");
     canvas.addEventListener("click", (event) => {
@@ -35,11 +29,11 @@ function demarrer() {
        // le joureur courant de la position du des
 
       if (cible === "DE") {
-        console.log('cible: ' + cible);
+        // console.log('cible: ' + cible);
         const resultatDe = jeu.de.lancer();
-
+    
         joueur1.avancer('relatif', resultatDe);
-        console.log(`Position de ${joueur1.nom} = ${joueur1.position}`);
+        // console.log(`Position de ${joueur1.nom} = ${joueur1.position}`);
   
 
         view.refresh();
