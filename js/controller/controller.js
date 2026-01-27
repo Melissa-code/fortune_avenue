@@ -33,8 +33,7 @@ function demarrer() {
         const resultatDe = jeu.de.lancer();
     
         joueur1.avancer('relatif', resultatDe);
-        // console.log(`Position de ${joueur1.nom} = ${joueur1.position}`);
-  
+        console.log(`Position de ${joueur1.nom} = ${joueur1.position}`);
 
         view.refresh();
       }

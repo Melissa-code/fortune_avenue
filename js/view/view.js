@@ -10,18 +10,21 @@ class View {
     this.myCanvas = document.querySelector("#game-canvas");
     this.ctx = this.myCanvas.getContext("2d");
     // plateau jeu 
-    this.imagePlateau = new Image(); //chargé une seule fois (+rapide)
-    this.imagePlateau.src = View.IMG_PLATEAU_JEU;
-    this.imagePlateau.onload = () => this.refresh();
+    this.chargerImagePlateauJeu();
     //pions joueurs
     this.imagesPions = [];
     this.chargerImagesPions();
     //dé
-    this.positionDeX = this.dimensionPlateauJeu + (this.dimensionPlateauJeu / 10);// position x du dé 650 + 65 = 715
-    this.positionDeY = 0;
-    this.tailleDe = this.dimensionPlateauJeu / 10; //65
-    this.imagesResultatsDe = [];
-    this.chargerImagesResultatsDe();
+    this.initialiserDe(); 
+  }
+
+  /**
+   * Charger l'image du plateau de jeu une seule fois(+rapide que refresh à chaque fois)
+   */
+  chargerImagePlateauJeu() {
+    this.imagePlateau = new Image(); 
+    this.imagePlateau.src = View.IMG_PLATEAU_JEU;
+    this.imagePlateau.onload = () => this.refresh();
   }
 
   /**
@@ -29,8 +32,41 @@ class View {
    */
   afficherPlateauJeu(imagePlateau) {
     if (this.imagePlateau.complete) {
-      this.ctx.drawImage(
-        imagePlateau, 0, 0, this.dimensionPlateauJeu, this.dimensionPlateauJeu);
+      this.ctx.drawImage(imagePlateau, 0, 0, this.dimensionPlateauJeu, this.dimensionPlateauJeu);
+    }
+  }
+
+  /**
+   * Calculs des dimensions et positions x y du dé 
+   */
+  initialiserDe() {
+    this.tailleDe = this.dimensionPlateauJeu / 10;
+    this.positionDeX = this.dimensionPlateauJeu + this.tailleDe;
+    this.positionDeY = 0;
+
+    this.imagesResultatsDe = [];
+    this.chargerImagesResultatsDe(); 
+  }
+
+  /**
+   * Charger les images du dé depuis l'enum ImagesResultatsDe(object) dans le tableau this.imagesResultatsDe[]
+   */
+  chargerImagesResultatsDe() {
+    for (const imageDe in ImagesResultatsDe) {
+      const image = new Image();
+      image.src = ImagesResultatsDe[imageDe];
+      image.onload = () => this.refresh();
+      this.imagesResultatsDe.push(image);
+    }
+  }
+
+  afficherResultatDe() {
+    let valeurAfficheeDe = this.jeu.de.valeurAffichee; // from jeu (move)
+    if (valeurAfficheeDe === 0) valeurAfficheeDe = 1; //dé pas encore lancé: 1 par defaut sinon ne s affiche pas
+
+    const imageDe = this.imagesResultatsDe[valeurAfficheeDe - 1]; //indexé 0-11 dans array
+    if (imageDe && imageDe.complete) {
+      this.ctx.drawImage(imageDe, this.positionDeX, this.positionDeY, this.tailleDe, this.tailleDe);
     }
   }
 
@@ -96,28 +132,6 @@ class View {
   }
 
   /**
-   * Charger les images du dé depuis l'enum ImagesResultatsDe(object) dans le tableau this.imagesResultatsDe[]
-   */
-  chargerImagesResultatsDe() {
-    for (const imageDe in ImagesResultatsDe) {
-      const image = new Image();
-      image.src = ImagesResultatsDe[imageDe];
-      image.onload = () => this.refresh();
-      this.imagesResultatsDe.push(image);
-    }
-  }
-
-  afficherResultatDe() {
-    let valeurAfficheeDe = this.jeu.de.valeurAffichee; // from jeu (move)
-    if (valeurAfficheeDe === 0) valeurAfficheeDe = 1; //dé pas encore lancé: 1 par defaut sinon ne s affiche pas
-
-    const imageDe = this.imagesResultatsDe[valeurAfficheeDe - 1]; //indexé 0-11 dans array
-    if (imageDe && imageDe.complete) {
-      this.ctx.drawImage(imageDe, this.positionDeX, this.positionDeY, this.tailleDe, this.tailleDe);
-    }
-  }
-
-  /**
    * Rafraîchir l'affichage du plateau de jeu et des pions des joueurs (redessiner)
    */
   refresh() {
@@ -137,10 +151,11 @@ class View {
     //zone de detection du clic sur le dé
     if (
       x >= this.positionDeX && //650 + 65 = 715
-      x <= this.positionDeX + this.tailleDe && 
+      x <= this.positionDeX + this.tailleDe &&
       y >= this.positionDeY &&
-      y <= this.positionDeY + this.tailleDe 
-    ) return "DE";
+      y <= this.positionDeY + this.tailleDe
+    )
+      return "DE";
 
     return "Aucune cible identifiée.";
   }
