@@ -45,20 +45,37 @@ export class CasePropriete extends CaseJeu {
         return !this.proprietaire;
     }
 
+    // acheter(joueur ) {
+    //     if (this.proprietaire) return; 
+
+    //     let effet = new VersementEffet(prixAchat, this.proprietaire.argent, banque);
+    //     effet.appliquer(this.proprietaire, banque);
+
+    //     this.proprietaire = joueur;
+        
+    //     console.log(`${this.proprietaire.nom} paye ${prixAchat}€ `);
+    // }
+
 
     calculerLoyer() {
         // methd abstraite (impl dans les cl filles)
     }
 
     arriver(joueur, jeu) {
+        const listePropositions = this.filtrerPropositionsValables(joueur, jeu) 
+        console.log(listePropositions)
+
         // Payer un loyer
-        if (this.estLibre() && this.proprietaire !== joueur && !this.hypotheque) {
-            const montant = this.calculerLoyer();
+        if (this.estLibre() && !this.hypotheque) {
+
+             const montant = this.calculerLoyer();
             //TODO jeu 
-            jeu.ajouterEffet(
-                new VersementEffet(montant, joueur, this.proprietaire)
-            );
-        }
+        //     jeu.ajouterEffet(
+        //         new VersementEffet(montant, joueur, this.proprietaire)
+        //     );
+         }
+
+         return listePropositions; 
     }
 
     /**
@@ -117,8 +134,9 @@ export class CaseRue extends CasePropriete {
                 console.log('Aucun type de construction reconnu.'); 
         }
 
-        let effet = new VersementEffet(prix, this.proprietaire.argent, banque);
+        let effet = new VersementEffet(prixConstruction, this.proprietaire.argent, banque);
         effet.appliquer(this.proprietaire, banque);
+        
         console.log(`${this.proprietaire.nom} paye ${prixConstruction}€ pour construire un(e) ${typeConstruction}.`);
     }
 

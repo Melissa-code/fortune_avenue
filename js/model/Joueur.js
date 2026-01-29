@@ -25,6 +25,8 @@ class Joueur {
         } else {
             this.aTraverseCaseDepart = false;
         }
+
+        
     }
 
     avancer(typeDeplacement, valeurDeplacement, bonusDePassage = 0) {

@@ -62,7 +62,7 @@ class View {
 
   afficherResultatDe() {
     let valeurAfficheeDe = this.jeu.de.valeurAffichee; // from jeu (move)
-    if (valeurAfficheeDe === 0) valeurAfficheeDe = 1; //dé pas encore lancé: 1 par defaut sinon ne s affiche pas
+    if (valeurAfficheeDe === 1) valeurAfficheeDe = 2; //dé pas encore lancé: 1 par defaut sinon ne s affiche pas
 
     const imageDe = this.imagesResultatsDe[valeurAfficheeDe - 1]; //indexé 0-11 dans array
     if (imageDe && imageDe.complete) {

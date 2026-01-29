@@ -1,15 +1,15 @@
 class De {
     constructor() {
         this.nombreDes = 1;
-        this.valeurAffichee = 0; 
+        this.valeurAffichee = 1; 
     }
 
     /**
      * return chiffre entre 1 et 6
      */
     lancer() {
-        // entre 1-12 pas 0
-        this.valeurAffichee = Math.floor(Math.random() * 12) +1;
+        // entre 2-12 pas 0
+        this.valeurAffichee = Math.floor(Math.random() * 11) +2;
         console.log("Résultat du dé après le lancé : " + this.valeurAffichee);
         
         return this.valeurAffichee;

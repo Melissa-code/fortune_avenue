@@ -32,8 +32,12 @@ function demarrer() {
         // console.log('cible: ' + cible);
         const resultatDe = jeu.de.lancer();
     
-        joueur1.avancer('relatif', resultatDe);
-        console.log(`Position de ${joueur1.nom} = ${joueur1.position}`);
+        jeu.avancerJoueurCourant(resultatDe);//listeProp
+
+        //method view à controler par controleur pour afficher une liste de saisie (pop in pop up modal)
+        //et return choix sélectionné
+        //ensuite controller signale le choix pour l'appliqer (model)
+      
 
         view.refresh();
       }

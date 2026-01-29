@@ -5,6 +5,7 @@ import PionsDisponibles from "./enums/PionsDisponibles.js";
 import { CaseJeuFactory } from './CaseJeuFactory.js';
 import { CarteFactory } from './CarteFactory.js';
 import De from './De.js';
+import Banque from './Banque.js'; 
 
 
 class Jeu {
@@ -17,6 +18,8 @@ class Jeu {
         this.piocheFondsCommun = []; 
         this.casesJeu = CaseJeuFactory.chargerDataCasesJeu(); 
         this.cartesChances = CarteFactory.chargerDataEffetsChance();
+
+        this.banque = new Banque();
     }
 
     ajouterJoueur(nom, pion) {
@@ -39,7 +42,22 @@ class Jeu {
         this.joueurActuelIndex = (this.joueurActuelIndex + 1) % this.joueurs.length;
     }
 
+    avancerJoueurCourant(valeurDeplacement) {
+        const joueurCourant = this.joueurs[this.joueurActuelIndex]; 
 
+        joueurCourant.avancer("relatif", valeurDeplacement) //avec dé
+
+        const caseJeu = this.casesJeu[joueurCourant.position]; 
+        const listePropositions = caseJeu.arriver(joueurCourant, this);
+
+        if (listePropositions.length === 0) {
+            this.changerJoueur();
+            
+        }
+    
+        return listePropositions; 
+        
+    }
 
     jouer() {
 
