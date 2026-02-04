@@ -40,8 +40,8 @@ button {
     position: fixed;
     top: 50%;
     left: 50%;
-    transform: translate(-50%, -50%); /* centrage modal */
-    z-index: 1000; /* au-dessus de canvas */
+    transform: translate(-50%, -50%); /* centre */
+    z-index: 1000; /* pour au-dessus de canvas */
     background-color: white;
     min-height: 10vh; 
     min-width: 40vh;  

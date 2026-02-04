@@ -4,18 +4,20 @@ class View {
   static IMG_PLATEAU_JEU = "./images/gameboard_v2.svg";
 
   constructor(jeu, document, dimensionPlateauJeu) {
-    //jeu canvas 650x650
+    //jeu canvas 800x800
     this.jeu = jeu;
     this.dimensionPlateauJeu = dimensionPlateauJeu;
     this.myCanvas = document.querySelector("#game-canvas");
     this.ctx = this.myCanvas.getContext("2d");
+
     // plateau jeu 
     this.chargerImagePlateauJeu();
-    //pions joueurs
+    // pions joueurs
     this.imagesPions = [];
     this.chargerImagesPions();
-    //dé
+    // dé
     this.initialiserDe(); 
+    this.espacement = this.tailleDe / 2;
   }
 
   /**
@@ -41,7 +43,7 @@ class View {
    */
   initialiserDe() {
     this.tailleDe = this.dimensionPlateauJeu / 10;
-    this.positionDeX = this.dimensionPlateauJeu + this.tailleDe;
+    this.positionDeX = this.dimensionPlateauJeu + this.tailleDe / 2;
     this.positionDeY = 0;
 
     this.imagesResultatsDe = [];
@@ -134,6 +136,36 @@ class View {
     }
   }
 
+  afficherInfosJoueurs() {
+    const joueurs = this.jeu.getJoueurs();
+    const zoneJoueursX = this.dimensionPlateauJeu + this.espacement * 4;
+    const zoneJoueursY = 0; 
+    const largeurZoneJoueurs = this.dimensionPlateauJeu;
+    const hauteurZoneJoueurs = this.dimensionPlateauJeu / 2;
+    
+    for (let i = 0; i < joueurs.length; i++) {
+      // cadre infos joueur
+      this.ctx.fillStyle = '#FFFFFF'; 
+      this.ctx.fillRect(zoneJoueursX, zoneJoueursY - 30,  largeurZoneJoueurs, hauteurZoneJoueurs);
+      this.ctx.strokeStyle = 'black';
+      this.ctx.lineWidth = 1;
+      this.ctx.strokeRect(zoneJoueursX, zoneJoueursY - 30, largeurZoneJoueurs, hauteurZoneJoueurs);
+
+      // texte infos joueur
+      this.ctx.font = "16px Roboto Bold";
+      this.ctx.fillStyle = 'black';
+      this.ctx.fillText(`Joueur ${i + 1}`, zoneJoueursX + 10, zoneJoueursY - 10);
+      const joueur = joueurs[i];
+      const infosJoueur = `Joueur: ${joueur.nom} - Argent: ${joueur.argent} M`; 
+
+      this.ctx.fillText(infosJoueur, zoneJoueursX, zoneJoueursY + (i * 20) + 100);
+    } 
+  }
+
+  afficherModalePropositions() {
+    //
+  }
+
   /**
    * Rafraîchir l'affichage du plateau de jeu et des pions des joueurs (redessiner)
    */
@@ -143,6 +175,7 @@ class View {
     this.afficherPlateauJeu(this.imagePlateau); // plateau jeu
     this.afficherPionsJoueurs(); //pions par-dessus
     this.afficherResultatDe();
+    this.afficherInfosJoueurs();
   }
 
   /**

@@ -10,11 +10,10 @@ function demarrer() {
     const joueur1 = jeu.ajouterJoueur("Melissa", PionsDisponibles.BASKET)
     const joueur2 = jeu.ajouterJoueur("Pierre", PionsDisponibles.DRONE)
     jeu.casesJeu;
-    const view = new View(jeu, document, 600); 
+    const view = new View(jeu, document, 800); 
     jeu.view = view;
 
     const canvas = document.querySelector("#game-canvas");
-
     canvas.addEventListener("click", (event) => {
       const rect = canvas.getBoundingClientRect();
       const x = event.clientX - rect.left; //x coin gauche du canvas
