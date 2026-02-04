@@ -18,7 +18,6 @@ class Jeu {
         this.piocheFondsCommun = []; 
         this.casesJeu = CaseJeuFactory.chargerDataCasesJeu(); 
         this.cartesChances = CarteFactory.chargerDataEffetsChance();
-
         this.banque = new Banque();
     }
 
