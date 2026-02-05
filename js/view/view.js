@@ -71,7 +71,14 @@ class View {
 
     const imageDe = this.imagesResultatsDe[valeurAfficheeDe - 1]; //indexé 0-11 dans array
     if (imageDe && imageDe.complete) {
+      this.ctx.save();
+      this.ctx.shadowColor = "rgba(0, 0, 0, 0.15)"; // Couleur noire transparente
+      this.ctx.shadowBlur = 6;                     // Flou de l'ombre
+      this.ctx.shadowOffsetX = 2;                  // Décalage horizontal
+      this.ctx.shadowOffsetY = 2;
+
       this.ctx.drawImage(imageDe, this.positionDeX, this.positionDeY, this.tailleDe, this.tailleDe);
+      this.ctx.restore();
     }
   }
 
@@ -183,10 +190,12 @@ class View {
   afficherTexteModale(type, texte) {
     const modale = this.afficherModale();
 
+    // titre 
     this.ctx.font = "bold 20px Roboto";
     this.ctx.fillStyle = '#FFFFFF';
     this.ctx.fillText(type, modale.x + this.espacement, modale.y + this.espacement);
 
+    // description
     this.ctx.font = "normal 17px Roboto";
     const lignes = texte.split("\n"); //pour le saut de ligne
     for (let i = 0; i < lignes.length; i++) {
