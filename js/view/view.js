@@ -141,15 +141,15 @@ class View {
     const zoneJoueursX = this.dimensionPlateauJeu + this.espacement * 4;
     const zoneJoueursY = 0; 
     const largeurZoneJoueurs = this.dimensionPlateauJeu;
-    const hauteurZoneJoueurs = this.dimensionPlateauJeu / 2;
+    const hauteurZoneJoueurs = this.dimensionPlateauJeu / 1.5;
     
     for (let i = 0; i < joueurs.length; i++) {
       // cadre infos joueur
       this.ctx.fillStyle = '#FFFFFF'; 
-      this.ctx.fillRect(zoneJoueursX, zoneJoueursY - 30,  largeurZoneJoueurs, hauteurZoneJoueurs);
+      this.ctx.fillRect(zoneJoueursX, zoneJoueursY, largeurZoneJoueurs, hauteurZoneJoueurs);
       this.ctx.strokeStyle = 'black';
       this.ctx.lineWidth = 1;
-      this.ctx.strokeRect(zoneJoueursX, zoneJoueursY - 30, largeurZoneJoueurs, hauteurZoneJoueurs);
+      this.ctx.strokeRect(zoneJoueursX, zoneJoueursY, largeurZoneJoueurs, hauteurZoneJoueurs);
 
       // texte infos joueur
       this.ctx.font = "16px Roboto Bold";
@@ -162,8 +162,20 @@ class View {
     } 
   }
 
+  /**
+   * Afficher la modale avec les propositions de choix après le lancer de dé
+   */
   afficherModalePropositions() {
-    //
+    const zoneModaleX =  this.dimensionPlateauJeu + this.espacement * 4;
+    const zoneModaleY = this.dimensionPlateauJeu / 1.5 + this.espacement;
+    const largeurModale = this.dimensionPlateauJeu;
+    const hauteurModale = this.dimensionPlateauJeu / 3.5;
+
+    this.ctx.fillStyle = '#FFFFFF';
+    this.ctx.fillRect(zoneModaleX, zoneModaleY,  largeurModale, hauteurModale);
+    this.ctx.strokeStyle = '#333';
+    this.ctx.lineWidth = 1;
+    this.ctx.strokeRect(zoneModaleX, zoneModaleY, largeurModale, hauteurModale);
   }
 
   /**
@@ -176,6 +188,7 @@ class View {
     this.afficherPionsJoueurs(); //pions par-dessus
     this.afficherResultatDe();
     this.afficherInfosJoueurs();
+    this.afficherModalePropositions();
   }
 
   /**

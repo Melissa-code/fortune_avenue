@@ -28,6 +28,11 @@ function demarrer() {
         //method view à controler par controleur pour afficher une liste de saisie (pop in pop up modal)
         //et return choix sélectionné
         //ensuite controller signale le choix pour l'appliqer (model)
+
+        // model genere liste de propositions
+        // la view affiche la modale avec les propositions
+        // le user clique sur une proposition ? ou bouton valider ? != annuler
+        // controller applique le choix au model
       
 
         view.refresh();
