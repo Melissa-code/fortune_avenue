@@ -49,13 +49,9 @@ class Jeu {
         const caseJeu = this.casesJeu[joueurCourant.position]; 
         const listePropositions = caseJeu.arriver(joueurCourant, this);
 
-        if (listePropositions.length === 0) {
-            this.changerJoueur();
-            
-        }
+        if (listePropositions.length <= 0) this.changerJoueur(); 
     
         return listePropositions; 
-        
     }
 
     jouer() {

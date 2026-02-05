@@ -44,7 +44,7 @@ class View {
   initialiserDe() {
     this.tailleDe = this.dimensionPlateauJeu / 10;
     this.positionDeX = this.dimensionPlateauJeu + this.tailleDe / 2;
-    this.positionDeY = 0;
+    this.positionDeY = this.dimensionPlateauJeu / 2 ; 
 
     this.imagesResultatsDe = [];
     this.chargerImagesResultatsDe(); 
@@ -97,7 +97,7 @@ class View {
   afficherPionsJoueurs() {
     const joueurs = this.jeu.getJoueurs();
     const unite = this.dimensionPlateauJeu / 13; // unite case: 2 + 9 + 2
-    const taillePion = 35;
+    const taillePion = 40; //taille fixe du pion 
 
     for (let i = 0; i < joueurs.length; i++) {
       const imagePion = this.imagesPions[i];
@@ -145,10 +145,10 @@ class View {
     
     for (let i = 0; i < joueurs.length; i++) {
       // cadre infos joueur
-      this.ctx.fillStyle = '#FFFFFF'; 
+      this.ctx.fillStyle = '#b9e3c6'; 
       this.ctx.fillRect(zoneJoueursX, zoneJoueursY, largeurZoneJoueurs, hauteurZoneJoueurs);
-      this.ctx.strokeStyle = 'black';
-      this.ctx.lineWidth = 1;
+      this.ctx.strokeStyle = '#d2e4c6';
+      this.ctx.lineWidth = 2;
       this.ctx.strokeRect(zoneJoueursX, zoneJoueursY, largeurZoneJoueurs, hauteurZoneJoueurs);
 
       // texte infos joueur
@@ -163,19 +163,48 @@ class View {
   }
 
   /**
-   * Afficher la modale avec les propositions de choix après le lancer de dé
+   * Afficher la modale (propositions, cartes chance/fonds commun...) 
    */
-  afficherModalePropositions() {
+  afficherModale() {
     const zoneModaleX =  this.dimensionPlateauJeu + this.espacement * 4;
     const zoneModaleY = this.dimensionPlateauJeu / 1.5 + this.espacement;
     const largeurModale = this.dimensionPlateauJeu;
     const hauteurModale = this.dimensionPlateauJeu / 3.5;
 
-    this.ctx.fillStyle = '#FFFFFF';
+    this.ctx.fillStyle = '#000000';
     this.ctx.fillRect(zoneModaleX, zoneModaleY,  largeurModale, hauteurModale);
-    this.ctx.strokeStyle = '#333';
-    this.ctx.lineWidth = 1;
+    this.ctx.strokeStyle = '#d2e4c6';
+    this.ctx.lineWidth = 2;
     this.ctx.strokeRect(zoneModaleX, zoneModaleY, largeurModale, hauteurModale);
+
+    return { x: zoneModaleX, y: zoneModaleY, width: largeurModale, height: hauteurModale };
+  }
+
+  afficherTexteModale(type, texte) {
+    const modale = this.afficherModale();
+
+    this.ctx.font = "bold 20px Roboto";
+    this.ctx.fillStyle = '#FFFFFF';
+    this.ctx.fillText(type, modale.x + this.espacement, modale.y + this.espacement);
+
+    this.ctx.font = "normal 17px Roboto";
+    const lignes = texte.split("\n"); //pour le saut de ligne
+    for (let i = 0; i < lignes.length; i++) {
+      this.ctx.fillText(lignes[i], modale.x + this.espacement, modale.y + this.espacement * 2 + (i * this.espacement));
+    }
+  } 
+
+  afficherMenuPropositions(listePropositions) {
+    let texte = "";
+
+    if (listePropositions.length > 0) {
+      for (let i = 0; i < listePropositions.length; i++) {
+        // affiche 1. titre : description)
+          texte += (i + 1) + ". " + listePropositions[i].titre + " : " + listePropositions[i].description + "\n";
+      }
+    }
+    
+    this.afficherTexteModale("Propositions", texte);
   }
 
   /**
@@ -188,7 +217,7 @@ class View {
     this.afficherPionsJoueurs(); //pions par-dessus
     this.afficherResultatDe();
     this.afficherInfosJoueurs();
-    this.afficherModalePropositions();
+
   }
 
   /**
@@ -199,7 +228,7 @@ class View {
 
     //zone de detection du clic sur le dé
     if (
-      x >= this.positionDeX && //650 + 65 = 715
+      x >= this.positionDeX && 
       x <= this.positionDeX + this.tailleDe &&
       y >= this.positionDeY &&
       y <= this.positionDeY + this.tailleDe
