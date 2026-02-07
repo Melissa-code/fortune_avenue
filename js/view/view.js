@@ -3,12 +3,14 @@ import ImagesResultatsDe from "../model/enums/ImagesResultatsDe.js";
 class View {
   static IMG_PLATEAU_JEU = "./images/gameboard_v2.svg";
 
-  constructor(jeu, document, dimensionPlateauJeu) {
+  constructor(jeu, controller, document, dimensionPlateauJeu) {
     //jeu canvas 800x800
     this.jeu = jeu;
+    this.controller = controller; 
     this.dimensionPlateauJeu = dimensionPlateauJeu;
     this.myCanvas = document.querySelector("#game-canvas");
     this.ctx = this.myCanvas.getContext("2d");
+    this.espacement = this.tailleDe / 2;
 
     // plateau jeu 
     this.chargerImagePlateauJeu();
@@ -17,8 +19,46 @@ class View {
     this.chargerImagesPions();
     // dé
     this.initialiserDe(); 
-    this.espacement = this.tailleDe / 2;
+
+    this.initialiserEvenement();
   }
+
+  /**
+   *  
+   */
+  initialiserEvenement() {
+    // click sur dé
+    this.myCanvas.addEventListener("click", (event) => {
+      const rect = this.myCanvas.getBoundingClientRect();
+      const x = event.clientX - rect.left; //x coin gauche du canvas
+      const y = event.clientY - rect.top; //y haut du canvas
+    
+      let cible = this.identifierCible(x, y); //return type de Cible);
+
+      if (cible === "DE") {
+        this.controller.lancerDe();
+      }
+
+      this.refresh();
+    })
+
+    //method view à controler par controleur pour afficher une liste de saisie (pop in pop up modal)
+    //et return choix sélectionné
+    //ensuite controller signale le choix pour l'appliqer (model)
+
+    // touche clavier choix proposition par le user 
+    this.myCanvas.addEventListener('keydown', (event) => {
+      const prompt = event.key;
+
+      if (prompt === "1") {
+        console.log("choix 1 par user");
+        console.log(listePropositions[0].titre, listePropositions[0].description); 
+
+        // valider acheter une maison (PropositionAcheterPropriete.valider)
+        //listePropositions[0].valider(jeu, jeu.joueurCourant , casePropriete);
+      }
+    })
+  } 
 
   /**
    * Charger l'image du plateau de jeu une seule fois(+rapide que refresh à chaque fois)
@@ -173,11 +213,12 @@ class View {
    * Afficher la modale (propositions, cartes chance/fonds commun...) 
    */
   afficherModale() {
+    // cadre 
     const zoneModaleX =  this.dimensionPlateauJeu + this.espacement * 4;
     const zoneModaleY = this.dimensionPlateauJeu / 1.5 + this.espacement;
     const largeurModale = this.dimensionPlateauJeu;
     const hauteurModale = this.dimensionPlateauJeu / 3.5;
-
+    // style 
     this.ctx.fillStyle = '#000000';
     this.ctx.fillRect(zoneModaleX, zoneModaleY,  largeurModale, hauteurModale);
     this.ctx.strokeStyle = '#d2e4c6';
@@ -227,6 +268,9 @@ class View {
     this.afficherResultatDe();
     this.afficherInfosJoueurs();
 
+    if (this.jeu.etat === "en attente") {
+      this.afficherMenuPropositions(this.jeu.listePropositions);
+    }
   }
 
   /**

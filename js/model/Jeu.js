@@ -19,6 +19,8 @@ class Jeu {
         this.casesJeu = CaseJeuFactory.chargerDataCasesJeu(); 
         this.cartesChances = CarteFactory.chargerDataEffetsChance();
         this.banque = new Banque();
+        this.etat = "en cours";
+        this.listePropositions = []; 
     }
 
     ajouterJoueur(nom, pion) {
@@ -47,11 +49,14 @@ class Jeu {
         joueurCourant.avancer("relatif", valeurDeplacement) //avec dé
 
         const caseJeu = this.casesJeu[joueurCourant.position]; 
-        const listePropositions = caseJeu.arriver(joueurCourant, this);
+        this.listePropositions = caseJeu.arriver(joueurCourant, this);
 
-        if (listePropositions.length <= 0) this.changerJoueur(); 
-    
-        return listePropositions; 
+        if (this.listePropositions.length <= 0) { this.changerJoueur(); } 
+        else { this.etat = "en attente"; }
+    }
+
+    choisirProposition() {
+
     }
 
     jouer() {

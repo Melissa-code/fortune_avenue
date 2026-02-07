@@ -52,7 +52,6 @@ export class PropositionAcheterPropriete extends Proposition{
         casePropriete.proprietaire = joueur; 
         const versement = new VersementEffet(this.prixAchat, joueur, banque); 
         versement.appliquer(joueur, banque)
-        // joueur.argent -= casePropriete.prixAchat; 
     }
 
 }
