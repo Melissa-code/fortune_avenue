@@ -1,5 +1,3 @@
-import Jeu from './Jeu.js';
-
 /**
  * classe abstraite modele pour classefille, polymorphisme
  */

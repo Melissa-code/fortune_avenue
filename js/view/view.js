@@ -20,7 +20,7 @@ class View {
     // dé
     this.initialiserDe(); 
 
-    this.initialiserEvenement();
+    this.initialiserEvenement(); // click sur dé et propositionsmodale: choix clavier
   }
 
   /**

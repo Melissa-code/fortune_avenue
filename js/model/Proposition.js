@@ -1,6 +1,4 @@
-import { CaseJeu, CasePropriete, CaseRue } from "./CaseJeu.js";
-import Joueur from "./Joueur.js"; 
-import Jeu from "./Jeu.js";
+import { VersementEffet } from "./Effet.js";
 
 /* ********************* Proposition ************************ */
 
@@ -34,7 +32,7 @@ export class Proposition {
 
 /* ********************* Acheter propriete ************************ */
 
-export class PropositionAcheterPropriete extends Proposition{
+export class PropositionAcheterPropriete extends Proposition {
     constructor() {
         super("acheter", "Voulez-vous acheter cette propriété ? ");
     }
@@ -51,9 +49,8 @@ export class PropositionAcheterPropriete extends Proposition{
 
         casePropriete.proprietaire = joueur; 
         const versement = new VersementEffet(this.prixAchat, joueur, banque); 
-        versement.appliquer(joueur, banque)
+        versement.appliquer(joueur, banque); 
     }
-
 }
 
 /* ********************* Hypothequer propriete ************************ */

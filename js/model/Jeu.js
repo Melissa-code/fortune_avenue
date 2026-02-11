@@ -45,14 +45,15 @@ class Jeu {
 
     avancerJoueurCourant(valeurDeplacement) {
         const joueurCourant = this.joueurs[this.joueurActuelIndex]; 
-
         joueurCourant.avancer("relatif", valeurDeplacement) //avec dé
-
+        
         const caseJeu = this.casesJeu[joueurCourant.position]; 
         this.listePropositions = caseJeu.arriver(joueurCourant, this);
 
         if (this.listePropositions.length <= 0) { this.changerJoueur(); } 
         else { this.etat = "en attente"; }
+
+        return this.listePropositions;
     }
 
     choisirProposition() {

@@ -1,5 +1,3 @@
-
-
 class Joueur {
     constructor(nom, pion, argent = 1500) {
         this.nom = nom;
@@ -25,8 +23,6 @@ class Joueur {
         } else {
             this.aTraverseCaseDepart = false;
         }
-
-        
     }
 
     avancer(typeDeplacement, valeurDeplacement, bonusDePassage = 0) {

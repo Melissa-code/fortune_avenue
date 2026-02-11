@@ -10,7 +10,7 @@ export class CaseJeu {
     }
 
     arriver() {
-        //
+        return []; // par defaut aucune proposition
     }
 }
 
@@ -58,24 +58,22 @@ export class CasePropriete extends CaseJeu {
 
 
     calculerLoyer() {
+        console.log(`calcul loyer`)
         // methd abstraite (impl dans les cl filles)
     }
 
     arriver(joueur, jeu) {
-        const listePropositions = this.filtrerPropositionsValables(joueur, jeu) 
-        console.log(listePropositions)
+        const listePropositionsValables = this.filtrerPropositionsValables(joueur, jeu) || [];//Array
+        console.log(listePropositionsValables);
 
         // Payer un loyer
-        if (this.estLibre() && !this.hypotheque) {
-
-             const montant = this.calculerLoyer();
-            //TODO jeu 
-        //     jeu.ajouterEffet(
-        //         new VersementEffet(montant, joueur, this.proprietaire)
-        //     );
-         }
-
-         return listePropositions; 
+        if (!this.estLibre() && !this.hypotheque) {
+            const montant = this.calculerLoyer();
+            console.log(`${joueur.nom} doit payer ${montant}€ à ${this.proprietaire.nom}`);
+            joueur.payer(montant);
+            this.proprietaire.recevoir(montant);
+        }
+        return listePropositionsValables; 
     }
 
     /**
@@ -229,10 +227,12 @@ export class CaseAction extends CaseJeu {
         this.effets.push(effet);
     }
 
-    arriver(joueur,plateauJeu) {
+    arriver(joueur, jeu) {
         for (let effet of this.effets) {
-            effet.appliquer(joueur, plateauJeu)
+            effet.appliquer(joueur, jeu)
         }
+
+        return []; // pour les propositions
     }
 }
 

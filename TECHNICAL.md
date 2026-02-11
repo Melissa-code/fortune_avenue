@@ -144,3 +144,16 @@ Utilisateur → Vue → Contrôleur → Modèle
 
 ## Partie 2 : Modèle de données (TODO)
 ## Partie 3 : Contrôleur et logique métier (TODO)
+
+Stocker jeu et controller dans View lui permet d'être équipée pour 
+- lire les données à afficher (via this.jeu),
+- transmettre les actions de l'utilisateur (via this.controller)
+
+avantage : La réutilisabilité
+Si demain, tu ne veux plus jouer dans un Canvas mais avec des boutons HTML classiques: tu crées une nouvelle classe (ex ViewHTML), tu n'as pas besoin de changer une seule ligne de ton Controller ni de ton Jeu, tu changes juste la View dans ton main.js.
+
+C'est **découplage**
+
+MVC "Façon Jeu JS" (Event-Driven)
+Tout le monde reste "vivant" en même temps dans la mémoire du navigateur (!= une fois la page affichée, le Controller "meurt"/ Il ne reste pas en mémoire dans Symfony). On appelle ça le MVC Smalltalk ou Observer Pattern.
+la View est l'élément qui capte les interactions physiques (clics sur le canvas). View reçoit Controller pour pouvoir lui envoyer les événements (clics).
