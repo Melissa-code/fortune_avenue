@@ -10,7 +10,7 @@ class De {
     lancer() {
         // entre 2-12 pas 0
         this.valeurAffichee = Math.floor(Math.random() * 11) +2;
-        console.log("Résultat du dé après le lancé : " + this.valeurAffichee);
+        // console.log("Résultat du dé après le lancé : " + this.valeurAffichee);
         
         return this.valeurAffichee;
     }

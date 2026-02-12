@@ -1,11 +1,12 @@
 import { Carte, CarteAction, CarteImmobiliere, CarteRue, CarteGare, CarteSociete } from './Carte.js'; 
 import Joueur from './Joueur.js'; 
 import { Effet, DeplacementEffet, VersementEffet, PrisonEffet } from './Effet.js'
-import PionsDisponibles from "./enums/PionsDisponibles.js";
+import ImagesPions from "./enums/ImagesPions.js";
 import { CaseJeuFactory } from './CaseJeuFactory.js';
 import { CarteFactory } from './CarteFactory.js';
 import De from './De.js';
 import Banque from './Banque.js'; 
+import EtatsJeu from './enums/EtatsJeu.js';
 
 
 class Jeu {
@@ -19,7 +20,7 @@ class Jeu {
         this.casesJeu = CaseJeuFactory.chargerDataCasesJeu(); 
         this.cartesChances = CarteFactory.chargerDataEffetsChance();
         this.banque = new Banque();
-        this.etat = "en cours";
+        this.etat = EtatsJeu.EN_COURS; 
         this.listePropositions = []; 
     }
 
@@ -50,8 +51,11 @@ class Jeu {
         const caseJeu = this.casesJeu[joueurCourant.position]; 
         this.listePropositions = caseJeu.arriver(joueurCourant, this);
 
-        if (this.listePropositions.length <= 0) { this.changerJoueur(); } 
-        else { this.etat = "en attente"; }
+        if (this.listePropositions.length <= 0) { 
+            this.changerJoueur(); 
+        } else { 
+            this.etat = EtatsJeu.EN_ATTENTE; 
+        }
 
         return this.listePropositions;
     }

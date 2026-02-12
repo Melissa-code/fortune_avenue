@@ -1,4 +1,7 @@
 import ImagesResultatsDe from "../model/enums/ImagesResultatsDe.js";
+import EtatsJeu from '../model/enums/EtatsJeu.js';
+
+
 
 class View {
   static IMG_PLATEAU_JEU = "./images/gameboard_v2.svg";
@@ -10,7 +13,6 @@ class View {
     this.dimensionPlateauJeu = dimensionPlateauJeu;
     this.myCanvas = document.querySelector("#game-canvas");
     this.ctx = this.myCanvas.getContext("2d");
-    this.espacement = this.tailleDe / 2;
 
     // plateau jeu 
     this.chargerImagePlateauJeu();
@@ -19,6 +21,7 @@ class View {
     this.chargerImagesPions();
     // dé
     this.initialiserDe(); 
+    this.espacement = this.tailleDe / 2;
 
     this.initialiserEvenement(); // click sur dé et propositionsmodale: choix clavier
   }
@@ -41,6 +44,8 @@ class View {
 
       this.refresh();
     })
+
+    console.log('init event:' , this.jeu.listePropositions);
 
     //method view à controler par controleur pour afficher une liste de saisie (pop in pop up modal)
     //et return choix sélectionné
@@ -130,7 +135,7 @@ class View {
 
     for (let i = 0; i < joueurs.length; i++) {
       const image = new Image();
-      image.src = joueurs[i].pion.image;
+      image.src = joueurs[i].pion;
       image.onload = () => this.refresh(); //pion1 arrive: on redessine plateau + pion1
       this.imagesPions.push(image);
     }
@@ -144,7 +149,7 @@ class View {
   afficherPionsJoueurs() {
     const joueurs = this.jeu.getJoueurs();
     const unite = this.dimensionPlateauJeu / 13; // unite case: 2 + 9 + 2
-    const taillePion = 40; //taille fixe du pion 
+    const taillePion = 25; //taille fixe du pion 
 
     for (let i = 0; i < joueurs.length; i++) {
       const imagePion = this.imagesPions[i];
@@ -268,7 +273,10 @@ class View {
     this.afficherResultatDe();
     this.afficherInfosJoueurs();
 
-    if (this.jeu.etat === "en attente") {
+    console.log("etat du jeu dans view refresh : ", this.jeu.etat);
+
+    if (this.jeu.etat === EtatsJeu.EN_ATTENTE) {
+      console.log("affichage menu propositions dans view refresh");
       this.afficherMenuPropositions(this.jeu.listePropositions);
     }
   }
@@ -277,7 +285,7 @@ class View {
    * Identifier cible cliquée par x et y -> retourne le type de cible (string)
    */
   identifierCible(x, y) {
-    console.log(`positions de x: ${x}, y : ${y}`);
+    // console.log(`positions de x: ${x}, y : ${y}`);
 
     //zone de detection du clic sur le dé
     if (
