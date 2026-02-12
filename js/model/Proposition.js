@@ -8,11 +8,11 @@ export class Proposition {
         this.description = description; 
     }
 
-    estDisponible(jeu, joueur, caseJeu) {
+    estDisponible( joueur, caseJeu) {
         //
     }
 
-    valider(jeu, joueur, caseJeu) {
+    valider( joueur, caseJeu) {
         //
     }
 
@@ -37,15 +37,15 @@ export class PropositionAcheterPropriete extends Proposition {
         super("acheter", "Voulez-vous acheter cette propriété ? ");
     }
 
-    estDisponible(jeu, joueur, casePropriete) {
+    estDisponible( joueur, casePropriete) {
         if (casePropriete.estLibre() && joueur.argent >= casePropriete.prixAchat) {
             return true; 
         }
         return false; 
     }
 
-    valider(jeu, joueur, casePropriete) {
-        if (!this.estDisponible) return;
+    valider(joueur, casePropriete) {
+        if (!this.estDisponible(joueur, casePropriete)) return;
 
         casePropriete.proprietaire = joueur; 
         const versement = new VersementEffet(this.prixAchat, joueur, banque); 
@@ -60,11 +60,11 @@ export class PropositionHypothequer extends Proposition {
         super("hypothéquer", "Voulez-vous hypothéquer cette propriété ? ");
     }
 
-    estDisponible(jeu, joueur, casePropriete) {
+    estDisponible( joueur, casePropriete) {
         
     }
 
-    valider(jeu, joueur, casePropriete) {
+    valider( joueur, casePropriete) {
         
     }
 }
@@ -76,11 +76,11 @@ export class PropositionLeverHypotheque extends Proposition{
         super("lever l'hypothèque", "Voulez-vous lever l'hypothèque sur cette propriété ? ");
     }
 
-    estDisponible(jeu, joueur, casePropriete) {
+    estDisponible( joueur, casePropriete) {
         
     }
 
-    valider(jeu, joueur, casePropriete) {
+    valider( joueur, casePropriete) {
         
     }
 }
@@ -92,14 +92,14 @@ export class PropositionConstruireMaison extends Proposition{
         super("contruire une maison", "Voulez-vous construire une maison sur cette propriété ? ");
     }
 
-    estDisponible(jeu, joueur, caseRue) {
+    estDisponible( joueur, caseRue) {
         if (caseRue.proprietaire === joueur && caseRue.possederTouteLaCollection() && caseRue.nombreMaisons < 4 && joueur.argent >= caseRue.prixMaison) {
             return true;
         }
         return false; 
     }
 
-    valider(jeu, joueur, caseRue) {
+    valider( joueur, caseRue) {
 
         joueur.argent -= caseRue.prixMaison; 
         caseRue.nombreMaisons++; 
@@ -113,14 +113,14 @@ export class PropositionConctruireHotel extends Proposition {
         super("contruire un hôtel", "Voulez-vous construire un hôtel sur cette propriété ? ");
     }
 
-    estDisponible(jeu, joueur, caseRue) {
+    estDisponible( joueur, caseRue) {
         if (caseRue.proprietaire === joueur && caseRue.nombreMaisons === 4 && joueur.argent >= caseRue.prixHotel) {
             return true;
         }
         return false; 
     }
 
-    valider(jeu, joueur, caseRue) {
+    valider( joueur, caseRue) {
         joueur.argent -= caseRue.priHotel; 
         caseRue.nombreMaisons = 0;
         caseRue.nombreHotels = 1; //1 hotel 

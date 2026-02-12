@@ -27,13 +27,13 @@ export class CasePropriete extends CaseJeu {
         this.effet = null;
     }
 
-    filtrerPropositionsValables(joueur, jeu) {
+    filtrerPropositionsValables(joueur) {
         // traverser listeProp et prendre celles valides (estDisponible(jeu, joueur, caseJeu) true)
         const propositions = Proposition.getListePropositions(); 
         const propositionsValables = [];
 
         for (let propositionValable of propositions) {
-            if (propositionValable.estDisponible(jeu, joueur, this)) { 
+            if (propositionValable.estDisponible(joueur, this)) { 
                 propositionsValables.push(propositionValable); 
             }
         }
@@ -63,7 +63,7 @@ export class CasePropriete extends CaseJeu {
     }
 
     arriver(joueur, jeu) {
-        const listePropositionsValables = this.filtrerPropositionsValables(joueur, jeu) || [];//Array
+        const listePropositionsValables = this.filtrerPropositionsValables(joueur) || [];//Array
         console.log(listePropositionsValables);
 
         // Payer un loyer

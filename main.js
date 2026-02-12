@@ -15,7 +15,7 @@ function demarrer() {
     jeu.casesJeu;
 
     const view = new View(jeu, controller, document, 800); 
-    jeu.view = view;
+    controller.view = view;
 }
 
 demarrer();

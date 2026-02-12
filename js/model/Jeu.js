@@ -60,8 +60,22 @@ class Jeu {
         return this.listePropositions;
     }
 
-    choisirProposition() {
-
+    soumettreProposition(numProposition) {
+        let numProp = numProposition -1; 
+        console.log(numProp);
+        if (numProp >this.listePropositions.length)
+            return;
+        if (numProp==this.listePropositions.length)
+        {
+            this.etat=EtatsJeu.EN_COURS;
+            return;
+        }
+        const joueurCourant = this.joueurs[this.joueurActuelIndex]
+        this.listePropositions[numProp].valider(joueurCourant, this.casesJeu[joueurCourant.position]) ;
+            // appliquer la proposition
+            
+            this.etat=EtatsJeu.EN_COURS;
+            console.log('etat' , this.etat)
     }
 
     jouer() {
@@ -94,3 +108,8 @@ class Jeu {
 }
 
 export default Jeu; 
+
+
+// finir clean jeu
+// tester la validation des proposition
+// ajouter une proposition de "aucun choix"

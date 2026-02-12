@@ -2,7 +2,6 @@ import ImagesResultatsDe from "../model/enums/ImagesResultatsDe.js";
 import EtatsJeu from '../model/enums/EtatsJeu.js';
 
 
-
 class View {
   static IMG_PLATEAU_JEU = "./images/gameboard_v2.svg";
 
@@ -52,16 +51,14 @@ class View {
     //ensuite controller signale le choix pour l'appliqer (model)
 
     // touche clavier choix proposition par le user 
+    this.myCanvas.focus();
     this.myCanvas.addEventListener('keydown', (event) => {
       const prompt = event.key;
+      this.controller.soumettreProposition(parseInt(prompt));
+      
+      console.log("choix 1 par user");
 
-      if (prompt === "1") {
-        console.log("choix 1 par user");
-        console.log(listePropositions[0].titre, listePropositions[0].description); 
-
-        // valider acheter une maison (PropositionAcheterPropriete.valider)
-        //listePropositions[0].valider(jeu, jeu.joueurCourant , casePropriete);
-      }
+      
     })
   } 
 
@@ -266,18 +263,16 @@ class View {
    * Rafraîchir l'affichage du plateau de jeu et des pions des joueurs (redessiner)
    */
   refresh() {
-    //this.ctx.clearRect(0, 0, this.myCanvas.width, this.myCanvas.height);
+    this.ctx.clearRect(0, 0, this.myCanvas.width, this.myCanvas.height);
 
     this.afficherPlateauJeu(this.imagePlateau); // plateau jeu
     this.afficherPionsJoueurs(); //pions par-dessus
     this.afficherResultatDe();
     this.afficherInfosJoueurs();
 
-    console.log("etat du jeu dans view refresh : ", this.jeu.etat);
-
+    console.log('dans refresh() ')
     if (this.jeu.etat === EtatsJeu.EN_ATTENTE) {
-      console.log("affichage menu propositions dans view refresh");
-      this.afficherMenuPropositions(this.jeu.listePropositions);
+     this.afficherMenuPropositions(this.jeu.listePropositions);
     }
   }
 
