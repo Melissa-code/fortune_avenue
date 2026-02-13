@@ -1,13 +1,12 @@
 import { Carte, CarteAction, CarteImmobiliere, CarteRue, CarteGare, CarteSociete } from './Carte.js'; 
-import Joueur from './Joueur.js'; 
 import { Effet, DeplacementEffet, VersementEffet, PrisonEffet } from './Effet.js'
 import ImagesPions from "./enums/ImagesPions.js";
+import Joueur from './Joueur.js'; 
 import { CaseJeuFactory } from './CaseJeuFactory.js';
 import { CarteFactory } from './CarteFactory.js';
 import De from './De.js';
 import Banque from './Banque.js'; 
 import EtatsJeu from './enums/EtatsJeu.js';
-
 
 class Jeu {
     constructor() {
@@ -31,7 +30,6 @@ class Jeu {
         return joueur;
     }
 
-
     determinerPremierJoueur() {
 
     }
@@ -46,60 +44,36 @@ class Jeu {
 
     avancerJoueurCourant(valeurDeplacement) {
         const joueurCourant = this.joueurs[this.joueurActuelIndex]; 
-        joueurCourant.avancer("relatif", valeurDeplacement) //avec dé
-        
+        joueurCourant.avancer("relatif", valeurDeplacement) //chiffre affiché sur le dé
+
         const caseJeu = this.casesJeu[joueurCourant.position]; 
-        this.listePropositions = caseJeu.arriver(joueurCourant, this);
+        this.listePropositions = caseJeu.arriver(joueurCourant);
 
         if (this.listePropositions.length <= 0) { 
             this.changerJoueur(); 
         } else { 
-            this.etat = EtatsJeu.EN_ATTENTE; 
+            this.etat = EtatsJeu.EN_ATTENTE; // de propositions (modale)
         }
 
         return this.listePropositions;
     }
 
     soumettreProposition(numProposition) {
-        let numProp = numProposition -1; 
+        const numProp = numProposition -1; // n-1 dans la liste de propositions
         console.log(numProp);
-        if (numProp >this.listePropositions.length)
-            return;
-        if (numProp==this.listePropositions.length)
-        {
-            this.etat=EtatsJeu.EN_COURS;
+        if (numProp >= this.listePropositions.length || numProp < 0) return;
+        
+        const joueurCourant = this.joueurs[this.joueurActuelIndex]
+        // le dernier chiffre permet de sortir du menu de propositions sans en choisir une
+        if (numProp === this.listePropositions.length) {
+            this.etat = EtatsJeu.EN_COURS;
             return;
         }
-        const joueurCourant = this.joueurs[this.joueurActuelIndex]
-        this.listePropositions[numProp].valider(joueurCourant, this.casesJeu[joueurCourant.position]) ;
-            // appliquer la proposition
-            
-            this.etat=EtatsJeu.EN_COURS;
-            console.log('etat' , this.etat)
-    }
 
-    jouer() {
-
-    }
-
-    determinerCaseOccupee(joueur, numeroCase) {
-
-    }
-
-    envoyerEnPrison() {
-
-    }
-
-    proposerAchat() {
-        
-    }
-
-    piocherCarteChance() {
-
-    }
-
-    piocherCarteFondsCommun() {
-
+        // valider une proposition
+        this.listePropositions[numProp].valider(joueurCourant, this.casesJeu[joueurCourant.position]);
+        this.etat = EtatsJeu.EN_COURS;
+        console.log('etat du jeu ap validation proposition : ' , this.etat)
     }
 
     verifierFinDuJeu() {
@@ -110,6 +84,6 @@ class Jeu {
 export default Jeu; 
 
 
-// finir clean jeu
+// finir clean jeu : v. 
 // tester la validation des proposition
 // ajouter une proposition de "aucun choix"

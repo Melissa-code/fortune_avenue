@@ -73,7 +73,7 @@ export class CaseJeuFactory {
 
     // transformation des propriétés brutes en paramètres de constructeur
     static parseRue(dataObj) {
-        return new CaseRue(dataObj.nom,dataObj.prixAchat,dataObj.loyers,dataObj.couleur);
+        return new CaseRue(dataObj.nom, dataObj.prixAchat, dataObj.loyers, dataObj.couleur);
     }
 
     static parseGare(dataObj) {

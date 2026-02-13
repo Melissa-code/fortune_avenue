@@ -5,7 +5,7 @@ export class Carte {
         this.titre = titre; 
     }
 
-    executer(joueur, plateauJeu)
+    executer(joueur, jeu)
     {
 
     }
@@ -24,10 +24,10 @@ export class CarteAction extends Carte {
         this.effets.push(effet);
     }
 
-    executer(joueur,plateauJeu)
+    executer(joueur, jeu)
     {
         for (let effet of this.effets) {
-            effet.appliquer(joueur, plateauJeu)
+            effet.appliquer(joueur, jeu)
         }
     }
 }
@@ -44,14 +44,14 @@ export class CarteImmobiliere extends Carte {
         this.hypothequee = false;
     }
 
-    calculerLoyer(plateauJeu)
+    calculerLoyer()
     {
         return this.loyers;
     }
 
-    executer(joueur,plateauJeu)
+    executer(joueur, jeu)
     {
-        // tester dans plateauJeu si elle disponible ou possedee
+        // tester dans jeu si elle disponible ou possedee
         // si possedee, alors payer un loyer a son proprietaire
         // sinon, proposer de l'acheter
     }

@@ -2,13 +2,13 @@
  * classe abstraite modele pour classefille, polymorphisme
  */
 export class Effet {
-    appliquer(joueur, plateauJeu) {
+    appliquer(joueur=null, jeu=null) {
         // surcharger la methd 
     }
 }
 
 /**
- * type de deplacement: absolu (index case) ou relatif (nb de pas)
+ * type de deplacement: absolu (index case) ou relatif (nb de pas/N° sur dé)
  * valeur de deplacement: index case ou nb de pas
  * bonus de passage
  */
@@ -20,7 +20,7 @@ export class DeplacementEffet extends Effet {
         this.bonusDePassage = bonusDePassage;
     }
 
-    appliquer(joueur, jeu) {
+    appliquer(joueur) {
         if (this.typeDeplacement === 'absolu') joueur.avancer(this.valeurDeplacement); // index de la case
         else joueur.avancer(joueur.getPosition() + this.valeurDeplacement); //ou nb de pas 
         // si bonus de passage 
@@ -68,7 +68,7 @@ export class PrisonEffet extends Effet {
         this.allerEnPrison = allerEnPrison; //bool 
     }
 
-    appliquer(joueur, plateauJeu) {
+    appliquer(joueur) {
         if (this.allerEnPrison) {
             joueur.allerEnPrison();
         } else {
@@ -86,7 +86,7 @@ export class PiocheEffet extends Effet {
         this.typePioche = typePioche; // chance/fonds_commmun 
     }
 
-    appliquer(joueur, plateauJeu) {
+    appliquer(joueur, jeu) {
         //  piocher une carte de la pioche et l'excuter
     }
 }
@@ -101,7 +101,7 @@ export class ReparationsEffet extends Effet {
         this.montantParHotel = montantParHotel;
     }
 
-    appliquer(joueur, plateauJeu) {
+    appliquer(joueur, jeu) {
         let totalMaison = 0; 
         let totalHotel = 0;
 

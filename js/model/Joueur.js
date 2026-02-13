@@ -17,6 +17,7 @@ class Joueur {
             this.aTraverseCaseDepart = false;
             return;
         } 
+
         if (this.position < anciennePosition) {
             this.recevoir(200);
             this.aTraverseCaseDepart = true;
@@ -27,6 +28,7 @@ class Joueur {
 
     avancer(typeDeplacement, valeurDeplacement, bonusDePassage = 0) {
         const anciennePosition = this.position; 
+
         if (typeDeplacement === 'absolu') {
             this.position = valeurDeplacement; // index case 
             this.gererArriveeSurCase(anciennePosition);
@@ -34,6 +36,7 @@ class Joueur {
             this.position = (this.position + valeurDeplacement) % 40; //repart après 40
             this.gererArriveeSurCase(anciennePosition);
         }
+
         if (bonusDePassage !== 0) {
             this.recevoir(bonusDePassage);
         }
@@ -51,7 +54,7 @@ class Joueur {
     }
 
     sortirDePrison() {
-        
+        this.estEnPrison = false; 
     }
 
     recevoir(montant) {
@@ -63,10 +66,6 @@ class Joueur {
         this.argent -= montant;
         console.log(`Le joueur paie ${montant}. Nouveau solde : ${this.argent}`);
     }
-
-    // acheterPropriete(propriete) {
-
-    // }
 
     acheterCartePrisonAdversaire() {
         

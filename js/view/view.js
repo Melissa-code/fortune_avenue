@@ -1,41 +1,35 @@
 import ImagesResultatsDe from "../model/enums/ImagesResultatsDe.js";
 import EtatsJeu from '../model/enums/EtatsJeu.js';
 
-
 class View {
   static IMG_PLATEAU_JEU = "./images/gameboard_v2.svg";
 
   constructor(jeu, controller, document, dimensionPlateauJeu) {
-    //jeu canvas 800x800
     this.jeu = jeu;
     this.controller = controller; 
     this.dimensionPlateauJeu = dimensionPlateauJeu;
-    this.myCanvas = document.querySelector("#game-canvas");
+    this.myCanvas = document.querySelector("#game-canvas"); //jeu canvas 800x800px
     this.ctx = this.myCanvas.getContext("2d");
 
-    // plateau jeu 
-    this.chargerImagePlateauJeu();
-    // pions joueurs
-    this.imagesPions = [];
+    this.chargerImagePlateauJeu(); // plateau jeu
+    this.imagesPions = [];         // pions joueurs
     this.chargerImagesPions();
-    // dé
-    this.initialiserDe(); 
-    this.espacement = this.tailleDe / 2;
+    this.initialiserDe();          // dé
+    this.espacement = this.tailleDe / 2; 
 
     this.initialiserEvenement(); // click sur dé et propositionsmodale: choix clavier
   }
 
   /**
-   *  
+   *  event listener: click sur le dé et propositions modale (choix clavier)
    */
   initialiserEvenement() {
     // click sur dé
     this.myCanvas.addEventListener("click", (event) => {
       const rect = this.myCanvas.getBoundingClientRect();
-      const x = event.clientX - rect.left; //x coin gauche du canvas
-      const y = event.clientY - rect.top; //y haut du canvas
-    
-      let cible = this.identifierCible(x, y); //return type de Cible);
+      const x = event.clientX - rect.left;    // x coin gauche du canvas
+      const y = event.clientY - rect.top;     // y haut du canvas
+      let cible = this.identifierCible(x, y); // return type de Cible (str)
 
       if (cible === "DE") {
         this.controller.lancerDe();
@@ -57,8 +51,6 @@ class View {
       this.controller.soumettreProposition(parseInt(prompt));
       
       console.log("choix 1 par user");
-
-      
     })
   } 
 
@@ -87,7 +79,6 @@ class View {
     this.tailleDe = this.dimensionPlateauJeu / 10;
     this.positionDeX = this.dimensionPlateauJeu + this.tailleDe / 2;
     this.positionDeY = this.dimensionPlateauJeu / 2 ; 
-
     this.imagesResultatsDe = [];
     this.chargerImagesResultatsDe(); 
   }
@@ -109,15 +100,20 @@ class View {
    */
   afficherResultatDe() {
     let valeurAfficheeDe = this.jeu.de.valeurAffichee; // from jeu (move)
-    if (valeurAfficheeDe === 1) valeurAfficheeDe = 2; //dé pas encore lancé: 1 par defaut sinon ne s affiche pas
+    if (valeurAfficheeDe === 1) valeurAfficheeDe = 2;  //dé pas encore lancé: 2 par defaut sinon ne s affiche pas
 
-    const imageDe = this.imagesResultatsDe[valeurAfficheeDe - 1]; //indexé 0-11 dans array
+    let imageDe = this.imagesResultatsDe[valeurAfficheeDe - 1]; //indexé 0-11 dans array
     if (imageDe && imageDe.complete) {
       this.ctx.save();
-      this.ctx.shadowColor = "rgba(0, 0, 0, 0.15)"; // Couleur noire transparente
-      this.ctx.shadowBlur = 6;                     // Flou de l'ombre
-      this.ctx.shadowOffsetX = 2;                  // Décalage horizontal
-      this.ctx.shadowOffsetY = 2;
+
+      if (this.jeu.etat === EtatsJeu.EN_ATTENTE) {
+        this.ctx.globalAlpha = 0.5; // rendre le dé semi-transparent
+      }
+      
+      this.ctx.shadowColor = "rgba(0, 0, 0, 0.50)";  // Couleur noire transparente
+      this.ctx.shadowBlur = 8;                         // Flou de l'ombre
+      this.ctx.shadowOffsetX = 4;                      // Décalage horizontal
+      this.ctx.shadowOffsetY = 4;
 
       this.ctx.drawImage(imageDe, this.positionDeX, this.positionDeY, this.tailleDe, this.tailleDe);
       this.ctx.restore();
@@ -255,12 +251,14 @@ class View {
           texte += (i + 1) + ". " + listePropositions[i].titre + " : " + listePropositions[i].description + "\n";
       }
     }
+
+    console.log('HEY')
     
     this.afficherTexteModale("Propositions", texte);
   }
 
   /**
-   * Rafraîchir l'affichage du plateau de jeu et des pions des joueurs (redessiner)
+   * Rafraîchir l'affichage du plateau de jeu, des pions, du dé, des infos joueurs et propositions modale (redessiner)
    */
   refresh() {
     this.ctx.clearRect(0, 0, this.myCanvas.width, this.myCanvas.height);
@@ -270,7 +268,6 @@ class View {
     this.afficherResultatDe();
     this.afficherInfosJoueurs();
 
-    console.log('dans refresh() ')
     if (this.jeu.etat === EtatsJeu.EN_ATTENTE) {
      this.afficherMenuPropositions(this.jeu.listePropositions);
     }

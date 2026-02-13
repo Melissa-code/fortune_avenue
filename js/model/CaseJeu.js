@@ -45,25 +45,13 @@ export class CasePropriete extends CaseJeu {
         return !this.proprietaire;
     }
 
-    // acheter(joueur ) {
-    //     if (this.proprietaire) return; 
-
-    //     let effet = new VersementEffet(prixAchat, this.proprietaire.argent, banque);
-    //     effet.appliquer(this.proprietaire, banque);
-
-    //     this.proprietaire = joueur;
-        
-    //     console.log(`${this.proprietaire.nom} paye ${prixAchat}€ `);
-    // }
-
-
     calculerLoyer() {
         console.log(`calcul loyer`)
         // methd abstraite (impl dans les cl filles)
     }
 
-    arriver(joueur, jeu) {
-        const listePropositionsValables = this.filtrerPropositionsValables(joueur) || [];//Array
+    arriver(joueur) {
+        const listePropositionsValables = this.filtrerPropositionsValables(joueur) || []; 
         console.log(listePropositionsValables);
 
         // Payer un loyer
@@ -158,14 +146,12 @@ export class CaseRue extends CasePropriete {
 
         const couleurCase = this.couleur;
         const totalParCouleur = this.data.totalParFamille;
-        let proprietes = this.proprietaire.proprietes; 
+        let {proprietes} = this.proprietaire; //destructuration pour avoir la liste de toutes les propriétés du joueur
         let compteur = 0;
 
         for (let propriete of proprietes) {
-            if (propriete instanceof CaseRue) {
-                if (propriete.couleur === couleurCase) {
-                    compteur++;
-                }
+            if (propriete instanceof CaseRue && propriete.couleur === couleurCase) {
+                  compteur++;
             }
         }
         return compteur === totalParCouleur;
@@ -227,9 +213,9 @@ export class CaseAction extends CaseJeu {
         this.effets.push(effet);
     }
 
-    arriver(joueur, jeu) {
+    arriver(joueur) {
         for (let effet of this.effets) {
-            effet.appliquer(joueur, jeu)
+            effet.appliquer(joueur)
         }
 
         return []; // pour les propositions

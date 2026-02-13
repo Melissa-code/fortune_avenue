@@ -10,15 +10,14 @@ class Controller {
     }
 
     lancerDe() {
-        if (this.jeu.etat !== EtatsJeu.EN_COURS)  return ;
+        //sécurité: ne pas lancer de dé si en attente de proposition
+        if (this.jeu.etat !== EtatsJeu.EN_COURS) return; 
 
         const valeurDeplacement = this.jeu.de.lancer();
+
         this.propositions = this.jeu.avancerJoueurCourant(valeurDeplacement);
 
-        if (this.propositions.length > 0) {
-            console.log("Propositions disponibles :", this.propositions);  
-            this.view.afficherMenuPropositions(this.propositions);
-        }
+        if (this.propositions.length > 0) this.view.afficherMenuPropositions(this.propositions);
     }
 
     soumettreProposition(numProposition) {
