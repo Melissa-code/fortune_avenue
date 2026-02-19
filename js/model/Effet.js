@@ -1,8 +1,11 @@
+import Joueur from "./Joueur.js"; 
+import Banque from "./Banque.js";
+
 /**
  * classe abstraite modele pour classefille, polymorphisme
  */
 export class Effet {
-    appliquer(joueur=null, jeu=null) {
+    appliquer(joueur = null, jeu = null, banque = null) {
         // surcharger la methd 
     }
 }
@@ -32,27 +35,38 @@ export class DeplacementEffet extends Effet {
  * montant, source(banque/joueur), destinationbanque/joueur)
  */
 export class VersementEffet extends Effet {
-    constructor(montant, source, destinataire) {
+    constructor(montant, source, destinataire, estCollectif = false) {
         super(); 
         this.montant = montant; 
         this.source = source; 
         this.destinataire = destinataire; 
+        this.estCollectif = estCollectif; // si plusieurs joueurs ou non
     }
 
-    appliquer(joueur, jeu) {
-        // si dest === joueur alors joueur.recevoir(sommeArgent)
-        if (this.source === "joueur" && this.destinataire === "banque") {
-            joueur.payer(this.montant);
-        } else if (this.source === "joueurs" && this.destinataire === "joueur") {
-            let joueurs = jeu.getJoueurs(); 
-            for (autreJoueur of joueurs) {
-                if (autreJoueur !== joueur) {
-                    autreJoueur.payer(this.montant);
+    appliquer(joueur, banque) {
+        console.log("Paiement de ",this.montant, " de ", this.source.nom, "vers", this.destinataire.nom);
+
+        // joueur paie banque (achat/taxe)
+        if (this.source instanceof Joueur && this.destinataire instanceof Banque) {
+            this.source.payer(this.montant);
+            this.destinataire.recevoir(this.montant);
+            console.log("argent du joueur apres paiement: ", this.source.argent)
+
+        // autres joueurs paient joueur courant (carte anniversaire)
+        } else if (this.estCollectif) {
+            let tousLesJoueurs = jeu.getJoueurs(); 
+            for (let joueurAdverse of tousLesJoueurs) {
+                if (joueurAdverse !== joueur) {
+                    joueurAdverse.payer(this.montant);
                     joueur.recevoir(this.montant); 
                 }
             }
-        } else if (this.source === "banque" && this.destinataire === "joueur") {
+            console.log("argent du joueur ap recevoir argent: ", joueur.argent)
+
+        // banque paie joueur (case départ/gain)
+        } else if (this.source instanceof Banque && this.destinataire instanceof Joueur) {
             joueur.recevoir(this.montant);
+            console.log("argent du joueur ap recevoir argent: ", joueur.argent)
         }
     }
 }

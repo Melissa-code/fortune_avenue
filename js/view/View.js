@@ -38,8 +38,6 @@ class View {
       this.refresh();
     })
 
-    console.log('init event:' , this.jeu.listePropositions);
-
     // touche clavier choix proposition par le user 
     this.myCanvas.focus();
     this.myCanvas.addEventListener('keydown', (event) => {

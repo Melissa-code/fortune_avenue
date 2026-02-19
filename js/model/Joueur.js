@@ -48,7 +48,6 @@ class Joueur {
         this.estEnPrison = true; 
     }
 
-
     passerSonTour() {
 
     }

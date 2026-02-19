@@ -1,28 +1,25 @@
 class Banque {
     constructor() {
+        this.nom = "la banque"; 
         this.argent = 14640; 
         this.maisons = 32;
         this.hotels = 12; 
         this.proprietes = 28; 
     }
 
-    payer(joueur, montant) { 
+    payer(montant) { 
         if (this.argent < montant) {
             console.log("La banque est en faillite !");
             montant = this.argent;// ce qui reste 
         }
 
         this.argent -= montant;
-        joueur.recevoirArgent(montant); 
+        console.log(`la banque paie ${montant}. Nouveau solde : ${this.argent}`);
     }
 
-    encaisser(joueur, montant) { 
-        if (joueur.argent < montant) {
-            console.log("Le joueur est en faillite !");
-            montant = joueur.argent;
-        }
-        joueur.payer(montant);
+    recevoir(montant) {
         this.argent += montant; 
+        console.log(`la banque reçoit ${montant}. Nouveau solde : ${this.argent}`);
     }
 
     vendreMaisonHotel(typePropriete, joueur, prixAchat) {
