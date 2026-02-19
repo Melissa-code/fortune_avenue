@@ -46,13 +46,13 @@ export class VersementEffet extends Effet {
     appliquer(joueur, banque) {
         console.log("Paiement de ",this.montant, " de ", this.source.nom, "vers", this.destinataire.nom);
 
-        // joueur paie banque (achat/taxe)
+        // 1- joueur paie banque (achat/taxe)
         if (this.source instanceof Joueur && this.destinataire instanceof Banque) {
             this.source.payer(this.montant);
             this.destinataire.recevoir(this.montant);
             console.log("argent du joueur apres paiement: ", this.source.argent)
 
-        // autres joueurs paient joueur courant (carte anniversaire)
+        // 2- autres joueurs paient joueur courant (carte anniversaire)
         } else if (this.estCollectif) {
             let tousLesJoueurs = jeu.getJoueurs(); 
             for (let joueurAdverse of tousLesJoueurs) {
@@ -63,7 +63,7 @@ export class VersementEffet extends Effet {
             }
             console.log("argent du joueur ap recevoir argent: ", joueur.argent)
 
-        // banque paie joueur (case départ/gain)
+        // 3- banque paie joueur (case départ/gain)
         } else if (this.source instanceof Banque && this.destinataire instanceof Joueur) {
             joueur.recevoir(this.montant);
             console.log("argent du joueur ap recevoir argent: ", joueur.argent)
@@ -84,9 +84,10 @@ export class PrisonEffet extends Effet {
 
     appliquer(joueur) {
         if (this.allerEnPrison) {
-            joueur.allerEnPrison();
+            joueur.position = 10; 
+            joueur.estEnPrison = true; 
         } else {
-            joueur.sortirDePrison(); 
+            joueur.estEnPrison = false; 
         }
     }
 }

@@ -53,7 +53,7 @@ export class CasePropriete extends CaseJeu {
 
     arriver(joueur) {
         const listePropositionsValables = this.filtrerPropositionsValables(joueur) || []; 
-        console.log(listePropositionsValables);
+        console.log("liste de s propositions valbales ap filtre", listePropositionsValables);
 
         // Payer un loyer
         if (!this.estLibre() && !this.hypotheque) {
