@@ -14,9 +14,7 @@ class Controller {
         if (this.jeu.etat !== EtatsJeu.EN_COURS) return; 
 
         const valeurDeplacement = this.jeu.de.lancer();
-
         this.propositions = this.jeu.avancerJoueurCourant(valeurDeplacement);
-
         if (this.propositions.length > 0) this.view.afficherMenuPropositions(this.propositions);
     }
 

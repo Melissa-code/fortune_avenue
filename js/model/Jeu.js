@@ -59,11 +59,15 @@ class Jeu {
     }
 
     soumettreProposition(numProposition) {
-        const numProp = numProposition -1; // n-1 dans la liste de propositions
-        console.log(numProp);
-        if (numProp >= this.listePropositions.length || numProp < 0) return;
-        
         const joueurCourant = this.joueurs[this.joueurActuelIndex]
+        const numProp = numProposition -1; // n-1 dans la liste de propositions
+        console.log("numProp dans jeu ", numProp);
+
+        if (numProp >= this.listePropositions.length || numProp < 0) {
+            console.log("hors jeu")
+            return;
+        }
+        
         // le dernier chiffre permet de sortir du menu de propositions sans en choisir une
         if (numProp === this.listePropositions.length) {
             this.etat = EtatsJeu.EN_COURS;
@@ -71,7 +75,7 @@ class Jeu {
         }
 
         // valider une proposition
-        this.listePropositions[numProp].valider(joueurCourant, this.casesJeu[joueurCourant.position]);
+        this.listePropositions[numProp].valider(joueurCourant, this.casesJeu[joueurCourant.position], this.banque);
         this.etat = EtatsJeu.EN_COURS;
         console.log('etat du jeu ap validation proposition : ' , this.etat)
     }
@@ -85,5 +89,5 @@ export default Jeu;
 
 
 // finir clean jeu : v. 
-// tester la validation des proposition
+// tester la validation des propositions 
 // ajouter une proposition de "aucun choix"

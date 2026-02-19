@@ -40,17 +40,13 @@ class View {
 
     console.log('init event:' , this.jeu.listePropositions);
 
-    //method view à controler par controleur pour afficher une liste de saisie (pop in pop up modal)
-    //et return choix sélectionné
-    //ensuite controller signale le choix pour l'appliqer (model)
-
     // touche clavier choix proposition par le user 
     this.myCanvas.focus();
     this.myCanvas.addEventListener('keydown', (event) => {
       const prompt = event.key;
       this.controller.soumettreProposition(parseInt(prompt));
       
-      console.log("choix 1 par user");
+      console.log("N° réponse choix du user", prompt);
     })
   } 
 
@@ -251,8 +247,6 @@ class View {
           texte += (i + 1) + ". " + listePropositions[i].titre + " : " + listePropositions[i].description + "\n";
       }
     }
-
-    console.log('HEY')
     
     this.afficherTexteModale("Propositions", texte);
   }
