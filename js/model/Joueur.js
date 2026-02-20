@@ -4,8 +4,9 @@ class Joueur {
     constructor(nom, pion, argent = 1500) {
         this.nom = nom;
         this.pion = pion; //img
-        this.argent = argent;
         this.position = 0; 
+        this.argent = argent;
+        this.proprietes = [];
         this.estEnPrison = false; 
         this.carteSortiePrison = 0; 
         this.compteurPourSortirPrison = 0; // ap 3 tours

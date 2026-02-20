@@ -1,4 +1,5 @@
 import { VersementEffet } from "./Effet.js";
+import { CasePropriete } from './CaseJeu.js';
 
 /* ********************* Proposition ************************ */
 
@@ -31,11 +32,13 @@ export class Proposition {
 
 export class PropositionAcheterPropriete extends Proposition {
     constructor() {
-        super("acheter", "Voulez-vous acheter cette propriété ? ");
+        super("acheter", "Voulez-vous acheter cette propriété ?");
     }
 
     estDisponible(joueur, casePropriete) {
+        console.log("case propriete :", casePropriete)
         if (casePropriete.estLibre() && joueur.argent >= casePropriete.prixAchat) {
+            console.log("case propriete 2:", casePropriete)
             return true; 
         }
         return false; 
@@ -48,6 +51,7 @@ export class PropositionAcheterPropriete extends Proposition {
         if (!this.estDisponible(joueur, casePropriete)) return;
 
         casePropriete.proprietaire = joueur; 
+        joueur.proprietes.push(casePropriete); 
         const versement = new VersementEffet(casePropriete.prixAchat, joueur, banque); 
         versement.appliquer(joueur, banque); 
     }
@@ -57,10 +61,10 @@ export class PropositionAcheterPropriete extends Proposition {
 
 export class PropositionHypothequer extends Proposition {
     constructor() {
-        super("hypothéquer", "Voulez-vous hypothéquer cette propriété ? ");
+        super("hypothéquer", "Voulez-vous hypothéquer cette propriété ?");
     }
 
-    estDisponible(jueur, casePropriete) {
+    estDisponible(joueur, casePropriete) {
         
     }
 
@@ -73,7 +77,7 @@ export class PropositionHypothequer extends Proposition {
 
 export class PropositionLeverHypotheque extends Proposition{
     constructor() {
-        super("lever l'hypothèque", "Voulez-vous lever l'hypothèque sur cette propriété ? ");
+        super("lever l'hypothèque", "Voulez-vous lever l'hypothèque sur cette propriété ?");
     }
 
     estDisponible(joueur, casePropriete) {
@@ -89,7 +93,7 @@ export class PropositionLeverHypotheque extends Proposition{
 
 export class PropositionConstruireMaison extends Proposition{
     constructor(quantite) {
-        super("contruire une maison", "Voulez-vous construire une maison sur cette propriété ? ");
+        super("contruire une maison", "Voulez-vous construire une maison sur cette propriété ?");
     }
 
     estDisponible(joueur, caseRue) {

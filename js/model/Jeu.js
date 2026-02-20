@@ -42,25 +42,43 @@ class Jeu {
         this.joueurActuelIndex = (this.joueurActuelIndex + 1) % this.joueurs.length;
     }
 
+    payerLoyer(joueurCourant, caseJeu) {
+        const indexLoyer = caseJeu.calculerLoyer();
+
+        if (indexLoyer >= 0) {
+            const montant = caseJeu.loyers[indexLoyer]; 
+            const proprietaire = caseJeu.proprietaire; 
+            console.log("proprietaire : ", proprietaire.nom, "paie ", montant, " à ", proprietaire.nom); 
+
+            joueurCourant.payer(montant); 
+            proprietaire.recevoir(montant); 
+        }
+    }
+
     avancerJoueurCourant(valeurDeplacement) {
         const joueurCourant = this.joueurs[this.joueurActuelIndex]; 
         joueurCourant.avancer("relatif", valeurDeplacement) //chiffre affiché sur le dé
-
         const caseJeu = this.casesJeu[joueurCourant.position]; 
+        console.log(caseJeu)
+
+        // check si proprietaire de la case 
+        if (caseJeu.proprietaire !== null && caseJeu.proprietaire !== joueurCourant) {
+            this.payerLoyer(joueurCourant, caseJeu); 
+        }
+
         this.listePropositions = caseJeu.arriver(joueurCourant);
 
-        if (this.listePropositions.length <= 0) { 
+        if (this.listePropositions.length <= 1) { 
             this.changerJoueur(); 
         } else { 
             this.etat = EtatsJeu.EN_ATTENTE; // de propositions (modale)
         }
-
         return this.listePropositions;
     }
 
     soumettreProposition(numProposition) {
         const joueurCourant = this.joueurs[this.joueurActuelIndex]
-        const numProp = numProposition -1; // n-1 dans la liste de propositions
+        const numProp = numProposition - 1; // n-1 dans la liste de propositions
         console.log("numProp dans jeu ", numProp);
 
         if (numProp >= this.listePropositions.length || numProp < 0) {
@@ -75,9 +93,12 @@ class Jeu {
         }
 
         // valider une proposition
+
         this.listePropositions[numProp].valider(joueurCourant, this.casesJeu[joueurCourant.position], this.banque);
         this.etat = EtatsJeu.EN_COURS;
         console.log('etat du jeu ap validation proposition : ' , this.etat)
+
+        this.changerJoueur();
     }
 
     verifierFinDuJeu() {
@@ -87,7 +108,3 @@ class Jeu {
 
 export default Jeu; 
 
-
-// finir clean jeu : v. 
-// tester la validation des propositions 
-// ajouter une proposition de "aucun choix"

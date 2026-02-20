@@ -2,6 +2,7 @@ import ImagesResultatsDe from "../model/enums/ImagesResultatsDe.js";
 import EtatsJeu from '../model/enums/EtatsJeu.js';
 
 class View {
+
   static IMG_PLATEAU_JEU = "./images/gameboard_v2.svg";
 
   constructor(jeu, controller, document, dimensionPlateauJeu) {
@@ -21,7 +22,7 @@ class View {
   }
 
   /**
-   *  event listener: click sur le dé et propositions modale (choix clavier)
+   *  event listeners: click sur le dé et propositions modale (choix clavier)
    */
   initialiserEvenement() {
     // click sur dé
@@ -34,7 +35,6 @@ class View {
       if (cible === "DE") {
         this.controller.lancerDe();
       }
-
       this.refresh();
     })
 
@@ -175,30 +175,72 @@ class View {
     }
   }
 
+  // afficherInfosJoueurs() {
+  //   const joueurs = this.jeu.getJoueurs();
+  //   const zoneJoueursX = this.dimensionPlateauJeu + this.espacement * 4;
+  //   const zoneJoueursY = 0; 
+  //   const largeurZoneJoueurs = this.dimensionPlateauJeu;
+  //   const hauteurZoneJoueurs = this.dimensionPlateauJeu / 1.5;
+    
+  //   for (let i = 0; i < joueurs.length; i++) {
+  //     // cadre infos joueur
+  //     this.ctx.fillStyle = '#b9e3c6'; 
+  //     this.ctx.fillRect(zoneJoueursX, zoneJoueursY, largeurZoneJoueurs, hauteurZoneJoueurs);
+  //     this.ctx.strokeStyle = '#d2e4c6';
+  //     this.ctx.lineWidth = 2;
+  //     this.ctx.strokeRect(zoneJoueursX, zoneJoueursY, largeurZoneJoueurs, hauteurZoneJoueurs);
+
+  //     // texte infos joueur
+  //     this.ctx.font = "16px Roboto Bold";
+  //     this.ctx.fillStyle = 'black';
+  //     this.ctx.fillText(`Joueur ${i + 1}`, zoneJoueursX + 10, zoneJoueursY - 10);
+  //     const joueur = joueurs[i];
+  //     const infosJoueur = `Joueur: ${joueur.nom} - Argent: ${joueur.argent} M`; 
+
+  //     this.ctx.fillText(infosJoueur, zoneJoueursX, zoneJoueursY + (i * 20) + 100);
+  //   } 
+  // }
   afficherInfosJoueurs() {
     const joueurs = this.jeu.getJoueurs();
-    const zoneJoueursX = this.dimensionPlateauJeu + this.espacement * 4;
-    const zoneJoueursY = 0; 
-    const largeurZoneJoueurs = this.dimensionPlateauJeu;
-    const hauteurZoneJoueurs = this.dimensionPlateauJeu / 1.5;
+    
+    const zoneJoueursX = this.dimensionPlateauJeu + (this.espacement * 4);// ap le dé
+    let zoneJoueursY = 0;
+    const largeurCard = this.dimensionPlateauJeu ; 
+    const hauteurCard = this.dimensionPlateauJeu * 0.30; // 30%
+    const margeEntreCards = this.espacement;
     
     for (let i = 0; i < joueurs.length; i++) {
-      // cadre infos joueur
-      this.ctx.fillStyle = '#b9e3c6'; 
-      this.ctx.fillRect(zoneJoueursX, zoneJoueursY, largeurZoneJoueurs, hauteurZoneJoueurs);
-      this.ctx.strokeStyle = '#d2e4c6';
-      this.ctx.lineWidth = 2;
-      this.ctx.strokeRect(zoneJoueursX, zoneJoueursY, largeurZoneJoueurs, hauteurZoneJoueurs);
+        const joueur = joueurs[i];
+        const estActif = (i === this.jeu.joueurActuelIndex);// joueur courant 0
 
-      // texte infos joueur
-      this.ctx.font = "16px Roboto Bold";
-      this.ctx.fillStyle = 'black';
-      this.ctx.fillText(`Joueur ${i + 1}`, zoneJoueursX + 10, zoneJoueursY - 10);
-      const joueur = joueurs[i];
-      const infosJoueur = `Joueur: ${joueur.nom} - Argent: ${joueur.argent} M`; 
+        // cadre
+        this.ctx.fillStyle = '#b9e3c6'; 
+        this.ctx.fillRect(zoneJoueursX, zoneJoueursY, largeurCard, hauteurCard);
+        
+        // bordure dyn
+        this.ctx.strokeStyle = estActif ? '#2c3e50' : '#ffffff'; 
+        this.ctx.lineWidth = Math.max(1, this.dimensionPlateauJeu * 0.005); 
+        this.ctx.strokeRect(zoneJoueursX, zoneJoueursY, largeurCard, hauteurCard);
+        this.ctx.fillStyle = 'black';
+        
+        // joueur
+        this.ctx.font = `bold 17px Roboto`;
+        this.ctx.fillText(joueur.nom, zoneJoueursX + (largeurCard * 0.05), zoneJoueursY + (hauteurCard * 0.2));
 
-      this.ctx.fillText(infosJoueur, zoneJoueursX, zoneJoueursY + (i * 20) + 100);
-    } 
+        // Argent
+        this.ctx.font = `17px Roboto`;
+        this.ctx.fillText(`Argent: ${joueur.argent} €`, zoneJoueursX + (largeurCard * 0.05), zoneJoueursY + (hauteurCard * 0.3));
+
+        // Prison
+        if (joueur.estEnPrison) {
+            this.ctx.fillStyle = '#e74c3c';
+            this.ctx.font = `italic 17px Roboto`;
+            this.ctx.fillText("🔒 PRISON", zoneJoueursX + (largeurCard * 0.6), zoneJoueursY + (hauteurCard * 0.35));
+        }
+
+        // Y joueur suivant
+        zoneJoueursY += hauteurCard + margeEntreCards;
+    }
   }
 
   /**
@@ -242,7 +284,7 @@ class View {
     if (listePropositions.length > 0) {
       for (let i = 0; i < listePropositions.length; i++) {
         // affiche 1. titre : description)
-          texte += (i + 1) + ". " + listePropositions[i].titre + " : " + listePropositions[i].description + "\n";
+        texte += (i + 1) + ". " + listePropositions[i].titre + " : " + listePropositions[i].description + "\n";
       }
     }
     

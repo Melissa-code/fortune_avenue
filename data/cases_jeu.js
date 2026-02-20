@@ -50,7 +50,7 @@ const casesJeuJson = [
         "nom": "Gare Montparnasse", 
         "couleur": null,
         "prixAchat": 200,
-        "loyers": [25,50, 100, 200],
+        "loyers": [25, 50, 100, 200],
         "totalParFamille": 4
     },
     {

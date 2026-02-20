@@ -37,7 +37,7 @@ export class CasePropriete extends CaseJeu {
                 propositionsValables.push(propositionValable); 
             }
         }
-        console.log("propositionsValables: ", propositionsValables)
+        console.log("propositionsValables: ", propositionsValables); 
  
         return propositionsValables; 
     }
@@ -106,7 +106,7 @@ export class CaseRue extends CasePropriete {
     }
 
     acheter(typeConstruction) {
-        if (!this.proprietaire) { return; }
+        if (!this.proprietaire) return; 
 
         let prixConstruction = 0; 
 
@@ -152,7 +152,7 @@ export class CaseRue extends CasePropriete {
 
         for (let propriete of proprietes) {
             if (propriete instanceof CaseRue && propriete.couleur === couleurCase) {
-                  compteur++;
+                compteur++;
             }
         }
         return compteur === totalParCouleur;
@@ -177,13 +177,21 @@ export class CaseRue extends CasePropriete {
 /* ******************  Case gare  ****************** */
 
 export class CaseGare extends CasePropriete {
-    constructor(nom, prix, loyers) {
+    constructor(nom, prix, loyers, typeCase) {
         super(nom, prix, loyers);
+        this.typeCase = typeCase; 
     }
 
+    /**
+     *  "loyers": [25, 50, 100, 200],
+     */
     calculerLoyer() {
         if (this.hypotheque || !this.proprietaire) return 0;
 
+        const joueurProprietes = this.proprietaire.proprietes || []; //toutes ses propriétés[Objects]
+        const nbGares = joueurProprietes.filter(propriete => propriete instanceof CaseGare).length; // ch gares
+        
+        return nbGares -1; //index 
     }
 }
 
@@ -194,6 +202,9 @@ export class CaseSociete extends CasePropriete {
         super(nom, prix, loyers);
     }
 
+    /**
+     *   "loyers": ["4 fois les dés", "10 fois les dés"],
+     */
     calculerLoyer() {
         if (this.hypotheque || !this.proprietaire) return 0;
 

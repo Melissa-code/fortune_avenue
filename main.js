@@ -3,8 +3,11 @@ import Jeu from './js/model/Jeu.js';
 import View from './js/view/View.js';
 import Controller from './js/controller/Controller.js';
 
-function demarrer() {
-    const jeu = new Jeu(); 
+window.jeu = new Jeu(); 
+
+
+function demarrer(jeu) {
+    // const jeu = new Jeu(); 
     const controller = new Controller(jeu); 
 
     //joueurs
@@ -15,4 +18,4 @@ function demarrer() {
     controller.view = view; // controller appelle view pour afficher les propositions et refresh ap actions user
 }
 
-demarrer();
+demarrer(window.jeu);
