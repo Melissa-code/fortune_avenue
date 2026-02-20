@@ -2,7 +2,7 @@ import { CarteRue } from './Carte.js';
 import { Effet, DeplacementEffet, VersementEffet, PrisonEffet } from './Effet.js'; 
 import { Proposition, PropositionAcheterPropriete, PropositionHypothequer, PropositionLeverHypotheque, PropositionConstruireMaison, PropositionConctruireHotel } from './Proposition.js';
 
-/* ******************  Case (propriete, action) ****************** */
+// #region Case (propriete, action) 
 
 export class CaseJeu {
     constructor(nom) {
@@ -14,7 +14,10 @@ export class CaseJeu {
     }
 }
 
-/* ******************  Case de proprietes (rue, gare, societe) ****************** */
+// #endregion 
+
+
+// #region Case de proprietes (rue, gare, societe)
 
 export class CasePropriete extends CaseJeu {
     constructor(nom, prix, loyers) {
@@ -27,6 +30,9 @@ export class CasePropriete extends CaseJeu {
         this.effet = null;
     }
 
+    /**
+     * proposer au joueur d'acheter la propriete s'il n'y a pas de proprietaire, sinon proposer de payer le loyer 
+     */
     filtrerPropositionsValables(joueur) {
         // traverser listeProp et prendre celles valides (estDisponible(jeu, joueur, caseJeu) true)
         const propositions = Proposition.getListePropositions(); 
@@ -37,8 +43,7 @@ export class CasePropriete extends CaseJeu {
                 propositionsValables.push(propositionValable); 
             }
         }
-        console.log("propositionsValables: ", propositionsValables); 
- 
+
         return propositionsValables; 
     }
 
@@ -48,20 +53,23 @@ export class CasePropriete extends CaseJeu {
 
     calculerLoyer() {
         console.log(`calcul loyer`)
-        // methd abstraite (impl dans les cl filles)
+        // methd abstraite (à implémenter dans les classes filles)
     }
 
+    /**
+     * si la case est libre, proposer d'acheter sinon payer le loyer
+     */
     arriver(joueur) {
         const listePropositionsValables = this.filtrerPropositionsValables(joueur) || []; 
         console.log("liste de s propositions valbales ap filtre", listePropositionsValables);
 
         // Payer un loyer
-        if (!this.estLibre() && !this.hypotheque) {
-            const montant = this.calculerLoyer();
-            console.log(`${joueur.nom} doit payer ${montant}€ à ${this.proprietaire.nom}`);
-            joueur.payer(montant);
-            this.proprietaire.recevoir(montant);
-        }
+        // if (!this.estLibre() && !this.hypotheque) {
+        //     const montant = this.loyers[this.calculerLoyer()];
+        //     console.log(`${joueur.nom} doit payer ${montant}€ à ${this.proprietaire.nom}`);
+        //     joueur.payer(montant);
+        //     this.proprietaire.recevoir(montant);
+        // }
         return listePropositionsValables; 
     }
 
@@ -95,7 +103,10 @@ export class CasePropriete extends CaseJeu {
     }
 }
 
-/* ******************  Case rue ****************** */
+// #endregion 
+
+
+// #region Case rue
 
 export class CaseRue extends CasePropriete {
     constructor(nom, prix, loyers, couleur) {
@@ -174,7 +185,10 @@ export class CaseRue extends CasePropriete {
     }
 }
 
-/* ******************  Case gare  ****************** */
+// #endregion 
+
+
+// #region Case gare
 
 export class CaseGare extends CasePropriete {
     constructor(nom, prix, loyers, typeCase) {
@@ -183,7 +197,7 @@ export class CaseGare extends CasePropriete {
     }
 
     /**
-     *  "loyers": [25, 50, 100, 200],
+     * loyer en fonction du nombre de gares possédées par le propriétaire (0, 1, 2, 3) et du type de case 
      */
     calculerLoyer() {
         if (this.hypotheque || !this.proprietaire) return 0;
@@ -191,11 +205,14 @@ export class CaseGare extends CasePropriete {
         const joueurProprietes = this.proprietaire.proprietes || []; //toutes ses propriétés[Objects]
         const nbGares = joueurProprietes.filter(propriete => propriete instanceof CaseGare).length; // ch gares
         
-        return nbGares -1; //index 
+        return nbGares -1; //index en fonction du nombre de gares (1 gare -> loyer[0], 2 gares -> loyer[1].....)
     }
 }
 
-/* ******************  Case societe  ****************** */
+// #endregion
+
+
+// #region Case societe
 
 export class CaseSociete extends CasePropriete {
     constructor(nom, prix, loyers) {
@@ -203,16 +220,22 @@ export class CaseSociete extends CasePropriete {
     }
 
     /**
-     *   "loyers": ["4 fois les dés", "10 fois les dés"],
+     * loyer calculé en fonction du résultat du dé et du nombre de sociétés possédées par le propriétaire (1 ou 2)
      */
-    calculerLoyer() {
+    calculerLoyer() { 
         if (this.hypotheque || !this.proprietaire) return 0;
-
+        
+        const joueurProprietes = this.proprietaire.proprietes || []; 
+        const nbSocietes = joueurProprietes.filter(propriete => propriete instanceof CaseSociete).length; 
+        
+        return nbSocietes - 1; //index en fonction du nombre de sociétés (1 société -> loyer[0], 2 sociétés -> loyer[1])
     }
 }
 
+// #endregion
 
-/* ******************  Case d'action  ****************** */
+
+// #region Case d'action 
 
 export class CaseAction extends CaseJeu {
     constructor(nom) {
@@ -234,5 +257,6 @@ export class CaseAction extends CaseJeu {
     }
 }
 
+// #endregion
 
 

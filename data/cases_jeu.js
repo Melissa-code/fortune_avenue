@@ -113,7 +113,7 @@ const casesJeuJson = [
         "nom": "Société d'energie", 
         "couleur": null,
         "prixAchat": 150,
-        "loyers": ["4 fois les dés", "10 fois les dés"],
+        "loyers": [4, 10], // "4 fois les dés", "10 fois les dés"]
         "totalParFamille": 2
     },
     {
@@ -257,7 +257,7 @@ const casesJeuJson = [
         "nom": "Société des eaux", 
         "couleur": null,
         "prixAchat": 150,
-        "loyers": ["4 fois les dés", "10 fois les dés"],
+        "loyers": [4, 10], // "4 fois les dés", "10 fois les dés"]
         "totalParFamille": 2
     },
     {

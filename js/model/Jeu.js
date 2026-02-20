@@ -7,6 +7,7 @@ import { CarteFactory } from './CarteFactory.js';
 import De from './De.js';
 import Banque from './Banque.js'; 
 import EtatsJeu from './enums/EtatsJeu.js';
+import { CaseSociete, CaseGare } from './CaseJeu.js';
 
 class Jeu {
     constructor() {
@@ -46,9 +47,18 @@ class Jeu {
         const indexLoyer = caseJeu.calculerLoyer();
 
         if (indexLoyer >= 0) {
-            const montant = caseJeu.loyers[indexLoyer]; 
+            let montant = caseJeu.loyers[indexLoyer]; 
             const proprietaire = caseJeu.proprietaire; 
-            console.log("proprietaire : ", proprietaire.nom, "paie ", montant, " à ", proprietaire.nom); 
+            console.log("joueurcourant : ", joueurCourant.nom, "paie ", montant, "* le dé à ", proprietaire.nom); 
+
+            // case "Société": loyer en fonction du résultat du dé
+            if (caseJeu instanceof CaseSociete) {
+                const resultatDe = this.de.valeurAffichee;
+                console.log("résultat du dé pour calcul loyer société : ", resultatDe);
+
+                if (indexLoyer === 0) { montant = resultatDe * 4; } // 1 société -> 4 fois le résultat du dé
+                else { montant = resultatDe * 10; } // 2 sociétés -> 10 fois le résultat du dé
+            }
 
             joueurCourant.payer(montant); 
             proprietaire.recevoir(montant); 
@@ -58,16 +68,15 @@ class Jeu {
     avancerJoueurCourant(valeurDeplacement) {
         const joueurCourant = this.joueurs[this.joueurActuelIndex]; 
         joueurCourant.avancer("relatif", valeurDeplacement) //chiffre affiché sur le dé
+        
         const caseJeu = this.casesJeu[joueurCourant.position]; 
-        console.log(caseJeu)
-
-        // check si proprietaire de la case 
+        // check si la case a un propriétaire (-> payer loyer )
         if (caseJeu.proprietaire !== null && caseJeu.proprietaire !== joueurCourant) {
             this.payerLoyer(joueurCourant, caseJeu); 
         }
 
+        // propositions au joueur 
         this.listePropositions = caseJeu.arriver(joueurCourant);
-
         if (this.listePropositions.length <= 1) { 
             this.changerJoueur(); 
         } else { 
@@ -93,7 +102,6 @@ class Jeu {
         }
 
         // valider une proposition
-
         this.listePropositions[numProp].valider(joueurCourant, this.casesJeu[joueurCourant.position], this.banque);
         this.etat = EtatsJeu.EN_COURS;
         console.log('etat du jeu ap validation proposition : ' , this.etat)
