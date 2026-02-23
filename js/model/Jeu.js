@@ -73,12 +73,18 @@ class Jeu {
         const caseJeu = this.casesJeu[joueurCourant.position]; 
         if (caseJeu.proprietaire !== null && caseJeu.proprietaire !== joueurCourant) {
             this.payerLoyer(joueurCourant, caseJeu); 
+            return this.createMessage("loyer", {
+                joueur: joueurCourant.nom,  
+                propriete: this.casesJeu[joueurCourant.position].nom,
+                montant: this.casesJeu[joueurCourant.position].prixAchat,
+                proprietaire: caseJeu.proprietaire.nom  
+            }); 
         }
 
         // propositions au joueur 
         this.listePropositions = caseJeu.arriver(joueurCourant);
         if (this.listePropositions.length <= 1) { 
-            this.changerJoueur(); // TODO : terminerTour()
+            this.terminerTour(); 
         } else { 
             this.etat = EtatsJeu.EN_ATTENTE; // de propositions (modale)
         }
@@ -93,12 +99,12 @@ class Jeu {
             case "achat":
                 return {
                     titre: "Achat :",
-                    message: `${details.joueur} a acheté ${details.propriete} pour un montant de ${details.montant} M`
+                    message: `${details.joueur} vient d'acheter "${details.propriete}" pour un montant de ${details.montant} M.`
                 };
             case "loyer":
                 return {
                     titre: "Loyer : ",
-                    message: `${details.joueur} a payé ${details.montant} M correspondant au loyer de ${details.propriete} à ${details.proprietaire}`
+                    message: `${details.joueur} vient de payer la somme de ${details.montant} M correspondant au loyer de "${details.propriete}" à ${details.proprietaire}.`
                 };
             case "chance":
                 return {
@@ -113,7 +119,7 @@ class Jeu {
             case "taxe":
                 return {
                     titre: "Carte Taxe",
-                    message: `${details.joueur} doit payer une taxe de ${details.montant} M.`
+                    message: `${details.joueur} doit payer une taxe d'un montant de ${details.montant} M.`
                 };
             default:
                 return { titre: "Info", message: details };
@@ -139,9 +145,8 @@ class Jeu {
         // Valider proposition (true/false) et appliquer ses effets (ex: acheter la case/payer pour sortir de prison...)
         const success = this.listePropositions[numProp].valider(joueurCourant, this.casesJeu[joueurCourant.position], this.banque);
         if (!success) return; 
-        console.log("JEU : le joueur a acheté la case");
+
         this.etat = EtatsJeu.EN_COURS;
-        // this.changerJoueur(); // TODO : terminerTour() changer de joueur + vérifier fin jeu
 
         return this.createMessage("achat", {
             joueur: joueurCourant.nom,  
@@ -150,7 +155,12 @@ class Jeu {
         });
     }
 
-    verifierFinDuJeu() {
+    terminerTour() {
+        this.changerJoueur(); 
+        // this.verifierFinJeu(); 
+    }   
+
+    verifierFinJeu() {
 
     }
 }
