@@ -103,10 +103,10 @@ class View {
       if (this.jeu.etat === EtatsJeu.EN_ATTENTE) {
         this.ctx.globalAlpha = 0.5; // rendre le dé semi-transparent
       }
-      
-      this.ctx.shadowColor = "rgba(0, 0, 0, 0.50)";  // Couleur noire transparente
-      this.ctx.shadowBlur = 8;                         // Flou de l'ombre
-      this.ctx.shadowOffsetX = 4;                      // Décalage horizontal
+      // effet dé en relief par les ombres 
+      this.ctx.shadowColor = "rgba(0, 0, 0, 0.50)";  
+      this.ctx.shadowBlur = 8; // ombre
+      this.ctx.shadowOffsetX = 4;                
       this.ctx.shadowOffsetY = 4;
 
       this.ctx.drawImage(imageDe, this.positionDeX, this.positionDeY, this.tailleDe, this.tailleDe);
@@ -136,7 +136,7 @@ class View {
   afficherPionsJoueurs() {
     const joueurs = this.jeu.getJoueurs();
     const unite = this.dimensionPlateauJeu / 13; // unite case: 2 + 9 + 2
-    const taillePion = 25; //taille fixe du pion 
+    const taillePion = this.espacement; //taille fixe du pion 
 
     for (let i = 0; i < joueurs.length; i++) {
       const imagePion = this.imagesPions[i];
@@ -170,36 +170,17 @@ class View {
           y = (positionJoueur - 29) * unite;
         }
 
-        this.ctx.drawImage(imagePion, x, y, taillePion, taillePion);
+        //décalage pour éviter superposition pions pour lisibilité 
+        const decalageX = i * (taillePion / 2); 
+        const decalageY = i * (taillePion / 2);
+        this.ctx.drawImage(imagePion, x + decalageX, y + decalageY, taillePion, taillePion);
       }
     }
   }
 
-  // afficherInfosJoueurs() {
-  //   const joueurs = this.jeu.getJoueurs();
-  //   const zoneJoueursX = this.dimensionPlateauJeu + this.espacement * 4;
-  //   const zoneJoueursY = 0; 
-  //   const largeurZoneJoueurs = this.dimensionPlateauJeu;
-  //   const hauteurZoneJoueurs = this.dimensionPlateauJeu / 1.5;
-    
-  //   for (let i = 0; i < joueurs.length; i++) {
-  //     // cadre infos joueur
-  //     this.ctx.fillStyle = '#b9e3c6'; 
-  //     this.ctx.fillRect(zoneJoueursX, zoneJoueursY, largeurZoneJoueurs, hauteurZoneJoueurs);
-  //     this.ctx.strokeStyle = '#d2e4c6';
-  //     this.ctx.lineWidth = 2;
-  //     this.ctx.strokeRect(zoneJoueursX, zoneJoueursY, largeurZoneJoueurs, hauteurZoneJoueurs);
-
-  //     // texte infos joueur
-  //     this.ctx.font = "16px Roboto Bold";
-  //     this.ctx.fillStyle = 'black';
-  //     this.ctx.fillText(`Joueur ${i + 1}`, zoneJoueursX + 10, zoneJoueursY - 10);
-  //     const joueur = joueurs[i];
-  //     const infosJoueur = `Joueur: ${joueur.nom} - Argent: ${joueur.argent} M`; 
-
-  //     this.ctx.fillText(infosJoueur, zoneJoueursX, zoneJoueursY + (i * 20) + 100);
-  //   } 
-  // }
+  /**
+   * Afficher les infos des joueurs (argent, propriétés, prison...) dans une zone  
+   */
   afficherInfosJoueurs() {
     const joueurs = this.jeu.getJoueurs();
     
