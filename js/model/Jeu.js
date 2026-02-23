@@ -71,18 +71,22 @@ class Jeu {
         
         // check si la case a un propriétaire (-> payer loyer )
         const caseJeu = this.casesJeu[joueurCourant.position]; 
+
         if (caseJeu.proprietaire !== null && caseJeu.proprietaire !== joueurCourant) {
             this.payerLoyer(joueurCourant, caseJeu); 
+            this.terminerTour();
+            
             return this.createMessage("loyer", {
                 joueur: joueurCourant.nom,  
                 propriete: this.casesJeu[joueurCourant.position].nom,
-                montant: this.casesJeu[joueurCourant.position].prixAchat,
+                montant: this.casesJeu[joueurCourant.position].calculerLoyer(),
                 proprietaire: caseJeu.proprietaire.nom  
             }); 
         }
 
         // propositions au joueur 
         this.listePropositions = caseJeu.arriver(joueurCourant);
+
         if (this.listePropositions.length <= 1) { 
             this.terminerTour(); 
         } else { 

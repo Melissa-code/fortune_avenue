@@ -15,6 +15,7 @@ class Controller {
 
         const valeurDeplacement = this.jeu.de.lancer();
         this.propositions = this.jeu.avancerJoueurCourant(valeurDeplacement);
+        
         if (this.propositions.length > 0) {
             this.view.afficherMenuPropositions(this.propositions);
         } 
@@ -34,7 +35,7 @@ class Controller {
                 setTimeout(() => {
                     this.view.refresh();
                     this.jeu.terminerTour();
-                    this.view.refresh(); 
+                    this.view.refresh(); // affiche tour du joueur suivant
                 }, 3000);
             }
         } 
