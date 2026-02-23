@@ -45,15 +45,19 @@ export class PropositionAcheterPropriete extends Proposition {
     }
 
     /**
-     * valider l'achat de la propriete : transfert argent joueur -> banque, changement proprietaire de la case
+     * valider l'achat de la propriete (return bool): 
+     * proprietaire de la case + transfert argent joueur -> banque
      */
     valider(joueur, casePropriete, banque) {
-        if (!this.estDisponible(joueur, casePropriete)) return;
+        if (!this.estDisponible(joueur, casePropriete)) return false; 
 
         casePropriete.proprietaire = joueur; 
         joueur.proprietes.push(casePropriete); 
+
         const versement = new VersementEffet(casePropriete.prixAchat, joueur, banque); 
         versement.appliquer(joueur, banque); 
+
+        return true;
     }
 }
 

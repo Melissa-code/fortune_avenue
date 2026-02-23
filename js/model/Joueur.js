@@ -14,14 +14,6 @@ class Joueur {
     }
 
     gererArriveeSurCase(anciennePosition) {
-        // case "allez en prison" 
-        // if (this.position === 30) {
-        //     // this.allerEnPrison();
-            
-        //     this.aTraverseCaseDepart = false;
-        //     return;
-        // } 
-
         if (this.position < anciennePosition) {
             this.recevoir(200);
             this.aTraverseCaseDepart = true;
@@ -45,16 +37,6 @@ class Joueur {
             this.recevoir(bonusDePassage);
         }
     }
-
-    // allerEnPrison() {
-    //     console.log(`Le joueur ${this.nom} est envoyé en prison !`);
-    //     this.position = 10; // coincé en prison 
-    //     this.estEnPrison = true; 
-    // }
-
-    // sortirDePrison() {
-    //     this.estEnPrison = false; 
-    // }
 
     passerSonTour() {
 
