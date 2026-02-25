@@ -161,19 +161,34 @@ export class CaseRue extends CasePropriete {
         return compteur === totalParCouleur;
     }
 
+    // calculerLoyer() {
+    //     if (this.hypotheque || !this.proprietaire) return 0; // -1
+
+    //     if (this.nombreHotels > 0) {
+    //         return this.data.loyers[5]; //5
+    //     }
+    //     if (this.nombreMaisons > 0) {
+    //         return this.data.loyers[this.nombreMaisons]; //nombreMaisons
+    //     } 
+    //     if (this.possederTouteLaCollection()) {
+    //         return this.data.loyers[this.data.loyers.length - 1]; //this.data.loyers.length - 1
+    //     }
+    //     return this.data.loyers[0];//0
+    // }
+
     calculerLoyer() {
-        if (this.hypotheque || !this.proprietaire) return 0;
+        if (this.hypotheque || !this.proprietaire) return -1; // -1
 
         if (this.nombreHotels > 0) {
-            return this.data.loyers[5]; 
+            return 5; //5
         }
         if (this.nombreMaisons > 0) {
-            return this.data.loyers[this.nombreMaisons];
+            return this.nombreMaisons; //nombreMaisons
         } 
         if (this.possederTouteLaCollection()) {
-            return this.data.loyers[this.data.loyers.length - 1]; 
+            return this.data.loyers.length - 1; //this.data.loyers.length - 1
         }
-        return this.data.loyers[0];
+        return 0;//0
     }
 }
 

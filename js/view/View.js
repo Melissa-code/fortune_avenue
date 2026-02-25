@@ -35,7 +35,6 @@ class View {
       if (cible === "DE") {
         this.controller.lancerDe();
       }
-      this.refresh();
     })
 
     // touche clavier choix proposition par le user 
@@ -245,7 +244,7 @@ class View {
 
   afficherTexteModale(type, texte) {
     const modale = this.afficherModale();
-
+  
     // titre 
     this.ctx.font = "bold 20px Roboto";
     this.ctx.fillStyle = '#FFFFFF';

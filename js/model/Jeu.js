@@ -43,11 +43,17 @@ class Jeu {
         this.joueurActuelIndex = (this.joueurActuelIndex + 1) % this.joueurs.length;
     }
 
+    /**
+     *  Payer le loyer au proprietaire de la case (autre joueur) si elle en a un 
+     */
     payerLoyer(joueurCourant, caseJeu) {
-        const indexLoyer = caseJeu.calculerLoyer();
+        const indexLoyer = caseJeu.calculerLoyer(); // return index loyer
+        console.log("index loyer : ", indexLoyer)
 
         if (indexLoyer >= 0) {
             let montant = caseJeu.loyers[indexLoyer]; 
+            console.log('montant du loyer : ', montant)
+
             const proprietaire = caseJeu.proprietaire; 
             console.log("joueurcourant : ", joueurCourant.nom, "paie ", montant, "* le dé à ", proprietaire.nom); 
 
@@ -62,37 +68,35 @@ class Jeu {
 
             joueurCourant.payer(montant); 
             proprietaire.recevoir(montant); 
+
+            return this.createMessage("loyer", {
+                joueur: joueurCourant.nom,  
+                propriete: this.casesJeu[joueurCourant.position].nom,
+                montant: montant,
+                proprietaire: caseJeu.proprietaire.nom  
+            }); 
         }
     }
 
     avancerJoueurCourant(valeurDeplacement) {
         const joueurCourant = this.joueurs[this.joueurActuelIndex]; 
-        joueurCourant.avancer("relatif", valeurDeplacement) //chiffre affiché sur le dé
+        joueurCourant.avancer("relatif", valeurDeplacement) //chiffre du dé
         
         // check si la case a un propriétaire (-> payer loyer )
         const caseJeu = this.casesJeu[joueurCourant.position]; 
 
         if (caseJeu.proprietaire !== null && caseJeu.proprietaire !== joueurCourant) {
-            this.payerLoyer(joueurCourant, caseJeu); 
-            this.terminerTour();
-            
-            return this.createMessage("loyer", {
-                joueur: joueurCourant.nom,  
-                propriete: this.casesJeu[joueurCourant.position].nom,
-                montant: this.casesJeu[joueurCourant.position].calculerLoyer(),
-                proprietaire: caseJeu.proprietaire.nom  
-            }); 
+            const loyer = this.payerLoyer(joueurCourant, caseJeu); 
+            // this.terminerTour();
+            console.log("loyer payé : ", loyer) //objet
+            return loyer;  
+        } else {
+            // propositions au joueur 
+            this.listePropositions = caseJeu.arriver(joueurCourant);
+            if (this.listePropositions.length >= 1) this.etat = EtatsJeu.EN_ATTENTE; // de propositions (modale)
+            console.log("propositions : ", this.listePropositions)
+            return this.listePropositions; // []array 
         }
-
-        // propositions au joueur 
-        this.listePropositions = caseJeu.arriver(joueurCourant);
-
-        if (this.listePropositions.length <= 1) { 
-            this.terminerTour(); 
-        } else { 
-            this.etat = EtatsJeu.EN_ATTENTE; // de propositions (modale)
-        }
-        return this.listePropositions;
     }
 
     /**
@@ -144,19 +148,17 @@ class Jeu {
 
         if (numProp > this.listePropositions.length - 1 || numProp < 0) return; 
 
-        // le dernier chiffre permet de sortir du menu de propositions sans en choisir une
+        // dernier chiffre permet de décliner/sortir du menu de propositions 
         if (numProp === this.listePropositions.length - 1) {
             this.etat = EtatsJeu.EN_COURS;
-            console.log("etat dans soumettre prop TAPER 2", this.etat);
-
+ 
             return this.createMessage("refus", {
                 joueur: joueurCourant.nom,  
                 propriete: this.casesJeu[joueurCourant.position].nom
             });
         } 
         
-        console.log("etat dans soumettre prop TAPER 1", this.etat);
-        // Valider proposition (true/false) et appliquer ses effets (ex: acheter la case/payer pour sortir de prison...)
+        // Valider proposition (bool) et appliquer ses effets (ex: acheter la case/payer pour sortir de prison...)
         const success = this.listePropositions[numProp].valider(joueurCourant, this.casesJeu[joueurCourant.position], this.banque);
         if (!success) return; 
 

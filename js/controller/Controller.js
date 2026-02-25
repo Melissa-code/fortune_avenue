@@ -15,10 +15,17 @@ class Controller {
 
         const valeurDeplacement = this.jeu.de.lancer();
         this.propositions = this.jeu.avancerJoueurCourant(valeurDeplacement);
-        
+    
         if (this.propositions.length > 0) {
             this.view.afficherMenuPropositions(this.propositions);
-        } 
+        } else {
+            this.view.afficherTexteModale(this.propositions.titre, this.propositions.message);
+                setTimeout(() => {
+                    this.view.refresh();
+                    this.jeu.terminerTour();
+                    this.view.refresh(); // affiche tour du joueur suivant
+                }, 3000);
+        }
     }
 
     /**
