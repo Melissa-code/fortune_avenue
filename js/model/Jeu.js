@@ -105,10 +105,20 @@ class Jeu {
                     titre: "Achat :",
                     message: `${details.joueur} vient d'acheter "${details.propriete}" pour un montant de ${details.montant} M.`
                 };
+            case "refus": 
+            return {
+                titre : "Refus",
+                message: `${details.joueur} a décliné la proposition d'achat de "${details.propriete}".`
+            }
             case "loyer":
                 return {
                     titre: "Loyer : ",
                     message: `${details.joueur} vient de payer la somme de ${details.montant} M correspondant au loyer de "${details.propriete}" à ${details.proprietaire}.`
+                };
+            case "taxe":
+                return {
+                    titre: "Carte Taxe",
+                    message: `${details.joueur} doit payer une taxe d'un montant de ${details.montant} M.`
                 };
             case "chance":
                 return {
@@ -119,11 +129,6 @@ class Jeu {
                 return {
                     titre: "Carte Fonds commun",
                     message: details.description
-                };
-            case "taxe":
-                return {
-                    titre: "Carte Taxe",
-                    message: `${details.joueur} doit payer une taxe d'un montant de ${details.montant} M.`
                 };
             default:
                 return { titre: "Info", message: details };
@@ -136,16 +141,21 @@ class Jeu {
     soumettreProposition(numProposition) {
         const joueurCourant = this.joueurs[this.joueurActuelIndex]; 
         const numProp = numProposition - 1; // n-1 dans la liste de propositions
-        console.log("JEU : numero de la Prop choisie par le user: ", numProp);
 
-        if (numProp >= this.listePropositions.length || numProp < 0) return; 
+        if (numProp > this.listePropositions.length - 1 || numProp < 0) return; 
 
         // le dernier chiffre permet de sortir du menu de propositions sans en choisir une
-        if (numProp === this.listePropositions.length) {
+        if (numProp === this.listePropositions.length - 1) {
             this.etat = EtatsJeu.EN_COURS;
-            return;
-        }
+            console.log("etat dans soumettre prop TAPER 2", this.etat);
 
+            return this.createMessage("refus", {
+                joueur: joueurCourant.nom,  
+                propriete: this.casesJeu[joueurCourant.position].nom
+            });
+        } 
+        
+        console.log("etat dans soumettre prop TAPER 1", this.etat);
         // Valider proposition (true/false) et appliquer ses effets (ex: acheter la case/payer pour sortir de prison...)
         const success = this.listePropositions[numProp].valider(joueurCourant, this.casesJeu[joueurCourant.position], this.banque);
         if (!success) return; 
@@ -157,6 +167,7 @@ class Jeu {
             propriete: this.casesJeu[joueurCourant.position].nom,
             montant: this.casesJeu[joueurCourant.position].prixAchat
         });
+        
     }
 
     terminerTour() {
