@@ -1,6 +1,7 @@
 import { Carte, CarteAction, CarteImmobiliere, CarteRue, CarteGare, CarteSociete } from './Carte.js'; 
 import { Effet, DeplacementEffet, VersementEffet, PrisonEffet } from './Effet.js'
 import ImagesPions from "./enums/ImagesPions.js";
+import TypesMessagesModale from "./enums/TypesMessagesModale.js";   
 import Joueur from './Joueur.js'; 
 import { CaseJeuFactory } from './CaseJeuFactory.js';
 import { CarteFactory } from './CarteFactory.js';
@@ -52,8 +53,6 @@ class Jeu {
 
         if (indexLoyer >= 0) {
             let montant = caseJeu.loyers[indexLoyer]; 
-            console.log('montant du loyer : ', montant)
-
             const proprietaire = caseJeu.proprietaire; 
             console.log("joueurcourant : ", joueurCourant.nom, "paie ", montant, "* le dé à ", proprietaire.nom); 
 
@@ -87,7 +86,6 @@ class Jeu {
 
         if (caseJeu.proprietaire !== null && caseJeu.proprietaire !== joueurCourant) {
             const loyer = this.payerLoyer(joueurCourant, caseJeu); 
-            // this.terminerTour();
             console.log("loyer payé : ", loyer) //objet
             return loyer;  
         } else {
@@ -100,43 +98,12 @@ class Jeu {
     }
 
     /**
-    * Choixdu message à afficher dans la modale en fonction du type d'action (achat loyer, carte chance/fonds commun, taxe...)
-    */
+     * Choix message (dans modale) en fonction du type d'action : achat loyer, carte chance/fonds commun, taxe ... 
+     */
     createMessage(type, details) {
-        switch(type) {
-            case "achat":
-                return {
-                    titre: "Achat :",
-                    message: `${details.joueur} vient d'acheter "${details.propriete}" pour un montant de ${details.montant} M.`
-                };
-            case "refus": 
-            return {
-                titre : "Refus",
-                message: `${details.joueur} a décliné la proposition d'achat de "${details.propriete}".`
-            }
-            case "loyer":
-                return {
-                    titre: "Loyer : ",
-                    message: `${details.joueur} vient de payer la somme de ${details.montant} M correspondant au loyer de "${details.propriete}" à ${details.proprietaire}.`
-                };
-            case "taxe":
-                return {
-                    titre: "Carte Taxe",
-                    message: `${details.joueur} doit payer une taxe d'un montant de ${details.montant} M.`
-                };
-            case "chance":
-                return {
-                    titre: "Carte Chance",
-                    message: details.description 
-                };
-            case "fonds_commun":
-                return {
-                    titre: "Carte Fonds commun",
-                    message: details.description
-                };
-            default:
-                return { titre: "Info", message: details };
-        }
+        const message = TypesMessagesModale[type](details); //enum 
+        const messageError = { titre: "Erreur: ", message: details };
+        return (message) ? message : messageError ; 
     }
 
     /**

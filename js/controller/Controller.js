@@ -15,6 +15,8 @@ class Controller {
 
         const valeurDeplacement = this.jeu.de.lancer();
         this.propositions = this.jeu.avancerJoueurCourant(valeurDeplacement);
+
+        this.view.refresh();
     
         if (this.propositions.length > 0) {
             this.view.afficherMenuPropositions(this.propositions);
