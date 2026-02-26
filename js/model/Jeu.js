@@ -112,6 +112,17 @@ class Jeu {
     }
 
     /**
+     * Refuser l'achat d'une propriété (proposition)
+     */
+    declinerProposition(joueurCourant, casePropriete) {
+        this.etat = EtatsJeu.EN_COURS;
+        return this.createMessage("refus", {
+            joueur: joueurCourant.nom,
+            propriete: casePropriete.nom
+        });
+    }   
+
+    /**
      * Valider proposition du joueur et appliquer ses effets
      */
     soumettreProposition(numProposition) {
@@ -120,15 +131,8 @@ class Jeu {
 
         if (numProp > this.listePropositions.length - 1 || numProp < 0) return; 
 
-        // dernier chiffre permet de décliner/sortir du menu de propositions 
-        if (numProp === this.listePropositions.length - 1) {
-            this.etat = EtatsJeu.EN_COURS;
- 
-            return this.createMessage("refus", {
-                joueur: joueurCourant.nom,  
-                propriete: this.casesJeu[joueurCourant.position].nom
-            });
-        } 
+        // sortir du menu de propositions (dernier chiffre)
+        if (numProp === this.listePropositions.length - 1) return this.declinerProposition(joueurCourant, this.casesJeu[joueurCourant.position]);
         
         // Valider proposition (bool) et appliquer ses effets (ex: acheter la case/payer pour sortir de prison...)
         const success = this.listePropositions[numProp].valider(joueurCourant, this.casesJeu[joueurCourant.position], this.banque);
@@ -141,7 +145,6 @@ class Jeu {
             propriete: this.casesJeu[joueurCourant.position].nom,
             montant: this.casesJeu[joueurCourant.position].prixAchat
         });
-        
     }
 
     terminerTour() {
