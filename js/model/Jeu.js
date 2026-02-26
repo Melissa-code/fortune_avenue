@@ -45,24 +45,28 @@ class Jeu {
     }
 
     /**
+     * Calculer montant du loyer à payer pour une case "Société" 
+     * en fonction du résultat du dé et du nombre de sociétés possédées par le propriétaire
+     */
+    calculerMontantLoyerAvecDe(resultatDe, indexLoyer, montant) {
+        if (indexLoyer === 0) { montant = resultatDe * 4; } // 1 société -> 4 fois le résultat du dé
+        else { montant = resultatDe * 10; } // 2 sociétés -> 10 fois le résultat du dé
+        return montant;
+    }
+
+    /**
      *  Payer le loyer au proprietaire de la case (autre joueur) si elle en a un 
      */
     payerLoyer(joueurCourant, caseJeu) {
-        const indexLoyer = caseJeu.calculerLoyer(); // return index loyer
-        console.log("index loyer : ", indexLoyer)
+        const indexLoyer = caseJeu.calculerIndexLoyer();
 
         if (indexLoyer >= 0) {
-            let montant = caseJeu.loyers[indexLoyer]; 
+            let montant = caseJeu.loyers[indexLoyer]; //montant en fonction de l'index du tableau de loyers
             const proprietaire = caseJeu.proprietaire; 
-            console.log("joueurcourant : ", joueurCourant.nom, "paie ", montant, "* le dé à ", proprietaire.nom); 
 
             // case "Société": loyer en fonction du résultat du dé
             if (caseJeu instanceof CaseSociete) {
-                const resultatDe = this.de.valeurAffichee;
-                console.log("résultat du dé pour calcul loyer société : ", resultatDe);
-
-                if (indexLoyer === 0) { montant = resultatDe * 4; } // 1 société -> 4 fois le résultat du dé
-                else { montant = resultatDe * 10; } // 2 sociétés -> 10 fois le résultat du dé
+                montant = this.calculerMontantLoyerAvecDe(this.de.valeurAffichee, indexLoyer, montant);
             }
 
             joueurCourant.payer(montant); 
@@ -98,7 +102,8 @@ class Jeu {
     }
 
     /**
-     * Choix message (dans modale) en fonction du type d'action : achat loyer, carte chance/fonds commun, taxe ... 
+     * Choix message (dans modale) en fonction du type d'action 
+     * achat loyer, carte chance/fonds commun, taxe ... 
      */
     createMessage(type, details) {
         const message = TypesMessagesModale[type](details); //enum 

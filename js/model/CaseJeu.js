@@ -51,9 +51,15 @@ export class CasePropriete extends CaseJeu {
         return !this.proprietaire;
     }
 
-    calculerLoyer() {
-        console.log(`calcul loyer`)
-        // methd abstraite (à implémenter dans les classes filles)
+    /**
+     * Retourne l'index du loyer en fonction du nombre de propriétés du même type
+     */
+    calculerIndexLoyer() {
+        if (this.hypotheque || this.estLibre()) return -1; 
+        
+        const joueurProprietes = this.proprietaire.proprietes || []; 
+        const nbProprietes = joueurProprietes.filter(propriete => propriete.constructor === this.constructor).length; 
+        return nbProprietes - 1; //index en fonction du nombre de sociétés (1 société -> loyer[0], 2 sociétés -> loyer[1])
     }
 
     /**
@@ -161,34 +167,22 @@ export class CaseRue extends CasePropriete {
         return compteur === totalParCouleur;
     }
 
-    // calculerLoyer() {
-    //     if (this.hypotheque || !this.proprietaire) return 0; // -1
-
-    //     if (this.nombreHotels > 0) {
-    //         return this.data.loyers[5]; //5
-    //     }
-    //     if (this.nombreMaisons > 0) {
-    //         return this.data.loyers[this.nombreMaisons]; //nombreMaisons
-    //     } 
-    //     if (this.possederTouteLaCollection()) {
-    //         return this.data.loyers[this.data.loyers.length - 1]; //this.data.loyers.length - 1
-    //     }
-    //     return this.data.loyers[0];//0
-    // }
-
-    calculerLoyer() {
-        if (this.hypotheque || !this.proprietaire) return -1; // -1
+    /**
+     * surcharge de la méthode calculerIndexLoyer pour les rues 
+     */
+    calculerIndexLoyer() {
+        if (this.hypotheque || !this.proprietaire) return -1; 
 
         if (this.nombreHotels > 0) {
-            return 5; //5
+            return 5;
         }
         if (this.nombreMaisons > 0) {
-            return this.nombreMaisons; //nombreMaisons
+            return this.nombreMaisons; 
         } 
         if (this.possederTouteLaCollection()) {
-            return this.data.loyers.length - 1; //this.data.loyers.length - 1
+            return this.data.loyers.length - 1; 
         }
-        return 0;//0
+        return 0;
     }
 }
 
@@ -202,18 +196,6 @@ export class CaseGare extends CasePropriete {
         super(nom, prix, loyers);
         this.typeCase = typeCase; 
     }
-
-    /**
-     * loyer en fonction du nombre de gares possédées par le propriétaire (0, 1, 2, 3) et du type de case 
-     */
-    calculerLoyer() {
-        if (this.hypotheque || !this.proprietaire) return 0;
-
-        const joueurProprietes = this.proprietaire.proprietes || []; //toutes ses propriétés[Objects]
-        const nbGares = joueurProprietes.filter(propriete => propriete instanceof CaseGare).length; // ch gares
-        
-        return nbGares -1; //index en fonction du nombre de gares (1 gare -> loyer[0], 2 gares -> loyer[1].....)
-    }
 }
 
 // #endregion
@@ -224,18 +206,6 @@ export class CaseGare extends CasePropriete {
 export class CaseSociete extends CasePropriete {
     constructor(nom, prix, loyers) {
         super(nom, prix, loyers);
-    }
-
-    /**
-     * loyer calculé en fonction du résultat du dé et du nombre de sociétés possédées par le propriétaire (1 ou 2)
-     */
-    calculerLoyer() { 
-        if (this.hypotheque || !this.proprietaire) return 0;
-        
-        const joueurProprietes = this.proprietaire.proprietes || []; 
-        const nbSocietes = joueurProprietes.filter(propriete => propriete instanceof CaseSociete).length; 
-        
-        return nbSocietes - 1; //index en fonction du nombre de sociétés (1 société -> loyer[0], 2 sociétés -> loyer[1])
     }
 }
 
