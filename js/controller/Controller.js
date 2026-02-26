@@ -26,7 +26,7 @@ class Controller {
                     this.view.refresh();
                     this.jeu.terminerTour();
                     this.view.refresh(); // affiche tour du joueur suivant
-                }, 3000);
+                }, 2000);
         }
     }
 
@@ -45,7 +45,7 @@ class Controller {
                     this.view.refresh();
                     this.jeu.terminerTour();
                     this.view.refresh(); // affiche tour du joueur suivant
-                }, 3000);
+                }, 2000);
             }
         } 
     }

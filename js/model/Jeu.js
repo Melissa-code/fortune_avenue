@@ -65,9 +65,7 @@ class Jeu {
             const proprietaire = caseJeu.proprietaire; 
 
             // case "Société": loyer en fonction du résultat du dé
-            if (caseJeu instanceof CaseSociete) {
-                montant = this.calculerMontantLoyerAvecDe(this.de.valeurAffichee, indexLoyer, montant);
-            }
+            if (caseJeu instanceof CaseSociete) { montant = this.calculerMontantLoyerAvecDe(this.de.valeurAffichee, indexLoyer, montant); }
 
             joueurCourant.payer(montant); 
             proprietaire.recevoir(montant); 
