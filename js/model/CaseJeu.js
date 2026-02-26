@@ -54,12 +54,9 @@ export class CasePropriete extends CaseJeu {
     /**
      * Retourne l'index du loyer en fonction du nombre de propriétés du même type
      */
-    calculerIndexLoyer() {
-        if (this.hypotheque || this.estLibre()) return -1; 
-        
-        const joueurProprietes = this.proprietaire.proprietes || []; 
-        const nbProprietes = joueurProprietes.filter(propriete => propriete.constructor === this.constructor).length; 
-        return nbProprietes - 1; //index en fonction du nombre de sociétés (1 société -> loyer[0], 2 sociétés -> loyer[1])
+
+    calculerLoyer() {
+        // à surcharger
     }
 
     /**
@@ -151,38 +148,18 @@ export class CaseRue extends CasePropriete {
         }
     }
 
-    possederTouteLaCollection() {
-        if (!this.proprietaire) return false;
-
-        const couleurCase = this.couleur;
-        const totalParCouleur = this.data.totalParFamille;
-        let {proprietes} = this.proprietaire; //destructuration pour avoir la liste de toutes les propriétés du joueur
-        let compteur = 0;
-
-        for (let propriete of proprietes) {
-            if (propriete instanceof CaseRue && propriete.couleur === couleurCase) {
-                compteur++;
-            }
-        }
-        return compteur === totalParCouleur;
-    }
-
+    
     /**
      * surcharge de la méthode calculerIndexLoyer pour les rues 
      */
-    calculerIndexLoyer() {
-        if (this.hypotheque || !this.proprietaire) return -1; 
+    calculerLoyer(jeu) {
+        if (this.hypotheque || !this.proprietaire) return 0; 
 
-        if (this.nombreHotels > 0) {
-            return 5;
-        }
-        if (this.nombreMaisons > 0) {
-            return this.nombreMaisons; 
-        } 
-        if (this.possederTouteLaCollection()) {
-            return this.data.loyers.length - 1; 
-        }
-        return 0;
+        if (this.nombreHotels > 0) return this.loyers[5];
+        if (this.nombreMaisons > 0) return this.loyers[this.nombreMaisons];  // 1à4
+        if (jeu.possederTouteLaCollectionCases(this.proprietaire, this.couleur)) return this.loyers.length - 1; //possederTouteLaCollectionCases(joueur, couleur) 
+
+        return this.loyers[0]; 
     }
 }
 
@@ -196,17 +173,45 @@ export class CaseGare extends CasePropriete {
         super(nom, prix, loyers);
         this.typeCase = typeCase; 
     }
+
+    calculerLoyer(jeu) {
+        if (this.hypotheque || this.estLibre()) return 0; 
+
+        const joueurProprietes = this.proprietaire.proprietes || []; 
+        const nbGares = joueurProprietes.filter( (propriete) => propriete instanceof CaseGare).length; 
+        const indexLoyer = nbGares - 1; 
+
+        return loyers[indexLoyer];
+    }
 }
 
 // #endregion
 
 
-// #region Case societe
+// #region Case Societe
 
 export class CaseSociete extends CasePropriete {
     constructor(nom, prix, loyers) {
         super(nom, prix, loyers);
     }
+
+    calculerLoyer(jeu) {
+        if (this.hypotheque || this.estLibre()) return 0; 
+        
+        let montant = 0;
+        const joueurProprietes = this.proprietaire.proprietes || []; 
+        const nbSocietes = joueurProprietes.filter( (propriete) => propriete instanceof CaseSociete).length; 
+
+        if (nbSocietes === 0) { 
+            montant = jeu.de.valeurAffichee * 4; // 1 société -> 4 fois le résultat du dé
+        }  
+        else { 
+            montant = jeu.de.valeurAffichee * 10;           // 2 societes -> 10 fois le résultat
+        }                              
+
+        return montant; 
+    }
+   
 }
 
 // #endregion
@@ -231,6 +236,11 @@ export class CaseAction extends CaseJeu {
         }
 
         return []; // pour les propositions
+    }
+
+    calculerLoyer(jeu) {
+
+        console.log('JE SUIS UNE CASE D\'ACTION ! pass de loyer ');
     }
 }
 

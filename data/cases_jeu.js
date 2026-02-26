@@ -104,7 +104,7 @@ const casesJeuJson = [
         "nom": "Boulevard de la Villette", 
         "couleur": "rose",
         "prixAchat": 140,
-        "loyers": [10,50,150,450,620,750,70],
+        "loyers": [10,50,150,450,620,750,20],
         "totalParFamille": 3
     },
     {

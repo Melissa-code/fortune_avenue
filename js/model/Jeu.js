@@ -44,37 +44,45 @@ class Jeu {
         this.joueurActuelIndex = (this.joueurActuelIndex + 1) % this.joueurs.length;
     }
 
-    /**
-     * Calculer montant du loyer à payer pour une case "Société" 
-     * en fonction du résultat du dé et du nombre de sociétés possédées par le propriétaire
-     */
-    calculerMontantLoyerAvecDe(resultatDe, indexLoyer, montant) {
-        if (indexLoyer === 0) { montant = resultatDe * 4; } // 1 société -> 4 fois le résultat du dé
-        else { montant = resultatDe * 10; } // 2 sociétés -> 10 fois le résultat du dé
-        return montant;
-    }
 
+    /**
+     * Posséder toutes les cases Rue de la meme couleur 
+     */
+    possederTouteLaCollectionCases(joueur, couleur) {
+        for (let caseJeu of this.casesJeu) {
+            if (caseJeu.couleur === couleur && caseJeu.proprietaire !== joueur )
+                return false;
+            }
+        return true;
+    }
+    
     /**
      *  Payer le loyer au proprietaire de la case (autre joueur) si elle en a un 
      */
     payerLoyer(joueurCourant, caseJeu) {
-        const indexLoyer = caseJeu.calculerIndexLoyer();
 
-        if (indexLoyer >= 0) {
-            let montant = caseJeu.loyers[indexLoyer]; //montant en fonction de l'index du tableau de loyers
+        console.log("Type de case:", caseJeu.constructor.name);
+    console.log("Méthodes disponibles:", Object.getOwnPropertyNames(Object.getPrototypeOf(caseJeu)));
+    
+    
+        const montantLoyer = caseJeu.calculerLoyer(this);
+        // const indexLoyer = caseJeu.calculerIndexLoyer();
+
+        if (montantLoyer) {
+            // let montant = caseJeu.loyers[indexLoyer]; //montant en fonction de l'index du tableau de loyers
             const proprietaire = caseJeu.proprietaire; 
 
             // case "Société": loyer en fonction du résultat du dé
-            if (caseJeu instanceof CaseSociete) { montant = this.calculerMontantLoyerAvecDe(this.de.valeurAffichee, indexLoyer, montant); }
+            // if (caseJeu instanceof CaseSociete) { montant = this.calculerMontantLoyerAvecDe(this.de.valeurAffichee, indexLoyer, montant); }
 
-            joueurCourant.payer(montant); 
-            proprietaire.recevoir(montant); 
+            joueurCourant.payer(montantLoyer); 
+            proprietaire.recevoir(montantLoyer); 
 
             return this.createMessage("loyer", {
                 joueur: joueurCourant.nom,  
-                propriete: this.casesJeu[joueurCourant.position].nom,
-                montant: montant,
-                proprietaire: caseJeu.proprietaire.nom  
+                propriete: caseJeu.nom,
+                montant: montantLoyer,
+                proprietaire: proprietaire.nom  
             }); 
         }
     }
