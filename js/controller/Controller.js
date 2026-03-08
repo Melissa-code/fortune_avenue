@@ -18,16 +18,9 @@ class Controller {
 
         this.view.refresh();
     
-        if (this.propositions.length > 0) {
+        if (this.propositions.length > 1) {
             this.view.afficherMenuPropositions(this.propositions);
-        } else {
-            this.view.afficherTexteModale(this.propositions.titre, this.propositions.message);
-                setTimeout(() => {
-                    this.view.refresh();
-                    this.jeu.terminerTour();
-                    this.view.refresh(); // affiche tour du joueur suivant
-                }, 2000);
-        }
+        } 
     }
 
     /**
@@ -44,7 +37,7 @@ class Controller {
                 setTimeout(() => {
                     this.view.refresh();
                     this.jeu.terminerTour();
-                    this.view.refresh(); // affiche tour du joueur suivant
+                    this.view.refresh();
                 }, 2000);
             }
         } 

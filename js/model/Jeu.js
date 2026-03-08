@@ -60,11 +60,8 @@ class Jeu {
      *  Payer le loyer au proprietaire de la case (autre joueur) si elle en a un 
      */
     payerLoyer(joueurCourant, caseJeu) {
-
         console.log("Type de case:", caseJeu.constructor.name);
-    console.log("Méthodes disponibles:", Object.getOwnPropertyNames(Object.getPrototypeOf(caseJeu)));
-    
-    
+        
         const montantLoyer = caseJeu.calculerLoyer(this);
         // const indexLoyer = caseJeu.calculerIndexLoyer();
 
@@ -121,7 +118,7 @@ class Jeu {
      * Refuser l'achat d'une propriété (proposition)
      */
     declinerProposition(joueurCourant, casePropriete) {
-        this.etat = EtatsJeu.EN_COURS;
+    ///this.etat = EtatsJeu.EN_COUR;
         return this.createMessage("refus", {
             joueur: joueurCourant.nom,
             propriete: casePropriete.nom
@@ -144,7 +141,7 @@ class Jeu {
         const success = this.listePropositions[numProp].valider(joueurCourant, this.casesJeu[joueurCourant.position], this.banque);
         if (!success) return; 
 
-        this.etat = EtatsJeu.EN_COURS;
+       // this.etat = EtatsJeu.EN_COURS;
 
         return this.createMessage("achat", {
             joueur: joueurCourant.nom,  
@@ -154,6 +151,7 @@ class Jeu {
     }
 
     terminerTour() {
+        this.etat = EtatsJeu.EN_COURS;
         this.changerJoueur(); 
         // this.verifierFinJeu(); 
     }   
@@ -165,3 +163,4 @@ class Jeu {
 
 export default Jeu; 
 
+// géerr les cases d'action (taxe prison ddépart...)

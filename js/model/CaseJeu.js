@@ -174,14 +174,17 @@ export class CaseGare extends CasePropriete {
         this.typeCase = typeCase; 
     }
 
-    calculerLoyer(jeu) {
+    calculerLoyer(jeu=null) {
         if (this.hypotheque || this.estLibre()) return 0; 
+        let montant = 0; 
 
         const joueurProprietes = this.proprietaire.proprietes || []; 
         const nbGares = joueurProprietes.filter( (propriete) => propriete instanceof CaseGare).length; 
-        const indexLoyer = nbGares - 1; 
+        
+        montant = this.loyers[nbGares -1];
+        console.log("montant loyer gare" , montant)
 
-        return loyers[indexLoyer];
+        return montant; 
     }
 }
 
@@ -238,7 +241,7 @@ export class CaseAction extends CaseJeu {
         return []; // pour les propositions
     }
 
-    calculerLoyer(jeu) {
+    calculerLoyer(jeu=null) {
 
         console.log('JE SUIS UNE CASE D\'ACTION ! pass de loyer ');
     }
