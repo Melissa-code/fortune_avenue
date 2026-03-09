@@ -60,18 +60,10 @@ class Jeu {
      *  Payer le loyer au proprietaire de la case (autre joueur) si elle en a un 
      */
     payerLoyer(joueurCourant, caseJeu) {
-        console.log("Type de case:", caseJeu.constructor.name);
-        
         const montantLoyer = caseJeu.calculerLoyer(this);
-        // const indexLoyer = caseJeu.calculerIndexLoyer();
 
         if (montantLoyer) {
-            // let montant = caseJeu.loyers[indexLoyer]; //montant en fonction de l'index du tableau de loyers
             const proprietaire = caseJeu.proprietaire; 
-
-            // case "Société": loyer en fonction du résultat du dé
-            // if (caseJeu instanceof CaseSociete) { montant = this.calculerMontantLoyerAvecDe(this.de.valeurAffichee, indexLoyer, montant); }
-
             joueurCourant.payer(montantLoyer); 
             proprietaire.recevoir(montantLoyer); 
 
@@ -91,22 +83,30 @@ class Jeu {
         // check si la case a un propriétaire (-> payer loyer )
         const caseJeu = this.casesJeu[joueurCourant.position]; 
 
+        //loyer 
         if (caseJeu.proprietaire !== null && caseJeu.proprietaire !== joueurCourant) {
             const loyer = this.payerLoyer(joueurCourant, caseJeu); 
+            
             console.log("loyer payé : ", loyer) //objet
             return loyer;  
-        } else {
+        } 
+        
+        const effets = caseJeu.arriver(joueurCourant, this); // []array de propositions valables (acheter, payer loyer, decliner...)
+        
+        if (effets.length > 0) {
             // propositions au joueur 
-            this.listePropositions = caseJeu.arriver(joueurCourant);
-            if (this.listePropositions.length >= 1) this.etat = EtatsJeu.EN_ATTENTE; // de propositions (modale)
-            console.log("propositions : ", this.listePropositions)
-            return this.listePropositions; // []array 
+            this.listePropositions = effets;
+            EtatsJeu.EN_ATTENTE; // de propositions (modale)
+            // if (this.listePropositions.length >= 1) this.etat = EtatsJeu.EN_ATTENTE; // de propositions (modale)
+            
+            // console.log("propositions : ", this.listePropositions)
+            // return this.listePropositions; // []array 
+            return effets; 
         }
     }
 
     /**
-     * Choix message (dans modale) en fonction du type d'action 
-     * achat loyer, carte chance/fonds commun, taxe ... 
+     * Choix message (dans modale) en fonction du type d'action: achat, loyer, chance/fonds commun, taxe... 
      */
     createMessage(type, details) {
         const message = TypesMessagesModale[type](details); //enum 
@@ -117,8 +117,7 @@ class Jeu {
     /**
      * Refuser l'achat d'une propriété (proposition)
      */
-    declinerProposition(joueurCourant, casePropriete) {
-    ///this.etat = EtatsJeu.EN_COUR;
+    decliner(joueurCourant, casePropriete) {
         return this.createMessage("refus", {
             joueur: joueurCourant.nom,
             propriete: casePropriete.nom
@@ -135,13 +134,11 @@ class Jeu {
         if (numProp > this.listePropositions.length - 1 || numProp < 0) return; 
 
         // sortir du menu de propositions (dernier chiffre)
-        if (numProp === this.listePropositions.length - 1) return this.declinerProposition(joueurCourant, this.casesJeu[joueurCourant.position]);
+        if (numProp === this.listePropositions.length - 1) return this.decliner(joueurCourant, this.casesJeu[joueurCourant.position]);
         
         // Valider proposition (bool) et appliquer ses effets (ex: acheter la case/payer pour sortir de prison...)
         const success = this.listePropositions[numProp].valider(joueurCourant, this.casesJeu[joueurCourant.position], this.banque);
         if (!success) return; 
-
-       // this.etat = EtatsJeu.EN_COURS;
 
         return this.createMessage("achat", {
             joueur: joueurCourant.nom,  

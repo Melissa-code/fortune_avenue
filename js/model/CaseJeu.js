@@ -63,9 +63,7 @@ export class CasePropriete extends CaseJeu {
      * si la case est libre, proposer d'acheter sinon payer le loyer
      */
     arriver(joueur) {
-        const listePropositionsValables = this.filtrerPropositionsValables(joueur) || []; 
-        console.log("liste de s propositions valbales ap filtre", listePropositionsValables);
-        return listePropositionsValables; 
+        return this.filtrerPropositionsValables(joueur) || [];
     }
 
     /**

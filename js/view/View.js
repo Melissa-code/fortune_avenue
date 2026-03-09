@@ -99,7 +99,7 @@ class View {
     if (imageDe && imageDe.complete) {
       this.ctx.save();
 
-      // rendre le dé semi-transparent
+      // rendre le dé semi-transparent (non cliquable) si en attente de proposition du joueur
       if (this.jeu.etat === EtatsJeu.EN_ATTENTE) { this.ctx.globalAlpha = 0.5; }
       // effet dé en relief par les ombres 
       this.ctx.shadowColor = "rgba(0, 0, 0, 0.50)";  
