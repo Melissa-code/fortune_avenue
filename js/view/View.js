@@ -139,6 +139,7 @@ class View {
     for (let i = 0; i < joueurs.length; i++) {
       const imagePion = this.imagesPions[i];
       const positionJoueur = joueurs[i].position;
+      console.log("positionJoueur", positionJoueur)
 
       if (imagePion && imagePion.complete) {
         let x = 0;
@@ -269,10 +270,12 @@ class View {
     let texte = "";
 
     if (listePropositions.length > 0) {
-      for (let i = 0; i < listePropositions.length; i++) {
+      let i = 0; 
+      for (; i < listePropositions.length; i++) {
         // affiche 1. titre : description)
         texte += (i + 1) + ". " + listePropositions[i].titre + " : " + listePropositions[i].description + "\n";
       }
+      texte += (i + 1) + ". decliner : Aucune action, vous finissez votre tour."
     }
     
     this.afficherTexteModale("Propositions", texte);

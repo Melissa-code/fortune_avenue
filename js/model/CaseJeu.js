@@ -235,7 +235,7 @@ export class CaseAction extends CaseJeu {
 
     arriver(joueur, jeu) {
         console.log(`Arrivée sur la case d'action: ${this.nom}`);
-
+       
         if (this.effets.length === 0) { 
             console.log('Aucun effet associé à cette case d\'action.'); 
         } 
@@ -244,13 +244,13 @@ export class CaseAction extends CaseJeu {
             effet.appliquer(joueur, jeu, jeu.banque)
         }
 
-        const messageModale = TypesMessagesModale[this.type]; 
-        if (messageModale) {
-            console.log("Message créé: ", messageModale);
-            const message =  messageModale ({joueur: joueur.nom, montant: this.prix}); 
-            console.log(message)
-            return message; 
-        }
+        // const messageModale = TypesMessagesModale[this.type]; 
+        // if (messageModale) {
+        //     console.log("Message créé: ", messageModale);
+        //     const message =  messageModale ({joueur: joueur.nom, montant: this.prix}); 
+        //     console.log(message)
+        //     return message; 
+        // }
 
         return []; // vide pour les propositions sinon undefined 
     }

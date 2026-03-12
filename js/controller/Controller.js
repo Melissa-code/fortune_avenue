@@ -18,17 +18,17 @@ class Controller {
 
         this.view.refresh();
 
-        if (reponseCase && reponseCase.titre) {
-            this.view.afficherTexteModale(reponseCase.titre, reponseCase.message);
-            setTimeout(() => {
-                this.view.refresh();
-                this.jeu.terminerTour();
-                this.view.refresh();
-            }, 2000);
-        }
+        // if (reponseCase && reponseCase.titre) {
+        //     this.view.afficherTexteModale(reponseCase.titre, reponseCase.message);
+        //     setTimeout(() => {
+        //         this.view.refresh();
+        //         this.jeu.terminerTour();
+        //         this.view.refresh();
+        //     }, 2000);
+        // }
 
         //cf https://developer.mozilla.org/fr/docs/Web/JavaScript/Reference/Global_Objects/Array/isArray
-        else if (Array.isArray(reponseCase) && reponseCase.length > 1) {
+        if (reponseCase.length > 0) {
             this.propositions = reponseCase; 
             this.view.afficherMenuPropositions(this.propositions);
         }   

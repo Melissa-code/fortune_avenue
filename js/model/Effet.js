@@ -23,6 +23,7 @@ export class DeplacementEffet extends Effet {
         this.bonusDePassage = bonusDePassage;
     }
 
+    // verifier 
     appliquer(joueur, jeu = null, banque = null) {
         if (this.typeDeplacement === 'absolu') joueur.avancer(this.valeurDeplacement); // index de la case
         else joueur.avancer(joueur.getPosition() + this.valeurDeplacement); //ou nb de pas 
@@ -83,10 +84,13 @@ export class PrisonEffet extends Effet {
     }
 
     appliquer(joueur, jeu = null, banque = null) {
+        console.log("joueur en prison" ,joueur)
         if (this.allerEnPrison) {
-            joueur.position = 10; 
+            console.log("en prison ")
+            // joueur.position = 10; 
             joueur.estEnPrison = true; 
         } else {
+            console.log("pas en prison")
             joueur.estEnPrison = false; 
         }
     }

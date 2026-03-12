@@ -8,7 +8,7 @@ import { CarteFactory } from './CarteFactory.js';
 import De from './De.js';
 import Banque from './Banque.js'; 
 import EtatsJeu from './enums/EtatsJeu.js';
-import { CasePropriete, CaseSociete, CaseGare } from './CaseJeu.js';
+import { CasePropriete, CaseSociete, CaseGare, CaseAction } from './CaseJeu.js';
 
 class Jeu {
     constructor() {
@@ -23,6 +23,7 @@ class Jeu {
         this.banque = new Banque();
         this.etat = EtatsJeu.EN_COURS; 
         this.listePropositions = []; 
+        //console.log("effets ", this.casesJeu[30].effets)
     }
 
     ajouterJoueur(nom, pion) {
@@ -91,17 +92,17 @@ class Jeu {
             return this.payerLoyer(joueurCourant, caseJeu); //loyer: objet message loyer ou null
         }
         
-        const effets = caseJeu.arriver(joueurCourant, this); // []array de propositions valables (acheter, payer loyer, decliner...)
+        this.listePropositions = caseJeu.arriver(joueurCourant, this); // []array de propositions valables (acheter, payer loyer, decliner...)
 
-        if (effets && effets.titre) {
-            return effets;
+        // if (effets && effets.titre) {
+        //     return effets;
+        // } else 
+        if (this.listePropositions.length > 0) {
+            //this.listePropositions = effets; // propositions au joueur 
 
-        } else if (Array.isArray(effets) && effets.length > 0) {
-            this.listePropositions = effets; // propositions au joueur 
-            EtatsJeu.EN_ATTENTE; // de propositions (modale)
-            
-            if (this.listePropositions.length >= 1) this.etat = EtatsJeu.EN_ATTENTE; // de propositions (modale)
-            return effets; // []array de propositions valables (acheter, payer loyer, decliner...)
+            this.etat = EtatsJeu.EN_ATTENTE; // de propositions (modale)
+            console.log(this.listePropositions)
+            return this.listePropositions; // []array de propositions valables (acheter, payer loyer, decliner...)
         }
 
         return []; //pas d'effets pour les cases Départ/Parc/Prison 
@@ -133,10 +134,10 @@ class Jeu {
         const joueurCourant = this.joueurs[this.joueurActuelIndex]; 
         const numProp = numProposition - 1; // n-1 dans la liste de propositions
 
-        if (numProp > this.listePropositions.length - 1 || numProp < 0) return; 
+        if (numProp > this.listePropositions.length || numProp < 0) return; 
 
         // sortir du menu de propositions (dernier chiffre)
-        if (numProp === this.listePropositions.length - 1) return this.decliner(joueurCourant, this.casesJeu[joueurCourant.position]);
+        if (numProp === this.listePropositions.length ) return this.decliner(joueurCourant, this.casesJeu[joueurCourant.position]);
         
         // Valider proposition (bool) et appliquer ses effets (ex: acheter la case/payer pour sortir de prison...)
         const success = this.listePropositions[numProp].valider(joueurCourant, this.casesJeu[joueurCourant.position], this.banque);
@@ -162,4 +163,5 @@ class Jeu {
 
 export default Jeu; 
 
-// géerr les cases d'action (taxe prison ddépart...)
+// gérer les cases d'action (taxe départ...)
+// voir si on fait 2 effets prison effet + deplacementEffet

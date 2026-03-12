@@ -7,7 +7,7 @@ const TypesCases = Object.freeze({
     FONDS_COMMUNS: "fonds communs",
     TAXE: "taxe",
     PRISON: "prison",
-    ALLEZ_EN_PRISON: "aller en prison",
+    ALLEZ_EN_PRISON: "aller_en_prison",
     PARC_GRATUIT: "parc gratuit"
 })
 

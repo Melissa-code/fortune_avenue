@@ -143,5 +143,5 @@ Proposition.LISTE_PROPOSITIONS = [
     new PropositionLeverHypotheque(),
     new PropositionConstruireMaison(),
     new PropositionConctruireHotel(),
-    new Proposition("decliner", "Aucune action, vous finissez votre tour."),
+    //new Proposition("decliner", "Aucune action, vous finissez votre tour."),
 ]
