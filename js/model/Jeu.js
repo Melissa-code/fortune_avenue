@@ -8,7 +8,7 @@ import { CarteFactory } from './CarteFactory.js';
 import De from './De.js';
 import Banque from './Banque.js'; 
 import EtatsJeu from './enums/EtatsJeu.js';
-import { CaseSociete, CaseGare } from './CaseJeu.js';
+import { CasePropriete, CaseSociete, CaseGare } from './CaseJeu.js';
 
 class Jeu {
     constructor() {
@@ -57,12 +57,13 @@ class Jeu {
     }
     
     /**
-     *  Payer le loyer au proprietaire de la case (autre joueur) si elle en a un 
+     * Payer le loyer au proprietaire de la case (autre joueur) si elle en a un 
+     * return obj message ou  null
      */
     payerLoyer(joueurCourant, caseJeu) {
-        const montantLoyer = caseJeu.calculerLoyer(this);
+        const montantLoyer = caseJeu.calculerLoyer(this); //0 pour case d'action
 
-        if (montantLoyer) {
+        if (montantLoyer > 0) {
             const proprietaire = caseJeu.proprietaire; 
             joueurCourant.payer(montantLoyer); 
             proprietaire.recevoir(montantLoyer); 
@@ -73,36 +74,34 @@ class Jeu {
                 montant: montantLoyer,
                 proprietaire: proprietaire.nom  
             }); 
-        }
+        } 
+
+        return null; 
     }
 
     avancerJoueurCourant(valeurDeplacement) {
         const joueurCourant = this.joueurs[this.joueurActuelIndex]; 
         joueurCourant.avancer("relatif", valeurDeplacement) //chiffre du dé
         
-        // check si la case a un propriétaire (-> payer loyer )
         const caseJeu = this.casesJeu[joueurCourant.position]; 
+        console.log("Case:", caseJeu.nom, "- Type:", caseJeu.constructor.name);
 
-        //loyer 
-        if (caseJeu.proprietaire !== null && caseJeu.proprietaire !== joueurCourant) {
-            const loyer = this.payerLoyer(joueurCourant, caseJeu); 
-            
-            console.log("loyer payé : ", loyer) //objet
-            return loyer;  
-        } 
+        // check si la case a un propriétaire (-> payer loyer )
+        if (caseJeu instanceof CasePropriete && caseJeu.proprietaire !== null && caseJeu.proprietaire !== joueurCourant) {
+            this.payerLoyer(joueurCourant, caseJeu); 
+            return loyer; //objet message loyer ou null
+        }
         
         const effets = caseJeu.arriver(joueurCourant, this); // []array de propositions valables (acheter, payer loyer, decliner...)
-        
         if (effets.length > 0) {
-            // propositions au joueur 
-            this.listePropositions = effets;
+            this.listePropositions = effets; // propositions au joueur 
             EtatsJeu.EN_ATTENTE; // de propositions (modale)
-            // if (this.listePropositions.length >= 1) this.etat = EtatsJeu.EN_ATTENTE; // de propositions (modale)
-            
-            // console.log("propositions : ", this.listePropositions)
-            // return this.listePropositions; // []array 
-            return effets; 
+            if (this.listePropositions.length >= 1) this.etat = EtatsJeu.EN_ATTENTE; // de propositions (modale)
+            //console.log("effets : ", effets) //array de propositions valables (acheter, payer loyer, decliner...)
+            return effets; // []array 
         }
+
+        return []; //pas d'effets pour les cases Départ/Parc/Prison 
     }
 
     /**

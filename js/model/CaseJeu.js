@@ -232,6 +232,12 @@ export class CaseAction extends CaseJeu {
     }
 
     arriver(joueur) {
+
+        if (this.effets.length === 0) {
+            console.log('Aucun effet associé à cette case d\'action.');
+            return [];
+        } 
+
         for (let effet of this.effets) {
             effet.appliquer(joueur)
         }
@@ -239,9 +245,9 @@ export class CaseAction extends CaseJeu {
         return []; // pour les propositions
     }
 
-    calculerLoyer(jeu=null) {
-
-        console.log('JE SUIS UNE CASE D\'ACTION ! pass de loyer ');
+    calculerLoyer(jeu=null) { 
+        console.log('JE SUIS UNE CASE D\'ACTION !');
+        return 0; // montant loyer = 0
     }
 }
 
