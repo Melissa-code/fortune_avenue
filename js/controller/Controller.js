@@ -14,13 +14,30 @@ class Controller {
         if (this.jeu.etat !== EtatsJeu.EN_COURS) return; 
 
         const valeurDeplacement = this.jeu.de.lancer();
-        this.propositions = this.jeu.avancerJoueurCourant(valeurDeplacement);
+        const reponseCase = this.jeu.avancerJoueurCourant(valeurDeplacement);
 
         this.view.refresh();
-    
-        if (this.propositions.length > 1) {
+
+        if (reponseCase && reponseCase.titre) {
+            this.view.afficherTexteModale(reponseCase.titre, reponseCase.message);
+            setTimeout(() => {
+                this.view.refresh();
+                this.jeu.terminerTour();
+                this.view.refresh();
+            }, 2000);
+        }
+
+        //cf https://developer.mozilla.org/fr/docs/Web/JavaScript/Reference/Global_Objects/Array/isArray
+        else if (Array.isArray(reponseCase) && reponseCase.length > 1) {
+            this.propositions = reponseCase; 
             this.view.afficherMenuPropositions(this.propositions);
-        } 
+        }   
+    
+        else {
+            console.log("Aucun message ou proposition à afficher.");
+            this.jeu.terminerTour();
+            this.view.refresh();
+        }
     }
 
     /**

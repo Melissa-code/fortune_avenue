@@ -88,17 +88,20 @@ class Jeu {
 
         // check si la case a un propriétaire (-> payer loyer )
         if (caseJeu instanceof CasePropriete && caseJeu.proprietaire !== null && caseJeu.proprietaire !== joueurCourant) {
-            this.payerLoyer(joueurCourant, caseJeu); 
-            return loyer; //objet message loyer ou null
+            return this.payerLoyer(joueurCourant, caseJeu); //loyer: objet message loyer ou null
         }
         
         const effets = caseJeu.arriver(joueurCourant, this); // []array de propositions valables (acheter, payer loyer, decliner...)
-        if (effets.length > 0) {
+
+        if (effets && effets.titre) {
+            return effets;
+
+        } else if (Array.isArray(effets) && effets.length > 0) {
             this.listePropositions = effets; // propositions au joueur 
             EtatsJeu.EN_ATTENTE; // de propositions (modale)
+            
             if (this.listePropositions.length >= 1) this.etat = EtatsJeu.EN_ATTENTE; // de propositions (modale)
-            //console.log("effets : ", effets) //array de propositions valables (acheter, payer loyer, decliner...)
-            return effets; // []array 
+            return effets; // []array de propositions valables (acheter, payer loyer, decliner...)
         }
 
         return []; //pas d'effets pour les cases Départ/Parc/Prison 

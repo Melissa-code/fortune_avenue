@@ -236,24 +236,20 @@ export class CaseAction extends CaseJeu {
     arriver(joueur, jeu) {
         console.log(`Arrivée sur la case d'action: ${this.nom}`);
 
-        if (this.effets.length === 0) {
-            console.log('Aucun effet associé à cette case d\'action.');
-            // return [];
+        if (this.effets.length === 0) { 
+            console.log('Aucun effet associé à cette case d\'action.'); 
         } 
 
         for (let effet of this.effets) {
-            effet.appliquer(joueur)
+            effet.appliquer(joueur, jeu, jeu.banque)
         }
 
-        console.log("Message pour nom:", this.nom);
-
-        // const messageModale = this.selectionnerTypesMessagesModale(this.nom);
-        const messageModale = TypesMessagesModale[this.type];
-        console.log("Message créé: ", messageModale);
-
+        const messageModale = TypesMessagesModale[this.type]; 
         if (messageModale) {
             console.log("Message créé: ", messageModale);
-            return messageModale ({joueur: joueur.nom, montant: this.prix,}) 
+            const message =  messageModale ({joueur: joueur.nom, montant: this.prix}); 
+            console.log(message)
+            return message; 
         }
 
         return []; // vide pour les propositions sinon undefined 
