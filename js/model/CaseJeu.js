@@ -1,6 +1,7 @@
 import { CarteRue } from './Carte.js';
 import { Effet, DeplacementEffet, VersementEffet, PrisonEffet } from './Effet.js'; 
 import { Proposition, PropositionAcheterPropriete, PropositionHypothequer, PropositionLeverHypotheque, PropositionConstruireMaison, PropositionConctruireHotel } from './Proposition.js';
+import TypesMessagesModale from "./enums/TypesMessagesModale.js"; 
 
 // #region Case (propriete, action) 
 
@@ -221,28 +222,41 @@ export class CaseSociete extends CasePropriete {
 // #region Case d'action 
 
 export class CaseAction extends CaseJeu {
-    constructor(nom) {
+    constructor(nom, type = null, prix = null) {
         super(nom); 
+        this.type = type; 
         this.effets = [];
-        this.prix = null; 
+        this.prix = prix; 
     }
 
     ajouterEffet(effet) {
         this.effets.push(effet);
     }
 
-    arriver(joueur) {
+    arriver(joueur, jeu) {
+        console.log(`Arrivée sur la case d'action: ${this.nom}`);
 
         if (this.effets.length === 0) {
             console.log('Aucun effet associé à cette case d\'action.');
-            return [];
+            // return [];
         } 
 
         for (let effet of this.effets) {
             effet.appliquer(joueur)
         }
 
-        return []; // pour les propositions
+        console.log("Message pour nom:", this.nom);
+
+        // const messageModale = this.selectionnerTypesMessagesModale(this.nom);
+        const messageModale = TypesMessagesModale[this.type];
+        console.log("Message créé: ", messageModale);
+
+        if (messageModale) {
+            console.log("Message créé: ", messageModale);
+            return messageModale ({joueur: joueur.nom, montant: this.prix,}) 
+        }
+
+        return []; // vide pour les propositions sinon undefined 
     }
 
     calculerLoyer(jeu=null) { 

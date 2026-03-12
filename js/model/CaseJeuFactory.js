@@ -58,7 +58,7 @@ export class CaseJeuFactory {
                     case TypesCases.PRISON:
                         caseAction.ajouterEffet(new PrisonEffet(false));
                         break;
-                    case TypesCases.AMENDES:
+                    case TypesCases.TAXE:
                         const montant = jsonObj.prixAchat;
                         caseAction.ajouterEffet(new VersementEffet(montant, "joueur", "banque"));
                         break;
@@ -85,10 +85,10 @@ export class CaseJeuFactory {
     }
 
     static parseAction(dataObj) {
-        return new CaseAction(dataObj.nom);
+        return new CaseAction(dataObj.nom, dataObj.type);
     }
 
     static parseTaxe(dataObj) {
-        return new CaseAction(dataObj.nom, dataObj.prixAchat);
+        return new CaseAction(dataObj.nom, dataObj.type, dataObj.prixAchat);
     }
 }

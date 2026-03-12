@@ -23,7 +23,7 @@ export class DeplacementEffet extends Effet {
         this.bonusDePassage = bonusDePassage;
     }
 
-    appliquer(joueur) {
+    appliquer(joueur, jeu = null, banque = null) {
         if (this.typeDeplacement === 'absolu') joueur.avancer(this.valeurDeplacement); // index de la case
         else joueur.avancer(joueur.getPosition() + this.valeurDeplacement); //ou nb de pas 
         // si bonus de passage 
@@ -43,7 +43,7 @@ export class VersementEffet extends Effet {
         this.estCollectif = estCollectif; // si plusieurs joueurs ou non
     }
 
-    appliquer(joueur, banque) {
+    appliquer(joueur, jeu = null, banque = null) {
         console.log("Paiement de ",this.montant, " de ", this.source.nom, "vers", this.destinataire.nom);
 
         // 1- joueur paie banque (achat/taxe)
@@ -82,7 +82,7 @@ export class PrisonEffet extends Effet {
         this.allerEnPrison = allerEnPrison; //bool 
     }
 
-    appliquer(joueur) {
+    appliquer(joueur, jeu = null, banque = null) {
         if (this.allerEnPrison) {
             joueur.position = 10; 
             joueur.estEnPrison = true; 
@@ -101,7 +101,7 @@ export class PiocheEffet extends Effet {
         this.typePioche = typePioche; // chance/fonds_commmun 
     }
 
-    appliquer(joueur, jeu) {
+    appliquer(joueur, jeu = null, banque = null) {
         //  piocher une carte de la pioche et l'excuter
     }
 }
@@ -116,7 +116,7 @@ export class ReparationsEffet extends Effet {
         this.montantParHotel = montantParHotel;
     }
 
-    appliquer(joueur, jeu) {
+    appliquer(joueur, jeu = null, banque = null) {
         let totalMaison = 0; 
         let totalHotel = 0;
 

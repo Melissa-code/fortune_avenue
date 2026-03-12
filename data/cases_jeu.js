@@ -19,7 +19,7 @@ const casesJeuJson = [
     },
     {
         "numero": 2, 
-        "type": "fonds communs", 
+        "type": "fonds_communs", 
         "nom": "Fonds communs", 
         "couleur": null,
         "prixAchat": null,
@@ -154,7 +154,7 @@ const casesJeuJson = [
     },
     {
         "numero": 17, 
-        "type": "fonds communs", 
+        "type": "fonds_communs", 
         "nom": "Fonds communs", 
         "couleur": null,
         "prixAchat": null,
@@ -181,7 +181,7 @@ const casesJeuJson = [
     },
     {
         "numero": 20, 
-        "type": "parc gratuit", 
+        "type": "parc_gratuit", 
         "nom": "Parc gratuit", 
         "couleur": null,
         "prixAchat": null,
@@ -271,7 +271,7 @@ const casesJeuJson = [
     },
     {
         "numero": 30, 
-        "type": "aller en prison", 
+        "type": "aller_en_prison", 
         "nom": "Aller en prison", 
         "couleur": null,
         "prixAchat": null,
@@ -298,7 +298,7 @@ const casesJeuJson = [
     },
     {
         "numero": 33, 
-        "type": "fonds communs", 
+        "type": "fonds_communs", 
         "nom": "Fonds communs", 
         "couleur": null,
         "prixAchat": null,

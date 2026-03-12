@@ -1,5 +1,5 @@
 const TypesMessagesModale = Object.freeze({
-    // arraow fn returns an object with title and message to display in the modal based on details provided
+    // arrow function returns an object with title and message to display in the modal based on details provided
     achat : (details) => ({
         titre: "Achat réussi",
         message: `${details.joueur} vient d'acheter "${details.propriete}" pour un montant de ${details.montant} M.`
@@ -23,6 +23,22 @@ const TypesMessagesModale = Object.freeze({
     carte_fonds_communs : (details) => ({
         titre: "Carte Fonds Communs",
         message: `${details.joueur} a tiré une carte Fonds Communs : ${details.description}.`   
+    }),
+    depart : (details) => ({
+        titre: "Passage par la case Départ",
+        message: `${details.joueur} passe par la case Départ et reçoit 200 M. `
+    }),
+    parc_gratuit : (details) => ({
+        titre: "Repos au Parc Gratuit",
+        message: `${details.joueur} se repose au Parc Gratuit.`
+    }),
+    prison : (details) => ({
+        titre: "Simple visite en prison",
+        message: `${details.joueur} rend visite à la prison.`
+    }),
+    aller_en_prison: (details) => ({
+        titre: "Allez en Prison !",
+        message: `${details.joueur} est envoyé en prison. Ne passez pas par la case Départ !`
     }),
 })
 
