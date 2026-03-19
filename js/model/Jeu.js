@@ -82,6 +82,19 @@ class Jeu {
 
     avancerJoueurCourant(valeurDeplacement) {
         const joueurCourant = this.joueurs[this.joueurActuelIndex]; 
+
+        // estt prison
+        if (joueurCourant.estEnPrison) {
+            if (valeurDeplacement === 12) {
+                joueurCourant.estEnPrison = false; 
+                this.etat = EtatsJeu.EN_COURS;
+                return []; 
+            } else {
+                this.terminerTour() ;
+                return [];
+            }
+        }
+
         joueurCourant.avancer("relatif", valeurDeplacement) //chiffre du dé
         
         const caseJeu = this.casesJeu[joueurCourant.position]; 
@@ -105,6 +118,7 @@ class Jeu {
             return this.listePropositions; // []array de propositions valables (acheter, payer loyer, decliner...)
         }
 
+        this.terminerTour();
         return []; //pas d'effets pour les cases Départ/Parc/Prison 
     }
 
@@ -163,5 +177,8 @@ class Jeu {
 
 export default Jeu; 
 
-// gérer les cases d'action (taxe départ...)
-// voir si on fait 2 effets prison effet + deplacementEffet
+// logique prison: 3 essais de 12 pour sortir :compteurPourSortirPrison = 0; 
+// sinon payer 
+// sinon avoir une carte chance (conservée)
+// sinon acheter à l'autre joueuur sa carte sortir de prison : commbien? 
+// sinon perdu jeu fini

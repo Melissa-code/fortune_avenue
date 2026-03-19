@@ -13,7 +13,11 @@ class Controller {
         //sécurité: ne pas lancer de dé si en attente de proposition
         if (this.jeu.etat !== EtatsJeu.EN_COURS) return; 
 
-        const valeurDeplacement = this.jeu.de.lancer();
+        let valeurDeplacement = this.jeu.de.lancer();
+        // valeurDeplacement += this.jeu.de.lancer();
+        // valeurDeplacement += this.jeu.de.lancer();
+        
+        console.log("val depla",valeurDeplacement)
         const reponseCase = this.jeu.avancerJoueurCourant(valeurDeplacement);
 
         this.view.refresh();
@@ -35,7 +39,7 @@ class Controller {
     
         else {
             console.log("Aucun message ou proposition à afficher.");
-            this.jeu.terminerTour();
+            // this.jeu.terminerTour();
             this.view.refresh();
         }
     }

@@ -1,5 +1,5 @@
 const ImagesResultatsDe = Object.freeze({
-  UN: "./images/de/de_1.svg",
+  // UN: "./images/de/de_1.svg",
   DEUX: "./images/de/de_2.svg",
   TROIS: "./images/de/de_3.svg",
   QUATRE: "./images/de/de_4.svg",

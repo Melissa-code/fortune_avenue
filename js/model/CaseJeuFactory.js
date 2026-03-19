@@ -37,9 +37,6 @@ export class CaseJeuFactory {
             case TypesCases.SOCIETE:
                 return CaseJeuFactory.parseSociete(jsonObj);
 
-            // case TypesCases.TAXE:
-            //     return CaseJeuFactory.parseTaxe(jsonObj);
-
             default:
                 // création de l'objet CaseAction (qui va contenir des effets spécifiques)
                 let caseAction = CaseJeuFactory.parseAction(jsonObj);
@@ -90,8 +87,4 @@ export class CaseJeuFactory {
     static parseAction(dataObj) {
         return new CaseAction(dataObj.nom, dataObj.type);
     }
-
-    // static parseTaxe(dataObj) {
-    //     return new CaseAction(dataObj.nom, dataObj.type, dataObj.prixAchat);
-    // }
 }

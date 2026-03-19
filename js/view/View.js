@@ -93,9 +93,8 @@ class View {
    */
   afficherResultatDe() {
     let valeurAfficheeDe = this.jeu.de.valeurAffichee; // from jeu (move)
-    if (valeurAfficheeDe === 1) valeurAfficheeDe = 2;  //dé pas encore lancé: 2 par defaut sinon ne s affiche pas
-
-    let imageDe = this.imagesResultatsDe[valeurAfficheeDe - 1]; //indexé 0-11 dans array
+    let imageDe = this.imagesResultatsDe[valeurAfficheeDe - 2]; //indexé 0-11 
+  
     if (imageDe && imageDe.complete) {
       this.ctx.save();
 
