@@ -37,8 +37,8 @@ export class CaseJeuFactory {
             case TypesCases.SOCIETE:
                 return CaseJeuFactory.parseSociete(jsonObj);
 
-            case TypesCases.TAXE:
-                return CaseJeuFactory.parseTaxe(jsonObj);
+            // case TypesCases.TAXE:
+            //     return CaseJeuFactory.parseTaxe(jsonObj);
 
             default:
                 // création de l'objet CaseAction (qui va contenir des effets spécifiques)
@@ -59,13 +59,15 @@ export class CaseJeuFactory {
                         caseAction.ajouterEffet(new PrisonEffet(false));
                         break;
                     case TypesCases.TAXE:
+                        console.log('factory: case_taxe')
                         const montant = jsonObj.prixAchat;
                         caseAction.ajouterEffet(new VersementEffet(montant, "joueur", "banque"));
+                        // caseAction.ajouterEffet(new VersementEffet(montant, null , null));
                         break;
                     case TypesCases.ALLEZ_EN_PRISON:
-                        console.log("je rentre en prison factory")
+                        // console.log("je rentre en prison factory")
                         caseAction.ajouterEffet(new PrisonEffet(true));
-                        caseAction.ajouterEffet(new DeplacementEffet("absolu", 10, null)); //Case N°10
+                        // caseAction.ajouterEffet(new DeplacementEffet("absolu", 10, null)); //Case N°10
                         break;
                     }
                 return caseAction;
@@ -89,7 +91,7 @@ export class CaseJeuFactory {
         return new CaseAction(dataObj.nom, dataObj.type);
     }
 
-    static parseTaxe(dataObj) {
-        return new CaseAction(dataObj.nom, dataObj.type, dataObj.prixAchat);
-    }
+    // static parseTaxe(dataObj) {
+    //     return new CaseAction(dataObj.nom, dataObj.type, dataObj.prixAchat);
+    // }
 }

@@ -45,14 +45,18 @@ export class VersementEffet extends Effet {
     }
 
     appliquer(joueur, jeu = null, banque = null) {
-        console.log("Paiement de ",this.montant, " de ", this.source.nom, "vers", this.destinataire.nom);
 
-        // 1- joueur paie banque (achat/taxe)
-        if (this.source instanceof Joueur && this.destinataire instanceof Banque) {
-            this.source.payer(this.montant);
-            this.destinataire.recevoir(this.montant);
-            console.log("argent du joueur apres paiement: ", this.source.argent)
+        // 1- joueur paie banque (achat/taxe) - attention string != obj
+        if (this.source === "joueur" && this.destinataire === "banque") {
+            joueur.payer(this.montant);
+            banque.recevoir(this.montant);
+            console.log("Taxe payée:", this.montant, "- Nouveau solde du joueur:", joueur.argent);
+        }
 
+        else if (this.source === "banque" && this.destinataire === "joueur") {
+            joueur.recevoir(this.montant); 
+            console.log("Le joueur a recu de la banque : ", this.montant);
+      
         // 2- autres joueurs paient joueur courant (carte anniversaire)
         } else if (this.estCollectif) {
             let tousLesJoueurs = jeu.getJoueurs(); 
@@ -64,6 +68,10 @@ export class VersementEffet extends Effet {
             }
             console.log("argent du joueur ap recevoir argent: ", joueur.argent)
 
+        } else if (this.source instanceof Joueur && this.destinataire instanceof Joueur) {
+            this.source.payer(this.montant);
+            this.destinataire.recevoir(this.montant);
+   
         // 3- banque paie joueur (case départ/gain)
         } else if (this.source instanceof Banque && this.destinataire instanceof Joueur) {
             joueur.recevoir(this.montant);
@@ -87,7 +95,7 @@ export class PrisonEffet extends Effet {
         console.log("joueur en prison" ,joueur)
         if (this.allerEnPrison) {
             console.log("en prison ")
-            // joueur.position = 10; 
+            joueur.position = 10; 
             joueur.estEnPrison = true; 
         } else {
             console.log("pas en prison")

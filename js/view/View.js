@@ -139,7 +139,7 @@ class View {
     for (let i = 0; i < joueurs.length; i++) {
       const imagePion = this.imagesPions[i];
       const positionJoueur = joueurs[i].position;
-      console.log("positionJoueur", positionJoueur)
+      // console.log("positionJoueur", positionJoueur)
 
       if (imagePion && imagePion.complete) {
         let x = 0;
