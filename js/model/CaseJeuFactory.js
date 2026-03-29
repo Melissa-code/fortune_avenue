@@ -56,13 +56,10 @@ export class CaseJeuFactory {
                         caseAction.ajouterEffet(new PrisonEffet(false));
                         break;
                     case TypesCases.TAXE:
-                        console.log('factory: case_taxe')
                         const montant = jsonObj.prixAchat;
                         caseAction.ajouterEffet(new VersementEffet(montant, "joueur", "banque"));
-                        // caseAction.ajouterEffet(new VersementEffet(montant, null , null));
                         break;
                     case TypesCases.ALLEZ_EN_PRISON:
-                        // console.log("je rentre en prison factory")
                         caseAction.ajouterEffet(new PrisonEffet(true));
                         // caseAction.ajouterEffet(new DeplacementEffet("absolu", 10, null)); //Case N°10
                         break;

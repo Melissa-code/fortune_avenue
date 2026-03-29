@@ -82,29 +82,6 @@ class Jeu {
         return null; 
     }
 
-    sortirPrisonAvecDe(joueurCourant, valeurDeplacement) {
-        if (valeurDeplacement === 12) {
-            joueurCourant.estEnPrison = false; 
-            joueurCourant.compteurPourSortirPrison = 0; 
-            this.etat = EtatsJeu.EN_COURS;
-
-            return true; 
-        } else {
-            joueurCourant.compteurPourSortirPrison += 1; 
-
-            if (joueurCourant.compteurPourSortirPrison === 3) {
-                joueurCourant.estEnPrison = false; 
-                joueurCourant.compteurPourSortirPrison = 0;
-                joueurCourant.payer(50); 
-                this.banque.recevoir(50);
-
-                return true; 
-            }
-
-            return false; 
-        }
-    }
-
     /**
      * Proposer au joueur options possibles pour sortir de prison (dépend de l'etat du joueur)
      */
@@ -123,19 +100,6 @@ class Jeu {
 
     avancerJoueurCourant(valeurDeplacement) {
         const joueurCourant = this.joueurs[this.joueurActuelIndex]; 
-
-        // joueur est en prison
-        if (joueurCourant.estEnPrison) {
-            // Propositions de sorties de prison 
-            return this.filtrerPropositionsValablesSortiePrison(joueurCourant); 
-
-            const sortieAvecDe = this.sortirPrisonAvecDe(joueurCourant, valeurDeplacement); 
-
-            if (!sortieAvecDe) {
-                this.terminerTour() ;
-                return [];
-            }
-        }
 
         joueurCourant.avancer("relatif", valeurDeplacement) //chiffre du dé
         
@@ -189,21 +153,22 @@ class Jeu {
         const joueurCourant = this.joueurs[this.joueurActuelIndex]; 
         const numProp = numProposition - 1; // n-1 dans la liste de propositions
 
-        if (numProp > this.listePropositions.length || numProp < 0) return; 
+        if (numProp < 0 || numProp > this.listePropositions.length) return; 
 
         // sortir du menu de propositions (dernier chiffre)
-        if (numProp === this.listePropositions.length ) return this.decliner(joueurCourant, this.casesJeu[joueurCourant.position]);
+        if (numProp === this.listePropositions.length) return this.decliner(joueurCourant, this.casesJeu[joueurCourant.position]);
         
         // Valider proposition (bool) et appliquer ses effets (ex: acheter la case/payer pour sortir de prison...)
-        const success = this.listePropositions[numProp].valider(joueurCourant, this.casesJeu[joueurCourant.position], this.banque);
+        const success = this.listePropositions[numProp].valider(joueurCourant, this, this.casesJeu[joueurCourant.position], this.banque);
         if (!success) return; 
 
-        return this.createMessage("achat", {
-            joueur: joueurCourant.nom,  
-            propriete: this.casesJeu[joueurCourant.position].nom,
-            montant: this.casesJeu[joueurCourant.position].prixAchat
-        });
-    }
+        // return this.createMessage("achat", {
+        //     joueur: joueurCourant.nom,  
+        //     propriete: this.casesJeu[joueurCourant.position].nom,
+        //     montant: this.casesJeu[joueurCourant.position].prixAchat
+        // });
+        return success;
+    } 
 
     terminerTour() {
         this.etat = EtatsJeu.EN_COURS;

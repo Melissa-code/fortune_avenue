@@ -9,8 +9,8 @@ class De {
      */
     lancer() {
         //this.valeurAffichee = 10; //pour tests
-        
         this.valeurAffichee = Math.floor(Math.random() * 11) + 2;
+        console.log("valeur du dé: ", this.valeurAffichee); 
 
         return this.valeurAffichee;
     }

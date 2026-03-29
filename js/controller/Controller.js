@@ -1,7 +1,5 @@
-import ImagesPions from '../model/enums/ImagesPions.js';
-import Jeu from '../model/Jeu.js';
-import { Proposition } from '../model/Proposition.js';
 import EtatsJeu from '../model/enums/EtatsJeu.js';
+
 
 class Controller {
     constructor(jeu) {
@@ -9,19 +7,35 @@ class Controller {
         this.propositions = [];
     }
 
-    jouerCarte() {
-        const reponse = this.jeu.jouerCarteSortiePrison(); 
+    sortirDePrison(joueurCourant) {
+        const propositionsSortiePrison = this.jeu.filtrerPropositionsValablesSortiePrison(joueurCourant);
+        this.view.refresh();
+
+        if (propositionsSortiePrison.length > 0) {
+            this.jeu.listePropositions = propositionsSortiePrison; 
+            this.jeu.etat = EtatsJeu.EN_ATTENTE; 
+            this.view.afficherMenuPropositions(this.jeu.listePropositions);
+            console.log('Affiche les propositions pour sortir de prison ')
+            return; 
+        }
     }
 
     lancerDe() {
-        //sécurité: ne pas lancer de dé si en attente de proposition
-        if (this.jeu.etat !== EtatsJeu.EN_COURS) return; 
+        if (this.jeu.etat !== EtatsJeu.EN_COURS) return; //sécurité: ne pas lancer le dé si en attente de propositions
 
+        const joueurCourant = this.jeu.joueurs[this.jeu.joueurActuelIndex];
+        console.log("hello" , joueurCourant)
+
+        // vérifier si joueur courant est en prison -> essayer de sortir 
+        if (joueurCourant.estEnPrison) {
+            this.sortirDePrison(joueurCourant); 
+            return; 
+        }
+
+        // lancer le dé et avancer 
         let valeurDeplacement = this.jeu.de.lancer();
-        
-        console.log("val depla",valeurDeplacement)
+        this.jeu.listePropositions = []; 
         const reponseCase = this.jeu.avancerJoueurCourant(valeurDeplacement);
-
         this.view.refresh();
 
         // if (reponseCase && reponseCase.titre) {
@@ -37,9 +51,7 @@ class Controller {
         if (reponseCase.length > 0) {
             this.propositions = reponseCase; 
             this.view.afficherMenuPropositions(this.propositions);
-        }   
-    
-        else {
+        } else {
             console.log("Aucun message ou proposition à afficher.");
             // this.jeu.terminerTour();
             this.view.refresh();

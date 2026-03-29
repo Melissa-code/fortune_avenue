@@ -1,4 +1,5 @@
 import { VersementEffet } from "./Effet.js";
+import EtatsJeu from './enums/EtatsJeu.js';
 
 
 // #region Proposition 
@@ -14,7 +15,7 @@ export class Proposition {
 
     estDisponible(joueur = null, caseJeu = null) {}
 
-    valider(joueur = null, caseJeu = null, banque = null) {}
+    valider(joueur = null, jeu = null, caseJeu = null, banque = null) {}
 
     /**
      * static car ne depend d'aucune donnee ou etat d'objet
@@ -34,15 +35,36 @@ export class Proposition {
 
 export class PropositionJouerDeSortiePrison extends Proposition {
     constructor() {
-        super("jouer_de", "Voulez-vous lancer le dé pour sortir de prison ?");
+        super("Lancer le dé", "Voulez-vous lancer le dé pour sortir de prison ?");
     }
 
     estDisponible() { 
         return true; 
     }
 
-    valider() { 
-        return true; 
+    valider(joueur, jeu, caseJeu, banque) { 
+        const valeurDeplacement = jeu.de.lancer(); 
+   
+        if (valeurDeplacement === 12) {
+            joueur.estEnPrison = false; 
+            joueur.compteurPourSortirPrison = 0; 
+            jeu.etat = EtatsJeu.EN_COURS;
+            // return true; 
+            return { titre: "Libre", message: "Vous sortez de prison." };
+        } else {
+            joueur.compteurPourSortirPrison += 1; 
+
+            if (joueur.compteurPourSortirPrison === 3) {
+                joueur.estEnPrison = false; 
+                joueur.compteurPourSortirPrison = 0;
+                joueur.payer(50); 
+                banque.recevoir(50);
+                // return true; 
+                return { titre: "Raté", message: "Vous restez en prison." };
+            }
+
+            return false; 
+        }
     }
 }
 
@@ -52,7 +74,7 @@ export class PropositionJouerDeSortiePrison extends Proposition {
 
 export class PropositionJouerCarteChanceSortiePrison extends Proposition {
     constructor() {
-        super("jouer_carte_chance", "Voulez-vous jouer la carte n° 9 'Sortir de prison' pour sortir de prison ?");
+        super("Jouer la carte chance", "Voulez-vous jouer la carte n° 9 'Sortir de prison' pour sortir de prison ?");
     }
 
     estDisponible(joueur) {
@@ -63,14 +85,15 @@ export class PropositionJouerCarteChanceSortiePrison extends Proposition {
         return false; 
     }
 
-    valider(joueur) {
+    valider(joueur, jeu, caseJeu, banque) {
         if (!this.estDisponible(joueur)) return false;
 
         if (joueur.carteChanceSortiePrison = true) {
             joueur.carteChanceSortiePrison = false; 
             joueur.estEnPrison = false; 
             joueur.compteurPourSortirPrison = 0; 
-            return true;
+            // return true;
+            return { titre: "Libre", message: "Vous sortez de prison." };
         } 
 
         return false;
@@ -83,7 +106,7 @@ export class PropositionJouerCarteChanceSortiePrison extends Proposition {
 
 export class PropositionJouerCarteFondsCommunsSortiePrison extends Proposition {
     constructor() {
-        super("jouer_carte_fonds_commun", "Voulez-vous jouer la carte n° 5 'Sortir de prison' pour sortir de prison ?");
+        super("Jouer la carte fonds commun", "Voulez-vous jouer la carte n° 5 'Sortir de prison' pour sortir de prison ?");
     }
 
     estDisponible(joueur) {
@@ -94,14 +117,15 @@ export class PropositionJouerCarteFondsCommunsSortiePrison extends Proposition {
         return false; 
     }
 
-    valider(joueur) {
+    valider(joueur, jeu, caseJeu, banque) {
         if (!this.estDisponible(joueur)) return false;
 
         if (joueur.carteFondsCommunsSortiePrison = true) {
             joueur.carteFondsCommunsSortiePrison = false; 
             joueur.estEnPrison = false; 
             joueur.compteurPourSortirPrison = 0; 
-            return true;
+            // return true;
+            return { titre: "Libre", message: "Vous sortez de prison." };
         } 
 
         return false;
@@ -128,7 +152,7 @@ export class PropositionAcheterPropriete extends Proposition {
      * valider l'achat de la propriete (return bool): 
      * proprietaire de la case + transfert argent joueur -> banque
      */
-    valider(joueur, casePropriete, banque) {
+    valider(joueur, jeu, casePropriete, banque) {
         if (!this.estDisponible(joueur, casePropriete)) return false; 
 
         casePropriete.proprietaire = joueur; 
@@ -137,7 +161,8 @@ export class PropositionAcheterPropriete extends Proposition {
         const versement = new VersementEffet(casePropriete.prixAchat, joueur, banque); 
         versement.appliquer(joueur, banque); 
 
-        return true;
+        // return true;
+        return { titre: "Achat", message: `${joueur.nom} a acheté ${casePropriete.nom} pour ${casePropriete.prixAchat}€.`}
     }
 }
 
@@ -154,7 +179,7 @@ export class PropositionHypothequer extends Proposition {
         
     }
 
-    valider(joueur, casePropriete, banque) {
+    valider(joueur, jeu, casePropriete, banque) {
         
     }
 }
@@ -172,7 +197,7 @@ export class PropositionLeverHypotheque extends Proposition{
         
     }
 
-    valider(joueur, casePropriete) {
+    valider(joueur, jeu, casePropriete, banque) {
         
     }
 }
@@ -193,7 +218,7 @@ export class PropositionConstruireMaison extends Proposition{
         return false; 
     }
 
-    valider(joueur, caseRue, banque) {
+    valider(joueur, jeu, caseRue, banque) {
         joueur.argent -= caseRue.prixMaison; 
         caseRue.nombreMaisons++; 
     }
@@ -215,7 +240,7 @@ export class PropositionConctruireHotel extends Proposition {
         return false; 
     }
 
-    valider(joueur, caseRue, banque) {
+    valider(joueur, jeu, caseRue, banque) {
         joueur.argent -= caseRue.priHotel; 
         caseRue.nombreMaisons = 0;
         caseRue.nombreHotels = 1; //1 hotel 

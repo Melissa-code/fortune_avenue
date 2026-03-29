@@ -43,7 +43,7 @@ class View {
       const prompt = event.key;
       this.controller.soumettreProposition(parseInt(prompt));
       
-      console.log("N° réponse du user : ", prompt);
+      console.log("N° de réponse : ", prompt);
     })
   } 
 
