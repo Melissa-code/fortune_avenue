@@ -40,7 +40,7 @@ export class CasePropriete extends CaseJeu {
         const propositionsValables = [];
 
         for (let propositionValable of propositions) {
-            if (propositionValable.titre === "decliner" || propositionValable.estDisponible(joueur, this)) { 
+            if (propositionValable.estDisponible(joueur, this)) { 
                 propositionsValables.push(propositionValable); 
             }
         }

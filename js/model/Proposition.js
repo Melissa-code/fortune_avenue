@@ -12,9 +12,9 @@ export class Proposition {
         this.description = description; 
     }
 
-    estDisponible(joueur=null, caseJeu=null) {}
+    estDisponible(joueur = null, caseJeu = null) {}
 
-    valider(joueur=null, caseJeu=null, banque = null) {}
+    valider(joueur = null, caseJeu = null, banque = null) {}
 
     /**
      * static car ne depend d'aucune donnee ou etat d'objet
@@ -52,7 +52,7 @@ export class PropositionJouerDeSortiePrison extends Proposition {
 
 export class PropositionJouerCarteChanceSortiePrison extends Proposition {
     constructor() {
-        super("jouer_carte", "Voulez-vous jouer la carte n° 9 'Sortir de prison' pour sortir de prison ?");
+        super("jouer_carte_chance", "Voulez-vous jouer la carte n° 9 'Sortir de prison' pour sortir de prison ?");
     }
 
     estDisponible(joueur) {
@@ -83,7 +83,7 @@ export class PropositionJouerCarteChanceSortiePrison extends Proposition {
 
 export class PropositionJouerCarteFondsCommunsSortiePrison extends Proposition {
     constructor() {
-        super("jouer_carte", "Voulez-vous jouer la carte n° 5 'Sortir de prison' pour sortir de prison ?");
+        super("jouer_carte_fonds_commun", "Voulez-vous jouer la carte n° 5 'Sortir de prison' pour sortir de prison ?");
     }
 
     estDisponible(joueur) {

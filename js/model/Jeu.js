@@ -8,7 +8,9 @@ import { CarteFactory } from './CarteFactory.js';
 import De from './De.js';
 import Banque from './Banque.js'; 
 import EtatsJeu from './enums/EtatsJeu.js';
-import { CasePropriete, CaseSociete, CaseGare, CaseAction } from './CaseJeu.js';
+import { CasePropriete } from './CaseJeu.js';
+import { Proposition } from './Proposition.js';
+
 
 class Jeu {
     constructor() {
@@ -23,7 +25,6 @@ class Jeu {
         this.banque = new Banque();
         this.etat = EtatsJeu.EN_COURS; 
         this.listePropositions = []; 
-        //console.log("effets ", this.casesJeu[30].effets)
     }
 
     ajouterJoueur(nom, pion) {
@@ -54,6 +55,7 @@ class Jeu {
             if (caseJeu.couleur === couleur && caseJeu.proprietaire !== joueur )
                 return false;
             }
+
         return true;
     }
     
@@ -80,8 +82,7 @@ class Jeu {
         return null; 
     }
 
-    sortirPrison(joueurCourant, valeurDeplacement) {
-        //valeurDeplacement = 12;
+    sortirPrisonAvecDe(joueurCourant, valeurDeplacement) {
         if (valeurDeplacement === 12) {
             joueurCourant.estEnPrison = false; 
             joueurCourant.compteurPourSortirPrison = 0; 
@@ -104,14 +105,33 @@ class Jeu {
         }
     }
 
+    /**
+     * Proposer au joueur options possibles pour sortir de prison (dépend de l'etat du joueur)
+     */
+    filtrerPropositionsValablesSortiePrison(joueur) {
+        const propositions = Proposition.getListePropositionsSortiePrison(); 
+        const propositionsValables = [];
+
+        for (let propositionValable of propositions) {
+            if (propositionValable.estDisponible(joueur)) { 
+                propositionsValables.push(propositionValable); 
+            }
+        }
+
+        return propositionsValables; 
+    }
+
     avancerJoueurCourant(valeurDeplacement) {
         const joueurCourant = this.joueurs[this.joueurActuelIndex]; 
 
         // joueur est en prison
         if (joueurCourant.estEnPrison) {
-            const peutAvancer = this.sortirPrison(joueurCourant, valeurDeplacement); 
-            
-            if (!peutAvancer) {
+            // Propositions de sorties de prison 
+            return this.filtrerPropositionsValablesSortiePrison(joueurCourant); 
+
+            const sortieAvecDe = this.sortirPrisonAvecDe(joueurCourant, valeurDeplacement); 
+
+            if (!sortieAvecDe) {
                 this.terminerTour() ;
                 return [];
             }
@@ -198,9 +218,10 @@ class Jeu {
 
 export default Jeu; 
 
-// logique prison: 3 essais de 12 pour sortir :compteurPourSortirPrison = 0; 
-// sinon payer 
-// sinon avoir une carte chance (conservée): finir Propositions 
+// logique prison: 
+// sortir une carte chance (conservée): finir Propositions ?
+// sinon payer ?
+// lancer le dé (3 essais si dé === 12 alors sortir ) compteurPourSortirPrison = 0
 // sinon acheter à l'autre joueuur sa carte sortir de prison : combien? 
 // faire la CarteFactory 
 
