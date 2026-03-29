@@ -80,16 +80,38 @@ class Jeu {
         return null; 
     }
 
+    sortirPrison(joueurCourant, valeurDeplacement) {
+        //valeurDeplacement = 12;
+        if (valeurDeplacement === 12) {
+            joueurCourant.estEnPrison = false; 
+            joueurCourant.compteurPourSortirPrison = 0; 
+            this.etat = EtatsJeu.EN_COURS;
+
+            return true; 
+        } else {
+            joueurCourant.compteurPourSortirPrison += 1; 
+
+            if (joueurCourant.compteurPourSortirPrison === 3) {
+                joueurCourant.estEnPrison = false; 
+                joueurCourant.compteurPourSortirPrison = 0;
+                joueurCourant.payer(50); 
+                this.banque.recevoir(50);
+
+                return true; 
+            }
+
+            return false; 
+        }
+    }
+
     avancerJoueurCourant(valeurDeplacement) {
         const joueurCourant = this.joueurs[this.joueurActuelIndex]; 
 
-        // estt prison
+        // joueur est en prison
         if (joueurCourant.estEnPrison) {
-            if (valeurDeplacement === 12) {
-                joueurCourant.estEnPrison = false; 
-                this.etat = EtatsJeu.EN_COURS;
-                return []; 
-            } else {
+            const peutAvancer = this.sortirPrison(joueurCourant, valeurDeplacement); 
+            
+            if (!peutAvancer) {
                 this.terminerTour() ;
                 return [];
             }
@@ -114,7 +136,6 @@ class Jeu {
             //this.listePropositions = effets; // propositions au joueur 
 
             this.etat = EtatsJeu.EN_ATTENTE; // de propositions (modale)
-            console.log(this.listePropositions)
             return this.listePropositions; // []array de propositions valables (acheter, payer loyer, decliner...)
         }
 
@@ -179,6 +200,8 @@ export default Jeu;
 
 // logique prison: 3 essais de 12 pour sortir :compteurPourSortirPrison = 0; 
 // sinon payer 
-// sinon avoir une carte chance (conservée)
-// sinon acheter à l'autre joueuur sa carte sortir de prison : commbien? 
+// sinon avoir une carte chance (conservée): finir Propositions 
+// sinon acheter à l'autre joueuur sa carte sortir de prison : combien? 
+// faire la CarteFactory 
+
 // sinon perdu jeu fini

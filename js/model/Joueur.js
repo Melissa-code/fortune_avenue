@@ -8,7 +8,8 @@ class Joueur {
         this.argent = argent;
         this.proprietes = [];
         this.estEnPrison = false; 
-        this.carteSortiePrison = 0; 
+        this.carteChanceSortiePrison = false; //carte chance n°9 et carte fonds communn°5 (2 dans le jeu)
+        this.carteFondsCommunsSortiePrison = false;
         this.compteurPourSortirPrison = 0; // ap 3 tours
         this.aTraverseCaseDepart = false; 
     }
@@ -36,10 +37,6 @@ class Joueur {
         if (bonusDePassage !== 0) {
             this.recevoir(bonusDePassage);
         }
-    }
-
-    passerSonTour() {
-
     }
 
     recevoir(montant) {

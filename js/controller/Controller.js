@@ -9,13 +9,15 @@ class Controller {
         this.propositions = [];
     }
 
+    jouerCarte() {
+        const reponse = this.jeu.jouerCarteSortiePrison(); 
+    }
+
     lancerDe() {
         //sécurité: ne pas lancer de dé si en attente de proposition
         if (this.jeu.etat !== EtatsJeu.EN_COURS) return; 
 
         let valeurDeplacement = this.jeu.de.lancer();
-        // valeurDeplacement += this.jeu.de.lancer();
-        // valeurDeplacement += this.jeu.de.lancer();
         
         console.log("val depla",valeurDeplacement)
         const reponseCase = this.jeu.avancerJoueurCourant(valeurDeplacement);

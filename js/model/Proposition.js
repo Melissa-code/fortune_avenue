@@ -1,23 +1,20 @@
 import { VersementEffet } from "./Effet.js";
-import { CasePropriete } from './CaseJeu.js';
 
-/* ********************* Proposition ************************ */
+
+// #region Proposition 
 
 export class Proposition {
     static LISTE_PROPOSITIONS = []; 
+    static LISTE_PROPOSITIONS_SORTIE_PRISON = []; 
 
     constructor(titre, description) {
         this.titre = titre;
         this.description = description; 
     }
 
-    estDisponible(joueur, caseJeu) {
-        //
-    }
+    estDisponible(joueur=null, caseJeu=null) {}
 
-    valider(joueur, caseJeu, banque = null) {
-        //
-    }
+    valider(joueur=null, caseJeu=null, banque = null) {}
 
     /**
      * static car ne depend d'aucune donnee ou etat d'objet
@@ -25,10 +22,95 @@ export class Proposition {
     static getListePropositions() {
         return Proposition.LISTE_PROPOSITIONS; 
     }
+
+    static getListePropositionsSortiePrison() {
+        return Proposition.LISTE_PROPOSITIONS_SORTIE_PRISON;
+    }
 }
 
+// #endregion  
 
-/* ********************* Acheter propriete ************************ */
+// #region PropositionJouerDeSortiePrison
+
+export class PropositionJouerDeSortiePrison extends Proposition {
+    constructor() {
+        super("jouer_de", "Voulez-vous lancer le dé pour sortir de prison ?");
+    }
+
+    estDisponible() { 
+        return true; 
+    }
+
+    valider() { 
+        return true; 
+    }
+}
+
+// #endregion 
+
+// #region PropositionJouerCarteChanceSortiePrison 
+
+export class PropositionJouerCarteChanceSortiePrison extends Proposition {
+    constructor() {
+        super("jouer_carte", "Voulez-vous jouer la carte n° 9 'Sortir de prison' pour sortir de prison ?");
+    }
+
+    estDisponible(joueur) {
+        if (joueur.carteChanceSortiePrison === true ) { 
+            return true; 
+        }
+
+        return false; 
+    }
+
+    valider(joueur) {
+        if (!this.estDisponible(joueur)) return false;
+
+        if (joueur.carteChanceSortiePrison = true) {
+            joueur.carteChanceSortiePrison = false; 
+            joueur.estEnPrison = false; 
+            joueur.compteurPourSortirPrison = 0; 
+            return true;
+        } 
+
+        return false;
+    }
+}
+
+// #endregion 
+
+// #region PropositionJouerCarteFondsCommunsSortiePrison
+
+export class PropositionJouerCarteFondsCommunsSortiePrison extends Proposition {
+    constructor() {
+        super("jouer_carte", "Voulez-vous jouer la carte n° 5 'Sortir de prison' pour sortir de prison ?");
+    }
+
+    estDisponible(joueur) {
+        if (joueur.carteFondsCommunsSortiePrison === true) {
+            return true;
+        }
+
+        return false; 
+    }
+
+    valider(joueur) {
+        if (!this.estDisponible(joueur)) return false;
+
+        if (joueur.carteFondsCommunsSortiePrison = true) {
+            joueur.carteFondsCommunsSortiePrison = false; 
+            joueur.estEnPrison = false; 
+            joueur.compteurPourSortirPrison = 0; 
+            return true;
+        } 
+
+        return false;
+    }
+}
+
+// #endregion 
+
+// #region PropositionAcheterPropriete
 
 export class PropositionAcheterPropriete extends Proposition {
     constructor() {
@@ -36,9 +118,7 @@ export class PropositionAcheterPropriete extends Proposition {
     }
 
     estDisponible(joueur, casePropriete) {
-        console.log("case propriete :", casePropriete)
         if (casePropriete.estLibre() && joueur.argent >= casePropriete.prixAchat) {
-            console.log("case propriete 2:", casePropriete)
             return true; 
         }
         return false; 
@@ -61,7 +141,9 @@ export class PropositionAcheterPropriete extends Proposition {
     }
 }
 
-/* ********************* Hypothequer propriete ************************ */
+// #endregion
+
+// #region PropositionHypothequer 
 
 export class PropositionHypothequer extends Proposition {
     constructor() {
@@ -77,7 +159,9 @@ export class PropositionHypothequer extends Proposition {
     }
 }
 
-/* ********************* Lever hypotheque propriete ************************ */
+// #endregion
+
+// #region PropositionLeverHypotheque
 
 export class PropositionLeverHypotheque extends Proposition{
     constructor() {
@@ -93,7 +177,9 @@ export class PropositionLeverHypotheque extends Proposition{
     }
 }
 
-/* ********************* construire maison sur propriete ************************ */
+// #endregion
+
+// #region PropositionConstruireMaison 
 
 export class PropositionConstruireMaison extends Proposition{
     constructor(quantite) {
@@ -113,7 +199,9 @@ export class PropositionConstruireMaison extends Proposition{
     }
 }
 
-/* ********************* construire hotel sur propriete ************************ */
+// #endregion 
+
+// #region  PropositionConctruireHotel 
 
 export class PropositionConctruireHotel extends Proposition {
     constructor() {
@@ -134,14 +222,25 @@ export class PropositionConctruireHotel extends Proposition {
     }
 }
 
-/* *********************  LISTE_PROPOSITIONS ************************ */
+// #endregion
 
-// ne créer les obkets qu'une seule fois pour optimiser la mémoire et performances
+
+// #region LISTES (ne créer les obkets qu'une seule fois pour optimiser la mémoire et performances)
+
+// Propositions[] liées aux propriétés 
 Proposition.LISTE_PROPOSITIONS = [
     new PropositionAcheterPropriete(),
     new PropositionHypothequer(),
     new PropositionLeverHypotheque(),
     new PropositionConstruireMaison(),
     new PropositionConctruireHotel(),
-    //new Proposition("decliner", "Aucune action, vous finissez votre tour."),
 ]
+
+// Propositions[] liées à l'action sortir de prison 
+Proposition.LISTE_PROPOSITIONS_SORTIE_PRISON = [
+    new PropositionJouerDeSortiePrison,
+    new PropositionJouerCarteChanceSortiePrison(),
+    new PropositionJouerCarteFondsCommunsSortiePrison(),
+]
+
+// #endregion
