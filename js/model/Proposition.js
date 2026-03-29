@@ -49,7 +49,6 @@ export class PropositionJouerDeSortiePrison extends Proposition {
             joueur.estEnPrison = false; 
             joueur.compteurPourSortirPrison = 0; 
             jeu.etat = EtatsJeu.EN_COURS;
-            // return true; 
             return { titre: "Libre", message: "Vous sortez de prison." };
         } else {
             joueur.compteurPourSortirPrison += 1; 
@@ -59,11 +58,10 @@ export class PropositionJouerDeSortiePrison extends Proposition {
                 joueur.compteurPourSortirPrison = 0;
                 joueur.payer(50); 
                 banque.recevoir(50);
-                // return true; 
                 return { titre: "Raté", message: "Vous restez en prison." };
             }
 
-            return false; 
+            return { titre: "Raté", message: "Vous restez en prison." };
         }
     }
 }
@@ -92,11 +90,10 @@ export class PropositionJouerCarteChanceSortiePrison extends Proposition {
             joueur.carteChanceSortiePrison = false; 
             joueur.estEnPrison = false; 
             joueur.compteurPourSortirPrison = 0; 
-            // return true;
             return { titre: "Libre", message: "Vous sortez de prison." };
         } 
 
-        return false;
+        return { titre: "Raté", message: "Vous restez en prison." };
     }
 }
 
@@ -114,7 +111,7 @@ export class PropositionJouerCarteFondsCommunsSortiePrison extends Proposition {
             return true;
         }
 
-        return false; 
+        return false;
     }
 
     valider(joueur, jeu, caseJeu, banque) {
@@ -124,11 +121,10 @@ export class PropositionJouerCarteFondsCommunsSortiePrison extends Proposition {
             joueur.carteFondsCommunsSortiePrison = false; 
             joueur.estEnPrison = false; 
             joueur.compteurPourSortirPrison = 0; 
-            // return true;
             return { titre: "Libre", message: "Vous sortez de prison." };
         } 
 
-        return false;
+        return { titre: "Raté", message: "Vous restez en prison." };
     }
 }
 
@@ -160,8 +156,6 @@ export class PropositionAcheterPropriete extends Proposition {
 
         const versement = new VersementEffet(casePropriete.prixAchat, joueur, banque); 
         versement.appliquer(joueur, banque); 
-
-        // return true;
         return { titre: "Achat", message: `${joueur.nom} a acheté ${casePropriete.nom} pour ${casePropriete.prixAchat}€.`}
     }
 }

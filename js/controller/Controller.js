@@ -53,7 +53,8 @@ class Controller {
             this.view.afficherMenuPropositions(this.propositions);
         } else {
             console.log("Aucun message ou proposition à afficher.");
-            // this.jeu.terminerTour();
+            this.jeu.terminerTour();
+            console.log("on change de joueur .");
             this.view.refresh();
         }
     }
@@ -63,7 +64,7 @@ class Controller {
      * recupérer message , ex: "Achat", "Le joueur ... a acheté la case ..." qui disparait ap 3sec 
      */
     soumettreProposition(numProposition) {
-        if (this.jeu.etat === EtatsJeu.EN_ATTENTE &&! isNaN(numProposition)) {
+        if (this.jeu.etat === EtatsJeu.EN_ATTENTE && !isNaN(numProposition)) {
             const resultat = this.jeu.soumettreProposition(numProposition); 
             this.view.refresh();
 
