@@ -85,12 +85,12 @@ class Jeu {
     /**
      * Proposer au joueur options possibles pour sortir de prison (dépend de l'etat du joueur)
      */
-    filtrerPropositionsValablesSortiePrison(joueur) {
+    filtrerPropositionsValablesSortiePrison(joueur, jeu) {
         const propositions = Proposition.getListePropositionsSortiePrison(); 
         const propositionsValables = [];
 
         for (let propositionValable of propositions) {
-            if (propositionValable.estDisponible(joueur)) { 
+            if (propositionValable.estDisponible(joueur, jeu)) { 
                 propositionsValables.push(propositionValable); 
             }
         }
@@ -187,7 +187,9 @@ export default Jeu;
 // sortir une carte chance (conservée): finir Propositions ?
 // sinon payer ?
 // lancer le dé (3 essais si dé === 12 alors sortir ) compteurPourSortirPrison = 0
-// sinon acheter à l'autre joueuur sa carte sortir de prison : combien? 
+// sinon acheter à l'autre joueuur sa carte sortir de prison : combien? 25
+// ne pas proposer 3 fois l'achat de carte au joueur adverse 
+
 // faire la CarteFactory 
 
 // sinon perdu jeu fini

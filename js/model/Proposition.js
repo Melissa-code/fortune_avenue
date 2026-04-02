@@ -13,7 +13,7 @@ export class Proposition {
         this.description = description; 
     }
 
-    estDisponible(joueur = null, caseJeu = null) {}
+    estDisponible(joueur = null, caseJeu = null, jeu = null) {}
 
     valider(joueur = null, jeu = null, caseJeu = null, banque = null) {}
 
@@ -95,6 +95,44 @@ export class PropositionJouerCarteChanceSortiePrison extends Proposition {
 
         return { titre: "Raté", message: "Vous restez en prison." };
     }
+}
+
+export class PropositionAcheterCartePourSortiePrison extends Proposition {
+    constructor() {
+        super("Acheter la carte", "Voulez-vous acheter la carte  'Sortir de prison' pour sortir de prison ?");
+    }
+
+    estDisponible(joueur, jeu) {
+        const joueurs = jeu.getJoueurs();
+    
+        for (let i = 0; i < joueurs.length; i ++) {
+            if (joueur !== joueurs[i] && (joueurs[i].carteChanceSortiePrison === true || joueurs[i].carteFondsCommunsSortiePrison === true)) {
+                this.joueur2=joueurs[i];
+                return true;
+            }
+        }
+        return false;
+    }
+
+    valider(joueur, jeu, caseJeu, banque) {
+        if (!this.estDisponible(joueur, jeu)) return false;
+
+        const versement = new VersementEffet(25, joueur, this.joueur2); 
+        versement.appliquer(joueur); 
+
+        if (this.joueur2.carteChanceSortiePrison === true) {
+            this.joueur2.carteChanceSortiePrison = false; 
+            joueur.carteChanceSortiePrison = true;
+             joueur.estEnPrison = false; 
+        } else if (this.joueur2.carteFondsCommunsSortiePrison === true) {
+            this.joueur2.carteFondsCommunsSortiePrison = false; 
+            joueur.carteFondsCommunsSortiePrison = true; 
+            joueur.estEnPrison = false; 
+        }
+
+        return { titre: "Libre", message: `${joueur.nom} a acheté la carte pour sortir de prison.`}
+    }
+
 }
 
 // #endregion 
@@ -260,6 +298,7 @@ Proposition.LISTE_PROPOSITIONS_SORTIE_PRISON = [
     new PropositionJouerDeSortiePrison,
     new PropositionJouerCarteChanceSortiePrison(),
     new PropositionJouerCarteFondsCommunsSortiePrison(),
+    new PropositionAcheterCartePourSortiePrison(),
 ]
 
 // #endregion

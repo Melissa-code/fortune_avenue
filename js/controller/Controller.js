@@ -8,7 +8,7 @@ class Controller {
     }
 
     sortirDePrison(joueurCourant) {
-        const propositionsSortiePrison = this.jeu.filtrerPropositionsValablesSortiePrison(joueurCourant);
+        const propositionsSortiePrison = this.jeu.filtrerPropositionsValablesSortiePrison(joueurCourant, jeu);
         this.view.refresh();
 
         if (propositionsSortiePrison.length > 0) {
@@ -24,7 +24,6 @@ class Controller {
         if (this.jeu.etat !== EtatsJeu.EN_COURS) return; //sécurité: ne pas lancer le dé si en attente de propositions
 
         const joueurCourant = this.jeu.joueurs[this.jeu.joueurActuelIndex];
-        console.log("hello" , joueurCourant)
 
         // vérifier si joueur courant est en prison -> essayer de sortir 
         if (joueurCourant.estEnPrison) {
