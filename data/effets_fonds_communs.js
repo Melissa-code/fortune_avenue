@@ -100,28 +100,32 @@ const effetsFondsCommunsJson = [
     {
         "titre": "Fonds communs 13",
         "description": "Payez une amende de 10 M ou bien tirez une carte « CHANCE ».",
-        "type": TypesEffets.CHOIX,
-        "options": [
-            {
-                "option1" : "Payer 10 M",
-                "type": TypesEffets.VERSEMENT,
-                "montant": 10,
-                "source": "joueur",
-                "destinataire": "banque",
-            },
-            {
-                "option2" : "Piocher une carte chance",
-                "type": TypesEffets.PIOCHER,
-                "carte" : "chance",
-            }
-        ]
+        "type": TypesEffets.VERSEMENT,
+        "montant": 10,
+        "source": "joueur",
+        "destinataire": "banque"
+
+        // "type": TypesEffets.CHOIX,
+        // "options": [
+        //     {
+        //         "option1" : "Payer 10 M",
+        //         "type": TypesEffets.VERSEMENT,
+        //         "montant": 10,
+        //         "source": "joueur",
+        //         "destinataire": "banque",
+        //     },
+        //     {
+        //         "option2" : "Piocher une carte chance",
+        //         "type": TypesEffets.PIOCHER,
+        //         "carte" : "chance",
+        //     }
+        // ]
     }, 
     {
         "titre": "Fonds communs 14",
         "description": "Rendez-vous à la gare la plus proche. Si vous passez par la case départ, recevez 200 M.",
         "type": TypesEffets.DEPLACEMENT,
-        "type_deplacement": "",
-        
+        "type_deplacement": "relatif",
         "index_case": null,
         "nombreDePas": 0,
         "bonusPassage": 0
@@ -143,3 +147,5 @@ const effetsFondsCommunsJson = [
         "destinataire": "joueur"
     } 
 ]
+
+export default effetsFondsCommunsJson; 

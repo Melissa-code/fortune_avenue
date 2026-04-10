@@ -1,30 +1,37 @@
-import { Carte, CarteAction, CarteImmobiliere, CarteRue, CarteGare, CarteSociete } from './Carte.js'; 
-import { Effet, DeplacementEffet, VersementEffet, PrisonEffet } from './Effet.js'
-import ImagesPions from "./enums/ImagesPions.js";
-import TypesMessagesModale from "./enums/TypesMessagesModale.js";   
+// throw new Error("STOP ! LE FICHIER EST BIEN LU");
+import TypesMessagesModale from "./enums/TypesMessagesModale.js";  
+import EtatsJeu from './enums/EtatsJeu.js';
 import Joueur from './Joueur.js'; 
-import { CaseJeuFactory } from './CaseJeuFactory.js';
-import { CarteFactory } from './CarteFactory.js';
 import De from './De.js';
 import Banque from './Banque.js'; 
-import EtatsJeu from './enums/EtatsJeu.js';
 import { CasePropriete } from './CaseJeu.js';
 import { Proposition } from './Proposition.js';
+// import effetsChanceJson from "../../data/effets_chance.js";
+import effetsFondsCommunsJson from "../../data/effets_fonds_communs.js"; 
+import { CarteEffetsFactory } from './CarteEffetsFactory.js';
+import { CaseJeuFactory } from './CaseJeuFactory.js';
+// import { Carte } from "./Carte.js";
 
 
 class Jeu {
     constructor() {
+        console.log("Initialisation du jeu...");
         this.joueurActuelIndex = 0;
         this.joueurs = []; 
         this.estPartieFinie = false; 
         this.de = new De();
-        this.piocheChance = [];
-        this.piocheFondsCommun = []; 
-        this.casesJeu = CaseJeuFactory.chargerDataCasesJeu(); 
-        this.cartesChances = CarteFactory.chargerDataEffetsChance();
         this.banque = new Banque();
         this.etat = EtatsJeu.EN_COURS; 
         this.listePropositions = []; 
+
+        this.casesJeu = CaseJeuFactory.chargerDataCasesJeu(); 
+        // this.piocheChance = CarteEffetsFactory.chargerDataEffetsCartes(effetsChanceJson);
+        // let piocheChanceMelangee = CarteEffetsFactory.melangerCartes(this.piocheChance);
+        this.piocheFondsCommun = CarteEffetsFactory.chargerDataEffetsCartes(effetsFondsCommunsJson);
+        // CarteEffetsFactory.melangerCartes(this.piocheFondsCommun);
+
+        console.log("Jcartes chances: ", this.piocheFondsCommun);
+        // console.log("Jcartes fonds communs: ", this.piocheFondsCommun);
     }
 
     ajouterJoueur(nom, pion) {
@@ -113,12 +120,7 @@ class Jeu {
         
         this.listePropositions = caseJeu.arriver(joueurCourant, this); // []array de propositions valables (acheter, payer loyer, decliner...)
 
-        // if (effets && effets.titre) {
-        //     return effets;
-        // } else 
         if (this.listePropositions.length > 0) {
-            //this.listePropositions = effets; // propositions au joueur 
-
             this.etat = EtatsJeu.EN_ATTENTE; // de propositions (modale)
             return this.listePropositions; // []array de propositions valables (acheter, payer loyer, decliner...)
         }
@@ -162,11 +164,6 @@ class Jeu {
         const success = this.listePropositions[numProp].valider(joueurCourant, this, this.casesJeu[joueurCourant.position], this.banque);
         if (!success) return; 
 
-        // return this.createMessage("achat", {
-        //     joueur: joueurCourant.nom,  
-        //     propriete: this.casesJeu[joueurCourant.position].nom,
-        //     montant: this.casesJeu[joueurCourant.position].prixAchat
-        // });
         return success;
     } 
 

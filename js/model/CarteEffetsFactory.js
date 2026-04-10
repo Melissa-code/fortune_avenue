@@ -1,34 +1,36 @@
-// import "../../data/cartes_fonds_communs.json";
-// import "../../data/cartes_rues.json";
-import effetsChanceJson from "../../data/effets_chance.js";
 import TypesEffets from "./enums/TypesEffets.js";
-import { CarteAction, CarteImmobiliere, CarteRue, CarteSociete, CarteGare, Carte } from "./Carte.js";
+import { CarteAction } from "./Carte.js";
 import { DeplacementEffet, VersementEffet, PrisonEffet, ReparationsEffet } from "./Effet.js";
 
-export class CarteFactory {
 
-    static chargerDataEffetsChance() {
-        const cartesChance = [];
+export class CarteEffetsFactory {
+    /**
+     * parcourt les données de data/effets_chance.js ou dta/effets_fonds_communs.js
+     * @return {Array} de cartes
+     */
+    static chargerDataEffetsCartes(effetsCartesJson) {
+        const cartes = [];
         
-        for (const effetChanceJson of effetsChanceJson) {
-            const carteChance = CarteFactory.generateCarteChance(effetChanceJson);
-            cartesChance.push(carteChance);
+        for (const effetCarteJson of effetsCartesJson) {
+            const carte = CarteEffetsFactory.generateCarte(effetCarteJson);
+            cartes.push(carte);
         }
-        return cartesChance;
+
+        return cartes;
     }
 
-    static generateCarteChance(jsonObj) {
+    static generateCarte(jsonObj) {
         switch (jsonObj.type) {
             case TypesEffets.DEPLACEMENT:
-                return CarteFactory.parseCarteDeplacement(jsonObj);
+                return CarteEffetsFactory.parseCarteDeplacement(jsonObj);
             case TypesEffets.VERSEMENT:
-                return CarteFactory.parseCarteVersement(jsonObj);   
+                return CarteEffetsFactory.parseCarteVersement(jsonObj);   
             case TypesEffets.ALLER_EN_PRISON:
-                return CarteFactory.parseCarteAllerEnPrison(jsonObj);
+                return CarteEffetsFactory.parseCarteAllerEnPrison(jsonObj);
             case TypesEffets.REPARATIONS:
-                return CarteFactory.parseCarteReparations(jsonObj);
+                return CarteEffetsFactory.parseCarteReparations(jsonObj);
             case TypesEffets.SORTIR_DE_PRISON:
-                return CarteFactory.parseCarteSortirDePrison(jsonObj);
+                return CarteEffetsFactory.parseCarteSortirDePrison(jsonObj);
             default:
                 console.error(`Type de carte chance inconnu: ${jsonObj.type}`);
                 return null;
@@ -39,7 +41,7 @@ export class CarteFactory {
         return new CarteAction(
             jsonObj.titre,
             jsonObj.description,    
-            [ new DeplacementEffet(jsonObj.type_deplacement, jsonObj.index_case, jsonObj.bonusPassage)]
+            [new DeplacementEffet(jsonObj.type_deplacement, jsonObj.index_case, jsonObj.bonusPassage)]
         );    
     }
 
@@ -47,7 +49,7 @@ export class CarteFactory {
         return new CarteAction(
             jsonObj.titre,
             jsonObj.description,    
-            [ new VersementEffet(jsonObj.montant, jsonObj.source, jsonObj.destinataire)]
+            [new VersementEffet(jsonObj.montant, jsonObj.source, jsonObj.destinataire)]
         );    
     }   
 
@@ -55,7 +57,7 @@ export class CarteFactory {
         return new CarteAction(
             jsonObj.titre,
             jsonObj.description,    
-            [ new PrisonEffet(true)]
+            [new PrisonEffet(true)]
         );    
     }   
 
@@ -63,7 +65,7 @@ export class CarteFactory {
         return new CarteAction(
             jsonObj.titre,
             jsonObj.description,    
-            [ new ReparationsEffet(jsonObj.montant_par_maison, jsonObj.montant_par_hotel, jsonObj.source, jsonObj.destinataire)]
+            [new ReparationsEffet(jsonObj.montant_par_maison, jsonObj.montant_par_hotel, jsonObj.source, jsonObj.destinataire)]
         );    
     }
 
@@ -71,19 +73,19 @@ export class CarteFactory {
         return new CarteAction(
             jsonObj.titre,
             jsonObj.description,    
-            [ new PrisonEffet(false)]
+            [new PrisonEffet(false)]
         );    
     }
 
-    static melangerCartesChance() {
-        let pioche = []; 
-        pioche = CarteFactory.chargerDataEffetsChance() 
+    static melangerCartes(effetsCartesJson) {
+        const pioche = effetsCartesJson; 
 
-        // mélanger équitablement la pioche (Fisher-Yates)
+        // mélange la pioche (Fisher-Yates)
         for (let i = pioche.length -1; i > 0; i--) {
             const j = Math.floor(Math.random() * (i + 1)); //nb de 0 à i
             [pioche[i], pioche[j]] = [pioche[j], pioche[i]]; 
         }
+
         return pioche; 
     }
 }

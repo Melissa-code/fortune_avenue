@@ -37,15 +37,6 @@ class Controller {
         const reponseCase = this.jeu.avancerJoueurCourant(valeurDeplacement);
         this.view.refresh();
 
-        // if (reponseCase && reponseCase.titre) {
-        //     this.view.afficherTexteModale(reponseCase.titre, reponseCase.message);
-        //     setTimeout(() => {
-        //         this.view.refresh();
-        //         this.jeu.terminerTour();
-        //         this.view.refresh();
-        //     }, 2000);
-        // }
-
         //cf https://developer.mozilla.org/fr/docs/Web/JavaScript/Reference/Global_Objects/Array/isArray
         if (reponseCase.length > 0) {
             this.propositions = reponseCase; 

@@ -244,14 +244,6 @@ export class CaseAction extends CaseJeu {
             effet.appliquer(joueur, jeu, jeu.banque)
         }
 
-        // const messageModale = TypesMessagesModale[this.type]; 
-        // if (messageModale) {
-        //     console.log("Message créé: ", messageModale);
-        //     const message =  messageModale ({joueur: joueur.nom, montant: this.prix}); 
-        //     console.log(message)
-        //     return message; 
-        // }
-
         return []; // vide pour les propositions sinon undefined 
     }
 

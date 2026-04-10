@@ -1,8 +1,7 @@
 import TypesCases from "./enums/TypesCases.js";
 import { CaseRue, CaseGare, CaseSociete, CaseAction } from "./CaseJeu.js";
-import { DeplacementEffet, VersementEffet, PrisonEffet, PiocheEffet } from "./Effet.js";
+import { VersementEffet, PrisonEffet, PiocheEffet } from "./Effet.js";
 import casesJeuJson from "../../data/cases_jeu.js";
-import effetsChanceJson from "../../data/effets_chance.js";
 
 /**
  * Factory création des cases: transforme données brutes (JSON/Objets JS) en instances de classes 
