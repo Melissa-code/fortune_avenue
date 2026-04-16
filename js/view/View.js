@@ -274,7 +274,7 @@ class View {
         // affiche 1. titre : description)
         texte += (i + 1) + ". " + listePropositions[i].titre + " : " + listePropositions[i].description + "\n";
       }
-      texte += (i + 1) + ". decliner : Aucune action, vous finissez votre tour."
+      // texte += (i + 1) + ". decliner : Aucune action, vous finissez votre tour."
     }
     
     this.afficherTexteModale("Propositions", texte);

@@ -20,6 +20,8 @@ export class CarteEffetsFactory {
     }
 
     static generateCarte(jsonObj) {
+        // console.log("JSON :", jsonObj.type, jsonObj.titre);
+
         switch (jsonObj.type) {
             case TypesEffets.DEPLACEMENT:
                 return CarteEffetsFactory.parseCarteDeplacement(jsonObj);
@@ -46,10 +48,11 @@ export class CarteEffetsFactory {
     }
 
     static parseCarteVersement(jsonObj) {
+        const estCollectif = jsonObj.titre === "Fonds communs 9"; 
         return new CarteAction(
             jsonObj.titre,
             jsonObj.description,    
-            [new VersementEffet(jsonObj.montant, jsonObj.source, jsonObj.destinataire)]
+            [new VersementEffet(jsonObj.montant, jsonObj.source, jsonObj.destinataire, estCollectif)],
         );    
     }   
 

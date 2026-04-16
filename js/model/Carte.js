@@ -5,29 +5,27 @@ export class Carte {
         this.titre = titre; 
     }
 
-    executer(joueur, jeu)
-    {
-
-    }
+    executer(joueur, jeu, banque=null){}
 }
 
 /* ******************  Carte Action (chance, fonds commun) ****************** */
 
 export class CarteAction extends Carte {
-    constructor(titre, description) {
+    constructor(titre, description, effets) {
         super(titre); 
         this.description = description;
-        this.effets = [];
+        this.effets = effets;
     }
 
     ajouterEffet(effet) {
         this.effets.push(effet);
     }
 
-    executer(joueur, jeu)
+    executer(joueur, jeu, banque)
     {
         for (let effet of this.effets) {
-            effet.appliquer(joueur, jeu)
+            console.log(effet)
+            effet.appliquer(joueur, jeu, banque)
         }
     }
 }

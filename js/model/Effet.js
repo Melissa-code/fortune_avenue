@@ -1,5 +1,6 @@
 import Joueur from "./Joueur.js"; 
 import Banque from "./Banque.js";
+import TypesCases from "./enums/TypesCases.js";
 
 /**
  * classe abstraite modele pour classefille, polymorphisme
@@ -114,7 +115,19 @@ export class PiocheEffet extends Effet {
     }
 
     appliquer(joueur, jeu = null, banque = null) {
-        //  piocher une carte de la pioche et l'excuter
+        let carteTiree ; 
+
+        if (this.typePioche === TypesCases.CHANCE) {
+            carteTiree = jeu.piocheChance.shift();
+            console.log('carte ', carteTiree.titre)
+            jeu.piocheChance.push(carteTiree); 
+        } else if (this.typePioche === TypesCases.FONDS_COMMUNS) {
+            carteTiree = jeu.piocheFondsCommun.shift();
+            console.log('carte ', carteTiree)
+            jeu.piocheFondsCommun.push(carteTiree.titre)
+        }
+        
+        // return carteTiree.executer(joueur, jeu, banque)
     }
 }
 

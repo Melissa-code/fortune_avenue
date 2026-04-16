@@ -1,6 +1,6 @@
 import { CarteRue } from './Carte.js';
 import { Effet, DeplacementEffet, VersementEffet, PrisonEffet } from './Effet.js'; 
-import { Proposition, PropositionAcheterPropriete, PropositionHypothequer, PropositionLeverHypotheque, PropositionConstruireMaison, PropositionConctruireHotel } from './Proposition.js';
+import { Proposition, PropositionAcheterPropriete, PropositionHypothequer, PropositionLeverHypotheque, PropositionConstruireMaison, PropositionConctruireHotel, PropositionDecliner } from './Proposition.js';
 import TypesMessagesModale from "./enums/TypesMessagesModale.js"; 
 
 // #region Case (propriete, action) 
@@ -44,7 +44,9 @@ export class CasePropriete extends CaseJeu {
                 propositionsValables.push(propositionValable); 
             }
         }
-
+        if (propositionsValables.length === 1 && propositionsValables[0] instanceof PropositionDecliner) {
+            return []; 
+        }
         return propositionsValables; 
     }
 
@@ -65,13 +67,6 @@ export class CasePropriete extends CaseJeu {
      */
     arriver(joueur) {
         return this.filtrerPropositionsValables(joueur) || [];
-    }
-
-    /**
-     * toutes les terrains nus de la meme couleur, toutes les gares ou toutes les sociétés
-     */
-    possederTouteLaCollection() {
-        // couleur, gare ou societe
     }
 
     hypothequer() {
@@ -235,6 +230,7 @@ export class CaseAction extends CaseJeu {
 
     arriver(joueur, jeu) {
         console.log(`Arrivée sur la case d'action: ${this.nom}`);
+        console.log('effets', this.effets)
        
         if (this.effets.length === 0) { 
             console.log('Aucun effet associé à cette case d\'action.'); 

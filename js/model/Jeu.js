@@ -6,7 +6,7 @@ import De from './De.js';
 import Banque from './Banque.js'; 
 import { CasePropriete } from './CaseJeu.js';
 import { Proposition } from './Proposition.js';
-// import effetsChanceJson from "../../data/effets_chance.js";
+import effetsChanceJson from "../../data/effets_chance.js";
 import effetsFondsCommunsJson from "../../data/effets_fonds_communs.js"; 
 import { CarteEffetsFactory } from './CarteEffetsFactory.js';
 import { CaseJeuFactory } from './CaseJeuFactory.js';
@@ -25,13 +25,15 @@ class Jeu {
         this.listePropositions = []; 
 
         this.casesJeu = CaseJeuFactory.chargerDataCasesJeu(); 
-        // this.piocheChance = CarteEffetsFactory.chargerDataEffetsCartes(effetsChanceJson);
-        // let piocheChanceMelangee = CarteEffetsFactory.melangerCartes(this.piocheChance);
-        this.piocheFondsCommun = CarteEffetsFactory.chargerDataEffetsCartes(effetsFondsCommunsJson);
-        // CarteEffetsFactory.melangerCartes(this.piocheFondsCommun);
 
-        console.log("Jcartes chances: ", this.piocheFondsCommun);
-        // console.log("Jcartes fonds communs: ", this.piocheFondsCommun);
+        this.piocheChance = CarteEffetsFactory.chargerDataEffetsCartes(effetsChanceJson);
+        CarteEffetsFactory.melangerCartes(this.piocheChance);
+
+        this.piocheFondsCommun = CarteEffetsFactory.chargerDataEffetsCartes(effetsFondsCommunsJson);
+        CarteEffetsFactory.melangerCartes(this.piocheFondsCommun);
+
+        console.log("cartes fonds communs : ", this.piocheFondsCommun);
+   
     }
 
     ajouterJoueur(nom, pion) {
@@ -77,6 +79,7 @@ class Jeu {
             const proprietaire = caseJeu.proprietaire; 
             joueurCourant.payer(montantLoyer); 
             proprietaire.recevoir(montantLoyer); 
+            console.log(joueurCourant.nom + "paye " + montantLoyer + " à " + proprietaire.nom)
 
             return this.createMessage("loyer", {
                 joueur: joueurCourant.nom,  
@@ -180,13 +183,8 @@ class Jeu {
 
 export default Jeu; 
 
-// logique prison: 
-// sortir une carte chance (conservée): finir Propositions ?
-// sinon payer ?
-// lancer le dé (3 essais si dé === 12 alors sortir ) compteurPourSortirPrison = 0
-// sinon acheter à l'autre joueuur sa carte sortir de prison : combien? 25
-// ne pas proposer 3 fois l'achat de carte au joueur adverse 
-
-// faire la CarteFactory 
+// cartes chance: 
+// faire l'effet piocherCarte 
+// jouer position 7 carte chance 
 
 // sinon perdu jeu fini

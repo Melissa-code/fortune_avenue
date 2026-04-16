@@ -14,8 +14,8 @@ function demarrer(jeu) {
     const joueur1 = jeu.ajouterJoueur("Melissa", ImagesPions.MOTO)
     const joueur2 = jeu.ajouterJoueur("Pierre", ImagesPions.SMARTPHONE)
 
-    joueur1.estEnPrison=true;
-    joueur1.position=10;
+    //joueur1.estEnPrison=true;
+    joueur1.position=2;
     joueur2.carteChanceSortiePrison=true;
     
     const view = new View(jeu, controller, document, 800); // view appelle controller pour signaler les actions user (click, choix proposition) 

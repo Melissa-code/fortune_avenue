@@ -243,14 +243,16 @@ export class PropositionConstruireMaison extends Proposition{
         super("contruire une maison", "Voulez-vous construire une maison sur cette propriété ?");
     }
 
-    estDisponible(joueur, caseRue) {
-        if (caseRue.proprietaire === joueur && caseRue.possederTouteLaCollection() && caseRue.nombreMaisons < 4 && joueur.argent >= caseRue.prixMaison) {
+    estDisponible(joueur, caseRue, jeu) {
+        if (caseRue.proprietaire === joueur && jeu.possederTouteLaCollection() && caseRue.nombreMaisons < 4 && joueur.argent >= caseRue.prixMaison) {
             return true;
         }
         return false; 
     }
 
     valider(joueur, jeu, caseRue, banque) {
+        if (!this.estDisponible(joueur, casePropriete, jeu)) return false;  
+
         joueur.argent -= caseRue.prixMaison; 
         caseRue.nombreMaisons++; 
     }
@@ -273,6 +275,8 @@ export class PropositionConctruireHotel extends Proposition {
     }
 
     valider(joueur, jeu, caseRue, banque) {
+        if (!this.estDisponible(joueur, caseRue)) return false; 
+
         joueur.argent -= caseRue.priHotel; 
         caseRue.nombreMaisons = 0;
         caseRue.nombreHotels = 1; //1 hotel 
@@ -281,6 +285,19 @@ export class PropositionConctruireHotel extends Proposition {
 
 // #endregion
 
+export class PropositionDecliner extends Proposition {
+    constructor() {
+        super("décliner", "Aucune action vous finissez votre tour.");
+    }
+
+    estDisponible() {
+        return true; 
+    }
+
+    valider(joueur, jeu, casePropriete, banque) {
+         return { titre: "Refus", message: `${joueur.nom} a décliné l'achat de  ${casePropriete.nom} pour ${casePropriete.prixAchat}€.`}
+    }
+}
 
 // #region LISTES (ne créer les obkets qu'une seule fois pour optimiser la mémoire et performances)
 
@@ -291,6 +308,7 @@ Proposition.LISTE_PROPOSITIONS = [
     new PropositionLeverHypotheque(),
     new PropositionConstruireMaison(),
     new PropositionConctruireHotel(),
+    new PropositionDecliner()
 ]
 
 // Propositions[] liées à l'action sortir de prison 
