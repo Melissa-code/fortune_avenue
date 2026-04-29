@@ -34,19 +34,36 @@ class Controller {
         // lancer le dé et avancer 
         let valeurDeplacement = this.jeu.de.lancer();
         this.jeu.listePropositions = []; 
-        const reponseCase = this.jeu.avancerJoueurCourant(valeurDeplacement);
+        const reponseCase = this.jeu.avancerJoueurCourant(valeurDeplacement); // []array de propositions valables (acheter, payer loyer, decliner;;;) ou [] 
         this.view.refresh();
 
-        //cf https://developer.mozilla.org/fr/docs/Web/JavaScript/Reference/Global_Objects/Array/isArray
-        if (reponseCase.length > 0) {
-            this.propositions = reponseCase; 
-            this.view.afficherMenuPropositions(this.propositions);
-        } else {
-            console.log("Aucun message ou proposition à afficher.");
+        if (reponseCase.length === 0) {
             this.jeu.terminerTour();
-            console.log("on change de joueur .");
             this.view.refresh();
+            return;
         }
+
+        switch (reponseCase[0].type) {
+            case 'proposition':
+                this.propositions = reponseCase;
+                this.view.afficherMenuPropositions(this.propositions);
+                break;
+            case 'message':
+                this.view.afficherMessage(reponseCase[0].texte);
+                this.jeu.terminerTour();   // pas d'interaction à attendre
+                this.view.refresh();
+                break;
+        }
+
+        // if (reponseCase.length > 0) {
+        //     this.propositions = reponseCase; 
+        //     this.view.afficherMenuPropositions(this.propositions);
+        // } else {
+        //     console.log("Aucun message ou proposition à afficher.");
+        //     this.jeu.terminerTour();
+        //     console.log("on change de joueur .");
+        //     this.view.refresh();
+        // }
     }
 
     /**

@@ -21,12 +21,14 @@ export class CarteAction extends Carte {
         this.effets.push(effet);
     }
 
-    executer(joueur, jeu, banque)
-    {
+    executer(joueur, jeu, banque) {
+        const messages = [];
         for (let effet of this.effets) {
-            console.log(effet)
-            effet.appliquer(joueur, jeu, banque)
+            console.log("Effet de la carte action :", effet)
+            const message  = effet.appliquer(joueur, jeu, banque)
+            messages.push(message);
         }
+        return messages; 
     }
 }
 

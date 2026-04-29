@@ -30,6 +30,8 @@ export class DeplacementEffet extends Effet {
         else joueur.avancer(joueur.getPosition() + this.valeurDeplacement); //ou nb de pas 
         // si bonus de passage 
         if (this.bonusDePassage) joueur.recevoir(this.bonusDePassage);
+
+        return null; 
     }
 }
 
@@ -46,17 +48,18 @@ export class VersementEffet extends Effet {
     }
 
     appliquer(joueur, jeu = null, banque = null) {
-
         // 1- joueur paie banque (achat/taxe) - attention string != obj
         if (this.source === "joueur" && this.destinataire === "banque") {
             joueur.payer(this.montant);
             banque.recevoir(this.montant);
             console.log("Taxe payée:", this.montant, "- Nouveau solde du joueur:", joueur.argent);
+            return { type: 'message', texte: `le joueur ${joueur.nom} paye ${this.montant}€ à la banque.` };
         }
 
         else if (this.source === "banque" && this.destinataire === "joueur") {
             joueur.recevoir(this.montant); 
             console.log("Le joueur a recu de la banque : ", this.montant);
+            return { type: 'message', texte: `le joueur ${joueur.nom} reçoit ${this.montant}€ de la banque.` };
       
         // 2- autres joueurs paient joueur courant (carte anniversaire)
         } else if (this.estCollectif) {
@@ -68,15 +71,18 @@ export class VersementEffet extends Effet {
                 }
             }
             console.log("argent du joueur ap recevoir argent: ", joueur.argent)
+            return { type: 'message', texte: `Tous les joueurs versent chacun ${this.montant}€ au joueur ${joueur.nom}.` };
 
         } else if (this.source instanceof Joueur && this.destinataire instanceof Joueur) {
             this.source.payer(this.montant);
             this.destinataire.recevoir(this.montant);
-   
+            return { type: 'message', texte: `le joueur ${this.source.nom} paye ${this.montant}€ au joueur ${this.destinataire.nom}.` };
+
         // 3- banque paie joueur (case départ/gain)
         } else if (this.source instanceof Banque && this.destinataire instanceof Joueur) {
             joueur.recevoir(this.montant);
             console.log("argent du joueur ap recevoir argent: ", joueur.argent)
+            return { type: 'message', texte: `${joueur.nom} reçoit ${this.montant}€ de la banque.` };
         }
     }
 }
@@ -102,6 +108,7 @@ export class PrisonEffet extends Effet {
             console.log("pas en prison")
             joueur.estEnPrison = false; 
         }
+        return null; 
     }
 }
 
@@ -123,11 +130,11 @@ export class PiocheEffet extends Effet {
             jeu.piocheChance.push(carteTiree); 
         } else if (this.typePioche === TypesCases.FONDS_COMMUNS) {
             carteTiree = jeu.piocheFondsCommun.shift();
-            console.log('carte ', carteTiree)
-            jeu.piocheFondsCommun.push(carteTiree.titre)
+            console.log('carte ', carteTiree);
+            jeu.piocheFondsCommun.push(carteTiree.titre);
         }
         
-        // return carteTiree.executer(joueur, jeu, banque)
+        return carteTiree.executer(joueur, jeu, banque);
     }
 }
 
