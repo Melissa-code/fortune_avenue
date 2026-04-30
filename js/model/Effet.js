@@ -26,10 +26,19 @@ export class DeplacementEffet extends Effet {
 
     // verifier 
     appliquer(joueur, jeu = null, banque = null) {
+        const AnciennePosition = jeu.casesJeu[joueur.getPosition()].nom;
+        let messages = [];
+        
         if (this.typeDeplacement === 'absolu') joueur.avancer(this.valeurDeplacement); // index de la case
         else joueur.avancer(joueur.getPosition() + this.valeurDeplacement); //ou nb de pas 
         // si bonus de passage 
-        if (this.bonusDePassage) joueur.recevoir(this.bonusDePassage);
+        const NouvellePosition =  jeu.casesJeu[joueur.getPosition()].nom;
+        messages.push("Le joueur, " + joueur.nom + "s'est déplacé de la case " + AnciennePosition + " à la case " + NouvellePosition);
+        if (this.bonusDePassage) {
+            joueur.recevoir(this.bonusDePassage);
+            messages.push("Le joueur, " + joueur.nom + "a reçu un bonus de passage de " + this.bonusDePassage);
+        }
+        return messages;
     }
 }
 
@@ -46,18 +55,21 @@ export class VersementEffet extends Effet {
     }
 
     appliquer(joueur, jeu = null, banque = null) {
+        let messages = []; 
 
         // 1- joueur paie banque (achat/taxe) - attention string != obj
         if (this.source === "joueur" && this.destinataire === "banque") {
             joueur.payer(this.montant);
             banque.recevoir(this.montant);
             console.log("Taxe payée:", this.montant, "- Nouveau solde du joueur:", joueur.argent);
+            messages.push("Le joueur, " + joueur.nom + "a payé " + this.montant + " à la banque");
         }
 
         else if (this.source === "banque" && this.destinataire === "joueur") {
             joueur.recevoir(this.montant); 
             console.log("Le joueur a recu de la banque : ", this.montant);
-      
+            messages.push("Le joueur, " + joueur.nom + "a reçu " + this.montant + " de la banque");
+
         // 2- autres joueurs paient joueur courant (carte anniversaire)
         } else if (this.estCollectif) {
             let tousLesJoueurs = jeu.getJoueurs(); 
@@ -65,6 +77,7 @@ export class VersementEffet extends Effet {
                 if (joueurAdverse !== joueur) {
                     joueurAdverse.payer(this.montant);
                     joueur.recevoir(this.montant); 
+                    messages.push("Le joueur, " + joueur.nom + "a reçu " + this.montant + " de " + joueurAdverse.nom);
                 }
             }
             console.log("argent du joueur ap recevoir argent: ", joueur.argent)
@@ -72,12 +85,15 @@ export class VersementEffet extends Effet {
         } else if (this.source instanceof Joueur && this.destinataire instanceof Joueur) {
             this.source.payer(this.montant);
             this.destinataire.recevoir(this.montant);
+            messages.push("Le joueur, " + this.destinataire.nom + "a reçu " + this.montant + " de " + this.source.nom);
    
         // 3- banque paie joueur (case départ/gain)
         } else if (this.source instanceof Banque && this.destinataire instanceof Joueur) {
             joueur.recevoir(this.montant);
             console.log("argent du joueur ap recevoir argent: ", joueur.argent)
+            messages.push("Le joueur, " + joueur.nom + "a reçu " + this.montant + " de la banque")
         }
+        return messages;
     }
 }
 
@@ -93,15 +109,20 @@ export class PrisonEffet extends Effet {
     }
 
     appliquer(joueur, jeu = null, banque = null) {
+        let messages = [];
         console.log("joueur en prison" ,joueur)
+
         if (this.allerEnPrison) {
             console.log("en prison ")
             joueur.position = 10; 
             joueur.estEnPrison = true; 
+            messages.push("Le joueur " + joueur.nom + " est envoyé en prison");
         } else {
             console.log("pas en prison")
             joueur.estEnPrison = false; 
+            messages.push("Le joueur " + joueur.nom + " est libéré de prison");
         }
+        return messages;
     }
 }
 
@@ -116,18 +137,22 @@ export class PiocheEffet extends Effet {
 
     appliquer(joueur, jeu = null, banque = null) {
         let carteTiree ; 
+        let messages = [];
 
         if (this.typePioche === TypesCases.CHANCE) {
             carteTiree = jeu.piocheChance.shift();
             console.log('carte ', carteTiree.titre)
             jeu.piocheChance.push(carteTiree); 
+            messages.push("Le joueur " + joueur.nom + " a pioché la carte: " + carteTiree.titre);
+            messages.push("Description de la carte: " + carteTiree.description);
         } else if (this.typePioche === TypesCases.FONDS_COMMUNS) {
             carteTiree = jeu.piocheFondsCommun.shift();
-            console.log('carte ', carteTiree)
+            console.log('carte ', carteTiree.titre, carteTiree.description)
             jeu.piocheFondsCommun.push(carteTiree.titre)
+            messages.push("Le joueur " + joueur.nom + " a pioché la carte: " + carteTiree.titre);
+            messages.push("Description de la carte: " + carteTiree.description);
         }
-        
-        // return carteTiree.executer(joueur, jeu, banque)
+        return messages;
     }
 }
 

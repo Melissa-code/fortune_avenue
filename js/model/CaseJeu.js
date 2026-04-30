@@ -231,16 +231,20 @@ export class CaseAction extends CaseJeu {
     arriver(joueur, jeu) {
         console.log(`Arrivée sur la case d'action: ${this.nom}`);
         console.log('effets', this.effets)
+        const messagesEffets = [];
        
         if (this.effets.length === 0) { 
             console.log('Aucun effet associé à cette case d\'action.'); 
         } 
 
         for (let effet of this.effets) {
-            effet.appliquer(joueur, jeu, jeu.banque)
+            const messages = effet.appliquer(joueur, jeu, jeu.banque); // return array de messages
+            messagesEffets.push(...messages);
         }
 
-        return []; // vide pour les propositions sinon undefined 
+        // return []; // vide pour les propositions sinon undefined 
+        console.log("Messages des effets appliqués  (caseJeu):", messagesEffets);
+        return messagesEffets;
     }
 
     calculerLoyer(jeu=null) { 

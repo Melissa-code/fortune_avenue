@@ -11,7 +11,7 @@ function demarrer(jeu) {
     const controller = new Controller(jeu); 
 
     //joueurs
-    const joueur1 = jeu.ajouterJoueur("Melissa", ImagesPions.MOTO)
+    const joueur1 = jeu.ajouterJoueur("Melissa\naaa", ImagesPions.MOTO)
     const joueur2 = jeu.ajouterJoueur("Pierre", ImagesPions.SMARTPHONE)
 
     //joueur1.estEnPrison=true;

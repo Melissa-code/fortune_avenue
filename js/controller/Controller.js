@@ -37,7 +37,6 @@ class Controller {
         const reponseCase = this.jeu.avancerJoueurCourant(valeurDeplacement);
         this.view.refresh();
 
-        //cf https://developer.mozilla.org/fr/docs/Web/JavaScript/Reference/Global_Objects/Array/isArray
         if (reponseCase.length > 0) {
             this.propositions = reponseCase; 
             this.view.afficherMenuPropositions(this.propositions);
@@ -46,7 +45,8 @@ class Controller {
             this.jeu.terminerTour();
             console.log("on change de joueur .");
             this.view.refresh();
-        }
+        } 
+        // TODO [[],[]]
     }
 
     /**

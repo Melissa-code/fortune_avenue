@@ -4,7 +4,7 @@ import EtatsJeu from './enums/EtatsJeu.js';
 import Joueur from './Joueur.js'; 
 import De from './De.js';
 import Banque from './Banque.js'; 
-import { CasePropriete } from './CaseJeu.js';
+import { CasePropriete, CaseAction } from './CaseJeu.js';
 import { Proposition } from './Proposition.js';
 import effetsChanceJson from "../../data/effets_chance.js";
 import effetsFondsCommunsJson from "../../data/effets_fonds_communs.js"; 
@@ -121,7 +121,15 @@ class Jeu {
             return this.payerLoyer(joueurCourant, caseJeu); //loyer: objet message loyer ou null
         }
         
-        this.listePropositions = caseJeu.arriver(joueurCourant, this); // []array de propositions valables (acheter, payer loyer, decliner...)
+        // propositions 
+        if (caseJeu instanceof CasePropriete) {
+            this.listePropositions = caseJeu.arriver(joueurCourant, this); // []array de propositions valables (acheter, payer loyer, decliner...)
+        }
+        else if (caseJeu instanceof CaseAction) {
+            const messagesEffets = caseJeu.arriver(joueurCourant, this); // []array de messages des effets appliqués
+            console.log("Messages des effets :", messagesEffets);
+            return messagesEffets; 
+        }
 
         if (this.listePropositions.length > 0) {
             this.etat = EtatsJeu.EN_ATTENTE; // de propositions (modale)
