@@ -230,6 +230,7 @@ class View {
    * Afficher la modale (propositions, cartes chance/fonds commun...) 
    */
   afficherModale() {
+    console.log("affiche modale")
     // cadre 
     const zoneModaleX =  this.dimensionPlateauJeu + this.espacement * 4;
     const zoneModaleY = this.dimensionPlateauJeu / 1.5 + this.espacement;
@@ -237,8 +238,10 @@ class View {
     const hauteurModale = this.dimensionPlateauJeu / 3.5;
     // style 
     this.ctx.fillStyle = '#000000';
+    this.ctx.beginPath();
     this.ctx.roundRect(zoneModaleX, zoneModaleY, largeurModale, hauteurModale, 10);
-    this.ctx.fill();
+    console.log("zone modale: roundRect ", zoneModaleX, zoneModaleY, largeurModale, hauteurModale, this.myCanvas.width, this.myCanvas.height)
+    this.ctx.fill();sleep(3000);return;
     // this.ctx.fillRect(zoneModaleX, zoneModaleY,  largeurModale, hauteurModale);
     this.ctx.strokeStyle = '#d2e4c6';
     this.ctx.lineWidth = 2;
@@ -249,8 +252,11 @@ class View {
     return { x: zoneModaleX, y: zoneModaleY, width: largeurModale, height: hauteurModale };
   }
 
+  // pour proposition
   afficherTexteModale(type, texte) {
     const modale = this.afficherModale();
+    console.log("texte modale", texte)
+    console.log("type modale", type)
   
     // titre 
     this.ctx.font = "bold 20px Roboto";
@@ -259,14 +265,36 @@ class View {
 
     // description
     this.ctx.font = "normal 17px Roboto";
+  
     const lignes = texte.split("\n"); //pour le saut de ligne
+      console.log("lignes dans modale", lignes)
     for (let i = 0; i < lignes.length; i++) {
+      console.log("ligne dans modale", lignes[i])
       this.ctx.fillText(lignes[i], modale.x + this.espacement, modale.y + this.espacement * 2 + (i * this.espacement));
     }
   } 
 
+  afficherTexteEffets(type, texte) {
+    const modale = this.afficherModale();
+    console.log("texte modale", texte)
+    console.log("type modale", type)
+  return;
+    // titre 
+    this.ctx.font = "bold 20px Roboto";
+    this.ctx.fillStyle = '#FFFFFF';
+    this.ctx.fillText(type, modale.x + this.espacement, modale.y + this.espacement);
+
+    // description
+    this.ctx.font = "normal 17px Roboto";
+  
+    // this.ctx.fillText(texte, modale.x + this.espacement, modale.y + this.espacement);
+    this.ctx.fillText("ICI", modale.x + this.espacement, modale.y + this.espacement);
+    
+  } 
+
   afficherMenuPropositions(listePropositions) {
     let texte = "";
+    console.log("propositions", listePropositions)
 
     if (listePropositions.length > 0) {
       let i = 0; 
@@ -274,10 +302,25 @@ class View {
         // affiche 1. titre : description)
         texte += (i + 1) + ". " + listePropositions[i].titre + " : " + listePropositions[i].description + "\n";
       }
-      // texte += (i + 1) + ". decliner : Aucune action, vous finissez votre tour."
     }
     
     this.afficherTexteModale("Propositions", texte);
+  }
+
+  afficherMessagesEffets(listeEffets) {
+    let texte = "";
+    console.log("effets ", listeEffets)
+    console.log("type", typeof listeEffets)
+    
+    if (listeEffets.length > 0) {
+      for (let i = 0; i < listeEffets.length; i++) {
+        texte += "- " + listeEffets[i] + "\n";
+      }
+      console.log("texte effet (view)", texte)
+      
+    }
+      this.afficherTexteEffets("Effets", texte);
+  
   }
 
   /**

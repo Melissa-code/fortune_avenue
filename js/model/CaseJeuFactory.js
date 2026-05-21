@@ -42,11 +42,9 @@ export class CaseJeuFactory {
 
                 switch (jsonObj.type) {
                     case TypesCases.CHANCE:
-                        console.log("factory test carte chance")
                         caseAction.ajouterEffet(new PiocheEffet("chance"));
                         break;
                     case TypesCases.FONDS_COMMUNS:
-                        console.log("factory test carte fonds")
                         caseAction.ajouterEffet(new PiocheEffet("fonds_communs"));
                         break;
                     case TypesCases.DEPART:

@@ -32,7 +32,7 @@ class Jeu {
         this.piocheFondsCommun = CarteEffetsFactory.chargerDataEffetsCartes(effetsFondsCommunsJson);
         CarteEffetsFactory.melangerCartes(this.piocheFondsCommun);
 
-        console.log("cartes fonds communs : ", this.piocheFondsCommun);
+        // console.log("cartes fonds communs : ", this.piocheFondsCommun);
    
     }
 
@@ -89,7 +89,8 @@ class Jeu {
             }); 
         } 
 
-        return null; 
+        // return null; 
+        return [[], []]; 
     }
 
     /**
@@ -121,23 +122,24 @@ class Jeu {
             return this.payerLoyer(joueurCourant, caseJeu); //loyer: objet message loyer ou null
         }
         
-        // propositions 
-        if (caseJeu instanceof CasePropriete) {
-            this.listePropositions = caseJeu.arriver(joueurCourant, this); // []array de propositions valables (acheter, payer loyer, decliner...)
-        }
-        else if (caseJeu instanceof CaseAction) {
-            const messagesEffets = caseJeu.arriver(joueurCourant, this); // []array de messages des effets appliqués
+        // []array de messages des effets appliqués
+        if (caseJeu instanceof CaseAction) {
+            const messagesEffets = caseJeu.arriver(joueurCourant, this); 
             console.log("Messages des effets :", messagesEffets);
-            return messagesEffets; 
+            return [messagesEffets, []]; 
         }
 
-        if (this.listePropositions.length > 0) {
-            this.etat = EtatsJeu.EN_ATTENTE; // de propositions (modale)
-            return this.listePropositions; // []array de propositions valables (acheter, payer loyer, decliner...)
+        // []array de propositions valables (acheter, payer loyer, decliner...)
+        else if (caseJeu instanceof CasePropriete) {
+            this.listePropositions = caseJeu.arriver(joueurCourant, this); 
+            if (this.listePropositions.length > 0) {
+                this.etat = EtatsJeu.EN_ATTENTE; // de propositions (modale)
+                return [[], this.listePropositions]; 
+            }
         }
 
         this.terminerTour();
-        return []; //pas d'effets pour les cases Départ/Parc/Prison 
+        return [[],[]]; //pas d'effets pour les cases Départ/Parc/Visite Prison 
     }
 
     /**

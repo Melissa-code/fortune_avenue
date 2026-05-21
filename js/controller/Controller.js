@@ -34,19 +34,35 @@ class Controller {
         // lancer le dé et avancer 
         let valeurDeplacement = this.jeu.de.lancer();
         this.jeu.listePropositions = []; 
-        const reponseCase = this.jeu.avancerJoueurCourant(valeurDeplacement);
+
+        const [effets, propositions] = this.jeu.avancerJoueurCourant(valeurDeplacement); 
+        console.log("propositions (controller)", propositions)
+        console.log("effets (controller)", effets)
         this.view.refresh();
 
-        if (reponseCase.length > 0) {
-            this.propositions = reponseCase; 
-            this.view.afficherMenuPropositions(this.propositions);
+        if (propositions.length > 0) {
+            this.view.afficherMenuPropositions(propositions);
+        } 
+        else if (effets.length > 0) {
+            console.log("effets (controller)", effets)
+            this.view.afficherMessagesEffets(effets);//TODO effets
+             this.jeu.terminerTour()
+           
         } else {
             console.log("Aucun message ou proposition à afficher.");
             this.jeu.terminerTour();
             console.log("on change de joueur .");
-            this.view.refresh();
         } 
+
+        this.view.refresh();
         // TODO [[],[]]
+        // faire une zone statut pour affficher messages des effets
+        // fix refresh ()
+        
+        // les info de status seronmt implemente differement que les proposition ( a traver un tableau de statu chez le jeu
+        // la vue doit juste afficher le contenu du tableau de status
+        // lo model met a jour le tableau de status en fonction des effets
+        // 
     }
 
     /**
