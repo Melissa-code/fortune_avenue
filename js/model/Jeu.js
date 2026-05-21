@@ -23,6 +23,7 @@ class Jeu {
         this.banque = new Banque();
         this.etat = EtatsJeu.EN_COURS; 
         this.listePropositions = []; 
+        this.listeStatuts = [];
 
         this.casesJeu = CaseJeuFactory.chargerDataCasesJeu(); 
 
@@ -119,14 +120,15 @@ class Jeu {
 
         // check si la case a un propriétaire (-> payer loyer )
         if (caseJeu instanceof CasePropriete && caseJeu.proprietaire !== null && caseJeu.proprietaire !== joueurCourant) {
-            return this.payerLoyer(joueurCourant, caseJeu); //loyer: objet message loyer ou null
+            this.listeStatuts = this.payerLoyer(joueurCourant, caseJeu); //loyer: objet message loyer ou null
+            return; 
         }
         
         // []array de messages des effets appliqués
         if (caseJeu instanceof CaseAction) {
-            const messagesEffets = caseJeu.arriver(joueurCourant, this); 
+            this.listeStatuts  = caseJeu.arriver(joueurCourant, this); 
             console.log("Messages des effets :", messagesEffets);
-            return [messagesEffets, []]; 
+            return;
         }
 
         // []array de propositions valables (acheter, payer loyer, decliner...)
@@ -134,12 +136,10 @@ class Jeu {
             this.listePropositions = caseJeu.arriver(joueurCourant, this); 
             if (this.listePropositions.length > 0) {
                 this.etat = EtatsJeu.EN_ATTENTE; // de propositions (modale)
-                return [[], this.listePropositions]; 
             }
         }
 
         this.terminerTour();
-        return [[],[]]; //pas d'effets pour les cases Départ/Parc/Visite Prison 
     }
 
     /**
@@ -193,8 +193,3 @@ class Jeu {
 
 export default Jeu; 
 
-// cartes chance: 
-// faire l'effet piocherCarte 
-// jouer position 7 carte chance 
-
-// sinon perdu jeu fini

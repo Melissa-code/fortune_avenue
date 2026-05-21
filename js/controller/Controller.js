@@ -34,27 +34,25 @@ class Controller {
         // lancer le dé et avancer 
         let valeurDeplacement = this.jeu.de.lancer();
         this.jeu.listePropositions = []; 
+        this.jeu.listeStatuts = []; //pour le vider à chaque tour
+        // this.view.refresh();
 
-        const [effets, propositions] = this.jeu.avancerJoueurCourant(valeurDeplacement); 
-        console.log("propositions (controller)", propositions)
-        console.log("effets (controller)", effets)
+        this.jeu.avancerJoueurCourant(valeurDeplacement); 
+
         this.view.refresh();
 
-        if (propositions.length > 0) {
-            this.view.afficherMenuPropositions(propositions);
+        if (this.jeu.listePropositions.length > 0) {
+            this.view.afficherMenuPropositions(this.jeu.listePropositions); 
         } 
-        else if (effets.length > 0) {
-            console.log("effets (controller)", effets)
-            this.view.afficherMessagesEffets(effets);//TODO effets
-             this.jeu.terminerTour()
-           
-        } else {
-            console.log("Aucun message ou proposition à afficher.");
+        else if (this.jeu.listeStatuts.length > 0) {
+            this.view.afficherZoneStatuts(); 
             this.jeu.terminerTour();
-            console.log("on change de joueur .");
         } 
+        else {
+            this.jeu.terminerTour();
+        }
 
-        this.view.refresh();
+        // this.view.refresh();
         // TODO [[],[]]
         // faire une zone statut pour affficher messages des effets
         // fix refresh ()

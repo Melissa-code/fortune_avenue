@@ -184,7 +184,7 @@ class View {
     const zoneJoueursX = this.dimensionPlateauJeu + (this.espacement * 4);// ap le dé
     let zoneJoueursY = 0;
     const largeurCard = this.dimensionPlateauJeu ; 
-    const hauteurCard = this.dimensionPlateauJeu * 0.30; // 30%
+    const hauteurCard = this.dimensionPlateauJeu * 0.20; // 30%
     const margeEntreCards = this.espacement;
     
     for (let i = 0; i < joueurs.length; i++) {
@@ -227,6 +227,38 @@ class View {
   }
 
   /**
+   * Afficher les messages des effets 
+   */
+  afficherZoneStatuts() {
+    const x = this.dimensionPlateauJeu + (this.espacement * 4);
+    const y = this.dimensionPlateauJeu / 2 ; 
+    const largeur = this.dimensionPlateauJeu;
+    const hauteur = this.dimensionPlateauJeu * 20 / 100; // 20% plateau
+
+    this.ctx.fillStyle = '#000000';
+    this.ctx.beginPath();
+    this.ctx.roundRect(x, y, largeur, hauteur, 10);
+    this.ctx.fill();
+
+    this.ctx.strokeStyle = '#FFFFFF';
+    this.ctx.lineWidth = 2;
+    this.ctx.beginPath();
+    this.ctx.roundRect(x, y, largeur, hauteur, 10);
+    this.ctx.stroke();
+
+    this.ctx.font = "bold 17px Roboto";
+    this.ctx.fillStyle = '#FFFFFF';
+    this.ctx.fillText("Jeu en cours : ", x + this.espacement, y + this.espacement);
+
+    this.ctx.font = "15px Roboto";
+    this.ctx.fillStyle = '#FFFFFF';
+    const statuts = this.jeu.listeStatuts; // vue affiche tabl status (Jeu)
+    for (let i = 0; i < statuts.length; i++) {
+      this.ctx.fillText(statuts[i], x + this.espacement, y + this.espacement * 2.2 + i * this.espacement);
+    }
+  }
+
+  /**
    * Afficher la modale (propositions, cartes chance/fonds commun...) 
    */
   afficherModale() {
@@ -241,7 +273,7 @@ class View {
     this.ctx.beginPath();
     this.ctx.roundRect(zoneModaleX, zoneModaleY, largeurModale, hauteurModale, 10);
     console.log("zone modale: roundRect ", zoneModaleX, zoneModaleY, largeurModale, hauteurModale, this.myCanvas.width, this.myCanvas.height)
-    this.ctx.fill();sleep(3000);return;
+    this.ctx.fill();sleep(3000);
     // this.ctx.fillRect(zoneModaleX, zoneModaleY,  largeurModale, hauteurModale);
     this.ctx.strokeStyle = '#d2e4c6';
     this.ctx.lineWidth = 2;
@@ -273,25 +305,7 @@ class View {
       this.ctx.fillText(lignes[i], modale.x + this.espacement, modale.y + this.espacement * 2 + (i * this.espacement));
     }
   } 
-
-  afficherTexteEffets(type, texte) {
-    const modale = this.afficherModale();
-    console.log("texte modale", texte)
-    console.log("type modale", type)
-  return;
-    // titre 
-    this.ctx.font = "bold 20px Roboto";
-    this.ctx.fillStyle = '#FFFFFF';
-    this.ctx.fillText(type, modale.x + this.espacement, modale.y + this.espacement);
-
-    // description
-    this.ctx.font = "normal 17px Roboto";
   
-    // this.ctx.fillText(texte, modale.x + this.espacement, modale.y + this.espacement);
-    this.ctx.fillText("ICI", modale.x + this.espacement, modale.y + this.espacement);
-    
-  } 
-
   afficherMenuPropositions(listePropositions) {
     let texte = "";
     console.log("propositions", listePropositions)
@@ -307,21 +321,41 @@ class View {
     this.afficherTexteModale("Propositions", texte);
   }
 
-  afficherMessagesEffets(listeEffets) {
-    let texte = "";
-    console.log("effets ", listeEffets)
-    console.log("type", typeof listeEffets)
-    
-    if (listeEffets.length > 0) {
-      for (let i = 0; i < listeEffets.length; i++) {
-        texte += "- " + listeEffets[i] + "\n";
-      }
-      console.log("texte effet (view)", texte)
-      
-    }
-      this.afficherTexteEffets("Effets", texte);
+
+  // afficherTexteEffets(type, texte) {
+  //   const modale = this.afficherModale();
+  //   console.log("texte modale", texte)
+  //   console.log("type modale", type)
+
+  //   // titre 
+  //   this.ctx.font = "bold 20px Roboto";
+  //   this.ctx.fillStyle = '#FFFFFF';
+  //   this.ctx.fillText(type, modale.x + this.espacement, modale.y + this.espacement);
+
+  //   // description
+  //   this.ctx.font = "normal 17px Roboto";
   
-  }
+  //   // this.ctx.fillText(texte, modale.x + this.espacement, modale.y + this.espacement);
+  //   this.ctx.fillText("ICI", modale.x + this.espacement, modale.y + this.espacement);
+    
+  // } 
+
+
+  // afficherMessagesEffets(listeEffets) {
+  //   let texte = "";
+  //   console.log("effets ", listeEffets)
+  //   console.log("type", typeof listeEffets)
+    
+  //   if (listeEffets.length > 0) {
+  //     for (let i = 0; i < listeEffets.length; i++) {
+  //       texte += "- " + listeEffets[i] + "\n";
+  //     }
+  //     console.log("texte effet (view)", texte)
+      
+  //   }
+  //     this.afficherTexteEffets("Effets", texte);
+  
+  // }
 
   /**
    * Rafraîchir l'affichage du plateau de jeu, des pions, du dé, des infos joueurs et propositions modale (redessiner)
@@ -336,6 +370,8 @@ class View {
 
     if (this.jeu.etat === EtatsJeu.EN_ATTENTE) {
      this.afficherMenuPropositions(this.jeu.listePropositions);
+    } else {
+      this.afficherZoneStatuts(); 
     }
   }
 
