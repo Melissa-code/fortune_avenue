@@ -273,8 +273,9 @@ class View {
     this.ctx.beginPath();
     this.ctx.roundRect(zoneModaleX, zoneModaleY, largeurModale, hauteurModale, 10);
     console.log("zone modale: roundRect ", zoneModaleX, zoneModaleY, largeurModale, hauteurModale, this.myCanvas.width, this.myCanvas.height)
-    this.ctx.fill();sleep(3000);
-    // this.ctx.fillRect(zoneModaleX, zoneModaleY,  largeurModale, hauteurModale);
+    this.ctx.fill();
+    // sleep(3000);
+    this.ctx.fillRect(zoneModaleX, zoneModaleY,  largeurModale, hauteurModale);
     this.ctx.strokeStyle = '#d2e4c6';
     this.ctx.lineWidth = 2;
      this.ctx.roundRect(zoneModaleX, zoneModaleY, largeurModale, hauteurModale, 10);
