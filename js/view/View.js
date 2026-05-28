@@ -276,24 +276,26 @@ class View {
    * Afficher la modale (propositions, cartes chance/fonds commun...) 
    */
   afficherModale() {
-    console.log("affiche modale")
     // cadre 
-    const zoneModaleX =  this.dimensionPlateauJeu + this.espacement /2 ;
-    const zoneModaleY = this.dimensionPlateauJeu / 1.5 + this.espacement;
-    const largeurModale = this.dimensionPlateauJeu + this.espacement * 2.5;
-    const hauteurModale = this.dimensionPlateauJeu / 3.5;
-    // style 
-    this.ctx.fillStyle = '#000000';
+    const largeurModale = this.dimensionPlateauJeu ;
+    const hauteurModale = this.dimensionPlateauJeu * 0.3;
+    const zoneModaleX = (this.myCanvas.width / 2) - (largeurModale / 2);
+    const zoneModaleY = (this.myCanvas.height / 2) - hauteurModale;
+
+    const decalage = 6;
+    this.ctx.fillStyle = 'rgba(8, 28, 21, 0.5)'; 
     this.ctx.beginPath();
-    this.ctx.roundRect(zoneModaleX, zoneModaleY, largeurModale, hauteurModale, 10);
-    console.log("zone modale: roundRect ", zoneModaleX, zoneModaleY, largeurModale, hauteurModale, this.myCanvas.width, this.myCanvas.height)
+    this.ctx.roundRect(zoneModaleX - decalage, zoneModaleY - decalage, largeurModale + (decalage * 2), hauteurModale + (decalage * 2), 5);
     this.ctx.fill();
-    // sleep(3000);
-    this.ctx.fillRect(zoneModaleX, zoneModaleY,  largeurModale, hauteurModale);
-    this.ctx.strokeStyle = '#d2e4c6';
-    this.ctx.lineWidth = 2;
-    this.ctx.roundRect(zoneModaleX, zoneModaleY, largeurModale, hauteurModale, 10);
-    // this.ctx.strokeRect(zoneModaleX, zoneModaleY, largeurModale, hauteurModale);
+
+    // style 
+    this.ctx.fillStyle = '#FFFFFF';
+    this.ctx.beginPath();
+    this.ctx.roundRect(zoneModaleX, zoneModaleY, largeurModale, hauteurModale, 5);
+    // console.log("zone modale: roundRect ", zoneModaleX, zoneModaleY, largeurModale, hauteurModale, this.myCanvas.width, this.myCanvas.height)
+    this.ctx.fill();
+    this.ctx.strokeStyle = '#123024';
+    this.ctx.lineWidth = 3;
     this.ctx.stroke();
 
     return { x: zoneModaleX, y: zoneModaleY, width: largeurModale, height: hauteurModale };
@@ -307,7 +309,7 @@ class View {
   
     // titre 
     this.ctx.font = "bold 20px Roboto";
-    this.ctx.fillStyle = '#FFFFFF';
+    this.ctx.fillStyle = '#000000';
     this.ctx.fillText(type, modale.x + this.espacement, modale.y + this.espacement);
 
     // description

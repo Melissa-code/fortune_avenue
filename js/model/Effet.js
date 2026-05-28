@@ -153,7 +153,7 @@ export class PiocheEffet extends Effet {
             console.log('carte ', carteTiree.titre)
             jeu.piocheChance.push(carteTiree); 
             messages.push("Le joueur " + joueur.nom + " a pioché la carte: " + carteTiree.titre);
-            messages.push("Description de la carte: " + carteTiree.description);
+            messages.push(`"${carteTiree.description}"`);
         } else if (this.typePioche === TypesCases.FONDS_COMMUNS) {
             carteTiree = jeu.piocheFondsCommun.shift();
             console.log('carte ', carteTiree.titre, carteTiree.description)
