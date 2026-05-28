@@ -100,7 +100,6 @@ class View {
 
       // rendre le dé semi-transparent (non cliquable) si en attente de proposition du joueur
       if (this.jeu.etat === EtatsJeu.EN_ATTENTE) { this.ctx.globalAlpha = 0.5; }
-      // effet dé en relief par les ombres 
       this.ctx.shadowColor = "rgba(0, 0, 0, 0.50)";  
       this.ctx.shadowBlur = 8; // ombre
       this.ctx.shadowOffsetX = 4;                
@@ -322,42 +321,6 @@ class View {
     
     this.afficherTexteModale("Propositions", texte);
   }
-
-
-  // afficherTexteEffets(type, texte) {
-  //   const modale = this.afficherModale();
-  //   console.log("texte modale", texte)
-  //   console.log("type modale", type)
-
-  //   // titre 
-  //   this.ctx.font = "bold 20px Roboto";
-  //   this.ctx.fillStyle = '#FFFFFF';
-  //   this.ctx.fillText(type, modale.x + this.espacement, modale.y + this.espacement);
-
-  //   // description
-  //   this.ctx.font = "normal 17px Roboto";
-  
-  //   // this.ctx.fillText(texte, modale.x + this.espacement, modale.y + this.espacement);
-  //   this.ctx.fillText("ICI", modale.x + this.espacement, modale.y + this.espacement);
-    
-  // } 
-
-
-  // afficherMessagesEffets(listeEffets) {
-  //   let texte = "";
-  //   console.log("effets ", listeEffets)
-  //   console.log("type", typeof listeEffets)
-    
-  //   if (listeEffets.length > 0) {
-  //     for (let i = 0; i < listeEffets.length; i++) {
-  //       texte += "- " + listeEffets[i] + "\n";
-  //     }
-  //     console.log("texte effet (view)", texte)
-      
-  //   }
-  //     this.afficherTexteEffets("Effets", texte);
-  
-  // }
 
   /**
    * Rafraîchir l'affichage du plateau de jeu, des pions, du dé, des infos joueurs et propositions modale (redessiner)
