@@ -9,7 +9,7 @@ class View {
     this.jeu = jeu;
     this.controller = controller; 
     this.dimensionPlateauJeu = dimensionPlateauJeu;
-    this.myCanvas = document.querySelector("#game-canvas"); //jeu canvas 800x800px
+    this.myCanvas = document.querySelector("#game-canvas"); //jeu canvas 1100x800px
     this.ctx = this.myCanvas.getContext("2d");
 
     this.chargerImagePlateauJeu(); // plateau jeu
@@ -193,10 +193,10 @@ class View {
    */
   afficherInfosJoueurs() {
     const joueurs = this.jeu.getJoueurs();
-    const zoneJoueursX = this.dimensionPlateauJeu + this.espacement / 2 ;// ap le dé
+    const zoneJoueursX = this.dimensionPlateauJeu + this.espacement / 2;
     let zoneJoueursY = 0;
-    const largeurCard = this.dimensionPlateauJeu ; 
-    const hauteurCard = this.dimensionPlateauJeu * 0.20; //30%
+    const largeurCard = this.dimensionPlateauJeu + this.espacement * 2.5;
+    const hauteurCard = this.dimensionPlateauJeu * 0.20; 
     const margeEntreCards = this.espacement;
     
     for (let i = 0; i < joueurs.length; i++) {
@@ -218,22 +218,22 @@ class View {
       
       // joueur
       const imgPion = this.imagesPions[i];
-      this.ctx.font = `bold 16px Roboto`;
-      this.ctx.drawImage(imgPion, zoneJoueursX + this.espacement / 2, zoneJoueursY + this.espacement / 2, 30, 30);
+      this.ctx.font = `16px Roboto`;
+      this.ctx.drawImage(imgPion, zoneJoueursX + this.espacement / 2, zoneJoueursY + this.espacement / 2, 25, 25);
       this.ctx.fillText(joueur.nom, zoneJoueursX + this.espacement * 1.5, zoneJoueursY + this.espacement);
 
       // Argent
       this.ctx.font = `16px Roboto`;
       // this.ctx.textAlign = 'center'; 
-      this.ctx.fillText(`💸 Argent: ${joueur.argent} M`, zoneJoueursX + largeurCard / 2, zoneJoueursY + this.espacement);
-      console.log("argent joueur", joueur.argent)
+      // this.ctx.fillText(`💸 Argent: ${joueur.argent} M`, zoneJoueursX + largeurCard / 2, zoneJoueursY + this.espacement);
+      this.ctx.fillText(`💸  ${joueur.argent} M`, zoneJoueursX + this.espacement / 2, zoneJoueursY + this.espacement * 2);
       this.ctx.textAlign = 'left';
 
       // Prison
       if (joueur.estEnPrison) {
           this.ctx.font = `bold 17px Roboto`;
           this.ctx.textAlign = 'right'; 
-          this.ctx.fillText("👮🏻 En Prison", zoneJoueursX + largeurCard - this.espacement, zoneJoueursY + this.espacement);
+          this.ctx.fillText("👮🏻 En Prison",  zoneJoueursX  +  this.espacement * 2.7, zoneJoueursY + this.espacement * 3);
           this.ctx.textAlign = 'left';
       }
 

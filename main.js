@@ -17,6 +17,7 @@ function demarrer(jeu) {
     let taillePlateauJeu = Math.floor(largeurEcran * 0.40); //40%
     if (taillePlateauJeu > 768) taillePlateauJeu = 768; 
     if (taillePlateauJeu < 550) taillePlateauJeu = 550;
+    
 
     const view = new View(jeu, controller, document, taillePlateauJeu); // view appelle controller pour signaler les actions user (click, choix proposition) 
     controller.view = view; // controller appelle view pour afficher les propositions et refresh ap actions user
