@@ -66,12 +66,25 @@ class View {
   }
 
   /**
+   * Affiche un cercle semi-transparent derrière le dé pour le faire ressortir sur le plateau
+   */
+  afficherFondsDe() {
+    this.ctx.fillStyle = 'rgba(8, 28, 21, 0.5)'; 
+    this.ctx.strokeStyle = 'rgba(255, 255, 255, 0.4)'; 
+    this.ctx.lineWidth = 2;
+    this.ctx.beginPath();
+    this.ctx.arc(this.positionDeX + (this.tailleDe / 2), this.positionDeY + (this.tailleDe / 2), this.tailleDe * 0.8, 0, Math.PI * 2); //cercle Math.PI*2 pour tour complet (380°)
+    this.ctx.fill();
+    this.ctx.stroke();
+  }
+
+  /**
    * Calculs des dimensions et positions x y du dé 
    */
   initialiserDe() {
-    this.tailleDe = this.dimensionPlateauJeu / 10;
-    this.positionDeX = this.dimensionPlateauJeu + this.tailleDe / 2;
-    this.positionDeY = this.dimensionPlateauJeu / 2 ; 
+    this.tailleDe = this.dimensionPlateauJeu / 8.5;
+    this.positionDeX = this.dimensionPlateauJeu / 2.3;
+    this.positionDeY = this.dimensionPlateauJeu / 2.3; 
     this.imagesResultatsDe = [];
     this.chargerImagesResultatsDe(); 
   }
@@ -330,6 +343,7 @@ class View {
 
     this.afficherPlateauJeu(this.imagePlateau); // plateau jeu
     this.afficherPionsJoueurs(); //pions par-dessus
+    this.afficherFondsDe()
     this.afficherResultatDe();
     this.afficherInfosJoueurs();
 
