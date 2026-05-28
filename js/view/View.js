@@ -193,49 +193,52 @@ class View {
    */
   afficherInfosJoueurs() {
     const joueurs = this.jeu.getJoueurs();
-    const zoneJoueursX = this.dimensionPlateauJeu + (this.espacement * 4);// ap le dé
+    const zoneJoueursX = this.dimensionPlateauJeu + this.espacement / 2 ;// ap le dé
     let zoneJoueursY = 0;
     const largeurCard = this.dimensionPlateauJeu ; 
-    const hauteurCard = this.dimensionPlateauJeu * 0.20; // 30%
+    const hauteurCard = this.dimensionPlateauJeu * 0.20; //30%
     const margeEntreCards = this.espacement;
     
     for (let i = 0; i < joueurs.length; i++) {
-        const joueur = joueurs[i];
-        const estActif = (i === this.jeu.joueurActuelIndex);// joueur courant 0
+      const joueur = joueurs[i];
+      const estActif = (i === this.jeu.joueurActuelIndex);// joueur courant 0
 
-        // cadre
-        this.ctx.fillStyle = '#b9e3c6'; 
-        this.ctx.fillRect(zoneJoueursX, zoneJoueursY, largeurCard, hauteurCard);
-        
-        // bordure dyn
-        this.ctx.strokeStyle = estActif ? '#da2c38' : '#d8f3dc'; 
-        this.ctx.lineWidth = Math.max(1, this.dimensionPlateauJeu * 0.005); 
-        this.ctx.strokeRect(zoneJoueursX, zoneJoueursY, largeurCard, hauteurCard);
-        this.ctx.fillStyle = 'black';
-        
-        // joueur
-        const imgPion = this.imagesPions[i];
-        this.ctx.font = `bold 17px Roboto`;
-        this.ctx.drawImage(imgPion, zoneJoueursX + this.espacement / 2, zoneJoueursY + this.espacement / 2, 30, 30);
-        this.ctx.fillText(joueur.nom, zoneJoueursX + this.espacement * 1.5, zoneJoueursY + this.espacement);
+      // cadre
+      this.ctx.beginPath();
+      this.ctx.roundRect(zoneJoueursX, zoneJoueursY, largeurCard, hauteurCard, 5);
+      this.ctx.fillStyle = '#ffffff'; 
+      this.ctx.fill();
+      
+      // bordure dyn
+      // this.ctx.strokeStyle = estActif ? '#da2c38' : '#081c15'; 
+      this.ctx.strokeStyle = '#081c15'; 
+      this.ctx.lineWidth = 3; 
+      this.ctx.stroke();
+      this.ctx.fillStyle = 'black'; //texte
+      
+      // joueur
+      const imgPion = this.imagesPions[i];
+      this.ctx.font = `bold 16px Roboto`;
+      this.ctx.drawImage(imgPion, zoneJoueursX + this.espacement / 2, zoneJoueursY + this.espacement / 2, 30, 30);
+      this.ctx.fillText(joueur.nom, zoneJoueursX + this.espacement * 1.5, zoneJoueursY + this.espacement);
 
-        // Argent
-        this.ctx.font = `17px Roboto`;
-        this.ctx.textAlign = 'center'; 
-        this.ctx.fillText(`💸 Argent: ${joueur.argent} M`, zoneJoueursX + largeurCard / 2, zoneJoueursY + this.espacement);
-        console.log("argent joueur", joueur.argent)
-        this.ctx.textAlign = 'left';
+      // Argent
+      this.ctx.font = `16px Roboto`;
+      // this.ctx.textAlign = 'center'; 
+      this.ctx.fillText(`💸 Argent: ${joueur.argent} M`, zoneJoueursX + largeurCard / 2, zoneJoueursY + this.espacement);
+      console.log("argent joueur", joueur.argent)
+      this.ctx.textAlign = 'left';
 
-        // Prison
-        if (joueur.estEnPrison) {
-            this.ctx.font = `bold 17px Roboto`;
-            this.ctx.textAlign = 'right'; 
-            this.ctx.fillText("👮🏻 En Prison", zoneJoueursX + largeurCard - this.espacement, zoneJoueursY + this.espacement);
-            this.ctx.textAlign = 'left';
-        }
+      // Prison
+      if (joueur.estEnPrison) {
+          this.ctx.font = `bold 17px Roboto`;
+          this.ctx.textAlign = 'right'; 
+          this.ctx.fillText("👮🏻 En Prison", zoneJoueursX + largeurCard - this.espacement, zoneJoueursY + this.espacement);
+          this.ctx.textAlign = 'left';
+      }
 
-        // Y joueur suivant
-        zoneJoueursY += hauteurCard + margeEntreCards;
+      // Y joueur suivant
+      zoneJoueursY += hauteurCard + margeEntreCards / 2;
     }
   }
 
