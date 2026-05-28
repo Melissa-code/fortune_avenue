@@ -98,11 +98,14 @@ export class CasePropriete extends CaseJeu {
 // #region Case rue
 
 export class CaseRue extends CasePropriete {
-    constructor(nom, prix, loyers, couleur) {
+    constructor(nom, prix, loyers, couleur, prixMaison, prixHotel, hypotheque) {
         super(nom, prix, loyers);
         this.nombreMaisons = 0; 
         this.nombreHotels = 0; 
         this.couleur = couleur || null;
+        this.prixMaison = prixMaison || null;
+        this.prixHotel = prixHotel || null;
+        this.hypotheque = hypotheque || null;
     }
 
     acheter(typeConstruction) {
@@ -163,9 +166,10 @@ export class CaseRue extends CasePropriete {
 // #region Case gare
 
 export class CaseGare extends CasePropriete {
-    constructor(nom, prix, loyers, typeCase) {
+    constructor(nom, prix, loyers, typeCase, hypotheque) {
         super(nom, prix, loyers);
         this.typeCase = typeCase; 
+        this.hypotheque = hypotheque || null;
     }
 
     calculerLoyer(jeu=null) {
@@ -188,8 +192,9 @@ export class CaseGare extends CasePropriete {
 // #region Case Societe
 
 export class CaseSociete extends CasePropriete {
-    constructor(nom, prix, loyers) {
+    constructor(nom, prix, loyers, hypotheque) {
         super(nom, prix, loyers);
+        this.hypotheque = hypotheque || null;
     }
 
     calculerLoyer(jeu) {

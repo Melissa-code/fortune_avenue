@@ -187,18 +187,19 @@ export class PropositionAcheterPropriete extends Proposition {
      * proprietaire de la case + transfert argent joueur -> banque
      */
     valider(joueur, jeu, casePropriete, banque) {
-        console.log('achat n apparia pas')
+        // console.log('achat n apparia pas')
         if (!this.estDisponible(joueur, casePropriete)) return false; 
 
         casePropriete.proprietaire = joueur; 
         joueur.proprietes.push(casePropriete); 
+        // console.log("achat propiriete", joueur.proprietes)
 
-        console.log("achat debug proposition", casePropriete.prixAchat, joueur.argent, banque.argent)
+        // console.log("achat debug proposition", casePropriete.prixAchat, joueur.argent, banque.argent)
 
         const versement = new VersementEffet(casePropriete.prixAchat, joueur, banque); 
-         console.log("achat debug proposition 2", casePropriete.prixAchat, joueur.argent, banque.argent)
+        //  console.log("achat debug proposition 2", casePropriete.prixAchat, joueur.argent, banque.argent)
         
-         versement.appliquer(joueur, banque); 
+        versement.appliquer(joueur, banque); 
         return { titre: "Achat", message: `${joueur.nom} a acheté ${casePropriete.nom} pour ${casePropriete.prixAchat}€.`}
     }
 }

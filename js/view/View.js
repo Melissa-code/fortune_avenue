@@ -235,6 +235,15 @@ class View {
           this.ctx.textAlign = 'left';
       }
 
+      // proprietes 
+      const proprietes = joueur.proprietes;
+      for (let i = 0; i < proprietes.length; i++ ) {
+        const propriete = proprietes[i];
+        this.ctx.font = `12px Roboto`;
+        this.ctx.fillText(`${propriete.nom}`, zoneJoueursX + this.espacement * 3, zoneJoueursY + this.espacement * (3.5 + i * 0.5));
+
+      }
+
       // Y joueur suivant
       zoneJoueursY += hauteurCard + margeEntreCards / 2;
     }
@@ -377,3 +386,6 @@ class View {
 }
 
 export default View;
+
+// afficher les propritees a cote du joueur 
+

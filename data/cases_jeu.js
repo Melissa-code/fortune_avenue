@@ -15,7 +15,10 @@ const casesJeuJson = [
         "couleur": "marron",
         "prixAchat": 60,
         "loyers": [2,10,30,90,160,250,4],
-        "totalParFamille": 2
+        "totalParFamille": 2,
+         "prixMaison": 50,
+            "prixHotel": 50,
+            "hypotheque": 30
     },
     {
         "numero": 2, 
@@ -33,7 +36,10 @@ const casesJeuJson = [
         "couleur": "marron",
         "prixAchat": 60,
         "loyers": [4,20,60,180,320,450,8],
-        "totalParFamille": 2
+        "totalParFamille": 2,
+              "prixMaison": 50,
+            "prixHotel": 50,
+            "hypotheque": 30
     },
     {
         "numero": 4, 
@@ -51,7 +57,10 @@ const casesJeuJson = [
         "couleur": null,
         "prixAchat": 200,
         "loyers": [25, 50, 100, 200],
-        "totalParFamille": 4
+        "totalParFamille": 4,
+        "prixMaison": null,
+            "prixHotel": null,
+            "hypotheque": 100
     },
     {
         "numero": 6, 
@@ -60,7 +69,10 @@ const casesJeuJson = [
         "couleur": "bleu_clair",
         "prixAchat": 100,
         "loyers": [6,30,90,270,400,550,12],
-        "totalParFamille": 3
+        "totalParFamille": 3,
+        "prixMaison": 50,
+            "prixHotel": 50,
+            "hypotheque": 50
     },
     {
         "numero": 7, 
@@ -78,7 +90,10 @@ const casesJeuJson = [
         "couleur": "bleu_clair",
         "prixAchat": 100,
         "loyers": [6,30,90,270,400,550,12],
-        "totalParFamille": 3
+        "totalParFamille": 3,
+         "prixMaison": 50,
+            "prixHotel": 50,
+            "hypotheque": 50
     },
     {
         "numero": 9, 
@@ -87,7 +102,10 @@ const casesJeuJson = [
         "couleur": "bleu_clair",
         "prixAchat": 120,
         "loyers": [8,40,100,300,450,600,16],
-        "totalParFamille": 3
+        "totalParFamille": 3,
+        "prixMaison": 50,
+            "prixHotel": 50,
+            "hypotheque": 60
     },
     {
         "numero": 10, 
@@ -105,7 +123,10 @@ const casesJeuJson = [
         "couleur": "rose",
         "prixAchat": 140,
         "loyers": [10,50,150,450,620,750,20],
-        "totalParFamille": 3
+        "totalParFamille": 3,
+         "prixMaison": 100,
+            "prixHotel": 100,
+            "hypotheque": 70
     },
     {
         "numero": 12, 
@@ -114,7 +135,10 @@ const casesJeuJson = [
         "couleur": null,
         "prixAchat": 150,
         "loyers": [4, 10], // "4 fois les dés", "10 fois les dés"]
-        "totalParFamille": 2
+        "totalParFamille": 2,
+         "prixMaison": null,
+            "prixHotel": null,
+            "hypotheque": 75
     },
     {
         "numero": 13, 
@@ -123,7 +147,10 @@ const casesJeuJson = [
         "couleur": "rose",
         "prixAchat": 140,
         "loyers": [10,50,150,450,625,750,20],
-        "totalParFamille": 3
+        "totalParFamille": 3, 
+        "prixMaison": 100,
+            "prixHotel": 100,
+            "hypotheque": 70
     },
     {
         "numero": 14, 
@@ -132,7 +159,10 @@ const casesJeuJson = [
         "couleur": "rose",
         "prixAchat": 160, 
         "loyers": [12,60,180,500,700,900,24],
-        "totalParFamille": 3
+        "totalParFamille": 3, 
+         "prixMaison": 100,
+            "prixHotel": 100,
+            "hypotheque": 80
     },
     {
         "numero": 15, 
@@ -141,7 +171,10 @@ const casesJeuJson = [
         "couleur": null,
         "prixAchat": 200,
         "loyers": [25,50, 100, 200],
-        "totalParFamille": 4
+        "totalParFamille": 4,
+         "prixMaison": null,
+            "prixHotel": null,
+            "hypotheque": 100
     },
     {
         "numero": 16, 
@@ -150,7 +183,10 @@ const casesJeuJson = [
         "couleur": "orange",
         "prixAchat": 180,
         "loyers": [14,70,200,550,750,950,28],
-        "totalParFamille": 3
+        "totalParFamille": 3,
+        "prixMaison": 100,
+            "prixHotel": 100,
+            "hypotheque": 90
     },
     {
         "numero": 17, 
@@ -168,7 +204,10 @@ const casesJeuJson = [
         "couleur": "orange",
         "prixAchat": 180,
         "loyers": [14,70,200,550,750,950,28],
-        "totalParFamille": 3
+        "totalParFamille": 3,
+         "prixMaison": 100,
+            "prixHotel": 100,
+            "hypotheque": 90
     },
     {
         "numero": 19, 
@@ -177,7 +216,10 @@ const casesJeuJson = [
         "couleur": "orange",
         "prixAchat": 200,
         "loyers": [16,80,220,600,800,1000,32],
-        "totalParFamille": 3
+        "totalParFamille": 3, 
+         "prixMaison": 100,
+            "prixHotel": 100,
+            "hypotheque": 100
     },
     {
         "numero": 20, 
@@ -195,7 +237,10 @@ const casesJeuJson = [
         "couleur": "rouge",
         "prixAchat": 220,
         "loyers": [18,90,250,700,875,1050,36],
-        "totalParFamille": 3
+        "totalParFamille": 3,
+                 "prixMaison": 150,
+            "prixHotel": 150,
+            "hypotheque": 110
     },
     {
         "numero": 22, 
@@ -213,7 +258,10 @@ const casesJeuJson = [
         "couleur": "rouge",
         "prixAchat": 220,
         "loyers": [18,90,250,700,875,1050,36],
-        "totalParFamille": 3
+        "totalParFamille": 3, 
+          "prixMaison": 150,
+            "prixHotel": 150,
+            "hypotheque": 110
     },
     {
         "numero": 24, 
@@ -222,7 +270,10 @@ const casesJeuJson = [
         "couleur": "rouge",
         "prixAchat": 240,
         "loyers": [20,100,300,750,925,1100,40],
-        "totalParFamille": 3
+        "totalParFamille": 3,
+         "prixMaison": 150,
+            "prixHotel": 150,
+            "hypotheque": 120
     },
     {
         "numero": 25, 
@@ -231,7 +282,10 @@ const casesJeuJson = [
         "couleur": null,
         "prixAchat": 200,
         "loyers": [25,50, 100, 200],
-        "totalParFamille": 4
+        "totalParFamille": 4, 
+           "prixMaison": null,
+            "prixHotel": null,
+            "hypotheque": 100
     },
     {
         "numero": 26, 
@@ -240,7 +294,10 @@ const casesJeuJson = [
         "couleur": "jaune",
         "prixAchat": 260,
         "loyers": [22,100,330,800,975,1150,44],
-        "totalParFamille": 3
+        "totalParFamille": 3, 
+        "prixMaison": 150,
+            "prixHotel": 150,
+            "hypotheque": 130
     },
     {
         "numero": 27, 
@@ -249,7 +306,10 @@ const casesJeuJson = [
         "couleur": "jaune",
         "prixAchat": 260,
         "loyers": [22,110,330,800,975,1150,44],
-        "totalParFamille": 3
+        "totalParFamille": 3, 
+         "prixMaison": 150,
+            "prixHotel": 150,
+            "hypotheque": 130
     },
     {
         "numero": 28, 
@@ -258,7 +318,10 @@ const casesJeuJson = [
         "couleur": null,
         "prixAchat": 150,
         "loyers": [4, 10], // "4 fois les dés", "10 fois les dés"]
-        "totalParFamille": 2
+        "totalParFamille": 2, 
+            "prixMaison": null,
+            "prixHotel": null,
+            "hypotheque": 75
     },
     {
         "numero": 29, 
@@ -267,7 +330,10 @@ const casesJeuJson = [
         "couleur": "jaune",
         "prixAchat": 280,
         "loyers": [24,120,360,850,1025,1200,48],
-        "totalParFamille": 3
+        "totalParFamille": 3, 
+        "prixMaison": 150,
+            "prixHotel": 150,
+            "hypotheque": 140
     },
     {
         "numero": 30, 
@@ -285,7 +351,10 @@ const casesJeuJson = [
         "couleur": "vert",
         "prixAchat": 300,
         "loyers": [26,130,390,900,1100,1275,52],
-        "totalParFamille": 3
+        "totalParFamille": 3, 
+               "prixMaison": 200,
+            "prixHotel": 200,
+            "hypotheque": 150
     },
     {
         "numero": 32, 
@@ -294,7 +363,10 @@ const casesJeuJson = [
         "couleur": "vert",
         "prixAchat": 300,
         "loyers": [26,130,390,900,1100,1275,52],
-        "totalParFamille": 3
+        "totalParFamille": 3, 
+          "prixMaison": 200,
+            "prixHotel": 200,
+            "hypotheque": 150
     },
     {
         "numero": 33, 
@@ -312,7 +384,10 @@ const casesJeuJson = [
         "couleur": "vert",
         "prixAchat": 320,
         "loyers": [28,150,450,1000,1200,1400,56],
-        "totalParFamille": 3
+        "totalParFamille": 3, 
+          "prixMaison": 200,
+            "prixHotel": 200,
+            "hypotheque": 160
     },
     {
         "numero": 35, 
@@ -321,7 +396,10 @@ const casesJeuJson = [
         "couleur": null,
         "prixAchat": 200,
         "loyers": [25,50, 100, 200],
-        "totalParFamille": 4
+        "totalParFamille": 4,
+            "prixMaison": null,
+            "prixHotel": null,
+            "hypotheque": 100
     },
     {
         "numero": 36, 
@@ -339,7 +417,10 @@ const casesJeuJson = [
         "couleur": "bleu",
         "prixAchat": 350,
         "loyers": [35,175,500,1100,1300,1500,70],
-        "totalParFamille": 2
+        "totalParFamille": 2, 
+         "prixMaison": 200,
+            "prixHotel": 200,
+            "hypotheque": 175
     },
     {
         "numero": 38, 
@@ -357,7 +438,10 @@ const casesJeuJson = [
         "couleur": "bleu",
         "prixAchat": 400,
         "loyers": [50,200,600,1400,1700,2000,100],
-        "totalParFamille": 2
+        "totalParFamille": 2, 
+            "prixMaison": 200,
+            "prixHotel": 200,
+            "hypotheque": 200
     }
 ]
 

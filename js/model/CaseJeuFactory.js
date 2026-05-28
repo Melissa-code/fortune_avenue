@@ -69,15 +69,15 @@ export class CaseJeuFactory {
 
     // transformation des propriétés brutes en paramètres de constructeur
     static parseRue(dataObj) {
-        return new CaseRue(dataObj.nom, dataObj.prixAchat, dataObj.loyers, dataObj.couleur);
+        return new CaseRue(dataObj.nom, dataObj.prixAchat, dataObj.loyers, dataObj.couleur, dataObj.prixMaison, dataObj.prixHotel, dataObj.hypotheque);
     }
 
     static parseGare(dataObj) {
-        return new CaseGare(dataObj.nom, dataObj.prixAchat, dataObj.loyers);
+        return new CaseGare(dataObj.nom, dataObj.prixAchat, dataObj.loyers, dataObj.hypotheque);
     }
 
     static parseSociete(dataObj) {
-        return new CaseSociete(dataObj.nom, dataObj.prixAchat, dataObj.loyers);
+        return new CaseSociete(dataObj.nom, dataObj.prixAchat, dataObj.loyers, dataObj.hypotheque);
     }
 
     static parseAction(dataObj) {

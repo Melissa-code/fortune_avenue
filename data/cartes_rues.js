@@ -1,5 +1,4 @@
-{
-    "cartesRues": [
+const cartesRuesJson = [
         {
             "titre": "Avenue Champs-Elysées", 
             "couleur": "bleu", 
@@ -253,4 +252,5 @@
             "hypotheque": 75
         }
     ]
-}
+
+export default cartesRuesJson ; 
