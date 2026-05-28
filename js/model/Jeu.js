@@ -124,22 +124,20 @@ class Jeu {
             return; 
         }
         
-        // []array de messages des effets appliqués
         if (caseJeu instanceof CaseAction) {
             this.listeStatuts  = caseJeu.arriver(joueurCourant, this); 
-            console.log("Messages des effets :", messagesEffets);
+            console.log("argent joueur", joueurCourant.argent);
             return;
         }
 
-        // []array de propositions valables (acheter, payer loyer, decliner...)
-        else if (caseJeu instanceof CasePropriete) {
+        if (caseJeu instanceof CasePropriete) {
             this.listePropositions = caseJeu.arriver(joueurCourant, this); 
             if (this.listePropositions.length > 0) {
                 this.etat = EtatsJeu.EN_ATTENTE; // de propositions (modale)
             }
+             console.log("argent joueur", joueurCourant.argent);
         }
 
-        this.terminerTour();
     }
 
     /**
@@ -168,11 +166,14 @@ class Jeu {
         const joueurCourant = this.joueurs[this.joueurActuelIndex]; 
         const numProp = numProposition - 1; // n-1 dans la liste de propositions
 
+         console.log("numprop ICI", numProp)
         if (numProp < 0 || numProp > this.listePropositions.length) return; 
 
         // sortir du menu de propositions (dernier chiffre)
         if (numProp === this.listePropositions.length) return this.decliner(joueurCourant, this.casesJeu[joueurCourant.position]);
         
+
+        console.log("proposition ICI", this.listePropositions[numProp])
         // Valider proposition (bool) et appliquer ses effets (ex: acheter la case/payer pour sortir de prison...)
         const success = this.listePropositions[numProp].valider(joueurCourant, this, this.casesJeu[joueurCourant.position], this.banque);
         if (!success) return; 

@@ -56,6 +56,8 @@ export class VersementEffet extends Effet {
 
     appliquer(joueur, jeu = null, banque = null) {
         let messages = []; 
+        console.log("EFFET", this.montant, this.source, this.destinataire, this.estCollectif)
+        console.log("debug effet", this.source, this.destinataire, joueur, banque)
 
         // 1- joueur paie banque (achat/taxe) - attention string != obj
         if (this.source === "joueur" && this.destinataire === "banque") {
@@ -82,12 +84,19 @@ export class VersementEffet extends Effet {
             }
             console.log("argent du joueur ap recevoir argent: ", joueur.argent)
 
+        } else if (this.source instanceof Joueur && this.destinataire instanceof Banque) {
+            console.log('EFFET APPLIQUE')
+            this.source.payer(this.montant);
+            this.destinataire.recevoir(this.montant);
+            messages.push("Le joueur, " + this.destinataire.nom + "a reçu " + this.montant + " de " + this.source.nom);
+   
+       
         } else if (this.source instanceof Joueur && this.destinataire instanceof Joueur) {
             this.source.payer(this.montant);
             this.destinataire.recevoir(this.montant);
             messages.push("Le joueur, " + this.destinataire.nom + "a reçu " + this.montant + " de " + this.source.nom);
    
-        // 3- banque paie joueur (case départ/gain)
+         // 3- banque paie joueur (case départ/gain)
         } else if (this.source instanceof Banque && this.destinataire instanceof Joueur) {
             joueur.recevoir(this.montant);
             console.log("argent du joueur ap recevoir argent: ", joueur.argent)

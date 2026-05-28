@@ -35,9 +35,11 @@ class Controller {
         let valeurDeplacement = this.jeu.de.lancer();
         this.jeu.listePropositions = []; 
         this.jeu.listeStatuts = []; //pour le vider à chaque tour
-        // this.view.refresh();
+
+        this.view.refresh();
 
         this.jeu.avancerJoueurCourant(valeurDeplacement); 
+        console.log("argent joueur", joueurCourant.argent);    
 
         this.view.refresh();
 
@@ -52,15 +54,7 @@ class Controller {
             this.jeu.terminerTour();
         }
 
-        // this.view.refresh();
-        // TODO [[],[]]
-        // faire une zone statut pour affficher messages des effets
-        // fix refresh ()
-        
-        // les info de status seronmt implemente differement que les proposition ( a traver un tableau de statu chez le jeu
-        // la vue doit juste afficher le contenu du tableau de status
-        // lo model met a jour le tableau de status en fonction des effets
-        // 
+        // this.jeu.terminerTour();
     }
 
     /**
@@ -68,7 +62,11 @@ class Controller {
      * recupérer message , ex: "Achat", "Le joueur ... a acheté la case ..." qui disparait ap 3sec 
      */
     soumettreProposition(numProposition) {
+        console.log("Num proposition choisie:", numProposition);
+        console.log("etat du jeu", this.jeu.etat);
+
         if (this.jeu.etat === EtatsJeu.EN_ATTENTE && !isNaN(numProposition)) {
+            console.log("Soumission de la proposition n°", numProposition);
             const resultat = this.jeu.soumettreProposition(numProposition); 
             this.view.refresh();
 
@@ -78,10 +76,12 @@ class Controller {
                     this.view.refresh();
                     this.jeu.terminerTour();
                     this.view.refresh();
-                }, 2000);
+                }, 4000);
             }
         } 
     }
 }
+
+// afficher les propriétés sur zone joueurs
 
 export default Controller;

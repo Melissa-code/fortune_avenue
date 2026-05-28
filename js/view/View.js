@@ -211,15 +211,16 @@ class View {
         this.ctx.font = `17px Roboto`;
         this.ctx.textAlign = 'center'; 
         this.ctx.fillText(`💸 Argent: ${joueur.argent} M`, zoneJoueursX + largeurCard / 2, zoneJoueursY + this.espacement);
+        console.log("argent joueur", joueur.argent)
         this.ctx.textAlign = 'left';
 
         // Prison
-        // if (joueur.estEnPrison) {
+        if (joueur.estEnPrison) {
             this.ctx.font = `bold 17px Roboto`;
             this.ctx.textAlign = 'right'; 
             this.ctx.fillText("👮🏻 En Prison", zoneJoueursX + largeurCard - this.espacement, zoneJoueursY + this.espacement);
             this.ctx.textAlign = 'left';
-        // }
+        }
 
         // Y joueur suivant
         zoneJoueursY += hauteurCard + margeEntreCards;

@@ -230,7 +230,7 @@ export class CaseAction extends CaseJeu {
 
     arriver(joueur, jeu) {
         console.log(`Arrivée sur la case d'action: ${this.nom}`);
-        console.log('effets', this.effets)
+
         const messagesEffets = [];
        
         if (this.effets.length === 0) { 

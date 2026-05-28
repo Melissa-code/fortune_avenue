@@ -48,10 +48,6 @@ class Joueur {
         this.argent -= montant;
         console.log(`Le joueur paie ${montant}. Nouveau solde : ${this.argent}`);
     }
-
-    acheterCartePrisonAdversaire() {
-        
-    }
 }
 
 export default Joueur; 
