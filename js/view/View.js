@@ -224,8 +224,6 @@ class View {
 
       // Argent
       this.ctx.font = `16px Roboto`;
-      // this.ctx.textAlign = 'center'; 
-      // this.ctx.fillText(`💸 Argent: ${joueur.argent} M`, zoneJoueursX + largeurCard / 2, zoneJoueursY + this.espacement);
       this.ctx.fillText(`💸  ${joueur.argent} M`, zoneJoueursX + this.espacement / 2, zoneJoueursY + this.espacement * 2);
       this.ctx.textAlign = 'left';
 
@@ -246,31 +244,31 @@ class View {
    * Afficher les messages des effets 
    */
   afficherZoneStatuts() {
-    const x = this.dimensionPlateauJeu + (this.espacement * 4);
+    const x = this.dimensionPlateauJeu + this.espacement / 2;
     const y = this.dimensionPlateauJeu / 2 ; 
-    const largeur = this.dimensionPlateauJeu;
+    const largeur = this.dimensionPlateauJeu + this.espacement * 2.5;
     const hauteur = this.dimensionPlateauJeu * 20 / 100; // 20% plateau
 
-    this.ctx.fillStyle = '#000000';
+    this.ctx.fillStyle = '#123024'; 
     this.ctx.beginPath();
-    this.ctx.roundRect(x, y, largeur, hauteur, 10);
+    this.ctx.roundRect(x, y, largeur, hauteur, 5);
     this.ctx.fill();
 
     this.ctx.strokeStyle = '#FFFFFF';
     this.ctx.lineWidth = 2;
     this.ctx.beginPath();
-    this.ctx.roundRect(x, y, largeur, hauteur, 10);
+    this.ctx.roundRect(x, y, largeur, hauteur, 5);
     this.ctx.stroke();
 
-    this.ctx.font = "bold 17px Roboto";
+    this.ctx.font = "16px Roboto";
     this.ctx.fillStyle = '#FFFFFF';
-    this.ctx.fillText("Jeu en cours : ", x + this.espacement, y + this.espacement);
+    this.ctx.fillText("Jeu en cours ", x + this.espacement / 2 , y + this.espacement);
 
-    this.ctx.font = "15px Roboto";
+    this.ctx.font = "16px Roboto";
     this.ctx.fillStyle = '#FFFFFF';
     const statuts = this.jeu.listeStatuts; // vue affiche tabl status (Jeu)
     for (let i = 0; i < statuts.length; i++) {
-      this.ctx.fillText(statuts[i], x + this.espacement, y + this.espacement * 2.2 + i * this.espacement);
+      this.ctx.fillText(statuts[i], x + this.espacement / 2, y + this.espacement * 2 + i * this.espacement/1.2);
     }
   }
 
@@ -280,9 +278,9 @@ class View {
   afficherModale() {
     console.log("affiche modale")
     // cadre 
-    const zoneModaleX =  this.dimensionPlateauJeu + this.espacement * 4;
+    const zoneModaleX =  this.dimensionPlateauJeu + this.espacement /2 ;
     const zoneModaleY = this.dimensionPlateauJeu / 1.5 + this.espacement;
-    const largeurModale = this.dimensionPlateauJeu;
+    const largeurModale = this.dimensionPlateauJeu + this.espacement * 2.5;
     const hauteurModale = this.dimensionPlateauJeu / 3.5;
     // style 
     this.ctx.fillStyle = '#000000';
@@ -294,7 +292,7 @@ class View {
     this.ctx.fillRect(zoneModaleX, zoneModaleY,  largeurModale, hauteurModale);
     this.ctx.strokeStyle = '#d2e4c6';
     this.ctx.lineWidth = 2;
-     this.ctx.roundRect(zoneModaleX, zoneModaleY, largeurModale, hauteurModale, 10);
+    this.ctx.roundRect(zoneModaleX, zoneModaleY, largeurModale, hauteurModale, 10);
     // this.ctx.strokeRect(zoneModaleX, zoneModaleY, largeurModale, hauteurModale);
     this.ctx.stroke();
 
@@ -304,8 +302,8 @@ class View {
   // pour proposition
   afficherTexteModale(type, texte) {
     const modale = this.afficherModale();
-    console.log("texte modale", texte)
-    console.log("type modale", type)
+    // console.log("texte modale", texte)
+    // console.log("type modale", type)
   
     // titre 
     this.ctx.font = "bold 20px Roboto";
@@ -316,16 +314,16 @@ class View {
     this.ctx.font = "normal 17px Roboto";
   
     const lignes = texte.split("\n"); //pour le saut de ligne
-      console.log("lignes dans modale", lignes)
+      // console.log("lignes dans modale", lignes)
     for (let i = 0; i < lignes.length; i++) {
-      console.log("ligne dans modale", lignes[i])
+      // console.log("ligne dans modale", lignes[i])
       this.ctx.fillText(lignes[i], modale.x + this.espacement, modale.y + this.espacement * 2 + (i * this.espacement));
     }
   } 
   
   afficherMenuPropositions(listePropositions) {
     let texte = "";
-    console.log("propositions", listePropositions)
+    // console.log("propositions", listePropositions)
 
     if (listePropositions.length > 0) {
       let i = 0; 

@@ -56,20 +56,20 @@ export class VersementEffet extends Effet {
 
     appliquer(joueur, jeu = null, banque = null) {
         let messages = []; 
-        console.log("EFFET", this.montant, this.source, this.destinataire, this.estCollectif)
-        console.log("debug effet", this.source, this.destinataire, joueur, banque)
+        // console.log("EFFET", this.montant, this.source, this.destinataire, this.estCollectif)
+        // console.log("debug effet", this.source, this.destinataire, joueur, banque)
 
         // 1- joueur paie banque (achat/taxe) - attention string != obj
         if (this.source === "joueur" && this.destinataire === "banque") {
             joueur.payer(this.montant);
             banque.recevoir(this.montant);
-            console.log("Taxe payée:", this.montant, "- Nouveau solde du joueur:", joueur.argent);
-            messages.push("Le joueur, " + joueur.nom + "a payé " + this.montant + " à la banque");
+            // console.log("Taxe payée:", this.montant, "- Nouveau solde du joueur:", joueur.argent);
+            messages.push("Taxe payée: Le joueur, " + joueur.nom + " a payé " + this.montant + " à la banque.");
         }
 
         else if (this.source === "banque" && this.destinataire === "joueur") {
             joueur.recevoir(this.montant); 
-            console.log("Le joueur a recu de la banque : ", this.montant);
+            // console.log("Le joueur a recu de la banque : ", this.montant);
             messages.push("Le joueur, " + joueur.nom + "a reçu " + this.montant + " de la banque");
 
         // 2- autres joueurs paient joueur courant (carte anniversaire)
@@ -99,7 +99,7 @@ export class VersementEffet extends Effet {
          // 3- banque paie joueur (case départ/gain)
         } else if (this.source instanceof Banque && this.destinataire instanceof Joueur) {
             joueur.recevoir(this.montant);
-            console.log("argent du joueur ap recevoir argent: ", joueur.argent)
+            // console.log("argent du joueur ap recevoir argent: ", joueur.argent)
             messages.push("Le joueur, " + joueur.nom + "a reçu " + this.montant + " de la banque")
         }
         return messages;
@@ -158,8 +158,8 @@ export class PiocheEffet extends Effet {
             carteTiree = jeu.piocheFondsCommun.shift();
             console.log('carte ', carteTiree.titre, carteTiree.description)
             jeu.piocheFondsCommun.push(carteTiree.titre)
-            messages.push("Le joueur " + joueur.nom + " a pioché la carte: " + carteTiree.titre);
-            messages.push("Description de la carte: " + carteTiree.description);
+            messages.push("Le joueur " + joueur.nom + " a pioché la carte " + carteTiree.titre);
+            messages.push(`"${carteTiree.description}"`);
         }
         return messages;
     }

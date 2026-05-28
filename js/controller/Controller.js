@@ -76,7 +76,7 @@ class Controller {
                     this.view.refresh();
                     this.jeu.terminerTour();
                     this.view.refresh();
-                }, 4000);
+                }, 3000);
             }
         } 
     }
