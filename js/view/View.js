@@ -237,11 +237,32 @@ class View {
 
       // proprietes 
       const proprietes = joueur.proprietes;
-      for (let i = 0; i < proprietes.length; i++ ) {
-        const propriete = proprietes[i];
-        this.ctx.font = `12px Roboto`;
-        this.ctx.fillText(`${propriete.nom}`, zoneJoueursX + this.espacement * 3, zoneJoueursY + this.espacement * (3.5 + i * 0.5));
+      if (proprietes.length > 0) {
+        let tagX = zoneJoueursX + this.espacement * 4;
+        const tagY = zoneJoueursY + this.espacement / 2; 
+        const tagH = 14;
 
+        for (const propriete of proprietes) {
+          const couleur = propriete.couleur || '#9CA3AF'; ;  // data/cases_jeu.js
+          const label = propriete.nom.substring(0, 30); // tronquer 
+          const tagW = this.ctx.measureText(label).width + 10;
+
+          // tag 
+          this.ctx.fillStyle = couleur;
+          this.ctx.beginPath();
+          this.ctx.roundRect(tagX, tagY, tagW, tagH, 4);
+          this.ctx.fill();
+          //text
+          if (couleur === "#5A3E2B" || couleur === "#0A74DA" || couleur === "#A8333E") { 
+            this.ctx.fillStyle = '#FFFFFF';
+          } else {
+            this.ctx.fillStyle = '#000000';
+          }
+          this.ctx.font = '10px Roboto';
+          this.ctx.fillText(label, tagX + 5, tagY + 10);
+
+          tagX += tagW + 4; 
+        }
       }
 
       // Y joueur suivant
@@ -387,5 +408,4 @@ class View {
 
 export default View;
 
-// afficher les propritees a cote du joueur 
 
