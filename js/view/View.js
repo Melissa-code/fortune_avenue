@@ -1,11 +1,10 @@
 import ImagesResultatsDe from "../model/enums/ImagesResultatsDe.js";
 import EtatsJeu from '../model/enums/EtatsJeu.js';
+import ImagesUI from '../model/enums/imagesUI.js';
 
 class View {
 
   static IMG_PLATEAU_JEU = "./images/gameboard_v2.svg";
-  static IMG_ARGENT = "./images/ui/billets.svg";
-  static IMG_PRISON = "./images/ui/prison.svg";
 
   constructor(jeu, controller, document, ) {
     this.jeu = jeu;
@@ -14,8 +13,8 @@ class View {
     this.myCanvas.width = window.innerWidth;    //toute la largeur dispo 
     this.myCanvas.height = window.innerHeight;  //toute la hauteur dispo
     this.dimensionPlateauJeu = Math.min(
-        this.myCanvas.width * 0.55,   // plateau = 55% de la largeur
-        this.myCanvas.height  
+      this.myCanvas.width * 0.55,   // plateau = 55% de la largeur
+      this.myCanvas.height, 
     );
 
     this.ctx = this.myCanvas.getContext("2d");
@@ -24,7 +23,7 @@ class View {
     this.imagesPions = [];         // pions joueurs
     this.chargerImagesPions();
     this.initialiserDe();          // dé
-    this.chargerImagesArgentEtPrison();
+    this.chargerImagesUI();        // UI (argent, prison, maison, hotel)
     this.espacement = this.tailleDe / 2; 
 
     this.initialiserEvenement(); // click sur dé et propositionsmodale: choix clavier
@@ -199,14 +198,22 @@ class View {
     }
   }
 
-  chargerImagesArgentEtPrison() {
+  chargerImagesUI() {
     this.imageArgent = new Image();
-    this.imageArgent.src = View.IMG_ARGENT;
+    this.imageArgent.src = ImagesUI.ARGENT;
     this.imageArgent.onload = () => this.refresh();
 
     this.imagePrison = new Image();
-    this.imagePrison.src = View.IMG_PRISON;
+    this.imagePrison.src = ImagesUI.PRISON;
     this.imagePrison.onload = () => this.refresh();
+
+    this.imageMaison = new Image();
+    this.imageMaison.src = ImagesUI.MAISON;
+    this.imageMaison.onload = () => this.refresh();
+
+    this.imageHotel = new Image();
+    this.imageHotel.src = ImagesUI.HOTEL;
+    this.imageHotel.onload = () => this.refresh();
   }
 
   /**
@@ -238,8 +245,7 @@ class View {
       this.ctx.fill();
       const pionSize = headerH * 0.50;
       this.ctx.drawImage(imgPion, x + 10, cardY + (headerH - pionSize) / 2, pionSize, pionSize);
-      // text nom en blanc
-      this.ctx.fillStyle = '#FFFFFF';
+      this.ctx.fillStyle = '#FFFFFF'; // texte en blanc
       this.ctx.font = `bold 16px Roboto`;
       this.ctx.fillText(joueur.nom, x + pionSize + 30, cardY + headerH * 0.65);
 
@@ -258,7 +264,7 @@ class View {
       // ligne 2 — argent
       const iconSize = ligneH * 0.8;
       const iconY = cardY + headerH + ligneH * 0.1;
-      this.ctx.drawImage(this.imageArgent, x + 8, iconY, iconSize/1.7, iconSize/1.7);
+      this.ctx.drawImage(this.imageArgent , x + 8, iconY, iconSize/1.7, iconSize/1.7);
       this.ctx.font = `15px Roboto`;
       this.ctx.fillStyle = '#000000';
       this.ctx.fillText(`${joueur.argent} M`, x + 5 + iconSize + 6, cardY + headerH + ligneH * 0.5);
@@ -266,7 +272,7 @@ class View {
       let ligneActuelle = 0.8;
 
       // ligne 3 — prison 
-      // if (joueur.estEnPrison) {
+      if (joueur.estEnPrison) {
         const prisonY = cardY + headerH + ligneH * ligneActuelle + 6;
         this.ctx.drawImage(this.imagePrison, x + 8, prisonY, iconSize/1.7, iconSize/1.7);
         this.ctx.font = `bold 14px Roboto`;
@@ -274,12 +280,12 @@ class View {
         this.ctx.fillText(`En Prison`, x + 5 + iconSize + 6, prisonY + iconSize * 0.4);
         this.ctx.fillStyle = 'black';
         ligneActuelle++;
-      // }
+      }
 
       // ligne 4 — tags propriétés 
       if (proprietes.length > 0) {
         let tagX = x + 8;
-        let tagY = cardY + ligneH * ligneActuelle + 4;
+        let tagY = cardY + ligneH * ligneActuelle + headerH + 6;
         const tagH = 16;
         const tagLigneH = tagH + 5; //hauteur d'une ligne de tags (16px + 5px marge)
 
