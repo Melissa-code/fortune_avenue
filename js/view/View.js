@@ -359,7 +359,8 @@ class View {
   /**
    * Afficher la modale (propositions, cartes chance/fonds commun...) 
    */
-  afficherModale() {
+  afficherModale(type = "") {
+    // overlay
     this.ctx.fillStyle = 'rgba(0, 0, 0, 0.5)';//ombre autoru 
     this.ctx.fillRect(0, 0, this.myCanvas.width, this.myCanvas.height);
 
@@ -369,35 +370,44 @@ class View {
     const zoneModaleX = (this.myCanvas.width / 2) - (largeurModale / 2);
     const zoneModaleY = (this.myCanvas.height / 2) - (hauteurModale / 2);
 
-    const decalage = 6;
-    this.ctx.fillStyle = 'rgba(8, 28, 21, 0.5)'; 
-    this.ctx.beginPath();
-    this.ctx.roundRect(zoneModaleX - decalage, zoneModaleY - decalage, largeurModale + (decalage * 2), hauteurModale + (decalage * 2), 5);
-    this.ctx.fill();
-
-    // style 
     this.ctx.fillStyle = '#FFFFFF';
     this.ctx.beginPath();
-    this.ctx.roundRect(zoneModaleX, zoneModaleY, largeurModale, hauteurModale, 5);
+    this.ctx.roundRect(zoneModaleX, zoneModaleY, largeurModale, hauteurModale, 8);
     this.ctx.fill();
     this.ctx.strokeStyle = '#123024';
     this.ctx.lineWidth = 3;
     this.ctx.stroke();
 
-    return { x: zoneModaleX, y: zoneModaleY, width: largeurModale, height: hauteurModale };
+    // header avec titre
+    const headerH = this.espacement * 1.5;
+    this.ctx.fillStyle = '#123024';
+    this.ctx.beginPath();
+    this.ctx.roundRect(zoneModaleX, zoneModaleY, largeurModale, headerH, [8, 8, 0, 0]);
+    this.ctx.fill();
+    this.ctx.font = "bold 18px Roboto";
+    this.ctx.fillStyle = '#FFFFFF';
+    this.ctx.fillText(type, zoneModaleX + this.espacement/2, zoneModaleY + headerH * 0.6);// titre 
+
+    this.ctx.strokeStyle = '#081c15';
+    this.ctx.lineWidth = 3;
+    this.ctx.beginPath();
+    this.ctx.roundRect(zoneModaleX, zoneModaleY, largeurModale, hauteurModale, 8);
+    this.ctx.stroke();
+
+    return { x: zoneModaleX, y: zoneModaleY, width: largeurModale, height: hauteurModale, headerH };
   }
 
   // pour proposition
   afficherTexteModale(type, texte) {
-    const modale = this.afficherModale();
-    this.ctx.font = "bold 20px Roboto"; // titre 
+    const modale = this.afficherModale(type);
+
+    // content
+    this.ctx.font = "normal 16px Roboto";// description
     this.ctx.fillStyle = '#000000';
-    this.ctx.fillText(type, modale.x + this.espacement, modale.y + this.espacement);
-    this.ctx.font = "normal 17px Roboto";// description
 
     const lignes = texte.split("\n"); //pour le saut de ligne
     for (let i = 0; i < lignes.length; i++) {
-      this.ctx.fillText(lignes[i], modale.x + this.espacement, modale.y + this.espacement * 2 + (i * this.espacement));
+      this.ctx.fillText(lignes[i], modale.x + this.espacement/2, modale.y + this.espacement * 2.5 + (i * this.espacement/1.5));
     }
   } 
   
