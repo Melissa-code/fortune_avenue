@@ -4,6 +4,8 @@ import EtatsJeu from '../model/enums/EtatsJeu.js';
 class View {
 
   static IMG_PLATEAU_JEU = "./images/gameboard_v2.svg";
+  static IMG_ARGENT = "./images/ui/billets.svg";
+  static IMG_PRISON = "./images/ui/prison.svg";
 
   constructor(jeu, controller, document, ) {
     this.jeu = jeu;
@@ -22,6 +24,7 @@ class View {
     this.imagesPions = [];         // pions joueurs
     this.chargerImagesPions();
     this.initialiserDe();          // dé
+    this.chargerImagesArgentEtPrison();
     this.espacement = this.tailleDe / 2; 
 
     this.initialiserEvenement(); // click sur dé et propositionsmodale: choix clavier
@@ -196,6 +199,16 @@ class View {
     }
   }
 
+  chargerImagesArgentEtPrison() {
+    this.imageArgent = new Image();
+    this.imageArgent.src = View.IMG_ARGENT;
+    this.imageArgent.onload = () => this.refresh();
+
+    this.imagePrison = new Image();
+    this.imagePrison.src = View.IMG_PRISON;
+    this.imagePrison.onload = () => this.refresh();
+  }
+
   /**
    * Afficher les infos des joueurs (argent, propriétés, prison...) dans une zone  
    */
@@ -243,20 +256,25 @@ class View {
       this.ctx.stroke();
 
       // ligne 2 — argent
-      this.ctx.font = `15px Roboto `;
-       this.ctx.fillStyle = '#000000';
-      this.ctx.fillText(`💸 ${joueur.argent} M`, x + 8, cardY + ligneH * 1.8);
+      const iconSize = ligneH * 0.8;
+      const iconY = cardY + headerH + ligneH * 0.1;
+      this.ctx.drawImage(this.imageArgent, x + 8, iconY, iconSize/1.7, iconSize/1.7);
+      this.ctx.font = `15px Roboto`;
+      this.ctx.fillStyle = '#000000';
+      this.ctx.fillText(`${joueur.argent} M`, x + 5 + iconSize + 6, cardY + headerH + ligneH * 0.5);
 
-      let ligneActuelle = 2;
+      let ligneActuelle = 0.8;
 
       // ligne 3 — prison 
-      if (joueur.estEnPrison) {
+      // if (joueur.estEnPrison) {
+        const prisonY = cardY + headerH + ligneH * ligneActuelle + 6;
+        this.ctx.drawImage(this.imagePrison, x + 8, prisonY, iconSize/1.7, iconSize/1.7);
         this.ctx.font = `bold 14px Roboto`;
         this.ctx.fillStyle = '#da2c38';
-        this.ctx.fillText(`👮 En Prison`, x + 8, cardY + ligneH * (ligneActuelle + 0.8));
+        this.ctx.fillText(`En Prison`, x + 5 + iconSize + 6, prisonY + iconSize * 0.4);
         this.ctx.fillStyle = 'black';
         ligneActuelle++;
-      }
+      // }
 
       // ligne 4 — tags propriétés 
       if (proprietes.length > 0) {
