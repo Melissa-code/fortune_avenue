@@ -13,7 +13,7 @@ class View {
     this.myCanvas.height = window.innerHeight;  //toute la hauteur dispo
     this.dimensionPlateauJeu = Math.min(
         this.myCanvas.width * 0.55,   // plateau = 55% de la largeur
-        this.myCanvas.height    
+        this.myCanvas.height  
     );
 
     this.ctx = this.myCanvas.getContext("2d");
@@ -243,7 +243,8 @@ class View {
       this.ctx.stroke();
 
       // ligne 2 — argent
-      this.ctx.font = `15px Roboto`;
+      this.ctx.font = `15px Roboto `;
+       this.ctx.fillStyle = '#000000';
       this.ctx.fillText(`💸 ${joueur.argent} M`, x + 8, cardY + ligneH * 1.8);
 
       let ligneActuelle = 2;
@@ -260,17 +261,21 @@ class View {
       // ligne 4 — tags propriétés 
       if (proprietes.length > 0) {
         let tagX = x + 8;
-        const tagY = cardY + ligneH * ligneActuelle + 4;
+        let tagY = cardY + ligneH * ligneActuelle + 4;
         const tagH = 16;
+        const tagLigneH = tagH + 5; //hauteur d'une ligne de tags (16px + 5px marge)
 
         for (const prop of proprietes) {
           const couleur = prop.couleur || '#9CA3AF';
           const label = prop.nom.substring(0, 25);
-          this.ctx.font = '11px Roboto';
+          this.ctx.font = '12px Roboto';
           const tagW = this.ctx.measureText(label).width + 10;
 
-          // stop si débordement
-          if (tagX + tagW > x + largeurCard - 8) break;
+          // retour à la ligne si débordement
+          if (tagX + tagW > x + largeurCard - 8) {
+            tagX = x + 8;      
+            tagY += tagLigneH;
+          }
 
           this.ctx.fillStyle = couleur;
           this.ctx.beginPath();
