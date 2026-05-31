@@ -103,9 +103,36 @@ if (cible === "DE") {
 
 La classe a été conçue pour être modulaire:
 
-- **Constructeur léger**: délègue l'initialisation à des méthodes spécialisées (initialiserComposantsDe, chargerImagesPions).
+- **Constructeur léger** délègue l'initialisation à des méthodes spécialisées comme initialiserDe ou chargerImagesPions...
 
-- **Réutilisabilité**: les dimensions sont calculées à partir d'une variable `dimensionPlateauJeu` permettant de redimensionner le jeu facilement sans recalculer chaque position manuellement.
+- **Pourquoi View reçoit-elle jeu ET controller ?**
+
+- `this.jeu ` pour lire les données à afficher (argent du joueur, position du joueur, état du jeu...)
+- `this.controller ` pour transmettre les clics de l'utilisateur (lancerDe(), soumettreProposition()...)
+
+Cela suit le principe de découplage. Si demain on remplace le Canvas par une interface HTML classique, on crée une nouvelle ViewHTML sans toucher ni au Controller ni au Jeu.
+
+- **Réutilisabilité** car les dimensions sont calculées à partir d'une variable `dimensionPlateauJeu` (taille du plateau carré en px) permettant de redimensionner le jeu facilement sans recalculer chaque position manuellement.
+
+```
+// calculée au démarrage dans View
+this.dimensionPlateauJeu = Math.min(
+    canvas.width  * 0.55,  // 55% de la largeur
+    canvas.height * 0.95   // pas plus que la hauteur
+);
+
+this.tailleDe    = D / 8.5
+this.espacement  = tailleDe / 2  // unité de base réutilisée partout
+
+┌─────────────────────────────────────────┐
+│  ┌──────────────┐  ┌───────────────┐    │
+│  │   Plateau    │  │  Zone joueurs │    │
+│  │   D x D px   │  │  canvas - D   │    │
+│  └──────────────┘  └───────────────┘    │
+└─────────────────────────────────────────┘
+````
+
+
 
 ---
 

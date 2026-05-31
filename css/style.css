@@ -20,6 +20,7 @@ body {
     min-height: 100vh; /* 100% hauteur */
     margin: 0.5rem;
     background-color: #2C6E49;
+     overflow: hidden;
 }
 
 main {
@@ -34,4 +35,9 @@ button {
     cursor: pointer;
     padding: 5px 10px;
     min-width: 6rem;
+}
+
+.game-container {
+    width: 100vw;
+    height: 100vh;
 }

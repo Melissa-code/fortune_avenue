@@ -5,11 +5,16 @@ class View {
 
   static IMG_PLATEAU_JEU = "./images/gameboard_v2.svg";
 
-  constructor(jeu, controller, document, dimensionPlateauJeu) {
+  constructor(jeu, controller, document, ) {
     this.jeu = jeu;
     this.controller = controller; 
-    this.dimensionPlateauJeu = dimensionPlateauJeu;
-    this.myCanvas = document.querySelector("#game-canvas"); //jeu canvas 1100x800px
+    this.myCanvas = document.querySelector("#game-canvas"); //canvas (par defaut 330x150px)
+    this.myCanvas.width = window.innerWidth;    //toute la largeur dispo (redimensionnement dynamique)
+    this.myCanvas.height = window.innerHeight;  //toute la hauteur dispo (redimensionnement dynamique)
+    this.dimensionPlateauJeu = Math.min(
+        this.myCanvas.width * 0.55,   // plateau = 55% de la largeur
+        this.myCanvas.height * 0.95   // pas plus que la hauteur
+    );
     this.ctx = this.myCanvas.getContext("2d");
 
     this.chargerImagePlateauJeu(); // plateau jeu
@@ -195,9 +200,14 @@ class View {
     const joueurs = this.jeu.getJoueurs();
     const zoneJoueursX = this.dimensionPlateauJeu + this.espacement / 2;
     let zoneJoueursY = 0;
-    const largeurCard = this.dimensionPlateauJeu + this.espacement * 2.5;
-    const hauteurCard = this.dimensionPlateauJeu * 0.20; 
+    const largeurZoneJoueurs = this.myCanvas.width - this.dimensionPlateauJeu - this.espacement;
+    const largeurCard = largeurZoneJoueurs - this.espacement;// adpdaté au canvas 
+    const hauteurCard = this.dimensionPlateauJeu * 0.35; 
     const margeEntreCards = this.espacement;
+
+    console.log("zone joueurs largeur:", largeurZoneJoueurs);
+    console.log("canvas width:", this.myCanvas.width);
+    console.log("plateau:", this.dimensionPlateauJeu);
     
     for (let i = 0; i < joueurs.length; i++) {
       const joueur = joueurs[i];
@@ -275,7 +285,7 @@ class View {
    */
   afficherZoneStatuts() {
     const x = this.dimensionPlateauJeu + this.espacement / 2;
-    const y = this.dimensionPlateauJeu / 2 ; 
+    const y = this.dimensionPlateauJeu / 1.30 ; 
     const largeur = this.dimensionPlateauJeu + this.espacement * 2.5;
     const hauteur = this.dimensionPlateauJeu * 20 / 100; // 20% plateau
 
