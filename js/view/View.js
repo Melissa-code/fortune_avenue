@@ -222,24 +222,24 @@ class View {
     const tagLigneH = tagH + 5;
 
     for (const prop of proprietes) {
-        const couleur = prop.couleur || '#9CA3AF';
-        const label = prop.nom.substring(0, 25);
-        this.ctx.font = '12px Roboto';
-        const tagW = this.ctx.measureText(label).width + 10;
+      const couleur = prop.couleur || '#9CA3AF';
+      const label = prop.nom.substring(0, 25);
+      this.ctx.font = '12px Roboto';
+      const tagW = this.ctx.measureText(label).width + 10;
 
-        if (tagX + tagW > x + largeurCard - 8) {
-            tagX = x + 8;
-            tagY += tagLigneH;
-        }
+      if (tagX + tagW > x + largeurCard - 8) {
+          tagX = x + 8;
+          tagY += tagLigneH;
+      }
 
-        this.ctx.fillStyle = couleur;
-        this.ctx.beginPath();
-        this.ctx.roundRect(tagX, tagY, tagW, tagH, 4);
-        this.ctx.fill();
+      this.ctx.fillStyle = couleur;
+      this.ctx.beginPath();
+      this.ctx.roundRect(tagX, tagY, tagW, tagH, 4);
+      this.ctx.fill();
 
-        this.ctx.fillStyle = ['#5A3E2B','#0A74DA','#A8333E','#4CAF50','#9CA3AF'].includes(couleur) ? '#fff' : '#000';
-        this.ctx.fillText(label, tagX + 5, tagY + 11);
-        tagX += tagW + 4;
+      this.ctx.fillStyle = ['#5A3E2B','#0A74DA','#A8333E','#4CAF50','#9CA3AF'].includes(couleur) ? '#fff' : '#000';
+      this.ctx.fillText(label, tagX + 5, tagY + 11);
+      tagX += tagW + 4;
     }
   }
 
@@ -360,11 +360,14 @@ class View {
    * Afficher la modale (propositions, cartes chance/fonds commun...) 
    */
   afficherModale() {
+    this.ctx.fillStyle = 'rgba(0, 0, 0, 0.5)';//ombre autoru 
+    this.ctx.fillRect(0, 0, this.myCanvas.width, this.myCanvas.height);
+
     // cadre 
-    const largeurModale = this.dimensionPlateauJeu ;
+    const largeurModale = this.dimensionPlateauJeu * 0.8;
     const hauteurModale = this.dimensionPlateauJeu * 0.3;
     const zoneModaleX = (this.myCanvas.width / 2) - (largeurModale / 2);
-    const zoneModaleY = (this.myCanvas.height / 2) - hauteurModale;
+    const zoneModaleY = (this.myCanvas.height / 2) - (hauteurModale / 2);
 
     const decalage = 6;
     this.ctx.fillStyle = 'rgba(8, 28, 21, 0.5)'; 
@@ -376,7 +379,6 @@ class View {
     this.ctx.fillStyle = '#FFFFFF';
     this.ctx.beginPath();
     this.ctx.roundRect(zoneModaleX, zoneModaleY, largeurModale, hauteurModale, 5);
-    // console.log("zone modale: roundRect ", zoneModaleX, zoneModaleY, largeurModale, hauteurModale, this.myCanvas.width, this.myCanvas.height)
     this.ctx.fill();
     this.ctx.strokeStyle = '#123024';
     this.ctx.lineWidth = 3;
@@ -388,21 +390,13 @@ class View {
   // pour proposition
   afficherTexteModale(type, texte) {
     const modale = this.afficherModale();
-    // console.log("texte modale", texte)
-    // console.log("type modale", type)
-  
-    // titre 
-    this.ctx.font = "bold 20px Roboto";
+    this.ctx.font = "bold 20px Roboto"; // titre 
     this.ctx.fillStyle = '#000000';
     this.ctx.fillText(type, modale.x + this.espacement, modale.y + this.espacement);
+    this.ctx.font = "normal 17px Roboto";// description
 
-    // description
-    this.ctx.font = "normal 17px Roboto";
-  
     const lignes = texte.split("\n"); //pour le saut de ligne
-      // console.log("lignes dans modale", lignes)
     for (let i = 0; i < lignes.length; i++) {
-      // console.log("ligne dans modale", lignes[i])
       this.ctx.fillText(lignes[i], modale.x + this.espacement, modale.y + this.espacement * 2 + (i * this.espacement));
     }
   } 
