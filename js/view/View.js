@@ -257,7 +257,7 @@ class View {
     this.ctx.fill();
   }
 
-  afficherCardJoueur(joueur, imgPion, x, cardY, largeurCard, hauteurCard, ligneH) {
+  afficherCardJoueur(joueur, imgPion, x, cardY, largeurCard, hauteurCard, ligneH, estActif) {
     const headerH = ligneH * 1.2;
 
     // header card 
@@ -304,6 +304,14 @@ class View {
     if (joueur.proprietes.length > 0) {
       this.afficherTagsProprietes(joueur.proprietes, x, cardY, largeurCard, headerH, ligneH, ligneActuelle);
     }
+
+    // overlay si joueur inactif
+    if (!estActif) {
+        this.ctx.fillStyle = 'rgba(0, 0, 0, 0.5)';
+        this.ctx.beginPath();
+        this.ctx.roundRect(x, cardY, largeurCard, hauteurCard, 5);
+        this.ctx.fill();
+    }
   }
 
   afficherInfosJoueurs() {
@@ -316,10 +324,11 @@ class View {
 
     for (let i = 0; i < joueurs.length; i++) {
       const joueur = joueurs[i];
+      const estActif = (i === this.jeu.joueurActuelIndex);
       const nbLignes = 2 + (joueur.estEnPrison ? 1 : 0) + (joueur.proprietes.length > 0 ? 1 : 0);
       const hauteurCard = ligneH * nbLignes + this.espacement;
 
-      this.afficherCardJoueur(joueur, this.imagesPions[i], x, cardY, largeurCard, hauteurCard, ligneH);
+      this.afficherCardJoueur(joueur, this.imagesPions[i], x, cardY, largeurCard, hauteurCard, ligneH, estActif);
       cardY += hauteurCard + margeEntreCards;
     } 
   }
