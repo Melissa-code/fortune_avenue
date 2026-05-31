@@ -245,7 +245,7 @@ class View {
 
   afficherRondDerriereIconeJoueur(x, cardY, headerH) {
     const pionSize = headerH * 0.50;
-    const pionX = x + 10;
+    const pionX = x + 15;
     const pionY = cardY + (headerH - pionSize) / 2;
 
     const centreX = pionX + pionSize / 2;
@@ -269,10 +269,10 @@ class View {
     // header : img pion + nom joueur
     const pionSize = headerH * 0.35;
     this.afficherRondDerriereIconeJoueur(x, cardY, headerH);
-    this.ctx.drawImage(imgPion, x + 15, cardY + (headerH - pionSize) / 2, pionSize, pionSize);
+    this.ctx.drawImage(imgPion, x + 20, cardY + (headerH - pionSize) / 2, pionSize, pionSize);
     this.ctx.fillStyle = '#FFFFFF';
     this.ctx.font = `bold 16px Roboto`;
-    this.ctx.fillText(joueur.nom, x + pionSize + 40, cardY + headerH * 0.65);
+    this.ctx.fillText(joueur.nom, x + pionSize + 50, cardY + headerH * 0.65);
 
     // content card
     this.ctx.fillStyle = '#FFFFFF';
