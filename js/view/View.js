@@ -9,12 +9,13 @@ class View {
     this.jeu = jeu;
     this.controller = controller; 
     this.myCanvas = document.querySelector("#game-canvas"); //canvas (par defaut 330x150px)
-    this.myCanvas.width = window.innerWidth;    //toute la largeur dispo (redimensionnement dynamique)
-    this.myCanvas.height = window.innerHeight;  //toute la hauteur dispo (redimensionnement dynamique)
+    this.myCanvas.width = window.innerWidth;    //toute la largeur dispo 
+    this.myCanvas.height = window.innerHeight;  //toute la hauteur dispo
     this.dimensionPlateauJeu = Math.min(
         this.myCanvas.width * 0.55,   // plateau = 55% de la largeur
-        this.myCanvas.height * 0.95   // pas plus que la hauteur
+        this.myCanvas.height    
     );
+
     this.ctx = this.myCanvas.getContext("2d");
 
     this.chargerImagePlateauJeu(); // plateau jeu
@@ -150,7 +151,9 @@ class View {
   afficherPionsJoueurs() {
     const joueurs = this.jeu.getJoueurs();
     const unite = this.dimensionPlateauJeu / 13; // unite case: 2 + 9 + 2
-    const taillePion = this.espacement; //taille fixe du pion 
+    const taillePion = this.espacement/2; //taille fixe du pion 
+    console.log("taille pion:", taillePion);
+    console.log(joueurs[0].pion); 
 
     for (let i = 0; i < joueurs.length; i++) {
       const imagePion = this.imagesPions[i];
@@ -198,85 +201,90 @@ class View {
    */
   afficherInfosJoueurs() {
     const joueurs = this.jeu.getJoueurs();
-    const zoneJoueursX = this.dimensionPlateauJeu + this.espacement / 2;
-    let zoneJoueursY = 0;
-    const largeurZoneJoueurs = this.myCanvas.width - this.dimensionPlateauJeu - this.espacement;
-    const largeurCard = largeurZoneJoueurs - this.espacement;// adpdaté au canvas 
-    const hauteurCard = this.dimensionPlateauJeu * 0.35; 
-    const margeEntreCards = this.espacement;
+    const x = this.dimensionPlateauJeu + this.espacement / 2;
+    const largeurCard = this.myCanvas.width - this.dimensionPlateauJeu - this.espacement * 2;
+    const margeEntreCards = this.espacement / 2;
 
-    console.log("zone joueurs largeur:", largeurZoneJoueurs);
-    console.log("canvas width:", this.myCanvas.width);
-    console.log("plateau:", this.dimensionPlateauJeu);
+    // hauteur dynamique selon si propriétés ou prison
+    const ligneH = this.espacement * 1.2; // hauteur d'une ligne
     
+    let cardY = 0;
+
     for (let i = 0; i < joueurs.length; i++) {
       const joueur = joueurs[i];
-      const estActif = (i === this.jeu.joueurActuelIndex);// joueur courant 0
-
-      // cadre
-      this.ctx.beginPath();
-      this.ctx.roundRect(zoneJoueursX, zoneJoueursY, largeurCard, hauteurCard, 5);
-      this.ctx.fillStyle = '#ffffff'; 
-      this.ctx.fill();
-      
-      // bordure dyn
-      // this.ctx.strokeStyle = estActif ? '#da2c38' : '#081c15'; 
-      this.ctx.strokeStyle = '#081c15'; 
-      this.ctx.lineWidth = 3; 
-      this.ctx.stroke();
-      this.ctx.fillStyle = 'black'; //texte
-      
-      // joueur
+      const proprietes = joueur.proprietes;
+      const nbLignes = 2 + (joueur.estEnPrison ? 1 : 0) + (proprietes.length > 0 ? 1 : 0);
+      const hauteurCard = ligneH * nbLignes + this.espacement;
       const imgPion = this.imagesPions[i];
-      this.ctx.font = `16px Roboto`;
-      this.ctx.drawImage(imgPion, zoneJoueursX + this.espacement / 2, zoneJoueursY + this.espacement / 2, 25, 25);
-      this.ctx.fillText(joueur.nom, zoneJoueursX + this.espacement * 1.5, zoneJoueursY + this.espacement);
 
-      // Argent
-      this.ctx.font = `16px Roboto`;
-      this.ctx.fillText(`💸  ${joueur.argent} M`, zoneJoueursX + this.espacement / 2, zoneJoueursY + this.espacement * 2);
-      this.ctx.textAlign = 'left';
+      // header card : pion + nom
+      const headerH = ligneH * 1.2;
+      this.ctx.fillStyle = '#123024'; 
+      this.ctx.beginPath();
+      this.ctx.roundRect(x, cardY, largeurCard, headerH, [5, 5, 0, 0]); //border-radius
+      this.ctx.fill();
+      const pionSize = headerH * 0.50;
+      this.ctx.drawImage(imgPion, x + 10, cardY + (headerH - pionSize) / 2, pionSize, pionSize);
+      // text nom en blanc
+      this.ctx.fillStyle = '#FFFFFF';
+      this.ctx.font = `bold 16px Roboto`;
+      this.ctx.fillText(joueur.nom, x + pionSize + 30, cardY + headerH * 0.65);
 
-      // Prison
+      //card 
+      this.ctx.fillStyle = '#ffffff';
+      this.ctx.beginPath();
+      this.ctx.roundRect(x, cardY + headerH, largeurCard, hauteurCard - headerH, [0, 0, 5, 5]); 
+      this.ctx.fill();
+      this.ctx.strokeStyle = '#081c15';
+      this.ctx.lineWidth = 3;
+      // bordure
+      this.ctx.beginPath();
+      this.ctx.roundRect(x, cardY, largeurCard, hauteurCard, 5);
+      this.ctx.stroke();
+
+      // ligne 2 — argent
+      this.ctx.font = `15px Roboto`;
+      this.ctx.fillText(`💸 ${joueur.argent} M`, x + 8, cardY + ligneH * 1.8);
+
+      let ligneActuelle = 2;
+
+      // ligne 3 — prison 
       if (joueur.estEnPrison) {
-          this.ctx.font = `bold 17px Roboto`;
-          this.ctx.textAlign = 'right'; 
-          this.ctx.fillText("👮🏻 En Prison",  zoneJoueursX  +  this.espacement * 2.7, zoneJoueursY + this.espacement * 3);
-          this.ctx.textAlign = 'left';
+        this.ctx.font = `bold 14px Roboto`;
+        this.ctx.fillStyle = '#da2c38';
+        this.ctx.fillText(`👮 En Prison`, x + 8, cardY + ligneH * (ligneActuelle + 0.8));
+        this.ctx.fillStyle = 'black';
+        ligneActuelle++;
       }
 
-      // proprietes 
-      const proprietes = joueur.proprietes;
+      // ligne 4 — tags propriétés 
       if (proprietes.length > 0) {
-        let tagX = zoneJoueursX + this.espacement * 4;
-        const tagY = zoneJoueursY + this.espacement / 2; 
-        const tagH = 14;
+        let tagX = x + 8;
+        const tagY = cardY + ligneH * ligneActuelle + 4;
+        const tagH = 16;
 
-        for (const propriete of proprietes) {
-          const couleur = propriete.couleur || '#9CA3AF'; ;  // data/cases_jeu.js
-          const label = propriete.nom.substring(0, 30); // tronquer 
+        for (const prop of proprietes) {
+          const couleur = prop.couleur || '#9CA3AF';
+          const label = prop.nom.substring(0, 25);
+          this.ctx.font = '11px Roboto';
           const tagW = this.ctx.measureText(label).width + 10;
 
-          // tag 
+          // stop si débordement
+          if (tagX + tagW > x + largeurCard - 8) break;
+
           this.ctx.fillStyle = couleur;
           this.ctx.beginPath();
           this.ctx.roundRect(tagX, tagY, tagW, tagH, 4);
           this.ctx.fill();
-          //text
-          if (couleur === "#5A3E2B" || couleur === "#0A74DA" || couleur === "#A8333E") { 
-            this.ctx.fillStyle = '#FFFFFF';
-          } else {
-            this.ctx.fillStyle = '#000000';
-          }
-          this.ctx.font = '10px Roboto';
-          this.ctx.fillText(label, tagX + 5, tagY + 10);
 
-          tagX += tagW + 4; 
+          this.ctx.fillStyle = ['#5A3E2B','#0A74DA','#A8333E','#9CA3AF'].includes(couleur) ? '#fff' : '#000';
+          this.ctx.fillText(label, tagX + 5, tagY + 11);
+
+          tagX += tagW + 4;
         }
       }
 
-      // Y joueur suivant
-      zoneJoueursY += hauteurCard + margeEntreCards / 2;
+      cardY += hauteurCard + margeEntreCards;
     }
   }
 
