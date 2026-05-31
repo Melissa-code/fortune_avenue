@@ -64,19 +64,13 @@ class View {
     this.imagePlateau.onload = () => this.refresh();
   }
 
-  /**
-   * Afficher le plateau de jeu sur le canvas
-   */
   afficherPlateauJeu(imagePlateau) {
     if (this.imagePlateau.complete) {
       this.ctx.drawImage(imagePlateau, 0, 0, this.dimensionPlateauJeu, this.dimensionPlateauJeu);
     }
   }
 
-  /**
-   * Affiche un cercle semi-transparent derrière le dé pour le faire ressortir sur le plateau
-   */
-  afficherFondsDe() {
+  afficherRondDerriereDe() {
     this.ctx.fillStyle = 'rgba(8, 28, 21, 0.5)'; 
     this.ctx.strokeStyle = 'rgba(255, 255, 255, 0.4)'; 
     this.ctx.lineWidth = 2;
@@ -86,9 +80,6 @@ class View {
     this.ctx.stroke();
   }
 
-  /**
-   * Calculs des dimensions et positions x y du dé 
-   */
   initialiserDe() {
     this.tailleDe = this.dimensionPlateauJeu / 8.5;
     this.positionDeX = this.dimensionPlateauJeu / 2.3;
@@ -109,9 +100,6 @@ class View {
     }
   }
 
-  /**
-   * Afficher le dé sur le canvas
-   */
   afficherResultatDe() {
     let valeurAfficheeDe = this.jeu.de.valeurAffichee; // from jeu (move)
     let imageDe = this.imagesResultatsDe[valeurAfficheeDe - 2]; //indexé 0-11 
@@ -132,7 +120,7 @@ class View {
   }
 
   /**
-   * Charger les images des pions des joueurs dans le tableau imagesPions
+   * Charger les images des pions des joueurs depuis l'enum ImagesPions(object) 
    */
   chargerImagesPions() {
     let joueurs = this.jeu.getJoueurs(); //joueurs[]
@@ -153,9 +141,7 @@ class View {
   afficherPionsJoueurs() {
     const joueurs = this.jeu.getJoueurs();
     const unite = this.dimensionPlateauJeu / 13; // unite case: 2 + 9 + 2
-    const taillePion = this.espacement/2; //taille fixe du pion 
-    console.log("taille pion:", taillePion);
-    console.log(joueurs[0].pion); 
+    const taillePion = 30; //taille du pion 
 
     for (let i = 0; i < joueurs.length; i++) {
       const imagePion = this.imagesPions[i];
@@ -219,104 +205,125 @@ class View {
   /**
    * Afficher les infos des joueurs (argent, propriétés, prison...) dans une zone  
    */
+  afficherPrison(joueur, x, cardY, headerH, ligneH, iconSize, ligneActuelle) {
+    const prisonY = cardY + headerH + ligneH * ligneActuelle + 6;
+    this.ctx.drawImage(this.imagePrison, x + 8, prisonY, iconSize / 1.7, iconSize / 1.7);
+    this.ctx.font = `bold 14px Roboto`;
+    this.ctx.fillStyle = '#da2c38';
+    this.ctx.fillText(`En Prison`, x + 5 + iconSize + 6, prisonY + iconSize * 0.4);
+    this.ctx.fillStyle = 'black';
+    return ligneActuelle + 1; //ligneActuelle++
+  }
+
+  afficherTagsProprietes(proprietes, x, cardY, largeurCard, headerH, ligneH, ligneActuelle) {
+    let tagX = x + 8;
+    let tagY = cardY + ligneH * ligneActuelle + headerH + 6;
+    const tagH = 16;
+    const tagLigneH = tagH + 5;
+
+    for (const prop of proprietes) {
+        const couleur = prop.couleur || '#9CA3AF';
+        const label = prop.nom.substring(0, 25);
+        this.ctx.font = '12px Roboto';
+        const tagW = this.ctx.measureText(label).width + 10;
+
+        if (tagX + tagW > x + largeurCard - 8) {
+            tagX = x + 8;
+            tagY += tagLigneH;
+        }
+
+        this.ctx.fillStyle = couleur;
+        this.ctx.beginPath();
+        this.ctx.roundRect(tagX, tagY, tagW, tagH, 4);
+        this.ctx.fill();
+
+        this.ctx.fillStyle = ['#5A3E2B','#0A74DA','#A8333E','#4CAF50','#9CA3AF'].includes(couleur) ? '#fff' : '#000';
+        this.ctx.fillText(label, tagX + 5, tagY + 11);
+        tagX += tagW + 4;
+    }
+  }
+
+  afficherRondDerriereIconeJoueur(x, cardY, headerH) {
+    const pionSize = headerH * 0.50;
+    const pionX = x + 10;
+    const pionY = cardY + (headerH - pionSize) / 2;
+
+    const centreX = pionX + pionSize / 2;
+    const centreY = pionY + pionSize / 2;
+    const rayon = pionSize * 0.65;
+    this.ctx.fillStyle = '#FFFFFF';
+    this.ctx.beginPath();
+    this.ctx.arc(centreX, centreY, rayon, 0, Math.PI * 2);
+    this.ctx.fill();
+  }
+
+  afficherCardJoueur(joueur, imgPion, x, cardY, largeurCard, hauteurCard, ligneH) {
+    const headerH = ligneH * 1.2;
+
+    // header card 
+    this.ctx.fillStyle = '#123024';
+    this.ctx.beginPath();
+    this.ctx.roundRect(x, cardY, largeurCard, headerH, [5, 5, 0, 0]);
+    this.ctx.fill();
+
+    // header : img pion + nom joueur
+    const pionSize = headerH * 0.35;
+    this.afficherRondDerriereIconeJoueur(x, cardY, headerH);
+    this.ctx.drawImage(imgPion, x + 15, cardY + (headerH - pionSize) / 2, pionSize, pionSize);
+    this.ctx.fillStyle = '#FFFFFF';
+    this.ctx.font = `bold 16px Roboto`;
+    this.ctx.fillText(joueur.nom, x + pionSize + 40, cardY + headerH * 0.65);
+
+    // content card
+    this.ctx.fillStyle = '#FFFFFF';
+    this.ctx.beginPath();
+    this.ctx.roundRect(x, cardY + headerH, largeurCard, hauteurCard - headerH, [0, 0, 5, 5]);
+    this.ctx.fill();
+    this.ctx.strokeStyle = '#081c15';
+    this.ctx.lineWidth = 3;
+    this.ctx.beginPath();
+    this.ctx.roundRect(x, cardY, largeurCard, hauteurCard, 5);
+    this.ctx.stroke();
+
+    // argent
+    const iconSize = ligneH * 0.8;
+    const iconY = cardY + headerH + ligneH * 0.1;
+    this.ctx.drawImage(this.imageArgent, x + 8, iconY, iconSize / 1.7, iconSize / 1.7);
+    this.ctx.font = `15px Roboto`;
+    this.ctx.fillStyle = '#000000';
+    this.ctx.fillText(`${joueur.argent} M`, x + 5 + iconSize + 6, cardY + headerH + ligneH * 0.5);
+
+    let ligneActuelle = 0.8;
+
+    // prison
+    if (joueur.estEnPrison) {
+      ligneActuelle = this.afficherPrison(joueur, x, cardY, headerH, ligneH, iconSize, ligneActuelle);
+    }
+
+    // tags propriétés achetées
+    if (joueur.proprietes.length > 0) {
+      this.afficherTagsProprietes(joueur.proprietes, x, cardY, largeurCard, headerH, ligneH, ligneActuelle);
+    }
+  }
+
   afficherInfosJoueurs() {
     const joueurs = this.jeu.getJoueurs();
     const x = this.dimensionPlateauJeu + this.espacement / 2;
-    const largeurCard = this.myCanvas.width - this.dimensionPlateauJeu - this.espacement * 2;
+    const largeurCard = this.myCanvas.width - this.dimensionPlateauJeu - this.espacement ;
     const margeEntreCards = this.espacement / 2;
-
-    // hauteur dynamique selon si propriétés ou prison
-    const ligneH = this.espacement * 1.2; // hauteur d'une ligne
-    
+    const ligneH = this.espacement * 1.2;
     let cardY = 0;
 
     for (let i = 0; i < joueurs.length; i++) {
       const joueur = joueurs[i];
-      const proprietes = joueur.proprietes;
-      const nbLignes = 2 + (joueur.estEnPrison ? 1 : 0) + (proprietes.length > 0 ? 1 : 0);
+      const nbLignes = 2 + (joueur.estEnPrison ? 1 : 0) + (joueur.proprietes.length > 0 ? 1 : 0);
       const hauteurCard = ligneH * nbLignes + this.espacement;
-      const imgPion = this.imagesPions[i];
 
-      // header card : pion + nom
-      const headerH = ligneH * 1.2;
-      this.ctx.fillStyle = '#123024'; 
-      this.ctx.beginPath();
-      this.ctx.roundRect(x, cardY, largeurCard, headerH, [5, 5, 0, 0]); //border-radius
-      this.ctx.fill();
-      const pionSize = headerH * 0.50;
-      this.ctx.drawImage(imgPion, x + 10, cardY + (headerH - pionSize) / 2, pionSize, pionSize);
-      this.ctx.fillStyle = '#FFFFFF'; // texte en blanc
-      this.ctx.font = `bold 16px Roboto`;
-      this.ctx.fillText(joueur.nom, x + pionSize + 30, cardY + headerH * 0.65);
-
-      //card 
-      this.ctx.fillStyle = '#ffffff';
-      this.ctx.beginPath();
-      this.ctx.roundRect(x, cardY + headerH, largeurCard, hauteurCard - headerH, [0, 0, 5, 5]); 
-      this.ctx.fill();
-      this.ctx.strokeStyle = '#081c15';
-      this.ctx.lineWidth = 3;
-      // bordure
-      this.ctx.beginPath();
-      this.ctx.roundRect(x, cardY, largeurCard, hauteurCard, 5);
-      this.ctx.stroke();
-
-      // ligne 2 — argent
-      const iconSize = ligneH * 0.8;
-      const iconY = cardY + headerH + ligneH * 0.1;
-      this.ctx.drawImage(this.imageArgent , x + 8, iconY, iconSize/1.7, iconSize/1.7);
-      this.ctx.font = `15px Roboto`;
-      this.ctx.fillStyle = '#000000';
-      this.ctx.fillText(`${joueur.argent} M`, x + 5 + iconSize + 6, cardY + headerH + ligneH * 0.5);
-
-      let ligneActuelle = 0.8;
-
-      // ligne 3 — prison 
-      if (joueur.estEnPrison) {
-        const prisonY = cardY + headerH + ligneH * ligneActuelle + 6;
-        this.ctx.drawImage(this.imagePrison, x + 8, prisonY, iconSize/1.7, iconSize/1.7);
-        this.ctx.font = `bold 14px Roboto`;
-        this.ctx.fillStyle = '#da2c38';
-        this.ctx.fillText(`En Prison`, x + 5 + iconSize + 6, prisonY + iconSize * 0.4);
-        this.ctx.fillStyle = 'black';
-        ligneActuelle++;
-      }
-
-      // ligne 4 — tags propriétés 
-      if (proprietes.length > 0) {
-        let tagX = x + 8;
-        let tagY = cardY + ligneH * ligneActuelle + headerH + 6;
-        const tagH = 16;
-        const tagLigneH = tagH + 5; //hauteur d'une ligne de tags (16px + 5px marge)
-
-        for (const prop of proprietes) {
-          const couleur = prop.couleur || '#9CA3AF';
-          const label = prop.nom.substring(0, 25);
-          this.ctx.font = '12px Roboto';
-          const tagW = this.ctx.measureText(label).width + 10;
-
-          // retour à la ligne si débordement
-          if (tagX + tagW > x + largeurCard - 8) {
-            tagX = x + 8;      
-            tagY += tagLigneH;
-          }
-
-          this.ctx.fillStyle = couleur;
-          this.ctx.beginPath();
-          this.ctx.roundRect(tagX, tagY, tagW, tagH, 4);
-          this.ctx.fill();
-
-          this.ctx.fillStyle = ['#5A3E2B','#0A74DA','#A8333E','#9CA3AF'].includes(couleur) ? '#fff' : '#000';
-          this.ctx.fillText(label, tagX + 5, tagY + 11);
-
-          tagX += tagW + 4;
-        }
-      }
-
+      this.afficherCardJoueur(joueur, this.imagesPions[i], x, cardY, largeurCard, hauteurCard, ligneH);
       cardY += hauteurCard + margeEntreCards;
-    }
+    } 
   }
-
+  
   /**
    * Afficher les messages des effets 
    */
@@ -402,16 +409,14 @@ class View {
   
   afficherMenuPropositions(listePropositions) {
     let texte = "";
-    // console.log("propositions", listePropositions)
 
     if (listePropositions.length > 0) {
       let i = 0; 
       for (; i < listePropositions.length; i++) {
-        // affiche 1. titre : description)
+        // affiche titre : description)
         texte += (i + 1) + ". " + listePropositions[i].titre + " : " + listePropositions[i].description + "\n";
       }
     }
-    
     this.afficherTexteModale("Propositions", texte);
   }
 
@@ -423,7 +428,7 @@ class View {
 
     this.afficherPlateauJeu(this.imagePlateau); // plateau jeu
     this.afficherPionsJoueurs(); //pions par-dessus
-    this.afficherFondsDe()
+    this.afficherRondDerriereDe(); 
     this.afficherResultatDe();
     this.afficherInfosJoueurs();
 
@@ -446,8 +451,7 @@ class View {
       x <= this.positionDeX + this.tailleDe &&
       y >= this.positionDeY &&
       y <= this.positionDeY + this.tailleDe
-    )
-      return "DE";
+    ) return "DE";
 
     return "Aucune cible identifiée.";
   }
