@@ -9,24 +9,23 @@ class View {
   constructor(jeu, controller, document, ) {
     this.jeu = jeu;
     this.controller = controller; 
-    this.myCanvas = document.querySelector("#game-canvas"); //canvas (par defaut 330x150px)
+    this.myCanvas = document.querySelector("#game-canvas"); //par defaut 330x150px
     this.myCanvas.width = window.innerWidth;    //toute la largeur dispo 
-    this.myCanvas.height = window.innerHeight;  //toute la hauteur dispo
+    this.myCanvas.height = window.innerHeight;  
     this.dimensionPlateauJeu = Math.min(
-      this.myCanvas.width * 0.55,   // plateau = 55% de la largeur
+      this.myCanvas.width * 0.55,  // plateau = 55% de la largeur
       this.myCanvas.height, 
     );
-
     this.ctx = this.myCanvas.getContext("2d");
 
-    this.chargerImagePlateauJeu(); // plateau jeu
-    this.imagesPions = [];         // pions joueurs
+    this.chargerImagePlateauJeu(); 
+    this.imagesPions = [];         
     this.chargerImagesPions();
-    this.initialiserDe();          // dé
-    this.chargerImagesUI();        // UI (argent, prison, maison, hotel)
+    this.initialiserDe();          
+    this.chargerImagesUI();  // UI (argent, prison, maison, hotel)
     this.espacement = this.tailleDe / 2; 
-
-    this.initialiserEvenement(); // click sur dé et propositionsmodale: choix clavier
+    // click sur dé et propositionsmodale: choix clavier
+    this.initialiserEvenement(); 
   }
 
   /**
@@ -50,8 +49,6 @@ class View {
     this.myCanvas.addEventListener('keydown', (event) => {
       const prompt = event.key;
       this.controller.soumettreProposition(parseInt(prompt));
-      
-      console.log("N° de réponse : ", prompt);
     })
   } 
 
@@ -66,7 +63,13 @@ class View {
 
   afficherPlateauJeu(imagePlateau) {
     if (this.imagePlateau.complete) {
-      this.ctx.drawImage(imagePlateau, 0, 0, this.dimensionPlateauJeu, this.dimensionPlateauJeu);
+      this.ctx.drawImage(
+        imagePlateau, 
+        0, 
+        0, 
+        this.dimensionPlateauJeu, 
+        this.dimensionPlateauJeu
+      );
     }
   }
 
@@ -75,7 +78,13 @@ class View {
     this.ctx.strokeStyle = 'rgba(255, 255, 255, 0.4)'; 
     this.ctx.lineWidth = 2;
     this.ctx.beginPath();
-    this.ctx.arc(this.positionDeX + (this.tailleDe / 2), this.positionDeY + (this.tailleDe / 2), this.tailleDe * 0.8, 0, Math.PI * 2); //cercle Math.PI*2 pour tour complet (380°)
+    this.ctx.arc(
+      this.positionDeX + (this.tailleDe / 2), 
+      this.positionDeY + (this.tailleDe / 2), 
+      this.tailleDe * 0.8, 
+      0, 
+      Math.PI * 2    //cercle Math.PI*2 pour tour complet (380°)
+    ); 
     this.ctx.fill();
     this.ctx.stroke();
   }
@@ -101,7 +110,7 @@ class View {
   }
 
   afficherResultatDe() {
-    let valeurAfficheeDe = this.jeu.de.valeurAffichee; // from jeu (move)
+    let valeurAfficheeDe = this.jeu.de.valeurAffichee;      // from jeu (move)
     let imageDe = this.imagesResultatsDe[valeurAfficheeDe - 2]; //indexé 0-11 
   
     if (imageDe && imageDe.complete) {
@@ -114,7 +123,13 @@ class View {
       this.ctx.shadowOffsetX = 4;                
       this.ctx.shadowOffsetY = 4;
 
-      this.ctx.drawImage(imageDe, this.positionDeX, this.positionDeY, this.tailleDe, this.tailleDe);
+      this.ctx.drawImage(
+        imageDe, 
+        this.positionDeX, 
+        this.positionDeY, 
+        this.tailleDe, 
+        this.tailleDe
+      );
       this.ctx.restore();
     }
   }
@@ -179,7 +194,13 @@ class View {
         //décalage pour éviter superposition pions pour lisibilité 
         const decalageX = i * (taillePion / 2); 
         const decalageY = i * (taillePion / 2);
-        this.ctx.drawImage(imagePion, x + decalageX, y + decalageY, taillePion, taillePion);
+        this.ctx.drawImage(
+          imagePion, 
+          x + decalageX, 
+          y + decalageY, 
+          taillePion, 
+          taillePion
+        );
       }
     }
   }
@@ -237,7 +258,8 @@ class View {
       this.ctx.roundRect(tagX, tagY, tagW, tagH, 4);
       this.ctx.fill();
 
-      this.ctx.fillStyle = ['#5A3E2B','#0A74DA','#A8333E','#4CAF50','#9CA3AF'].includes(couleur) ? '#fff' : '#000';
+      this.ctx.fillStyle = 
+        ['#5A3E2B','#0A74DA','#A8333E','#4CAF50','#9CA3AF'].includes(couleur) ? '#fff' : '#000';
       this.ctx.fillText(label, tagX + 5, tagY + 11);
       tagX += tagW + 4;
     }
@@ -257,7 +279,16 @@ class View {
     this.ctx.fill();
   }
 
-  afficherCardJoueur(joueur, imgPion, x, cardY, largeurCard, hauteurCard, ligneH, estActif) {
+  afficherCardJoueur(
+    joueur, 
+    imgPion, 
+    x, 
+    cardY, 
+    largeurCard, 
+    hauteurCard, 
+    ligneH, 
+    estActif
+  ) {
     const headerH = ligneH * 1.2;
 
     // header card 
@@ -317,7 +348,8 @@ class View {
   afficherInfosJoueurs() {
     const joueurs = this.jeu.getJoueurs();
     const x = this.dimensionPlateauJeu + this.espacement / 2;
-    const largeurCard = this.myCanvas.width - this.dimensionPlateauJeu - this.espacement ;
+    const largeurCard = 
+      this.myCanvas.width - this.dimensionPlateauJeu - this.espacement ;
     const margeEntreCards = this.espacement / 2;
     const ligneH = this.espacement * 1.2;
     let cardY = 0;
@@ -325,10 +357,20 @@ class View {
     for (let i = 0; i < joueurs.length; i++) {
       const joueur = joueurs[i];
       const estActif = (i === this.jeu.joueurActuelIndex);
-      const nbLignes = 2 + (joueur.estEnPrison ? 1 : 0) + (joueur.proprietes.length > 0 ? 1 : 0);
+      const nbLignes = 
+        2 + (joueur.estEnPrison ? 1 : 0) + (joueur.proprietes.length > 0 ? 1 : 0);
       const hauteurCard = ligneH * nbLignes + this.espacement;
 
-      this.afficherCardJoueur(joueur, this.imagesPions[i], x, cardY, largeurCard, hauteurCard, ligneH, estActif);
+      this.afficherCardJoueur(
+        joueur, 
+        this.imagesPions[i],
+        x, 
+        cardY, 
+        largeurCard, 
+        hauteurCard, 
+        ligneH, 
+        estActif
+      );
       cardY += hauteurCard + margeEntreCards;
     } 
   }
@@ -337,32 +379,53 @@ class View {
    * Afficher les messages des effets 
    */
   afficherZoneStatuts() {
+    const joueurs = this.jeu.getJoueurs();
+    const ligneH = this.espacement * 1.2;
     const x = this.dimensionPlateauJeu + this.espacement / 2;
-    const y = this.dimensionPlateauJeu / 1.30 ; 
-    const largeur = this.dimensionPlateauJeu + this.espacement * 2.5;
-    const hauteur = this.dimensionPlateauJeu * 20 / 100; // 20% plateau
+    const largeur = this.myCanvas.width - this.dimensionPlateauJeu - this.espacement;
+    const hauteur = this.dimensionPlateauJeu * 20 / 100; // 20% 
+    // calcul y dynamic
+    let hauteurTotaleCards = 0;
+    for (const joueur of joueurs) {
+      const nbLignes = 2 + (joueur.estEnPrison ? 1 : 0) + (joueur.proprietes.length > 0 ? 1 : 0);
+      hauteurTotaleCards += ligneH * nbLignes + this.espacement + this.espacement / 2;
+    }
+    const y = hauteurTotaleCards + this.espacement;
 
-    this.ctx.fillStyle = '#123024'; 
+    // content card
+    this.ctx.fillStyle = '#FFFFFF';
     this.ctx.beginPath();
     this.ctx.roundRect(x, y, largeur, hauteur, 5);
     this.ctx.fill();
-
-    this.ctx.strokeStyle = '#FFFFFF';
-    this.ctx.lineWidth = 2;
-    this.ctx.beginPath();
-    this.ctx.roundRect(x, y, largeur, hauteur, 5);
+    this.ctx.strokeStyle = '#081c15';
+    this.ctx.lineWidth = 3;
     this.ctx.stroke();
 
-    this.ctx.font = "16px Roboto";
-    this.ctx.fillStyle = '#FFFFFF';
-    this.ctx.fillText("Jeu en cours ", x + this.espacement / 2 , y + this.espacement);
-
-    this.ctx.font = "16px Roboto";
-    this.ctx.fillStyle = '#FFFFFF';
-    const statuts = this.jeu.listeStatuts; // vue affiche tabl status (Jeu)
+    // text 
+    this.ctx.fillStyle = '#000000';
+    this.ctx.font = '15px Roboto';
+    const statuts = this.jeu.listeStatuts;
     for (let i = 0; i < statuts.length; i++) {
-      this.ctx.fillText(statuts[i], x + this.espacement / 2, y + this.espacement * 2 + i * this.espacement/1.2);
+        this.ctx.fillText(
+          statuts[i], 
+          x + this.espacement / 2, 
+          y + headerH + this.espacement + i * this.espacement
+        );
     }
+
+    // header card
+    const headerH = this.espacement * 1.5;
+    this.ctx.fillStyle = '#123024';
+    this.ctx.beginPath();
+    this.ctx.roundRect(x, y, largeur, headerH, [5, 5, 0, 0]);
+    this.ctx.fill();
+    this.ctx.fillStyle = '#FFFFFF';
+    this.ctx.font = 'bold 16px Roboto';
+    this.ctx.fillText(
+      'Evénements', 
+      x + this.espacement / 3, 
+      y + headerH * 0.6
+    );
   }
 
   /**
