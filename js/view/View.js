@@ -226,7 +226,7 @@ class View {
   /**
    * Afficher les infos des joueurs (argent, propriétés, prison...) dans une zone  
    */
-  afficherPrison(joueur, x, cardY, headerH, ligneH, iconSize, ligneActuelle) {
+  #afficherPrison(joueur, x, cardY, headerH, ligneH, iconSize, ligneActuelle) {
     const prisonY = cardY + headerH + ligneH * ligneActuelle + 6;
     this.ctx.drawImage(this.imagePrison, x + 8, prisonY, iconSize / 1.7, iconSize / 1.7);
     this.ctx.font = `bold 14px Roboto`;
@@ -236,7 +236,7 @@ class View {
     return ligneActuelle + 1; //ligneActuelle++
   }
 
-  afficherTagsProprietes(proprietes, x, cardY, largeurCard, headerH, ligneH, ligneActuelle) {
+  #afficherTagsProprietes(proprietes, x, cardY, largeurCard, headerH, ligneH, ligneActuelle) {
     let tagX = x + 8;
     let tagY = cardY + ligneH * ligneActuelle + headerH + 6;
     const tagH = 16;
@@ -265,7 +265,7 @@ class View {
     }
   }
 
-  afficherRondDerriereIconeJoueur(x, cardY, headerH) {
+  #afficherRondDerriereIconeJoueur(x, cardY, headerH) {
     const pionSize = headerH * 0.50;
     const pionX = x + 15;
     const pionY = cardY + (headerH - pionSize) / 2;
@@ -279,7 +279,7 @@ class View {
     this.ctx.fill();
   }
 
-  afficherCardJoueur(
+  #afficherCardJoueur(
     joueur, 
     imgPion, 
     x, 
@@ -299,7 +299,7 @@ class View {
 
     // header : img pion + nom joueur
     const pionSize = headerH * 0.35;
-    this.afficherRondDerriereIconeJoueur(x, cardY, headerH);
+    this.#afficherRondDerriereIconeJoueur(x, cardY, headerH);
     this.ctx.drawImage(imgPion, x + 20, cardY + (headerH - pionSize) / 2, pionSize, pionSize);
     this.ctx.fillStyle = '#FFFFFF';
     this.ctx.font = `bold 16px Roboto`;
@@ -328,12 +328,12 @@ class View {
 
     // prison
     if (joueur.estEnPrison) {
-      ligneActuelle = this.afficherPrison(joueur, x, cardY, headerH, ligneH, iconSize, ligneActuelle);
+      ligneActuelle = this.#afficherPrison(joueur, x, cardY, headerH, ligneH, iconSize, ligneActuelle);
     }
 
     // tags propriétés achetées
     if (joueur.proprietes.length > 0) {
-      this.afficherTagsProprietes(joueur.proprietes, x, cardY, largeurCard, headerH, ligneH, ligneActuelle);
+      this.#afficherTagsProprietes(joueur.proprietes, x, cardY, largeurCard, headerH, ligneH, ligneActuelle);
     }
 
     // overlay si joueur inactif
@@ -361,7 +361,7 @@ class View {
         2 + (joueur.estEnPrison ? 1 : 0) + (joueur.proprietes.length > 0 ? 1 : 0);
       const hauteurCard = ligneH * nbLignes + this.espacement;
 
-      this.afficherCardJoueur(
+      this.#afficherCardJoueur(
         joueur, 
         this.imagesPions[i],
         x, 
@@ -375,6 +375,42 @@ class View {
     } 
   }
   
+  #afficherCadreEvenements(x, y, largeur, hauteur) {
+    const headerH = this.espacement * 1.5;
+
+    // card content
+    this.ctx.fillStyle = '#FFFFFF';
+    this.ctx.beginPath();
+    this.ctx.roundRect(x, y, largeur, hauteur, 5);
+    this.ctx.fill();
+    this.ctx.strokeStyle = '#081c15';
+    this.ctx.lineWidth = 3;
+    this.ctx.stroke();
+
+    // card header vert
+    this.ctx.fillStyle = '#123024';
+    this.ctx.beginPath();
+    this.ctx.roundRect(x, y, largeur, headerH, [5, 5, 0, 0]);
+    this.ctx.fill();
+    this.ctx.fillStyle = '#FFFFFF';
+    this.ctx.font = 'bold 16px Roboto';
+    this.ctx.fillText('Evénements', x + this.espacement / 3, y + headerH * 0.6);
+  }
+
+  #afficherTextesEvenements(x, y, largeur, hauteur) {
+    const headerH = this.espacement * 1.5;
+    this.ctx.fillStyle = '#000000';
+    this.ctx.font = '15px Roboto';
+    const statuts = this.jeu.listeStatuts;
+    for (let i = 0; i < statuts.length; i++) {
+        this.ctx.fillText(
+          statuts[i], 
+          x + this.espacement / 1.5, 
+          y + headerH + this.espacement / 2 + i * this.espacement / 1.5
+        );
+    }
+  }
+
   /**
    * Afficher les messages des effets 
    */
@@ -392,45 +428,9 @@ class View {
     }
     const y = hauteurTotaleCards + this.espacement;
 
-    this.afficherCadreEvenements(x, y, largeur, hauteur);
-    this.afficherTextesEvenements(x, y, largeur, hauteur);
-}
-
-afficherCadreEvenements(x, y, largeur, hauteur) {
-  const headerH = this.espacement * 1.5;
-
-  // card content
-  this.ctx.fillStyle = '#FFFFFF';
-  this.ctx.beginPath();
-  this.ctx.roundRect(x, y, largeur, hauteur, 5);
-  this.ctx.fill();
-  this.ctx.strokeStyle = '#081c15';
-  this.ctx.lineWidth = 3;
-  this.ctx.stroke();
-
-  // card header vert
-  this.ctx.fillStyle = '#123024';
-  this.ctx.beginPath();
-  this.ctx.roundRect(x, y, largeur, headerH, [5, 5, 0, 0]);
-  this.ctx.fill();
-  this.ctx.fillStyle = '#FFFFFF';
-  this.ctx.font = 'bold 16px Roboto';
-  this.ctx.fillText('Evénements', x + this.espacement / 3, y + headerH * 0.6);
-}
-
-afficherTextesEvenements(x, y, largeur, hauteur) {
-  const headerH = this.espacement * 1.5;
-  this.ctx.fillStyle = '#000000';
-  this.ctx.font = '15px Roboto';
-  const statuts = this.jeu.listeStatuts;
-  for (let i = 0; i < statuts.length; i++) {
-      this.ctx.fillText(
-        statuts[i], 
-        x + this.espacement / 2, 
-        y + headerH + this.espacement + i * this.espacement / 2
-      );
+    this.#afficherCadreEvenements(x, y, largeur, hauteur);
+    this.#afficherTextesEvenements(x, y, largeur, hauteur);
   }
-}
 
   /**
    * Afficher la modale (propositions, cartes chance/fonds commun...) 
