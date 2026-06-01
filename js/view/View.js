@@ -378,55 +378,59 @@ class View {
   /**
    * Afficher les messages des effets 
    */
-  afficherZoneStatuts() {
+  afficherZoneEvenements() {
     const joueurs = this.jeu.getJoueurs();
     const ligneH = this.espacement * 1.2;
     const x = this.dimensionPlateauJeu + this.espacement / 2;
     const largeur = this.myCanvas.width - this.dimensionPlateauJeu - this.espacement;
-    const hauteur = this.dimensionPlateauJeu * 20 / 100; // 20% 
-    // calcul y dynamic
+    const hauteur = this.dimensionPlateauJeu * 0.20;
+    // calcul y dynamique
     let hauteurTotaleCards = 0;
     for (const joueur of joueurs) {
-      const nbLignes = 2 + (joueur.estEnPrison ? 1 : 0) + (joueur.proprietes.length > 0 ? 1 : 0);
-      hauteurTotaleCards += ligneH * nbLignes + this.espacement + this.espacement / 2;
+        const nbLignes = 2 + (joueur.estEnPrison ? 1 : 0) + (joueur.proprietes.length > 0 ? 1 : 0);
+        hauteurTotaleCards += ligneH * nbLignes + this.espacement + this.espacement / 2;
     }
     const y = hauteurTotaleCards + this.espacement;
 
-    // content card
-    this.ctx.fillStyle = '#FFFFFF';
-    this.ctx.beginPath();
-    this.ctx.roundRect(x, y, largeur, hauteur, 5);
-    this.ctx.fill();
-    this.ctx.strokeStyle = '#081c15';
-    this.ctx.lineWidth = 3;
-    this.ctx.stroke();
+    this.afficherCadreEvenements(x, y, largeur, hauteur);
+    this.afficherTextesEvenements(x, y, largeur, hauteur);
+}
 
-    // text 
-    this.ctx.fillStyle = '#000000';
-    this.ctx.font = '15px Roboto';
-    const statuts = this.jeu.listeStatuts;
-    for (let i = 0; i < statuts.length; i++) {
-        this.ctx.fillText(
-          statuts[i], 
-          x + this.espacement / 2, 
-          y + headerH + this.espacement + i * this.espacement
-        );
-    }
+afficherCadreEvenements(x, y, largeur, hauteur) {
+  const headerH = this.espacement * 1.5;
 
-    // header card
-    const headerH = this.espacement * 1.5;
-    this.ctx.fillStyle = '#123024';
-    this.ctx.beginPath();
-    this.ctx.roundRect(x, y, largeur, headerH, [5, 5, 0, 0]);
-    this.ctx.fill();
-    this.ctx.fillStyle = '#FFFFFF';
-    this.ctx.font = 'bold 16px Roboto';
-    this.ctx.fillText(
-      'Evénements', 
-      x + this.espacement / 3, 
-      y + headerH * 0.6
-    );
+  // card content
+  this.ctx.fillStyle = '#FFFFFF';
+  this.ctx.beginPath();
+  this.ctx.roundRect(x, y, largeur, hauteur, 5);
+  this.ctx.fill();
+  this.ctx.strokeStyle = '#081c15';
+  this.ctx.lineWidth = 3;
+  this.ctx.stroke();
+
+  // card header vert
+  this.ctx.fillStyle = '#123024';
+  this.ctx.beginPath();
+  this.ctx.roundRect(x, y, largeur, headerH, [5, 5, 0, 0]);
+  this.ctx.fill();
+  this.ctx.fillStyle = '#FFFFFF';
+  this.ctx.font = 'bold 16px Roboto';
+  this.ctx.fillText('Evénements', x + this.espacement / 3, y + headerH * 0.6);
+}
+
+afficherTextesEvenements(x, y, largeur, hauteur) {
+  const headerH = this.espacement * 1.5;
+  this.ctx.fillStyle = '#000000';
+  this.ctx.font = '15px Roboto';
+  const statuts = this.jeu.listeStatuts;
+  for (let i = 0; i < statuts.length; i++) {
+      this.ctx.fillText(
+        statuts[i], 
+        x + this.espacement / 2, 
+        y + headerH + this.espacement + i * this.espacement / 2
+      );
   }
+}
 
   /**
    * Afficher la modale (propositions, cartes chance/fonds commun...) 
@@ -497,7 +501,8 @@ class View {
   }
 
   /**
-   * Rafraîchir l'affichage du plateau de jeu, des pions, du dé, des infos joueurs et propositions modale (redessiner)
+   * Rafraîchir l'affichage du plateau de jeu, des pions, du dé, 
+   * des infos joueurs et propositions modale (redessiner)
    */
   refresh() {
     this.ctx.clearRect(0, 0, this.myCanvas.width, this.myCanvas.height);
@@ -511,7 +516,7 @@ class View {
     if (this.jeu.etat === EtatsJeu.EN_ATTENTE) {
      this.afficherMenuPropositions(this.jeu.listePropositions);
     } else {
-      this.afficherZoneStatuts(); 
+      this.afficherZoneEvenements(); 
     }
   }
 

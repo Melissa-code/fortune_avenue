@@ -25,6 +25,13 @@ Ce projet vise à explorer :
 - **Gérer l'interface et l'expérience utilisateur** (Afficher le plateau, le tour du joueur courant, le solde, bouton “Lancer les dés”, “Acheter”, “Passer le tour”, )
 
 
+## Aperçu 
+
+<div style="display:flex; gap:2rem">
+  <img src="./images/technical/achat.png" width="600">
+  <img src="./images/technical/prison.png" width="600">
+</div>
+
 ## 3. Installation 
 
 ```
