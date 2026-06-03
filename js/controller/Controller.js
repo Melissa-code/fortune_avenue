@@ -35,11 +35,9 @@ class Controller {
         let valeurDeplacement = this.jeu.de.lancer();
         this.jeu.listePropositions = []; 
         this.jeu.listeStatuts = []; //pour le vider à chaque tour
-
         this.view.refresh();
 
-        this.jeu.avancerJoueurCourant(valeurDeplacement); 
-        console.log("argent joueur", joueurCourant.argent);    
+        this.jeu.avancerJoueurCourant(valeurDeplacement);   
 
         this.view.refresh();
 
@@ -47,14 +45,12 @@ class Controller {
             this.view.afficherMenuPropositions(this.jeu.listePropositions); 
         } 
         else if (this.jeu.listeStatuts.length > 0) {
-            this.view.afficherZoneStatuts(); 
+            this.view.afficherZoneEvenements(); 
             this.jeu.terminerTour();
         } 
         else {
             this.jeu.terminerTour();
         }
-
-        // this.jeu.terminerTour();
     }
 
     /**
@@ -62,11 +58,7 @@ class Controller {
      * recupérer message , ex: "Achat", "Le joueur ... a acheté la case ..." qui disparait ap 3sec 
      */
     soumettreProposition(numProposition) {
-        console.log("Num proposition choisie:", numProposition);
-        console.log("etat du jeu", this.jeu.etat);
-
         if (this.jeu.etat === EtatsJeu.EN_ATTENTE && !isNaN(numProposition)) {
-            console.log("Soumission de la proposition n°", numProposition);
             const resultat = this.jeu.soumettreProposition(numProposition); 
             this.view.refresh();
 

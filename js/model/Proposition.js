@@ -1,6 +1,6 @@
 import { VersementEffet } from "./Effet.js";
 import EtatsJeu from './enums/EtatsJeu.js';
-
+import { CaseRue } from './CaseJeu.js';
 
 // #region Proposition 
 
@@ -250,17 +250,22 @@ export class PropositionConstruireMaison extends Proposition{
     }
 
     estDisponible(joueur, caseRue, jeu) {
-        if (caseRue.proprietaire === joueur && jeu.possederTouteLaCollection() && caseRue.nombreMaisons < 4 && joueur.argent >= caseRue.prixMaison) {
-            return true;
-        }
+        if (!(caseRue instanceof CaseRue)) return false;
+
+        return (
+            caseRue.proprietaire === joueur && 
+            jeu.possederTouteLaCollection(joueur, caseRue.couleur) && 
+            caseRue.nombreMaisons < 4 && 
+            joueur.argent >= caseRue.prixMaison
+        );
         return false; 
     }
 
     valider(joueur, jeu, caseRue, banque) {
-        if (!this.estDisponible(joueur, casePropriete, jeu)) return false;  
+        if (!this.estDisponible(joueur, caseRue, jeu)) return false;  
 
-        joueur.argent -= caseRue.prixMaison; 
-        caseRue.nombreMaisons++; 
+        caseRue.construire("maison"); 
+        return { titre: "Construction: ", message: `${joueur.nom} a construit une maison sur ${caseRue.nom}.` };
     }
 }
 
@@ -274,18 +279,21 @@ export class PropositionConctruireHotel extends Proposition {
     }
 
     estDisponible(joueur, caseRue) {
-        if (caseRue.proprietaire === joueur && caseRue.nombreMaisons === 4 && joueur.argent >= caseRue.prixHotel) {
-            return true;
-        }
+        if (!(caseRue instanceof CaseRue)) return false;
+
+        return (caseRue.proprietaire === joueur 
+            && caseRue.nombreMaisons === 4 
+            && joueur.argent >= caseRue.prixHotel
+        ) ;
+        
         return false; 
     }
 
     valider(joueur, jeu, caseRue, banque) {
         if (!this.estDisponible(joueur, caseRue)) return false; 
 
-        joueur.argent -= caseRue.priHotel; 
-        caseRue.nombreMaisons = 0;
-        caseRue.nombreHotels = 1; //1 hotel 
+        caseRue.construire("hotel"); 
+        return { titre: "Construction: ", message: `${joueur.nom} a construit un hôtel sur ${caseRue.nom}.` };
     }
 }
 
@@ -301,7 +309,7 @@ export class PropositionDecliner extends Proposition {
     }
 
     valider(joueur, jeu, casePropriete, banque) {
-         return { titre: "Refus", message: `${joueur.nom} a décliné l'achat de  ${casePropriete.nom} pour ${casePropriete.prixAchat}€.`}
+        return { titre: "Refus", message: `${joueur.nom} a décliné l'achat de  ${casePropriete.nom} pour ${casePropriete.prixAchat}€.`}
     }
 }
 

@@ -1,4 +1,5 @@
-// throw new Error("STOP ! LE FICHIER EST BIEN LU");
+import effetsChanceJson from "../../data/effets_chance.js";
+import effetsFondsCommunsJson from "../../data/effets_fonds_communs.js"; 
 import TypesMessagesModale from "./enums/TypesMessagesModale.js";  
 import EtatsJeu from './enums/EtatsJeu.js';
 import Joueur from './Joueur.js'; 
@@ -6,8 +7,6 @@ import De from './De.js';
 import Banque from './Banque.js'; 
 import { CasePropriete, CaseAction } from './CaseJeu.js';
 import { Proposition } from './Proposition.js';
-import effetsChanceJson from "../../data/effets_chance.js";
-import effetsFondsCommunsJson from "../../data/effets_fonds_communs.js"; 
 import { CarteEffetsFactory } from './CarteEffetsFactory.js';
 import { CaseJeuFactory } from './CaseJeuFactory.js';
 // import { Carte } from "./Carte.js";
@@ -15,7 +14,6 @@ import { CaseJeuFactory } from './CaseJeuFactory.js';
 
 class Jeu {
     constructor() {
-        console.log("Initialisation du jeu...");
         this.joueurActuelIndex = 0;
         this.joueurs = []; 
         this.estPartieFinie = false; 
@@ -33,8 +31,23 @@ class Jeu {
         this.piocheFondsCommun = CarteEffetsFactory.chargerDataEffetsCartes(effetsFondsCommunsJson);
         CarteEffetsFactory.melangerCartes(this.piocheFondsCommun);
 
-        // console.log("cartes fonds communs : ", this.piocheFondsCommun);
-   
+        // console.log("joueur 1", this.joueurs[0]);// undefined
+        // const fauxJoueur = { nom: "Melissa_test", proprietes: [] };
+        // for (let i = 0; i < this.casesJeu.length; i++) {
+        //     if (this.casesJeu[i] instanceof CasePropriete && this.casesJeu[i].nom === "rue Lecourbe") {
+        //         this.fauxJoueur.propietes.push(this.casesJeu[i]);
+        //         this.casesJeu[i].proprietaire = this.fauxJoueur;
+        //     }
+        //     if (this.casesJeu[i] instanceof CasePropriete && this.casesJeu[i].nom === "boulevard belleville") {
+        //         this.fauxJoueur.propietes.push(this.casesJeu[i]);
+        //         this.casesJeu[i].proprietaire = this.fauxJoueur;
+        //     }
+        // }
+
+        // fauxJoueur.possederTouteLaCollection = () => true;
+        // joueurTest.position = fauxJoueur.casesJeu.indexOf(lecourbe);
+        // fauxJoueur.listePropositions = lecourbe.arriver(joueurTest, fauxJoueur);
+        // fauxJoueur.etat = EtatsJeu.EN_ATTENTE;
     }
 
     ajouterJoueur(nom, pion) {
@@ -62,10 +75,10 @@ class Jeu {
      */
     possederTouteLaCollectionCases(joueur, couleur) {
         for (let caseJeu of this.casesJeu) {
-            if (caseJeu.couleur === couleur && caseJeu.proprietaire !== joueur )
+            if (caseJeu.couleur === couleur && caseJeu.proprietaire !== joueur)
                 return false;
             }
-
+            
         return true;
     }
     
@@ -90,8 +103,7 @@ class Jeu {
             }); 
         } 
 
-        // return null; 
-        return [[], []]; 
+        return []; 
     }
 
     /**
@@ -116,7 +128,6 @@ class Jeu {
         joueurCourant.avancer("relatif", valeurDeplacement) //chiffre du dé
         
         const caseJeu = this.casesJeu[joueurCourant.position]; 
-        console.log("Case:", caseJeu.nom, "- Type:", caseJeu.constructor.name);
 
         // check si la case a un propriétaire (-> payer loyer )
         if (caseJeu instanceof CasePropriete && caseJeu.proprietaire !== null && caseJeu.proprietaire !== joueurCourant) {
@@ -125,8 +136,7 @@ class Jeu {
         }
         
         if (caseJeu instanceof CaseAction) {
-            this.listeStatuts  = caseJeu.arriver(joueurCourant, this); 
-            console.log("argent joueur", joueurCourant.argent);
+            this.listeStatuts  = caseJeu.arriver(joueurCourant, this); //obj message ou liste propositions
             return;
         }
 
@@ -135,9 +145,7 @@ class Jeu {
             if (this.listePropositions.length > 0) {
                 this.etat = EtatsJeu.EN_ATTENTE; // de propositions (modale)
             }
-             console.log("argent joueur", joueurCourant.argent);
         }
-
     }
 
     /**

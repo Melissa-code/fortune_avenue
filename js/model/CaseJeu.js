@@ -145,7 +145,6 @@ export class CaseRue extends CasePropriete {
         }
     }
 
-    
     /**
      * surcharge de la méthode calculerIndexLoyer pour les rues 
      */
