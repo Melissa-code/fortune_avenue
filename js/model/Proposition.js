@@ -187,20 +187,17 @@ export class PropositionAcheterPropriete extends Proposition {
      * proprietaire de la case + transfert argent joueur -> banque
      */
     valider(joueur, jeu, casePropriete, banque) {
-        // console.log('achat n apparia pas')
         if (!this.estDisponible(joueur, casePropriete)) return false; 
 
         casePropriete.proprietaire = joueur; 
         joueur.proprietes.push(casePropriete); 
-        // console.log("achat propiriete", joueur.proprietes)
-
-        // console.log("achat debug proposition", casePropriete.prixAchat, joueur.argent, banque.argent)
-
+  
         const versement = new VersementEffet(casePropriete.prixAchat, joueur, banque); 
-        //  console.log("achat debug proposition 2", casePropriete.prixAchat, joueur.argent, banque.argent)
-        
         versement.appliquer(joueur, banque); 
-        return { titre: "Achat", message: `${joueur.nom} a acheté ${casePropriete.nom} pour ${casePropriete.prixAchat}€.`}
+        return { 
+            titre: "Achat", 
+            message: `${joueur.nom} a acheté ${casePropriete.nom} pour ${casePropriete.prixAchat} M.`
+        }
     }
 }
 
@@ -254,11 +251,10 @@ export class PropositionConstruireMaison extends Proposition{
 
         return (
             caseRue.proprietaire === joueur && 
-            jeu.possederTouteLaCollection(joueur, caseRue.couleur) && 
+            jeu.possederTouteLaCollectionCases(joueur, caseRue.couleur) && 
             caseRue.nombreMaisons < 4 && 
             joueur.argent >= caseRue.prixMaison
-        );
-        return false; 
+        ); 
     }
 
     valider(joueur, jeu, caseRue, banque) {
@@ -281,12 +277,11 @@ export class PropositionConctruireHotel extends Proposition {
     estDisponible(joueur, caseRue) {
         if (!(caseRue instanceof CaseRue)) return false;
 
-        return (caseRue.proprietaire === joueur 
-            && caseRue.nombreMaisons === 4 
-            && joueur.argent >= caseRue.prixHotel
-        ) ;
-        
-        return false; 
+        return (
+            caseRue.proprietaire === joueur &&
+            caseRue.nombreMaisons === 4 &&
+            joueur.argent >= caseRue.prixHotel
+        ); 
     }
 
     valider(joueur, jeu, caseRue, banque) {

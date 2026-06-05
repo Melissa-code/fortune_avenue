@@ -233,8 +233,6 @@ export class CaseAction extends CaseJeu {
     }
 
     arriver(joueur, jeu) {
-        console.log(`Arrivée sur la case d'action: ${this.nom}`);
-
         const messagesEffets = [];
        
         if (this.effets.length === 0) { 
@@ -246,13 +244,10 @@ export class CaseAction extends CaseJeu {
             messagesEffets.push(...messages);
         }
 
-        // return []; // vide pour les propositions sinon undefined 
-        console.log("Messages des effets appliqués  (caseJeu):", messagesEffets);
         return messagesEffets;
     }
 
-    calculerLoyer(jeu=null) { 
-        console.log('JE SUIS UNE CASE D\'ACTION !');
+    calculerLoyer(jeu=null) {
         return 0; // montant loyer = 0
     }
 }

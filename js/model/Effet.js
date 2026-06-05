@@ -150,15 +150,13 @@ export class PiocheEffet extends Effet {
 
         if (this.typePioche === TypesCases.CHANCE) {
             carteTiree = jeu.piocheChance.shift();
-            console.log('carte ', carteTiree.titre)
             jeu.piocheChance.push(carteTiree); 
-            messages.push("Le joueur " + joueur.nom + " a pioché la carte: " + carteTiree.titre);
+            messages.push(joueur.nom + " a pioché la carte " + carteTiree.titre);
             messages.push(`"${carteTiree.description}"`);
         } else if (this.typePioche === TypesCases.FONDS_COMMUNS) {
             carteTiree = jeu.piocheFondsCommun.shift();
-            console.log('carte ', carteTiree.titre, carteTiree.description)
             jeu.piocheFondsCommun.push(carteTiree.titre)
-            messages.push("Le joueur " + joueur.nom + " a pioché la carte " + carteTiree.titre);
+            messages.push(joueur.nom + " a pioché la carte " + carteTiree.titre);
             messages.push(`"${carteTiree.description}"`);
         }
         return messages;

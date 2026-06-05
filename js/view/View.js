@@ -68,8 +68,8 @@ class View {
         imagePlateau, 
         0, 
         0, 
-        this.dimensionPlateauJeu, 
-        this.dimensionPlateauJeu
+        this.dimensionPlateauJeu * 0.99, 
+        this.dimensionPlateauJeu * 0.99 
       );
     }
   }
@@ -246,7 +246,7 @@ class View {
     for (const prop of proprietes) {
       const couleur = prop.couleur || '#9CA3AF';
       const label = prop.nom.substring(0, 25);
-      this.ctx.font = '12px Roboto';
+      this.ctx.font = '11px Roboto';
       const tagW = this.ctx.measureText(label).width + 10;
 
       if (tagX + tagW > x + largeurCard - 8) {
@@ -339,7 +339,7 @@ class View {
 
     // overlay si joueur inactif
     if (!estActif) {
-        this.ctx.fillStyle = 'rgba(0, 0, 0, 0.5)';
+        this.ctx.fillStyle = 'rgba(8, 28, 21, 0.5)'; 
         this.ctx.beginPath();
         this.ctx.roundRect(x, cardY, largeurCard, hauteurCard, 5);
         this.ctx.fill();

@@ -30,24 +30,6 @@ class Jeu {
 
         this.piocheFondsCommun = CarteEffetsFactory.chargerDataEffetsCartes(effetsFondsCommunsJson);
         CarteEffetsFactory.melangerCartes(this.piocheFondsCommun);
-
-        // console.log("joueur 1", this.joueurs[0]);// undefined
-        // const fauxJoueur = { nom: "Melissa_test", proprietes: [] };
-        // for (let i = 0; i < this.casesJeu.length; i++) {
-        //     if (this.casesJeu[i] instanceof CasePropriete && this.casesJeu[i].nom === "rue Lecourbe") {
-        //         this.fauxJoueur.propietes.push(this.casesJeu[i]);
-        //         this.casesJeu[i].proprietaire = this.fauxJoueur;
-        //     }
-        //     if (this.casesJeu[i] instanceof CasePropriete && this.casesJeu[i].nom === "boulevard belleville") {
-        //         this.fauxJoueur.propietes.push(this.casesJeu[i]);
-        //         this.casesJeu[i].proprietaire = this.fauxJoueur;
-        //     }
-        // }
-
-        // fauxJoueur.possederTouteLaCollection = () => true;
-        // joueurTest.position = fauxJoueur.casesJeu.indexOf(lecourbe);
-        // fauxJoueur.listePropositions = lecourbe.arriver(joueurTest, fauxJoueur);
-        // fauxJoueur.etat = EtatsJeu.EN_ATTENTE;
     }
 
     ajouterJoueur(nom, pion) {
@@ -75,9 +57,10 @@ class Jeu {
      */
     possederTouteLaCollectionCases(joueur, couleur) {
         for (let caseJeu of this.casesJeu) {
-            if (caseJeu.couleur === couleur && caseJeu.proprietaire !== joueur)
+            if (caseJeu.couleur === couleur && caseJeu.proprietaire !== joueur) {
                 return false;
             }
+        }
             
         return true;
     }
