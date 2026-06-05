@@ -242,6 +242,7 @@ class View {
     let tagY = cardY + ligneH * ligneActuelle + headerH + 6;
     const tagH = 16;
     const tagLigneH = tagH + 5;
+    const couleursRues = ['#5A3E2B','#0A74DA','#A8333E','#4CAF50','#9CA3AF']; 
 
     for (const prop of proprietes) {
       const couleur = prop.couleur || '#9CA3AF';
@@ -259,10 +260,24 @@ class View {
       this.ctx.roundRect(tagX, tagY, tagW, tagH, 5);
       this.ctx.fill();
 
-      this.ctx.fillStyle = 
-        ['#5A3E2B','#0A74DA','#A8333E','#4CAF50','#9CA3AF'].includes(couleur) ? '#fff' : '#000';
+      this.ctx.fillStyle = couleursRues.includes(couleur) ? '#FFFFFF' : '#000000';
       this.ctx.fillText(label, tagX + 5, tagY + 11);
       tagX += tagW + 4;
+
+      if (prop.nombreMaisons > 0) {
+        const mSize = tagH * 0.9;
+        for (let m = 0; m < prop.nombreMaisons; m++) {
+            this.ctx.drawImage(this.imageMaison, tagX, tagY + 1, mSize, mSize);
+            tagX += mSize + 2;
+        }
+      }
+      if (prop.nombreHotels > 0) {
+          const hSize = tagH * 0.9;
+          this.ctx.drawImage(this.imageHotel, tagX, tagY + 1, hSize, hSize);
+          tagX += hSize + 2;
+      }
+
+      tagX += 4;
     }
   }
 
