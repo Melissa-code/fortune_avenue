@@ -5,9 +5,11 @@ import Controller from './js/controller/Controller.js';
 
 
 window.jeu = new Jeu(); // var globale pour debug avec window.jeu dans console
+window.controller = null;
 
 function demarrer(jeu) {
     const controller = new Controller(jeu);
+    window.controller = controller; 
 
     const joueur1 = jeu.ajouterJoueur("Melissa", ImagesPions.MOTO);
     const joueur2 = jeu.ajouterJoueur("Pierre", ImagesPions.SMARTPHONE);
@@ -16,12 +18,16 @@ function demarrer(jeu) {
     joueur1.proprietes = [jeu.casesJeu[1], jeu.casesJeu[3]];
     jeu.casesJeu[1].proprietaire = joueur1;
     jeu.casesJeu[3].proprietaire = joueur1;
-    //  joueur1.avancer('absolu', 3);
+  
     joueur1.position = 1;
-    // test en consoel window.jeu.possederTouteLaCollectionCases(window.jeu.getJoueurs()[0], "#5A3E2B")
+    jeu.etat = 'EN_ATTENTE';
+    jeu.listePropositions = window.jeu.casesJeu[1].filtrerPropositionsValables(window.jeu.getJoueurs()[0], window.jeu);
+  
 
     const view = new View(jeu, controller, document); // view appelle controller pour signaler les actions user (click, choix proposition) 
     controller.view = view; // controller appelle view pour afficher les propositions et refresh ap actions user
+
+    controller.view.refresh();
 }
 
 demarrer(window.jeu);

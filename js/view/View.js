@@ -256,7 +256,7 @@ class View {
 
       this.ctx.fillStyle = couleur;
       this.ctx.beginPath();
-      this.ctx.roundRect(tagX, tagY, tagW, tagH, 4);
+      this.ctx.roundRect(tagX, tagY, tagW, tagH, 5);
       this.ctx.fill();
 
       this.ctx.fillStyle = 

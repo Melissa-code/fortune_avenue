@@ -92,12 +92,12 @@ class Jeu {
     /**
      * Proposer au joueur options possibles pour sortir de prison (dépend de l'etat du joueur)
      */
-    filtrerPropositionsValablesSortiePrison(joueur, jeu) {
+    filtrerPropositionsValablesSortiePrison(joueur) {
         const propositions = Proposition.getListePropositionsSortiePrison(); 
         const propositionsValables = [];
 
         for (let propositionValable of propositions) {
-            if (propositionValable.estDisponible(joueur, jeu)) { 
+            if (propositionValable.estDisponible(joueur, this)) { 
                 propositionsValables.push(propositionValable); 
             }
         }
@@ -157,12 +157,11 @@ class Jeu {
         const joueurCourant = this.joueurs[this.joueurActuelIndex]; 
         const numProp = numProposition - 1; // n-1 dans la liste de propositions
 
-         console.log("numprop ICI", numProp)
+        console.log("numprop ICI", numProp)
         if (numProp < 0 || numProp > this.listePropositions.length) return; 
 
         // sortir du menu de propositions (dernier chiffre)
         if (numProp === this.listePropositions.length) return this.decliner(joueurCourant, this.casesJeu[joueurCourant.position]);
-        
 
         console.log("proposition ICI", this.listePropositions[numProp])
         // Valider proposition (bool) et appliquer ses effets (ex: acheter la case/payer pour sortir de prison...)

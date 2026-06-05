@@ -261,6 +261,7 @@ export class PropositionConstruireMaison extends Proposition{
         if (!this.estDisponible(joueur, caseRue, jeu)) return false;  
 
         caseRue.construire("maison"); 
+
         return { titre: "Construction: ", message: `${joueur.nom} a construit une maison sur ${caseRue.nom}.` };
     }
 }

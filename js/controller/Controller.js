@@ -8,14 +8,13 @@ class Controller {
     }
 
     sortirDePrison(joueurCourant) {
-        const propositionsSortiePrison = this.jeu.filtrerPropositionsValablesSortiePrison(joueurCourant, jeu);
+        const propositionsSortiePrison = this.jeu.filtrerPropositionsValablesSortiePrison(joueurCourant);
         this.view.refresh();
 
         if (propositionsSortiePrison.length > 0) {
             this.jeu.listePropositions = propositionsSortiePrison; 
             this.jeu.etat = EtatsJeu.EN_ATTENTE; 
             this.view.afficherMenuPropositions(this.jeu.listePropositions);
-            console.log('Affiche les propositions pour sortir de prison ')
             return; 
         }
     }

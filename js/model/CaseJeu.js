@@ -10,7 +10,7 @@ export class CaseJeu {
         this.nom = nom;
     }
 
-    arriver() {
+    arriver(joueur, jeu) {
         return []; // par defaut aucune proposition
     }
 }
@@ -34,13 +34,13 @@ export class CasePropriete extends CaseJeu {
     /**
      * proposer au joueur d'acheter la propriete s'il n'y a pas de proprietaire, sinon proposer de payer le loyer 
      */
-    filtrerPropositionsValables(joueur) {
+    filtrerPropositionsValables(joueur, jeu) {
         // traverser listeProp et prendre celles valides (estDisponible(jeu, joueur, caseJeu) true)
         const propositions = Proposition.getListePropositions(); 
         const propositionsValables = [];
 
         for (let propositionValable of propositions) {
-            if (propositionValable.estDisponible(joueur, this)) { 
+            if (propositionValable.estDisponible(joueur, this, jeu)) { 
                 propositionsValables.push(propositionValable); 
             }
         }
@@ -65,8 +65,8 @@ export class CasePropriete extends CaseJeu {
     /**
      * si la case est libre, proposer d'acheter sinon payer le loyer
      */
-    arriver(joueur) {
-        return this.filtrerPropositionsValables(joueur) || [];
+    arriver(joueur, jeu) {
+        return this.filtrerPropositionsValables(joueur, jeu) || [];
     }
 
     hypothequer() {
@@ -115,17 +115,17 @@ export class CaseRue extends CasePropriete {
 
         switch(typeConstruction) {
             case "maison":
-                prixConstruction = this.carte.prixMaison;
+                prixConstruction = this.prixMaison;
                 break;
             case "hotel":
-                prixConstruction = this.carte.prixHotel;
+                prixConstruction = this.prixHotel;
                 break;
             default: 
                 console.log('Aucun type de construction reconnu.'); 
         }
 
-        let effet = new VersementEffet(prixConstruction, this.proprietaire.argent, banque);
-        effet.appliquer(this.proprietaire, banque);
+        let effet = new VersementEffet(prixConstruction, this.proprietaire.argent, this.banque);
+        effet.appliquer(this.proprietaire, this.banque);
         
         console.log(`${this.proprietaire.nom} paye ${prixConstruction}€ pour construire un(e) ${typeConstruction}.`);
     }
