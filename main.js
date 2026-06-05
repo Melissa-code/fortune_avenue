@@ -18,9 +18,10 @@ function demarrer(jeu) {
     joueur1.proprietes = [jeu.casesJeu[1], jeu.casesJeu[3]];
     jeu.casesJeu[1].proprietaire = joueur1;
     jeu.casesJeu[3].proprietaire = joueur1;
-  
+
     joueur1.position = 1;
     jeu.etat = 'EN_ATTENTE';
+    jeu.casesJeu[1].nombreMaisons = 4; 
     jeu.listePropositions = window.jeu.casesJeu[1].filtrerPropositionsValables(window.jeu.getJoueurs()[0], window.jeu);
   
 
