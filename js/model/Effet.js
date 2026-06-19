@@ -54,10 +54,11 @@ export class VersementEffet extends Effet {
         this.estCollectif = estCollectif; // si plusieurs joueurs ou non
     }
 
-    appliquer(joueur, jeu = null, banque = null) {
+    appliquer(joueur,  banque = null) {
         let messages = []; 
-        // console.log("EFFET", this.montant, this.source, this.destinataire, this.estCollectif)
-        // console.log("debug effet", this.source, this.destinataire, joueur, banque)
+
+        console.log("EFFET", this.montant, this.source, this.destinataire, this.estCollectif)
+        console.log("debug effet", this.source, this.destinataire, joueur, banque)
 
         // 1- joueur paie banque (achat/taxe) - attention string != obj
         if (this.source === "joueur" && this.destinataire === "banque") {
@@ -109,7 +110,7 @@ export class VersementEffet extends Effet {
 /**
  * Entree/Sortie: TODO VOIR TESTER
  * - déplacement du joueur en prison
- * - joueur.estEnPrison = true/false
+ * - joueur.estEnPrison = true/false 
  */
 export class PrisonEffet extends Effet {
     constructor(allerEnPrison) {
@@ -119,17 +120,19 @@ export class PrisonEffet extends Effet {
 
     appliquer(joueur, jeu = null, banque = null) {
         let messages = [];
-        console.log("joueur en prison" ,joueur)
 
         if (this.allerEnPrison) {
-            console.log("en prison ")
             joueur.position = 10; 
             joueur.estEnPrison = true; 
-            messages.push("Le joueur " + joueur.nom + " est envoyé en prison");
+            messages.push(`${joueur.nom} est envoyé en prison.`);
         } else {
-            console.log("pas en prison")
-            joueur.estEnPrison = false; 
-            messages.push("Le joueur " + joueur.nom + " est libéré de prison");
+            if (joueur.estEnPrison) {
+                joueur.estEnPrison = false; 
+                messages.push(`${joueur.nom} est libéré de prison.`);
+            } else {
+                // visite (ex: case départ -> direct case 10)
+                messages.push(`Prison: ${joueur.nom} est en simple visite.`);
+            }
         }
         return messages;
     }
@@ -153,11 +156,24 @@ export class PiocheEffet extends Effet {
             jeu.piocheChance.push(carteTiree); 
             messages.push(joueur.nom + " a pioché la carte " + carteTiree.titre);
             messages.push(`"${carteTiree.description}"`);
+
+            // verifier si la carteTiree.titre === "Chance 9"
+            if (carteTiree.titre === "Chance 9") {
+                joueur.cartechanceSortiePrison = true;
+                messages.push("carte chance n°9: vous pouvez sortir de prison avec cette carte.");
+            }
+
         } else if (this.typePioche === TypesCases.FONDS_COMMUNS) {
             carteTiree = jeu.piocheFondsCommun.shift();
             jeu.piocheFondsCommun.push(carteTiree.titre)
             messages.push(joueur.nom + " a pioché la carte " + carteTiree.titre);
             messages.push(`"${carteTiree.description}"`);
+
+            // verifier si la carteTiree.titre 
+            if (carteTiree.titre === "Fonds commun 5") {
+                joueur.cartechanceSortiePrison = true;
+                messages.push("carte fonds commun n°5: vous pouvez sortir de prison avec cette carte.");
+            }
         }
         return messages;
     }

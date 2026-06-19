@@ -7,6 +7,7 @@ import { CaseRue } from './CaseJeu.js';
 export class Proposition {
     static LISTE_PROPOSITIONS = []; 
     static LISTE_PROPOSITIONS_SORTIE_PRISON = []; 
+    static LISTE_PROPOSITIONS_FONDSCOMMUNS = [];
 
     constructor(titre, description) {
         this.titre = titre;
@@ -168,6 +169,37 @@ export class PropositionJouerCarteFondsCommunsSortiePrison extends Proposition {
 
 // #endregion 
 
+class PropositionPayerAmende extends Proposition {
+    constructor() {
+        super("Payer l'amende", "Voulez-vous payer l'amende de 10 M ?");
+    }
+
+    estDisponible() {
+        return true;
+    }
+
+    valider(joueur, jeu, caseJeu, banque, prixAmende) {
+        const versement = new VersementEffet(prixAmende, joueur, banque); 
+        versement.appliquer(joueur, banque);
+        return { titre: "Paiement", message: `${joueur.nom} a choisi de payer l'amende de ${prixAmende} M.` };
+    }
+}
+
+class PropositionTirerCarteChance extends Proposition {
+    constructor() {
+        super("Tirer une carte chance", "Voulez-vous tirer une carte chance ?");
+    }
+
+    estDisponible() {
+        return true;
+    }
+
+    valider(joueur, jeu, caseJeu, banque, typePioche) {
+        piocheEffet = new PiocheEffet(typePioche);
+        return piocheEffet.appliquer(joueur, jeu, banque);//message
+    }
+}
+
 // #region PropositionAcheterPropriete
 
 export class PropositionAcheterPropriete extends Proposition {
@@ -260,7 +292,7 @@ export class PropositionConstruireMaison extends Proposition{
     valider(joueur, jeu, caseRue, banque) {
         if (!this.estDisponible(joueur, caseRue, jeu)) return false;  
 
-        caseRue.construire("maison"); 
+        caseRue.construire("maison", banque); 
 
         return { titre: "Construction: ", message: `${joueur.nom} a construit une maison sur ${caseRue.nom}.` };
     }
@@ -272,7 +304,7 @@ export class PropositionConstruireMaison extends Proposition{
 
 export class PropositionConctruireHotel extends Proposition {
     constructor() {
-        super("contruire un hôtel", "Voulez-vous construire un hôtel sur cette propriété ? ");
+        super("Construire un hôtel", "voulez-vous construire un hôtel sur cette propriété ? ");
     }
 
     estDisponible(joueur, caseRue) {
@@ -288,7 +320,7 @@ export class PropositionConctruireHotel extends Proposition {
     valider(joueur, jeu, caseRue, banque) {
         if (!this.estDisponible(joueur, caseRue)) return false; 
 
-        caseRue.construire("hotel"); 
+        caseRue.construire("hotel", banque); 
         return { titre: "Construction: ", message: `${joueur.nom} a construit un hôtel sur ${caseRue.nom}.` };
     }
 }
@@ -297,7 +329,7 @@ export class PropositionConctruireHotel extends Proposition {
 
 export class PropositionDecliner extends Proposition {
     constructor() {
-        super("décliner", "Aucune action vous finissez votre tour.");
+        super("Décliner", "aucune action vous finissez votre tour.");
     }
 
     estDisponible() {
@@ -305,9 +337,10 @@ export class PropositionDecliner extends Proposition {
     }
 
     valider(joueur, jeu, casePropriete, banque) {
-        return { titre: "Refus", message: `${joueur.nom} a décliné l'achat de  ${casePropriete.nom} pour ${casePropriete.prixAchat}€.`}
+        return { titre: "Refus", message: `${joueur.nom} a décliné l'achat de ${casePropriete.nom} pour ${casePropriete.prixAchat} €.`}
     }
 }
+
 
 // #region LISTES (ne créer les obkets qu'une seule fois pour optimiser la mémoire et performances)
 
@@ -327,6 +360,11 @@ Proposition.LISTE_PROPOSITIONS_SORTIE_PRISON = [
     new PropositionJouerCarteChanceSortiePrison(),
     new PropositionJouerCarteFondsCommunsSortiePrison(),
     new PropositionAcheterCartePourSortiePrison(),
+]
+
+Proposition.LISTE_PROPOSTITIONS_FONDSCOMMUNS = [
+    new PropositionPayerAmende(),
+    new PropositionTirerCarteChance(),
 ]
 
 // #endregion

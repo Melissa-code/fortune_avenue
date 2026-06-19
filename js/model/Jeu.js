@@ -22,7 +22,6 @@ class Jeu {
         this.etat = EtatsJeu.EN_COURS; 
         this.listePropositions = []; 
         this.listeStatuts = [];
-
         this.casesJeu = CaseJeuFactory.chargerDataCasesJeu(); 
 
         this.piocheChance = CarteEffetsFactory.chargerDataEffetsCartes(effetsChanceJson);
@@ -110,7 +109,7 @@ class Jeu {
 
         joueurCourant.avancer("relatif", valeurDeplacement) //chiffre du dé
         
-        const caseJeu = this.casesJeu[joueurCourant.position]; 
+        const caseJeu = this.casesJeu[joueurCourant.position];
 
         // check si la case a un propriétaire (-> payer loyer )
         if (caseJeu instanceof CasePropriete && caseJeu.proprietaire !== null && caseJeu.proprietaire !== joueurCourant) {

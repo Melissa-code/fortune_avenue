@@ -3,6 +3,7 @@ import { Effet, DeplacementEffet, VersementEffet, PrisonEffet } from './Effet.js
 import { Proposition, PropositionAcheterPropriete, PropositionHypothequer, PropositionLeverHypotheque, PropositionConstruireMaison, PropositionConctruireHotel, PropositionDecliner } from './Proposition.js';
 import TypesMessagesModale from "./enums/TypesMessagesModale.js"; 
 
+
 // #region Case (propriete, action) 
 
 export class CaseJeu {
@@ -108,7 +109,7 @@ export class CaseRue extends CasePropriete {
         this.hypotheque = hypotheque || null;
     }
 
-    acheter(typeConstruction) {
+    acheter(typeConstruction, banque) {
         if (!this.proprietaire) return; 
 
         let prixConstruction = 0; 
@@ -124,21 +125,21 @@ export class CaseRue extends CasePropriete {
                 console.log('Aucun type de construction reconnu.'); 
         }
 
-        let effet = new VersementEffet(prixConstruction, this.proprietaire.argent, this.banque);
-        effet.appliquer(this.proprietaire, this.banque);
+        let effet = new VersementEffet(prixConstruction, this.proprietaire, banque);
+        effet.appliquer(this.proprietaire, banque);
         
         console.log(`${this.proprietaire.nom} paye ${prixConstruction}€ pour construire un(e) ${typeConstruction}.`);
     }
 
-    construire(typeConstruction) {
+    construire(typeConstruction, banque) {
         if (typeConstruction === "maison") {
             this.nombreMaisons++; 
-            this.acheter("maison");
+            this.acheter("maison", banque);
         } else if (typeConstruction === "hotel") {
             if (this.nombreMaisons === 4) {
                 this.nombreHotels++; 
                 this.nombreMaisons = 0; 
-                this.acheter("hotel");
+                this.acheter("hotel", banque);
             }
         } else {
             console.log(`type de construction inconnu: ${type}`)

@@ -24,7 +24,7 @@ export class CarteAction extends Carte {
     executer(joueur, jeu, banque)
     {
         for (let effet of this.effets) {
-            console.log(effet)
+            // console.log(effet)
             effet.appliquer(joueur, jeu, banque)
         }
     }

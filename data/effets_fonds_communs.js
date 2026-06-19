@@ -104,22 +104,6 @@ const effetsFondsCommunsJson = [
         "montant": 10,
         "source": "joueur",
         "destinataire": "banque"
-
-        // "type": TypesEffets.CHOIX,
-        // "options": [
-        //     {
-        //         "option1" : "Payer 10 M",
-        //         "type": TypesEffets.VERSEMENT,
-        //         "montant": 10,
-        //         "source": "joueur",
-        //         "destinataire": "banque",
-        //     },
-        //     {
-        //         "option2" : "Piocher une carte chance",
-        //         "type": TypesEffets.PIOCHER,
-        //         "carte" : "chance",
-        //     }
-        // ]
     }, 
     {
         "titre": "Fonds communs 14",
