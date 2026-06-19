@@ -54,12 +54,9 @@ export class VersementEffet extends Effet {
         this.estCollectif = estCollectif; // si plusieurs joueurs ou non
     }
 
-    appliquer(joueur,  banque = null) {
+    appliquer(joueur, banque = null) {
         let messages = []; 
-
-        console.log("EFFET", this.montant, this.source, this.destinataire, this.estCollectif)
-        console.log("debug effet", this.source, this.destinataire, joueur, banque)
-
+        
         // 1- joueur paie banque (achat/taxe) - attention string != obj
         if (this.source === "joueur" && this.destinataire === "banque") {
             joueur.payer(this.montant);

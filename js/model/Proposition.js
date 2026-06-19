@@ -1,7 +1,6 @@
 import { VersementEffet } from "./Effet.js";
 import EtatsJeu from './enums/EtatsJeu.js';
 import { CaseRue } from './CaseJeu.js';
-import { PiocheEffet } from './PiocheEffet.js';
 
 
 // #region Proposition 

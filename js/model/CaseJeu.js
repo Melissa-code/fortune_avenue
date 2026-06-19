@@ -1,7 +1,8 @@
 import { CarteRue } from './Carte.js';
-import { Effet, DeplacementEffet, VersementEffet, PrisonEffet } from './Effet.js'; 
-import { Proposition, PropositionAcheterPropriete, PropositionHypothequer, PropositionLeverHypotheque, PropositionConstruireMaison, PropositionConctruireHotel, PropositionDecliner } from './Proposition.js';
+import { Effet, DeplacementEffet, VersementEffet, PrisonEffet, PiocheEffet } from './Effet.js'; 
+import { Proposition, PropositionTirerCarteChance, PropositionPayerAmende, PropositionAcheterPropriete, PropositionHypothequer, PropositionLeverHypotheque, PropositionConstruireMaison, PropositionConctruireHotel, PropositionDecliner } from './Proposition.js';
 import TypesMessagesModale from "./enums/TypesMessagesModale.js"; 
+import EtatsJeu from './enums/EtatsJeu.js';
 
 
 // #region Case (propriete, action) 
@@ -153,10 +154,10 @@ export class CaseRue extends CasePropriete {
         if (this.hypotheque || !this.proprietaire) return 0; 
 
         if (this.nombreHotels > 0) return this.loyers[5];
-        if (this.nombreMaisons > 0) return this.loyers[this.nombreMaisons];  // 1à4
+        if (this.nombreMaisons > 0) return this.loyers[this.nombreMaisons];  // 1 à 4
         if (jeu.possederTouteLaCollectionCases(this.proprietaire, this.couleur)) return this.loyers.length - 1; //possederTouteLaCollectionCases(joueur, couleur) 
 
-        return this.loyers[0]; 
+        return this.loyers[this.loyers.length - 1]; 
     }
 }
 
@@ -234,6 +235,13 @@ export class CaseAction extends CaseJeu {
     }
 
     arriver(joueur, jeu) {
+        if (this.nom === "Fonds communs 13") { 
+            console.log("CAse Fonds communs 13: filtrer propositions valables")
+            this.jeu.listePropositions = this.filtrerPropositionsValablesFondsCommuns(joueur);
+            this.jeu.etat = EtatsJeu.EN_ATTENTE; 
+            return this.jeu.listePropositions|| [];
+        }
+
         const messagesEffets = [];
        
         if (this.effets.length === 0) { 

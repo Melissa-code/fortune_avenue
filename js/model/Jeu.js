@@ -53,12 +53,21 @@ class Jeu {
      * Posséder toutes les cases Rue de la meme couleur 
      */
     possederTouteLaCollectionCases(joueur, couleur) {
+        const casesCollection = [];
+
         for (let caseJeu of this.casesJeu) {
-            if (caseJeu.couleur === couleur && caseJeu.proprietaire !== joueur) {
-                return false;
+            if (caseJeu.couleur === couleur) {
+                casesCollection.push(caseJeu);
             }
         }
-            
+        
+        if (casesCollection.length === 0) return false; // aucune case de la couleur
+        
+        for (let caseCollection of casesCollection) {
+            if (caseCollection.proprietaire !== joueur) {
+                return false; 
+            }
+        }
         return true;
     }
     
@@ -73,7 +82,7 @@ class Jeu {
             const proprietaire = caseJeu.proprietaire; 
             joueurCourant.payer(montantLoyer); 
             proprietaire.recevoir(montantLoyer); 
-            console.log(joueurCourant.nom + "paye " + montantLoyer + " à " + proprietaire.nom)
+            console.log("loyer au " + proprietaire.nom + ": " + joueurCourant.nom + " paye " + montantLoyer + " à " + proprietaire.nom)
 
             return this.createMessage("loyer", {
                 joueur: joueurCourant.nom,  
@@ -164,7 +173,6 @@ class Jeu {
         // sortir du menu de propositions (dernier chiffre)
         if (numProp === this.listePropositions.length) return this.decliner(joueurCourant, this.casesJeu[joueurCourant.position]);
 
-        console.log("proposition ICI", this.listePropositions[numProp])
         // Valider proposition (bool) et appliquer ses effets (ex: acheter la case/payer pour sortir de prison...)
         const success = this.listePropositions[numProp].valider(joueurCourant, this, this.casesJeu[joueurCourant.position], this.banque);
         if (!success) return; 
