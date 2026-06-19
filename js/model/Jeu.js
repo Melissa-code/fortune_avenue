@@ -76,10 +76,13 @@ class Jeu {
      * return obj message ou  null
      */
     payerLoyer(joueurCourant, caseJeu) {
+        console.log("payerLoyer: joueurCourant", joueurCourant.nom, "-caseJeu", caseJeu.nom) 
         const montantLoyer = caseJeu.calculerLoyer(this); //0 pour case d'action
+        console.log("payerLoyer: montantLoyer", montantLoyer) 
 
         if (montantLoyer > 0) {
             const proprietaire = caseJeu.proprietaire; 
+            console.log("porpriétaire de la case: ", proprietaire.nom)
             joueurCourant.payer(montantLoyer); 
             proprietaire.recevoir(montantLoyer); 
             console.log("loyer au " + proprietaire.nom + ": " + joueurCourant.nom + " paye " + montantLoyer + " à " + proprietaire.nom)
@@ -124,6 +127,7 @@ class Jeu {
 
         // check si la case a un propriétaire (-> payer loyer )
         if (caseJeu instanceof CasePropriete && caseJeu.proprietaire !== null && caseJeu.proprietaire !== joueurCourant) {
+            console.log("payer loyer: caseJeu", caseJeu.nom, "au proprietaire ", caseJeu.proprietaire.nom)
             this.listeStatuts = this.payerLoyer(joueurCourant, caseJeu); //loyer: objet message loyer ou null
             return; 
         }
@@ -167,7 +171,6 @@ class Jeu {
         const joueurCourant = this.joueurs[this.joueurActuelIndex]; 
         const numProp = numProposition - 1; // n-1 dans la liste de propositions
 
-        console.log("numprop ICI", numProp)
         if (numProp < 0 || numProp > this.listePropositions.length) return; 
 
         // sortir du menu de propositions (dernier chiffre)
@@ -193,3 +196,5 @@ class Jeu {
 
 export default Jeu; 
 
+// chercher comment déclencher 2e effet après effet pioche (ex: carte chance 2: payer 50 M à chaque joueur)
+// ecrire payer un loyer dans evenemnts + hypothequer a corriger 

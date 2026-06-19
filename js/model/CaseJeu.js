@@ -27,7 +27,7 @@ export class CasePropriete extends CaseJeu {
         super(nom); 
         this.proprietaire = null;
         this.prixAchat = prix || null;
-        this.hypotheque = false; //venduà la banque temporairement -> pas de loyer (lever hyp en payant un suppl à banque)
+        this.isHypotheque = false; //venduà la banque temporairement -> pas de loyer (lever hyp en payant un suppl à banque)
         this.loyers = loyers;
         this.listePropositionsPropriete = [];
         this.effet = null;
@@ -64,6 +64,19 @@ export class CasePropriete extends CaseJeu {
         // à surcharger
     }
 
+    assignerProprietaire(joueur, banque) {
+        if (!this.estLibre()) return false;
+
+        const paiement = new VersementEffet(this.prixAchat, "joueur", "banque");
+        paiement.appliquer(joueur, banque);
+
+        // MAJ proprietaire 
+        this.proprietaire = joueur;          
+        joueur.proprietes.push(this);   
+
+        return true;
+    }
+
     /**
      * si la case est libre, proposer d'acheter sinon payer le loyer
      */
@@ -72,7 +85,7 @@ export class CasePropriete extends CaseJeu {
     }
 
     hypothequer() {
-        if (this.proprietaire === joueur && this.hypotheque) {
+        if (this.proprietaire === joueur && this.isHypotheque) {
             const montantHypotheque = this.prixAchat / 2;
             const remboursement = new VersementEffet(montantHypotheque, banque, joueur);
             remboursement.appliquer(joueur, banque);
@@ -107,7 +120,7 @@ export class CaseRue extends CasePropriete {
         this.couleur = couleur || null;
         this.prixMaison = prixMaison || null;
         this.prixHotel = prixHotel || null;
-        this.hypotheque = hypotheque || null;
+        this.hypotheque = hypotheque || null;//montant
     }
 
     acheter(typeConstruction, banque) {
@@ -151,13 +164,18 @@ export class CaseRue extends CasePropriete {
      * surcharge de la méthode calculerIndexLoyer pour les rues 
      */
     calculerLoyer(jeu) {
-        if (this.hypotheque || !this.proprietaire) return 0; 
+        console.log("propriétaire de la case: ", this.proprietaire.nom , this)
+        if (this.isHypotheque || !this.proprietaire) return 0; 
 
         if (this.nombreHotels > 0) return this.loyers[5];
         if (this.nombreMaisons > 0) return this.loyers[this.nombreMaisons];  // 1 à 4
-        if (jeu.possederTouteLaCollectionCases(this.proprietaire, this.couleur)) return this.loyers.length - 1; //possederTouteLaCollectionCases(joueur, couleur) 
 
-        return this.loyers[this.loyers.length - 1]; 
+        if (jeu.possederTouteLaCollectionCases(this.proprietaire, this.couleur)) {
+            console.log("possede toute la collection de couleur: ", this.couleur)
+            return this.loyers[this.loyers.length - 1]; //possederTouteLaCollectionCases(joueur, couleur) 
+        }
+        console.log("loyer de base: ", this.loyers[0])
+        return this.loyers[0]; //loyer de base
     }
 }
 
@@ -212,6 +230,7 @@ export class CaseSociete extends CasePropriete {
             montant = jeu.de.valeurAffichee * 10;           // 2 societes -> 10 fois le résultat
         }                              
 
+        console.log("montant loyer société" , montant)
         return montant; 
     }
    
@@ -237,9 +256,9 @@ export class CaseAction extends CaseJeu {
     arriver(joueur, jeu) {
         if (this.nom === "Fonds communs 13") { 
             console.log("CAse Fonds communs 13: filtrer propositions valables")
-            this.jeu.listePropositions = this.filtrerPropositionsValablesFondsCommuns(joueur);
-            this.jeu.etat = EtatsJeu.EN_ATTENTE; 
-            return this.jeu.listePropositions|| [];
+            jeu.listePropositions = this.filtrerPropositionsValablesFondsCommuns(joueur);
+            jeu.etat = EtatsJeu.EN_ATTENTE; 
+            return jeu.listePropositions|| [];
         }
 
         const messagesEffets = [];

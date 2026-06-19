@@ -60,7 +60,6 @@ export class CaseJeuFactory {
                         break;
                     case TypesCases.ALLEZ_EN_PRISON:
                         caseAction.ajouterEffet(new PrisonEffet(true));
-                        // caseAction.ajouterEffet(new DeplacementEffet("absolu", 10, null)); //Case N°10
                         break;
                     }
                 return caseAction;
