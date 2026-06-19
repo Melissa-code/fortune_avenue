@@ -34,7 +34,6 @@ class Jeu {
     ajouterJoueur(nom, pion) {
         const joueur = new Joueur(nom, pion); 
         this.joueurs.push(joueur);
-
         return joueur;
     }
 
@@ -49,7 +48,6 @@ class Jeu {
     changerJoueur() {
         this.joueurActuelIndex = (this.joueurActuelIndex + 1) % this.joueurs.length;
     }
-
 
     /**
      * Posséder toutes les cases Rue de la meme couleur 
@@ -102,6 +100,10 @@ class Jeu {
         }
 
         return propositionsValables; 
+    }
+
+    filtrerPropositionsValablesFondsCommuns(joueur) {
+        return Proposition.getListePropositionsFondsCommuns(); 
     }
 
     avancerJoueurCourant(valeurDeplacement) {

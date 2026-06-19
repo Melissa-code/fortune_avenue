@@ -1,6 +1,8 @@
 import { VersementEffet } from "./Effet.js";
 import EtatsJeu from './enums/EtatsJeu.js';
 import { CaseRue } from './CaseJeu.js';
+import { PiocheEffet } from './PiocheEffet.js';
+
 
 // #region Proposition 
 
@@ -27,6 +29,10 @@ export class Proposition {
 
     static getListePropositionsSortiePrison() {
         return Proposition.LISTE_PROPOSITIONS_SORTIE_PRISON;
+    }
+
+    static getListePropositionsFondsCommuns() {
+        return Proposition.LISTE_PROPOSITIONS_FONDSCOMMUNS;
     }
 }
 
@@ -169,9 +175,9 @@ export class PropositionJouerCarteFondsCommunsSortiePrison extends Proposition {
 
 // #endregion 
 
-class PropositionPayerAmende extends Proposition {
+export class PropositionPayerAmende extends Proposition {
     constructor() {
-        super("Payer l'amende", "Voulez-vous payer l'amende de 10 M ?");
+        super("Payer une amende", "voulez-vous payer l'amende de 10 M ?");
     }
 
     estDisponible() {
@@ -185,9 +191,9 @@ class PropositionPayerAmende extends Proposition {
     }
 }
 
-class PropositionTirerCarteChance extends Proposition {
+export class PropositionTirerCarteChance extends Proposition {
     constructor() {
-        super("Tirer une carte chance", "Voulez-vous tirer une carte chance ?");
+        super("Tirer une carte chance", "voulez-vous tirer une carte chance ?");
     }
 
     estDisponible() {
@@ -195,7 +201,7 @@ class PropositionTirerCarteChance extends Proposition {
     }
 
     valider(joueur, jeu, caseJeu, banque, typePioche) {
-        piocheEffet = new PiocheEffet(typePioche);
+        const piocheEffet = new PiocheEffet(typePioche);
         return piocheEffet.appliquer(joueur, jeu, banque);//message
     }
 }
@@ -275,7 +281,7 @@ export class PropositionLeverHypotheque extends Proposition{
 
 export class PropositionConstruireMaison extends Proposition{
     constructor(quantite) {
-        super("contruire une maison", "Voulez-vous construire une maison sur cette propriété ?");
+        super("Contruire une maison", "voulez-vous construire une maison sur cette propriété ?");
     }
 
     estDisponible(joueur, caseRue, jeu) {
@@ -362,7 +368,7 @@ Proposition.LISTE_PROPOSITIONS_SORTIE_PRISON = [
     new PropositionAcheterCartePourSortiePrison(),
 ]
 
-Proposition.LISTE_PROPOSTITIONS_FONDSCOMMUNS = [
+Proposition.LISTE_PROPOSITIONS_FONDSCOMMUNS = [
     new PropositionPayerAmende(),
     new PropositionTirerCarteChance(),
 ]

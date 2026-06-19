@@ -15,10 +15,6 @@ function demarrer(jeu) {
     const joueur2 = jeu.ajouterJoueur("Pierre", ImagesPions.SMARTPHONE);
 
 
-    // joueur1.position = 10;
-    // joueur1.estEnPrison = false;
-    // jeu.etat = EtatsJeu.EN_COURS;
-
     //tester possederTouteLaCollectionCases
     // joueur1.proprietes = [jeu.casesJeu[1], jeu.casesJeu[3]];
     // jeu.casesJeu[1].proprietaire = joueur1;
