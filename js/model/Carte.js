@@ -12,7 +12,7 @@ export class Carte {
 }
 
 /**
- * carte piochée avec effets (chance/fonds communs)
+ * carte piochée (chance/fonds communs) avec effets 
  */
 export class CarteAction extends Carte {
     constructor(titre, description, effets = []) {
@@ -29,9 +29,9 @@ export class CarteAction extends Carte {
         let messages = [];
 
         for (let effet of this.effets) {
-            const messsagesEffet = effet.appliquer(joueur, jeu, banque);
+            const messagesEffet = effet.appliquer(joueur, jeu, banque);
             // Ajoute messages de l'effet à la liste des messages
-            for (let message of messsagesEffet) {
+            for (let message of messagesEffet) {
                 messages.push(message);
             }
         }

@@ -1,4 +1,4 @@
-import { CarteRue } from './Carte.js';
+import { Carte, CarteAction } from './Carte.js';
 import { Effet, DeplacementEffet, VersementEffet, PrisonEffet, PiocheEffet } from './Effet.js'; 
 import { Proposition, PropositionTirerCarteChance, PropositionPayerAmende, PropositionAcheterPropriete, PropositionHypothequer, PropositionLeverHypotheque, PropositionConstruireMaison, PropositionConctruireHotel, PropositionDecliner } from './Proposition.js';
 import TypesMessagesModale from "./enums/TypesMessagesModale.js"; 
@@ -164,17 +164,14 @@ export class CaseRue extends CasePropriete {
      * surcharge de la méthode calculerIndexLoyer pour les rues 
      */
     calculerLoyer(jeu) {
-        console.log("propriétaire de la case: ", this.proprietaire.nom , this)
         if (this.isHypotheque || !this.proprietaire) return 0; 
 
         if (this.nombreHotels > 0) return this.loyers[5];
         if (this.nombreMaisons > 0) return this.loyers[this.nombreMaisons];  // 1 à 4
 
         if (jeu.possederTouteLaCollectionCases(this.proprietaire, this.couleur)) {
-            console.log("possede toute la collection de couleur: ", this.couleur)
             return this.loyers[this.loyers.length - 1]; //possederTouteLaCollectionCases(joueur, couleur) 
         }
-        console.log("loyer de base: ", this.loyers[0])
         return this.loyers[0]; //loyer de base
     }
 }
@@ -199,8 +196,6 @@ export class CaseGare extends CasePropriete {
         const nbGares = joueurProprietes.filter( (propriete) => propriete instanceof CaseGare).length; 
         
         montant = this.loyers[nbGares -1];
-        console.log("montant loyer gare" , montant)
-
         return montant; 
     }
 }

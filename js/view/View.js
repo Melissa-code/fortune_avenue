@@ -421,8 +421,8 @@ class View {
     for (let i = 0; i < statuts.length; i++) {
         this.ctx.fillText(
           statuts[i], 
-          x + this.espacement / 1.5, 
-          y + headerH + this.espacement / 2 + i * this.espacement / 1.5
+          x + this.espacement / 3, 
+          y + headerH + this.espacement / 2 + i * this.espacement / 2
         );
     }
   }
