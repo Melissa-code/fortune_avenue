@@ -9,7 +9,6 @@ import { CasePropriete, CaseAction } from './CaseJeu.js';
 import { Proposition } from './Proposition.js';
 import { CarteEffetsFactory } from './CarteEffetsFactory.js';
 import { CaseJeuFactory } from './CaseJeuFactory.js';
-// import { Carte } from "./Carte.js";
 
 
 class Jeu {

@@ -215,6 +215,10 @@ class View {
     this.imagePrison.src = ImagesUI.PRISON;
     this.imagePrison.onload = () => this.refresh();
 
+    this.imageSortiePrison = new Image();
+    this.imageSortiePrison.src = ImagesUI.SORTIE_PRISON;
+    this.imageSortiePrison.onload = () => this.refresh();
+
     this.imageMaison = new Image();
     this.imageMaison.src = ImagesUI.MAISON;
     this.imageMaison.onload = () => this.refresh();
@@ -234,7 +238,17 @@ class View {
     this.ctx.fillStyle = '#da2c38';
     this.ctx.fillText(`En Prison`, x + 5 + iconSize + 6, prisonY + iconSize * 0.4);
     this.ctx.fillStyle = 'black';
-    return ligneActuelle + 1; //ligneActuelle++
+    return ligneActuelle + 1; 
+  }
+
+  #afficherCleSortiePrison(joueur, x, cardY, headerH, ligneH, iconSize, ligneActuelle) {
+    const cleY = cardY + headerH + ligneH * ligneActuelle + 6;
+    this.ctx.drawImage(this.imageSortiePrison, x + 8, cleY, iconSize / 1.7, iconSize / 1.7);
+    this.ctx.font = `bold 14px Roboto`;
+    this.ctx.fillStyle = '#da2c38';
+    this.ctx.fillText(`Carte "Sortie de Prison"`, x + 5 + iconSize + 6, cleY + iconSize * 0.4);
+    this.ctx.fillStyle = 'black';
+    return ligneActuelle + 1; 
   }
 
   #afficherTagsProprietes(proprietes, x, cardY, largeurCard, headerH, ligneH, ligneActuelle) {
@@ -345,6 +359,11 @@ class View {
     // prison
     if (joueur.estEnPrison) {
       ligneActuelle = this.#afficherPrison(joueur, x, cardY, headerH, ligneH, iconSize, ligneActuelle);
+    }
+
+    // carte sortie prison
+    if (joueur.carteChanceSortiePrison || joueur.carteFondsCommunsSortiePrison) {
+      ligneActuelle = this.#afficherCleSortiePrison(joueur, x, cardY, headerH, ligneH, iconSize, ligneActuelle);
     }
 
     // tags propriétés achetées

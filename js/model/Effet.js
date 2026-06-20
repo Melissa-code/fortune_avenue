@@ -123,11 +123,11 @@ export class PrisonEffet extends Effet {
         if (this.allerEnPrison) {
             joueur.position = 10; 
             joueur.estEnPrison = true; 
-            messages.push(`${joueur.nom} est envoyé en prison.`);
+            messages.push(`${joueur.nom} est envoyé en prison!`);
         } else {
             if (joueur.estEnPrison) {
                 joueur.estEnPrison = false; 
-                messages.push(`${joueur.nom} est libéré de prison.`);
+                messages.push(`${joueur.nom} est libéré de prison!`);
             } else {
                 // visite (ex: case départ -> direct case 10)
                 messages.push(`Prison : ${joueur.nom} est en simple visite.`);
@@ -153,7 +153,7 @@ export class PiocheEffet extends Effet {
         if (this.typePioche === TypesCases.CHANCE) {
             carteTiree = jeu.piocheChance.shift();
             jeu.piocheChance.push(carteTiree); 
-            messages.push(joueur.nom + " a pioché la carte " + carteTiree.titre);
+            messages.push(`Carte ${carteTiree.titre}`);
             messages.push(`"${carteTiree.description}"`);
 
             // sortir de prison avec carte chance n°9
@@ -171,7 +171,7 @@ export class PiocheEffet extends Effet {
         } else if (this.typePioche === TypesCases.FONDS_COMMUNS) {
             carteTiree = jeu.piocheFondsCommun.shift();
             jeu.piocheFondsCommun.push(carteTiree)
-            messages.push(joueur.nom + " a pioché la carte " + carteTiree.titre);
+            messages.push(`Carte ${carteTiree.titre}`);
             messages.push(`"${carteTiree.description}"`);
 
             // sortir de prison avec carte fonds commun n°5
