@@ -7,7 +7,7 @@ class View {
 
   static IMG_PLATEAU_JEU = "./images/gameboard_v2.svg";
 
-  constructor(jeu, controller, document, ) {
+  constructor(jeu, controller, document) {
     this.jeu = jeu;
     this.controller = controller; 
     this.myCanvas = document.querySelector("#game-canvas"); //par defaut 330x150px
@@ -489,7 +489,7 @@ class View {
     return { x: zoneModaleX, y: zoneModaleY, width: largeurModale, height: hauteurModale, headerH };
   }
 
-  // pour proposition
+  // pour propositions
   afficherTexteModale(type, texte) {
     const modale = this.afficherModale(type);
 

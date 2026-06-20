@@ -55,7 +55,7 @@ export class PropositionJouerDeSortiePrison extends Proposition {
             joueur.estEnPrison = false; 
             joueur.compteurPourSortirPrison = 0; 
             jeu.etat = EtatsJeu.EN_COURS;
-            return { titre: "Libre", message: "Vous sortez de prison." };
+            return { titre: "Libre", message: "vous sortez de prison." };
         } else {
             joueur.compteurPourSortirPrison += 1; 
 
@@ -64,10 +64,10 @@ export class PropositionJouerDeSortiePrison extends Proposition {
                 joueur.compteurPourSortirPrison = 0;
                 joueur.payer(50); 
                 banque.recevoir(50);
-                return { titre: "Raté", message: "Vous restez en prison." };
+                return { titre: "Raté", message: "vous restez en prison." };
             }
 
-            return { titre: "Raté", message: "Vous restez en prison." };
+            return { titre: "Raté", message: "vous restez en prison." };
         }
     }
 }
@@ -96,16 +96,16 @@ export class PropositionJouerCarteChanceSortiePrison extends Proposition {
             joueur.carteChanceSortiePrison = false; 
             joueur.estEnPrison = false; 
             joueur.compteurPourSortirPrison = 0; 
-            return { titre: "Libre", message: "Vous sortez de prison." };
+            return { titre: "Libre", message: "vous sortez de prison." };
         } 
 
-        return { titre: "Raté", message: "Vous restez en prison." };
+        return { titre: "Raté", message: "vous restez en prison." };
     }
 }
 
 export class PropositionAcheterCartePourSortiePrison extends Proposition {
     constructor() {
-        super("Acheter la carte", "Voulez-vous acheter la carte  'Sortir de prison' pour sortir de prison ?");
+        super("Acheter la carte", "voulez-vous acheter la carte 'Sortir de prison' pour sortir de prison ?");
     }
 
     estDisponible(joueur, jeu) {
@@ -147,7 +147,7 @@ export class PropositionAcheterCartePourSortiePrison extends Proposition {
 
 export class PropositionJouerCarteFondsCommunsSortiePrison extends Proposition {
     constructor() {
-        super("Jouer la carte fonds commun", "Voulez-vous jouer la carte n° 5 'Sortir de prison' pour sortir de prison ?");
+        super("Jouer la carte fonds commun", "voulez-vous jouer la carte n° 5 'Sortir de prison' pour sortir de prison ?");
     }
 
     estDisponible(joueur) {
@@ -165,10 +165,10 @@ export class PropositionJouerCarteFondsCommunsSortiePrison extends Proposition {
             joueur.carteFondsCommunsSortiePrison = false; 
             joueur.estEnPrison = false; 
             joueur.compteurPourSortirPrison = 0; 
-            return { titre: "Libre", message: "Vous sortez de prison." };
+            return { titre: "Libre", message: "vous sortez de prison." };
         } 
 
-        return { titre: "Raté", message: "Vous restez en prison." };
+        return { titre: "Raté", message: "vous restez en prison." };
     }
 }
 
@@ -209,7 +209,7 @@ export class PropositionTirerCarteChance extends Proposition {
 
 export class PropositionAcheterPropriete extends Proposition {
     constructor() {
-        super("acheter", "Voulez-vous acheter cette propriété ?");
+        super("Acheter", "voulez-vous acheter cette propriété ?");
     }
 
     estDisponible(joueur, casePropriete) {
@@ -244,7 +244,7 @@ export class PropositionAcheterPropriete extends Proposition {
 
 export class PropositionHypothequer extends Proposition {
     constructor() {
-        super("hypothéquer", "Voulez-vous hypothéquer cette propriété ?");
+        super("Hypothéquer", "voulez-vous hypothéquer cette propriété ?");
     }
 
     estDisponible(joueur, casePropriete) {
@@ -262,7 +262,7 @@ export class PropositionHypothequer extends Proposition {
 
 export class PropositionLeverHypotheque extends Proposition{
     constructor() {
-        super("lever l'hypothèque", "Voulez-vous lever l'hypothèque sur cette propriété ?");
+        super("Lever l'hypothèque", "voulez-vous lever l'hypothèque sur cette propriété ?");
     }
 
     estDisponible(joueur, casePropriete) {

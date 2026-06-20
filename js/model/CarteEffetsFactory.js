@@ -15,13 +15,11 @@ export class CarteEffetsFactory {
             const carte = CarteEffetsFactory.generateCarte(effetCarteJson);
             cartes.push(carte);
         }
-
+        
         return cartes;
     }
 
     static generateCarte(jsonObj) {
-        // console.log("JSON :", jsonObj.type, jsonObj.titre);
-
         switch (jsonObj.type) {
             case TypesEffets.DEPLACEMENT:
                 return CarteEffetsFactory.parseCarteDeplacement(jsonObj);

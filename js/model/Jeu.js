@@ -76,17 +76,13 @@ class Jeu {
      * return obj message ou  null
      */
     payerLoyer(joueurCourant, caseJeu) {
-        console.log("payerLoyer: joueurCourant", joueurCourant.nom, "-caseJeu", caseJeu.nom) 
         const montantLoyer = caseJeu.calculerLoyer(this); //0 pour case d'action
-        console.log("payerLoyer: montantLoyer", montantLoyer) 
 
         if (montantLoyer > 0) {
             const proprietaire = caseJeu.proprietaire; 
-            console.log("porpriétaire de la case: ", proprietaire.nom)
             joueurCourant.payer(montantLoyer); 
             proprietaire.recevoir(montantLoyer); 
-            console.log("loyer au " + proprietaire.nom + ": " + joueurCourant.nom + " paye " + montantLoyer + " à " + proprietaire.nom)
-
+        
             return this.createMessage("loyer", {
                 joueur: joueurCourant.nom,  
                 propriete: caseJeu.nom,
@@ -127,7 +123,6 @@ class Jeu {
 
         // check si la case a un propriétaire (-> payer loyer )
         if (caseJeu instanceof CasePropriete && caseJeu.proprietaire !== null && caseJeu.proprietaire !== joueurCourant) {
-            console.log("payer loyer: caseJeu", caseJeu.nom, "au proprietaire ", caseJeu.proprietaire.nom)
             this.listeStatuts = this.payerLoyer(joueurCourant, caseJeu); //loyer: objet message loyer ou null
             return; 
         }
@@ -158,7 +153,7 @@ class Jeu {
      * Refuser l'achat d'une propriété (proposition)
      */
     decliner(joueurCourant, casePropriete) {
-        return this.createMessage("refus", {
+        return this.createMessage("Refus", {
             joueur: joueurCourant.nom,
             propriete: casePropriete.nom
         });

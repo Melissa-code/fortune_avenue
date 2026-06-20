@@ -156,10 +156,16 @@ export class PiocheEffet extends Effet {
             messages.push(joueur.nom + " a pioché la carte " + carteTiree.titre);
             messages.push(`"${carteTiree.description}"`);
 
-            // verifier si la carteTiree.titre === "Chance 9"
+            // sortir de prison avec carte chance n°9
             if (carteTiree.titre === "Chance 9") {
                 joueur.cartechanceSortiePrison = true;
                 messages.push("carte chance n°9: vous pouvez sortir de prison avec cette carte.");
+            } else {
+                // appliquer les effets de la carte
+                const messagesEffets = carteTiree.executer(joueur, jeu, banque);
+                for (let message of messagesEffets) {
+                    messages.push(message);
+                }
             }
 
         } else if (this.typePioche === TypesCases.FONDS_COMMUNS) {
@@ -168,12 +174,19 @@ export class PiocheEffet extends Effet {
             messages.push(joueur.nom + " a pioché la carte " + carteTiree.titre);
             messages.push(`"${carteTiree.description}"`);
 
-            // verifier si la carteTiree.titre 
+            // sortir de prison avec carte fonds commun n°5
             if (carteTiree.titre === "Fonds commun 5") {
                 joueur.cartechanceSortiePrison = true;
                 messages.push("carte fonds commun n°5: vous pouvez sortir de prison avec cette carte.");
+            } else {
+                // appliquer les effets de la carte
+                const messagesEffets = carteTiree.executer(joueur, jeu, banque);
+                for (let message of messagesEffets) {
+                    messages.push(message);
+                }
             }
         }
+        
         return messages;
     }
 }

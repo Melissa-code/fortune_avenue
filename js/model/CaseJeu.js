@@ -223,17 +223,16 @@ export class CaseSociete extends CasePropriete {
         const joueurProprietes = this.proprietaire.proprietes || []; 
         const nbSocietes = joueurProprietes.filter( (propriete) => propriete instanceof CaseSociete).length; 
 
-        if (nbSocietes === 0) { 
-            montant = jeu.de.valeurAffichee * 4; // 1 société -> 4 fois le résultat du dé
+        if (nbSocietes === 1) { 
+            montant = jeu.de.valeurAffichee * 4;  // 1 société -> 4 fois le résultat du dé
         }  
         else { 
-            montant = jeu.de.valeurAffichee * 10;           // 2 societes -> 10 fois le résultat
+            montant = jeu.de.valeurAffichee * 10; // 2 societes -> 10 fois le résultat du dé
         }                              
 
         console.log("montant loyer société" , montant)
         return montant; 
     }
-   
 }
 
 // #endregion
