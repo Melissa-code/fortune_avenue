@@ -41,7 +41,7 @@ class Controller {
         this.view.refresh();
 
         if (this.jeu.listePropositions.length > 0) {
-            this.view.afficherMenuPropositions(this.jeu.listePropositions); 
+            this.view.afficherMenuPropositions(this.jeu.listePropositions, this.jeu.joueurActuelIndex);
         } 
         else if (this.jeu.listeStatuts.length > 0) {
             this.view.afficherZoneEvenements(); 

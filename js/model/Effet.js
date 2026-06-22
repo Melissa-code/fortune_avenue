@@ -123,14 +123,12 @@ export class PrisonEffet extends Effet {
             joueur.position = 10; 
             joueur.estEnPrison = true; 
             messages.push(`${joueur.nom} est envoyé en prison!`);
+        } else if (joueur.estEnPrison) {
+            joueur.estEnPrison = false; 
+            messages.push(`${joueur.nom} est libéré de prison!`);
         } else {
-            if (joueur.estEnPrison) {
-                joueur.estEnPrison = false; 
-                messages.push(`${joueur.nom} est libéré de prison!`);
-            } else {
-                // visite (ex: case départ -> direct case 10)
-                messages.push(`Prison : ${joueur.nom} est en simple visite.`);
-            }
+            // visite (ex: case départ -> direct case 10)
+            messages.push(`Prison : ${joueur.nom} est en simple visite.`);
         }
         return messages;
     }

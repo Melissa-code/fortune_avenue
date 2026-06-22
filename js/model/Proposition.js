@@ -3,8 +3,9 @@ import EtatsJeu from './enums/EtatsJeu.js';
 import { CaseRue } from './CaseJeu.js';
 
 
-// #region Proposition 
-
+/**
+ * classe abstraite pour les propositions faites au joueur 
+ */
 export class Proposition {
     static LISTE_PROPOSITIONS = []; 
     static LISTE_PROPOSITIONS_SORTIE_PRISON = []; 
@@ -35,10 +36,6 @@ export class Proposition {
     }
 }
 
-// #endregion  
-
-// #region PropositionJouerDeSortiePrison
-
 export class PropositionJouerDeSortiePrison extends Proposition {
     constructor() {
         super("Lancer le dé", "Voulez-vous lancer le dé pour sortir de prison ?");
@@ -55,26 +52,23 @@ export class PropositionJouerDeSortiePrison extends Proposition {
             joueur.estEnPrison = false; 
             joueur.compteurPourSortirPrison = 0; 
             jeu.etat = EtatsJeu.EN_COURS;
-            return { titre: "Libre", message: "vous sortez de prison." };
+            return { titre: "Libre", message: "Vous sortez de prison !" };
         } else {
             joueur.compteurPourSortirPrison += 1; 
 
             if (joueur.compteurPourSortirPrison === 3) {
                 joueur.estEnPrison = false; 
-                joueur.compteurPourSortirPrison = 0;
+                joueur.compteurPourSortirPrison = 0; // apres 3 il sort d'office
                 joueur.payer(50); 
                 banque.recevoir(50);
-                return { titre: "Raté", message: "vous restez en prison." };
+                return { titre: "Raté", message: "Vous restez en prison !" };
             }
 
-            return { titre: "Raté", message: "vous restez en prison." };
+            return { titre: "Raté", message: "Vous restez en prison !" };
         }
     }
 }
 
-// #endregion 
-
-// #region PropositionJouerCarteChanceSortiePrison 
 
 export class PropositionJouerCarteChanceSortiePrison extends Proposition {
     constructor() {
@@ -82,7 +76,7 @@ export class PropositionJouerCarteChanceSortiePrison extends Proposition {
     }
 
     estDisponible(joueur) {
-        if (joueur.carteChanceSortiePrison === true ) { 
+        if (joueur.carteChanceSortiePrison === true) { 
             return true; 
         }
 
@@ -92,14 +86,14 @@ export class PropositionJouerCarteChanceSortiePrison extends Proposition {
     valider(joueur, jeu, caseJeu, banque) {
         if (!this.estDisponible(joueur)) return false;
 
-        if (joueur.carteChanceSortiePrison = true) {
+        if (joueur.carteChanceSortiePrison === true) {
             joueur.carteChanceSortiePrison = false; 
             joueur.estEnPrison = false; 
             joueur.compteurPourSortirPrison = 0; 
-            return { titre: "Libre", message: "vous sortez de prison." };
+            return { titre: "Libre", message: "Vous sortez de prison !" };
         } 
 
-        return { titre: "Raté", message: "vous restez en prison." };
+        return { titre: "Raté", message: "Vous restez en prison !" };
     }
 }
 
@@ -141,9 +135,6 @@ export class PropositionAcheterCartePourSortiePrison extends Proposition {
 
 }
 
-// #endregion 
-
-// #region PropositionJouerCarteFondsCommunsSortiePrison
 
 export class PropositionJouerCarteFondsCommunsSortiePrison extends Proposition {
     constructor() {
@@ -161,18 +152,18 @@ export class PropositionJouerCarteFondsCommunsSortiePrison extends Proposition {
     valider(joueur, jeu, caseJeu, banque) {
         if (!this.estDisponible(joueur)) return false;
 
-        if (joueur.carteFondsCommunsSortiePrison = true) {
+        if (joueur.carteFondsCommunsSortiePrison === true) {
             joueur.carteFondsCommunsSortiePrison = false; 
             joueur.estEnPrison = false; 
             joueur.compteurPourSortirPrison = 0; 
-            return { titre: "Libre", message: "vous sortez de prison." };
+            return { titre: "Libre", message: "Vous sortez de prison !" };
         } 
 
-        return { titre: "Raté", message: "vous restez en prison." };
+        return { titre: "Raté", message: "Vous restez en prison !" };
     }
 }
 
-// #endregion 
+
 
 export class PropositionPayerAmende extends Proposition {
     constructor() {
@@ -205,7 +196,7 @@ export class PropositionTirerCarteChance extends Proposition {
     }
 }
 
-// #region PropositionAcheterPropriete
+// ---------------------------- Propriété ----------------------------------
 
 export class PropositionAcheterPropriete extends Proposition {
     constructor() {
@@ -214,6 +205,7 @@ export class PropositionAcheterPropriete extends Proposition {
 
     estDisponible(joueur, casePropriete) {
         if (casePropriete.estLibre() && joueur.argent >= casePropriete.prixAchat) {
+            this.description = `voulez-vous acheter "${casePropriete.nom}" pour ${casePropriete.prixAchat} M ?`;
             return true; 
         }
         return false; 
@@ -238,9 +230,6 @@ export class PropositionAcheterPropriete extends Proposition {
     }
 }
 
-// #endregion
-
-// #region PropositionHypothequer 
 
 export class PropositionHypothequer extends Proposition {
     constructor() {
@@ -256,9 +245,6 @@ export class PropositionHypothequer extends Proposition {
     }
 }
 
-// #endregion
-
-// #region PropositionLeverHypotheque
 
 export class PropositionLeverHypotheque extends Proposition{
     constructor() {
@@ -274,9 +260,6 @@ export class PropositionLeverHypotheque extends Proposition{
     }
 }
 
-// #endregion
-
-// #region PropositionConstruireMaison 
 
 export class PropositionConstruireMaison extends Proposition{
     constructor(quantite) {
@@ -303,9 +286,6 @@ export class PropositionConstruireMaison extends Proposition{
     }
 }
 
-// #endregion 
-
-// #region  PropositionConctruireHotel 
 
 export class PropositionConctruireHotel extends Proposition {
     constructor() {
@@ -330,7 +310,6 @@ export class PropositionConctruireHotel extends Proposition {
     }
 }
 
-// #endregion
 
 export class PropositionDecliner extends Proposition {
     constructor() {
@@ -347,7 +326,7 @@ export class PropositionDecliner extends Proposition {
 }
 
 
-// #region LISTES (ne créer les obkets qu'une seule fois pour optimiser la mémoire et performances)
+//  LISTES (ne créer les obkets qu'une seule fois pour optimiser la mémoire et performances)
 
 // Propositions[] liées aux propriétés 
 Proposition.LISTE_PROPOSITIONS = [
@@ -371,5 +350,3 @@ Proposition.LISTE_PROPOSITIONS_FONDSCOMMUNS = [
     new PropositionPayerAmende(),
     new PropositionTirerCarteChance(),
 ]
-
-// #endregion

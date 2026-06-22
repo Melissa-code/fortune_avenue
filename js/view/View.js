@@ -4,7 +4,6 @@ import EtatsJeu from '../model/enums/EtatsJeu.js';
 import ImagesUI from '../model/enums/imagesUI.js';
 
 class View {
-
   static IMG_PLATEAU_JEU = "./images/gameboard_v2.svg";
 
   constructor(jeu, controller, document) {
@@ -484,11 +483,12 @@ class View {
   }
 
   /**
-   * Afficher la modale  de propositions d'achat/refus d'achat ou construire maison/hotel
+   * Afficher la modale  de propositions d'achat/refus ou construire maison/hotel
+   * ou sortir de prison ou tirer une carte chance/payer amende
    */
   afficherModale(type = "") {
     // overlay
-    this.ctx.fillStyle = 'rgba(0, 0, 0, 0.5)';//ombre autoru 
+    this.ctx.fillStyle = 'rgba(0, 0, 0, 0.5)';//ombre autour 
     this.ctx.fillRect(0, 0, this.myCanvas.width, this.myCanvas.height);
 
     // cadre 
@@ -534,12 +534,13 @@ class View {
 
     const lignes = texte.split("\n"); //pour le saut de ligne
     for (let i = 0; i < lignes.length; i++) {
-      this.ctx.fillText(lignes[i], modale.x + this.espacement/2, modale.y + this.espacement * 2.5 + (i * this.espacement/1.5));
+      this.ctx.fillText(lignes[i], modale.x + this.espacement / 2, modale.y + this.espacement * 2.5 + (i * this.espacement/1.5));
     }
   } 
   
-  afficherMenuPropositions(listePropositions) {
+  afficherMenuPropositions(listePropositions, joueurActuelIndex=null) {
     let texte = "";
+    const joueurCourant = this.jeu.joueurs[joueurActuelIndex]; 
 
     if (listePropositions.length > 0) {
       let i = 0; 
@@ -548,7 +549,7 @@ class View {
         texte += (i + 1) + ". " + listePropositions[i].titre + " : " + listePropositions[i].description + "\n";
       }
     }
-    this.afficherTexteModale("Propositions", texte);
+    this.afficherTexteModale(`Propositions à ${joueurCourant.nom}`, texte);
   }
 
   /**
@@ -565,7 +566,7 @@ class View {
     this.afficherInfosJoueurs();
 
     if (this.jeu.etat === EtatsJeu.EN_ATTENTE) {
-     this.afficherMenuPropositions(this.jeu.listePropositions);
+     this.afficherMenuPropositions(this.jeu.listePropositions, this.jeu.joueurActuelIndex);
     } else {
       this.afficherZoneEvenements(); 
     }
