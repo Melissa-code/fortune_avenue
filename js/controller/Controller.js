@@ -14,7 +14,7 @@ class Controller {
         if (propositionsSortiePrison.length > 0) {
             this.jeu.listePropositions = propositionsSortiePrison; 
             this.jeu.etat = EtatsJeu.EN_ATTENTE; 
-            this.view.afficherMenuPropositions(this.jeu.listePropositions);
+            this.view.afficherMenuPropositions(this.jeu.listePropositions, this.jeu.joueurActuelIndex);
             return; 
         }
     }

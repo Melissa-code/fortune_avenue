@@ -534,12 +534,11 @@ class View {
 
     const lignes = texte.split("\n"); //pour le saut de ligne
     for (let i = 0; i < lignes.length; i++) {
-      if (i === lignes.length - 1) {
-        // dernière ligne (guide) 
+      // pour guider le user sur les touches à appuyer
+      if (lignes[i].includes("Appuyez")) {
         this.ctx.font = "13px Roboto"; 
         this.ctx.fillStyle = '#123024';    
       } else {
-        // normal pour propositions
         this.ctx.font = "normal 16px Roboto";
         this.ctx.fillStyle = '#000000';
       }
@@ -562,7 +561,14 @@ class View {
         texte += (i + 1) + ". " + listePropositions[i].titre + " : " + listePropositions[i].description + "\n";
       }
     }
-    texte += "\nAppuyer sur la touche [1] ou [2] de votre clavier pour choisir.";
+    
+    // n° dynamiques
+    if (listePropositions.length === 1) {
+      texte += "\nAppuyez sur la touche [1] de votre clavier pour choisir.";
+    } else {
+      texte += `\nAppuyez sur une touche de [1] à [${listePropositions.length}] de votre clavier pour choisir.`;
+    }
+
     this.afficherTexteModale(`Propositions à ${joueurCourant.nom}`, texte);
   }
 
