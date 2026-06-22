@@ -1,6 +1,7 @@
 import effetsChanceJson from "../../data/effets_chance.js";
 import effetsFondsCommunsJson from "../../data/effets_fonds_communs.js"; 
-import TypesMessagesModale from "./enums/TypesMessagesModale.js";  
+import TypesMessagesModale from "./enums/TypesMessages.js";  
+import { Effet, DeplacementEffet, VersementEffet, PrisonEffet, PiocheEffet } from './Effet.js'; 
 import EtatsJeu from './enums/EtatsJeu.js';
 import Joueur from './Joueur.js'; 
 import De from './De.js';
@@ -75,22 +76,16 @@ class Jeu {
      * return obj message ou  null
      */
     payerLoyer(joueurCourant, caseJeu) {
-        const montantLoyer = caseJeu.calculerLoyer(this); //0 pour case d'action
+        const messages = []; 
+        const montantLoyer = caseJeu.calculerLoyer(this); // 0 pour case d'action
 
         if (montantLoyer > 0) {
             const proprietaire = caseJeu.proprietaire; 
-            joueurCourant.payer(montantLoyer); 
-            proprietaire.recevoir(montantLoyer); 
-        
-            return this.createMessage("loyer", {
-                joueur: joueurCourant.nom,  
-                propriete: caseJeu.nom,
-                montant: montantLoyer,
-                proprietaire: proprietaire.nom  
-            }); 
-        } 
-
-        return []; 
+            const versement = new VersementEffet(montantLoyer, joueurCourant, proprietaire ); 
+            versement.appliquer(joueurCourant, this.banque); 
+            messages.push(git`${joueurCourant.nom} paie ${montantLoyer} M de loyer à ${proprietaire.nom} pour la propriété "${caseJeu.nom}".`);
+        }
+        return messages;
     }
 
     /**
@@ -116,7 +111,7 @@ class Jeu {
     avancerJoueurCourant(valeurDeplacement) {
         const joueurCourant = this.joueurs[this.joueurActuelIndex]; 
 
-        joueurCourant.avancer("relatif", valeurDeplacement) //chiffre du dé
+        joueurCourant.avancer("relatif", valeurDeplacement); //chiffre du dé
         
         const caseJeu = this.casesJeu[joueurCourant.position];
 

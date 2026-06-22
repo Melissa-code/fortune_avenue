@@ -14,7 +14,7 @@ const TypesMessagesModale = Object.freeze({
     }),
     taxe : (details) => ({
         titre: "Taxe à payer",
-        message:  `${details.joueur} doit payer une taxe d'un montant de ${details.montant} M.`
+        message: `${details.joueur} doit payer une taxe d'un montant de ${details.montant} M.`
     }), 
     carte_chance : (details) => ({
         titre: "Carte Chance",

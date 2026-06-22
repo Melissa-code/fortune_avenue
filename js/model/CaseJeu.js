@@ -1,7 +1,7 @@
 import { Carte, CarteAction } from './Carte.js';
 import { Effet, DeplacementEffet, VersementEffet, PrisonEffet, PiocheEffet } from './Effet.js'; 
 import { Proposition, PropositionTirerCarteChance, PropositionPayerAmende, PropositionAcheterPropriete, PropositionHypothequer, PropositionLeverHypotheque, PropositionConstruireMaison, PropositionConctruireHotel, PropositionDecliner } from './Proposition.js';
-import TypesMessagesModale from "./enums/TypesMessagesModale.js"; 
+import TypesMessagesModale from "./enums/TypesMessages.js"; 
 import EtatsJeu from './enums/EtatsJeu.js';
 
 

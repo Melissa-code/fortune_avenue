@@ -459,7 +459,7 @@ class View {
     let hauteurTotaleCards = 0;
     for (const joueur of joueurs) {
         const nbLignes = 2 + (joueur.estEnPrison ? 1 : 0) + (joueur.proprietes.length > 0 ? 1 : 0);
-        hauteurTotaleCards += ligneH * nbLignes + this.espacement + this.espacement / 2;
+        hauteurTotaleCards += ligneH * nbLignes + this.espacement + this.espacement / 1.5;
     }
     const y = hauteurTotaleCards + this.espacement;
 
