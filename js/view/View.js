@@ -534,7 +534,20 @@ class View {
 
     const lignes = texte.split("\n"); //pour le saut de ligne
     for (let i = 0; i < lignes.length; i++) {
-      this.ctx.fillText(lignes[i], modale.x + this.espacement / 2, modale.y + this.espacement * 2.5 + (i * this.espacement/1.5));
+      if (i === lignes.length - 1) {
+        // dernière ligne (guide) 
+        this.ctx.font = "13px Roboto"; 
+        this.ctx.fillStyle = '#123024';    
+      } else {
+        // normal pour propositions
+        this.ctx.font = "normal 16px Roboto";
+        this.ctx.fillStyle = '#000000';
+      }
+      this.ctx.fillText(
+        lignes[i], 
+        modale.x + this.espacement / 2, 
+        modale.y + this.espacement * 2.5 + (i * this.espacement/1.5)
+      );
     }
   } 
   
@@ -549,6 +562,7 @@ class View {
         texte += (i + 1) + ". " + listePropositions[i].titre + " : " + listePropositions[i].description + "\n";
       }
     }
+    texte += "\nAppuyer sur la touche [1] ou [2] de votre clavier pour choisir.";
     this.afficherTexteModale(`Propositions à ${joueurCourant.nom}`, texte);
   }
 
