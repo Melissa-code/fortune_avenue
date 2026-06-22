@@ -38,7 +38,7 @@ export class Proposition {
 
 export class PropositionJouerDeSortiePrison extends Proposition {
     constructor() {
-        super("Lancer le dé", "Voulez-vous lancer le dé pour sortir de prison ?");
+        super("Lancer le dé", "Voulez-vous tenter de faire un 12 pour sortir de prison ?");
     }
 
     estDisponible() { 
@@ -52,7 +52,7 @@ export class PropositionJouerDeSortiePrison extends Proposition {
             joueur.estEnPrison = false; 
             joueur.compteurPourSortirPrison = 0; 
             jeu.etat = EtatsJeu.EN_COURS;
-            return { titre: "Libre", message: "Vous sortez de prison !" };
+            return { titre: "Libre", message: `${valeurDeplacement} ! Vous sortez de prison !` };
         } else {
             joueur.compteurPourSortirPrison += 1; 
 
@@ -61,10 +61,13 @@ export class PropositionJouerDeSortiePrison extends Proposition {
                 joueur.compteurPourSortirPrison = 0; // apres 3 il sort d'office
                 joueur.payer(50); 
                 banque.recevoir(50);
-                return { titre: "Raté", message: "Vous restez en prison !" };
+                return { 
+                    titre: "Libération forcée", 
+                    message: `${valeurDeplacement} ! 3ème échec : vous payez 50 M et sortez de prison !` 
+                };
             }
 
-            return { titre: "Raté", message: "Vous restez en prison !" };
+            return { titre: "Raté", message: `${valeurDeplacement} ! Vous restez en prison !` };
         }
     }
 }

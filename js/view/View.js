@@ -557,7 +557,7 @@ class View {
     if (listePropositions.length > 0) {
       let i = 0; 
       for (; i < listePropositions.length; i++) {
-        // affiche titre : description)
+        // affiche titre : description
         texte += (i + 1) + ". " + listePropositions[i].titre + " : " + listePropositions[i].description + "\n";
       }
     }
