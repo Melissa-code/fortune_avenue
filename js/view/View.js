@@ -437,6 +437,7 @@ class View {
     this.ctx.fillStyle = '#000000';
     this.ctx.font = '15px Roboto';
     const statuts = this.jeu.listeStatuts;
+    
     for (let i = 0; i < statuts.length; i++) {
         this.ctx.fillText(
           statuts[i], 
@@ -454,22 +455,29 @@ class View {
     const ligneH = this.espacement * 1.2;
     const x = this.dimensionPlateauJeu + this.espacement / 2;
     const largeur = this.myCanvas.width - this.dimensionPlateauJeu - this.espacement;
-    
-    // hauteur dynamique en fonction du nombre de messages à afficher (nbStatuts) + header + marges de sécurité
-    const headerH = this.espacement * 1.5;
-    const nbMessages = this.jeu.listeStatuts.length || 0;
-    const hauteurLigneTexte = this.espacement / 2; 
-    const hauteurMinimale = this.dimensionPlateauJeu * 0.20; 
-    const hauteurCalculee = headerH + this.espacement + (nbMessages * hauteurLigneTexte);
-    const hauteur = Math.max(hauteurMinimale, hauteurCalculee);
 
-    // calcul y dynamique
+    // calcul y juste sous les cartes des joueurs
     let hauteurTotaleCards = 0;
     for (const joueur of joueurs) {
         const nbLignes = 2 + (joueur.estEnPrison ? 1 : 0) + (joueur.proprietes.length > 0 ? 1 : 0);
         hauteurTotaleCards += ligneH * nbLignes + this.espacement + this.espacement / 1.5;
     }
-    const y = hauteurTotaleCards + this.espacement;
+    let y = hauteurTotaleCards + this.espacement;
+
+    // hauteur dynamique
+    const headerH = this.espacement * 1.5;
+    const nbMessages = this.jeu.listeStatuts.length || 0;
+    const hauteurLigneTexte = this.espacement / 2; 
+    const hauteurMinimale = this.dimensionPlateauJeu * 0.20; 
+    
+    // hauteur réelle du texte + le header + une marge de sécurité en bas
+    const hauteurCalculee = headerH + this.espacement + (nbMessages * hauteurLigneTexte);
+    const hauteur = Math.max(hauteurMinimale, hauteurCalculee);
+
+    // si la boîte dépasse le bas du canvas, on la remonte 
+    if (y + hauteur > this.myCanvas.height) {
+        y = this.myCanvas.height - hauteur - (this.espacement / 2);
+    }
 
     this.#afficherCadreEvenements(x, y, largeur, hauteur);
     this.#afficherTextesEvenements(x, y, largeur, hauteur);
