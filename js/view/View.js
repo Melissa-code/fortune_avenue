@@ -454,7 +454,15 @@ class View {
     const ligneH = this.espacement * 1.2;
     const x = this.dimensionPlateauJeu + this.espacement / 2;
     const largeur = this.myCanvas.width - this.dimensionPlateauJeu - this.espacement;
-    const hauteur = this.dimensionPlateauJeu * 0.20;
+    
+    // hauteur dynamique en fonction du nombre de messages à afficher (nbStatuts) + header + marges de sécurité
+    const headerH = this.espacement * 1.5;
+    const nbMessages = this.jeu.listeStatuts.length || 0;
+    const hauteurLigneTexte = this.espacement / 2; 
+    const hauteurMinimale = this.dimensionPlateauJeu * 0.20; 
+    const hauteurCalculee = headerH + this.espacement + (nbMessages * hauteurLigneTexte);
+    const hauteur = Math.max(hauteurMinimale, hauteurCalculee);
+
     // calcul y dynamique
     let hauteurTotaleCards = 0;
     for (const joueur of joueurs) {
@@ -468,7 +476,7 @@ class View {
   }
 
   /**
-   * Afficher la modale (propositions, cartes chance/fonds commun...) 
+   * Afficher la modale  de propositions d'achat/refus d'achat ou construire maison/hotel
    */
   afficherModale(type = "") {
     // overlay

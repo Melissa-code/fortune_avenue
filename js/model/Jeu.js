@@ -83,7 +83,7 @@ class Jeu {
             const proprietaire = caseJeu.proprietaire; 
             const versement = new VersementEffet(montantLoyer, joueurCourant, proprietaire ); 
             versement.appliquer(joueurCourant, this.banque); 
-            messages.push(git`${joueurCourant.nom} paie ${montantLoyer} M de loyer à ${proprietaire.nom} pour la propriété "${caseJeu.nom}".`);
+            messages.push(`${joueurCourant.nom} paie ${montantLoyer} M de loyer à ${proprietaire.nom} pour la propriété "${caseJeu.nom}".`);
         }
         return messages;
     }
@@ -119,6 +119,10 @@ class Jeu {
         if (caseJeu instanceof CasePropriete && caseJeu.proprietaire !== null && caseJeu.proprietaire !== joueurCourant) {
             this.listeStatuts = this.payerLoyer(joueurCourant, caseJeu); //loyer: objet message loyer ou null
             return; 
+        }
+        else if (caseJeu instanceof CasePropriete && caseJeu.proprietaire === joueurCourant) {
+            this.listeStatuts = [`${joueurCourant.nom} est sur sa propriété "${caseJeu.nom}".`];
+            return;
         }
         
         if (caseJeu instanceof CaseAction) {

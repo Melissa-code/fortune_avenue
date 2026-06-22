@@ -85,7 +85,6 @@ export class VersementEffet extends Effet {
             console.log("argent du joueur ap recevoir argent: ", joueur.argent)
 
         } else if (this.source instanceof Joueur && this.destinataire instanceof Banque) {
-            console.log('EFFET VERSEMENT dest est la banque !')
             this.source.payer(this.montant);
             this.destinataire.recevoir(this.montant);
             console.log("proprietes du joueuur :", joueur.proprietes)
