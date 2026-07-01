@@ -13,8 +13,6 @@ export class Effet {
 
 /**
  * type de deplacement: absolu (index case) ou relatif (nb de pas/N° sur dé)
- * valeur de deplacement: index case ou nb de pas
- * bonus de passage
  */
 export class DeplacementEffet extends Effet {
     constructor(typeDeplacement, valeurDeplacement, bonusDePassage = 0) {
@@ -28,22 +26,25 @@ export class DeplacementEffet extends Effet {
         const anciennePosition = jeu.casesJeu[joueur.position].nom;
         let messages = [];
         
-        if (this.typeDeplacement === 'absolu') joueur.avancer('absolu', this.valeurDeplacement); // index de la case
-        else joueur.avancer('relatif', this.valeurDeplacement); //ou nb de pas 
+        if (this.typeDeplacement === 'absolu') {
+            joueur.avancer('absolu', this.valeurDeplacement);
+        } 
+        else {
+            if (this.nombreDePas < 0) {
+                joueur.reculer('relatif', this.nombreDePas, this.bonusDePassage); // ex -3
+            } else {
+                joueur.avancer('relatif', this.nombreDePas, this.bonusDePassage);
+            }
+        }
 
         const nouvellePosition = jeu.casesJeu[joueur.position].nom;
         messages.push(`${joueur.nom} s'est déplacé de la case ${anciennePosition} à la case ${nouvellePosition}`);
-
-        if (this.bonusDePassage) {
-            joueur.recevoir(this.bonusDePassage);
-            messages.push(`${joueur.nom} a reçu un bonus de passage de ${this.bonusDePassage}`);
-        }
         return messages;
     }
 }
 
 /**
- * montant, source(banque/joueur), destinationbanque/joueur)
+ * montant, source(banque/joueur), destination (banque/joueur)
  */
 export class VersementEffet extends Effet {
     constructor(montant, source, destinataire, estCollectif = false) {
@@ -87,7 +88,7 @@ export class VersementEffet extends Effet {
         } else if (this.source instanceof Joueur && this.destinataire instanceof Banque) {
             this.source.payer(this.montant);
             this.destinataire.recevoir(this.montant);
-            console.log("proprietes du joueuur :", joueur.proprietes)
+            // console.log("proprietes du joueuur :", joueur.proprietes)
             messages.push(`${this.destinataire.nom} reçoit ${this.montant} M de ${this.source.nom}.`);
    
         } else if (this.source instanceof Joueur && this.destinataire instanceof Joueur) {
@@ -106,7 +107,7 @@ export class VersementEffet extends Effet {
 }
 
 /**
- * Entree/Sortie: TODO VOIR TESTER
+ * Entree/Sortie: 
  * - déplacement du joueur en prison
  * - joueur.estEnPrison = true/false 
  */
@@ -122,10 +123,10 @@ export class PrisonEffet extends Effet {
         if (this.allerEnPrison) {
             joueur.position = 10; 
             joueur.estEnPrison = true; 
-            messages.push(`${joueur.nom} est envoyé en prison!`);
+            messages.push(`${joueur.nom} est envoyé(e) en prison!`);
         } else if (joueur.estEnPrison) {
             joueur.estEnPrison = false; 
-            messages.push(`${joueur.nom} est libéré de prison!`);
+            messages.push(`${joueur.nom} est libéré(e) de prison!`);
         } else {
             // visite (ex: case départ -> direct case 10)
             messages.push(`Prison : ${joueur.nom} est en simple visite.`);
@@ -182,30 +183,15 @@ export class PiocheEffet extends Effet {
                     messages.push(message);
                 }
             }
+
+            // réparations pour maisons 25 + hotels 100 
+            if (carteTiree === "Carte chance 12") {
+                const totalMaisonsHotels = joueur.calculerTotalMaisonsHotels();
+                const montant = (totalMaisonsHotels[0] * 25) + (totalMaisonsHotels[1] * 100);
+                const versementEffet = new Versement(montant, joueur, banque);
+                messages.push(`${joueur.nom} paie ${montant} M pour les réparations de ses maisons et hôtels.`);
+            }
         }
         return messages;
-    }
-}
-
-/**
- * Paiement réparations maisons/hôtels
- */
-export class ReparationsEffet extends Effet {       
-    constructor(montantParMaison, montantParHotel) {
-        super();
-        this.montantParMaison = montantParMaison;
-        this.montantParHotel = montantParHotel;
-    }
-
-    appliquer(joueur, jeu = null, banque = null) {
-        let totalMaison = 0; 
-        let totalHotel = 0;
-
-        // faire boucle sur toutes les cases
-        // check si c'est une rue et si le proprietaire est le joueur
-
-
-        // calculer le total des maisons et hotels
-        // puis payer le total
     }
 }

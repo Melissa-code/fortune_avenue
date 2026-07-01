@@ -1,6 +1,6 @@
 import TypesEffets from "./enums/TypesEffets.js";
 import { CarteAction } from "./Carte.js";
-import { DeplacementEffet, VersementEffet, PrisonEffet, ReparationsEffet } from "./Effet.js";
+import { DeplacementEffet, VersementEffet, PrisonEffet } from "./Effet.js";
 
 
 export class CarteEffetsFactory {
@@ -65,8 +65,8 @@ export class CarteEffetsFactory {
     static parseCarteReparations(jsonObj) {             
         return new CarteAction(
             jsonObj.titre,
-            jsonObj.description,    
-            [new ReparationsEffet(jsonObj.montant_par_maison, jsonObj.montant_par_hotel, jsonObj.source, jsonObj.destinataire)]
+            jsonObj.description,      
+            [new VersementEffet(jsonObj.montant, jsonObj.source, jsonObj.destinataire, false)],
         );    
     }
 

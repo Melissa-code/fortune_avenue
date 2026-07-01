@@ -240,7 +240,7 @@ class View {
     return ligneActuelle + 1; 
   }
 
-  #afficherCleSortiePrison(joueur, x, cardY, headerH, ligneH, iconSize, ligneActuelle) {
+  #afficherSortiePrison(joueur, x, cardY, headerH, ligneH, iconSize, ligneActuelle) {
     const cleY = cardY + headerH + ligneH * ligneActuelle + 6;
     this.ctx.drawImage(this.imageSortiePrison, x + 8, cleY, iconSize / 1.7, iconSize / 1.7);
     this.ctx.font = `bold 14px Roboto`;
@@ -362,7 +362,8 @@ class View {
 
     // carte sortie prison
     if (joueur.carteChanceSortiePrison || joueur.carteFondsCommunsSortiePrison) {
-      ligneActuelle = this.#afficherCleSortiePrison(joueur, x, cardY, headerH, ligneH, iconSize, ligneActuelle);
+      console.log("joueur.carteChanceSortiePrison: ", joueur.carteChanceSortiePrison)
+      ligneActuelle = this.#afficherSortiePrison(joueur, x, cardY, headerH, ligneH, iconSize, ligneActuelle);
     }
 
     // tags propriétés achetées

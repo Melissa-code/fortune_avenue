@@ -189,5 +189,5 @@ class Jeu {
 
 export default Jeu; 
 
-// chercher comment déclencher 2e effet après effet pioche (ex: carte chance 2: payer 50 M à chaque joueur)
-// ecrire payer un loyer dans evenemnts + hypothequer a corriger 
+// revoir reculer Deplacemnt , argent NAN ? , FC 13 et C5
+// carte libéré de prison + hypothequer a corriger 

@@ -48,6 +48,7 @@ export class CaseJeuFactory {
                         caseAction.ajouterEffet(new PiocheEffet("fonds_communs"));
                         break;
                     case TypesCases.DEPART:
+                        caseAction.ajouterEffet(new VersementEffet(200, "banque", "joueur"));
                         break;
                     case TypesCases.PARC_GRATUIT:
                         break;
