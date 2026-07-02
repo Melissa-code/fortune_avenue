@@ -20,8 +20,8 @@ function demarrer(jeu) {
     controller.view.refresh();
 
     //  TEST 
-    joueur1.position = 7;
-    const caseChance = jeu.casesJeu[7];
+    joueur1.position = 22;
+    const caseChance = jeu.casesJeu[22];
     jeu.listeStatuts = caseChance.arriver(joueur1, jeu);
     controller.view.refresh();
 

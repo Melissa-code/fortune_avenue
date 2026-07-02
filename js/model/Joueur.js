@@ -17,10 +17,12 @@ class Joueur {
     /**
      * traverse case départ: joueur reçoit 200M ou non 
      */
-    gererArriveeSurCase(anciennePosition, reculer) {
+    // gererArriveeSurCase(anciennePosition, reculer) {
+    gererArriveeSurCase(anciennePosition) {
         console.log("ancienne position: ", anciennePosition, "nouvelle position: ", this.position);
         
-        if (!reculer && this.position < anciennePosition) {
+        // if (!reculer && this.position < anciennePosition) {
+        if (this.position < anciennePosition) {
             this.recevoir(200);
             this.aTraverseCaseDepart = true;
         } else {
@@ -38,27 +40,15 @@ class Joueur {
         }
     }
 
-    reculer(typeDeplacement, valeurDeplacement, bonusDePassage = 0) {
-        if (typeDeplacement === 'absolu') {
-            console.log("Reculer à une position absolue " + valeurDeplacement);
-            const nouvellePosition = valeurDeplacement; // index case
-            this.#seDeplacer(nouvellePosition, true, bonusDePassage);
-        } else {
-            console.log(`Le joueur ${this.nom} recule de ${valeurDeplacement} cases.`);
-            const nouvellePosition = (this.position + valeurDeplacement + 40) % 40; //addition d'un nb négatif (ex -3)
-            this.#seDeplacer(nouvellePosition, true, bonusDePassage);
-        }
-    }
-
-    #seDeplacer(nouvellePosition, reculer, bonusDePassage) {
+    #seDeplacer(nouvellePosition, bonusDePassage) {
         const anciennePosition = this.position;
         this.position = nouvellePosition;
-        this.gererArriveeSurCase(anciennePosition, reculer);
+        this.gererArriveeSurCase(anciennePosition);
 
-        if (bonusDePassage !== 0) {
-            console.log(`Le joueur ${this.nom} reçoit un bonus de passage de ${bonusDePassage}.`);
-            this.recevoir(bonusDePassage);
-        }
+        // if (bonusDePassage !== 0) {
+        //     console.log(`Le joueur ${this.nom} reçoit un bonus de passage de ${bonusDePassage}.`);
+        //     this.recevoir(bonusDePassage);
+        // }
     }
 
     recevoir(montant) {
@@ -75,7 +65,8 @@ class Joueur {
     * calculer le nombre total de maisons et d'hôtels possédés par le joueur
     */
     calculerTotalMaisonsHotels() {
-        let totalMaisons = 0, totalHotels = 0;
+        let totalMaisons = 0;
+        let totalHotels = 0;
 
         for (let propriete of this.proprietes) {
             if (propriete instanceof CaseRue) {
@@ -83,6 +74,7 @@ class Joueur {
                 totalHotels += propriete.nombreHotels;
             }
         }
+        console.log("totalMaisonsHotels", [totalMaisons, totalHotels])
         return [totalMaisons, totalHotels];
     }
 }

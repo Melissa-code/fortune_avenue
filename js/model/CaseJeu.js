@@ -261,7 +261,13 @@ export class CaseAction extends CaseJeu {
             console.log('Aucun effet associé à cette case d\'action.'); 
         } 
 
+        console.log('effets case',this);
+
         for (let effet of this.effets) {
+            if (effet instanceof VersementEffet) {
+                if (effet.montant===undefined)
+                    console.trace("effet montant undefined",effet)
+            }
             const messages = effet.appliquer(joueur, jeu, jeu.banque); // return array de messages
             messagesEffets.push(...messages);
         }

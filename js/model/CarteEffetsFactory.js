@@ -5,7 +5,7 @@ import { DeplacementEffet, VersementEffet, PrisonEffet } from "./Effet.js";
 
 export class CarteEffetsFactory {
     /**
-     * parcourt les données de data/effets_chance.js ou dta/effets_fonds_communs.js
+     * parcourt les données de data/effets_chance.js ou data/effets_fonds_communs.js
      * @return {Array} de cartes
      */
     static chargerDataEffetsCartes(effetsCartesJson) {
@@ -27,8 +27,8 @@ export class CarteEffetsFactory {
                 return CarteEffetsFactory.parseCarteVersement(jsonObj);   
             case TypesEffets.ALLER_EN_PRISON:
                 return CarteEffetsFactory.parseCarteAllerEnPrison(jsonObj);
-            case TypesEffets.REPARATIONS:
-                return CarteEffetsFactory.parseCarteReparations(jsonObj);
+            // case TypesEffets.REPARATIONS:
+            //     return CarteEffetsFactory.parseCarteReparations(jsonObj);
             case TypesEffets.SORTIR_DE_PRISON:
                 return CarteEffetsFactory.parseCarteSortirDePrison(jsonObj);
             default:
@@ -63,13 +63,13 @@ export class CarteEffetsFactory {
         );    
     }   
 
-    static parseCarteReparations(jsonObj) {             
-        return new CarteAction(
-            jsonObj.titre,
-            jsonObj.description,      
-            [new VersementEffet(jsonObj.montant, jsonObj.source, jsonObj.destinataire, false)],
-        );    
-    }
+    // static parseCarteReparations(jsonObj) {             
+    //     return new CarteAction(
+    //         jsonObj.titre,
+    //         jsonObj.description,      
+    //         [new VersementEffet(jsonObj.montant, jsonObj.source, jsonObj.destinataire, false)],
+    //     );    
+    // }
 
     static parseCarteSortirDePrison(jsonObj) {             
         return new CarteAction(

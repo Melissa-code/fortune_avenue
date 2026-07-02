@@ -33,9 +33,8 @@ export class DeplacementEffet extends Effet {
         } 
         else {
             console.log("valeur deplacement: ", this.valeurDeplacement)
-            if (this.valeurDeplacement < 0) {
-                joueur.reculer('relatif', this.valeurDeplacement, this.bonusDePassage); // ex -3
-            } else {
+            if (this.valeurDeplacement) {
+                
                 joueur.avancer('relatif', this.valeurDeplacement, this.bonusDePassage);
             }
         }
@@ -48,14 +47,15 @@ export class DeplacementEffet extends Effet {
         if (caseArrivee instanceof CaseAction) {
             const messagesCase = caseArrivee.arriver(joueur, jeu);
             messages.push(...messagesCase);
-        } else {
-            // cases Propriété 
-            const propositions = caseArrivee.arriver(joueur, jeu);
-            if (propositions.length > 0) {
-                jeu.listePropositions = propositions;
-                jeu.etat = EtatsJeu.EN_ATTENTE;
-            }
         }
+        // } else {
+        //     // cases Propriété 
+        //     const propositions = caseArrivee.arriver(joueur, jeu);
+        //     if (propositions.length > 0) {
+        //         jeu.listePropositions = propositions;
+        //         jeu.etat = EtatsJeu.EN_ATTENTE;
+        //     }
+        // }
 
         return messages;
     }
@@ -76,14 +76,18 @@ export class VersementEffet extends Effet {
     appliquer(joueur, jeu = null) {
         let messages = []; 
         let banque = jeu.banque;
+
+        if (this.montant === undefined)
+            console.trace("prob montant:",this);
         
         // 1- joueur paie banque (achat/taxe) - attention string != obj
         if (this.source === "joueur" && this.destinataire === "banque") {
             console.log("joueur: ", joueur.nom, " - banque: ", banque.nom, " - montant: ", this.montant)
             joueur.payer(this.montant);
             banque.recevoir(this.montant);
-            // console.log("Taxe payée:", this.montant, "- Nouveau solde du joueur:", joueur.argent);
-            messages.push(`Taxe ! ${joueur.nom} paye ${this.montant} M à la banque.`);
+            (this.montant > 0 ? messages.push(`${joueur.nom} paye ${this.montant} M à la banque.`) : messages.push(`${joueur.nom} ne paie rien à la banque.`));
+                
+            // messages.push(`Taxe ! ${joueur.nom} paye ${this.montant} M à la banque.`);
         }
 
         else if (this.source === "banque" && this.destinataire === "joueur") {
@@ -106,7 +110,7 @@ export class VersementEffet extends Effet {
         } else if (this.source instanceof Joueur && this.destinataire instanceof Banque) {
             this.source.payer(this.montant);
             this.destinataire.recevoir(this.montant);
-            // console.log("proprietes du joueuur :", joueur.proprietes)
+             console.log("proprietes du joueuur :", joueur.proprietes)
             messages.push(`${this.destinataire.nom} reçoit ${this.montant} M de ${this.source.nom}.`);
    
         } else if (this.source instanceof Joueur && this.destinataire instanceof Joueur) {
@@ -165,7 +169,8 @@ export class PiocheEffet extends Effet {
     appliquer(joueur, jeu = null, banque = null) {
         let carteTiree ; 
         let messages = [];
-
+        let versementEffet;
+        
         // chance 
         if (this.typePioche === TypesCases.CHANCE) {
             carteTiree = jeu.piocheChance.shift();
@@ -186,17 +191,48 @@ export class PiocheEffet extends Effet {
             }
             // réparations pour maisons 25 + hotels 100 
             if (carteTiree.titre === "Chance 12") {
+                console.log("joueur: ", joueur.nom, " - banque: ", banque.nom, " - montant: ", this.montant)
+                console.log("carte chance 12: réparations pour maisons 25 + hotels 100")
                 const totalMaisonsHotels = joueur.calculerTotalMaisonsHotels();
-                const montant = (totalMaisonsHotels[0] * 25) + (totalMaisonsHotels[1] * 100);
-                const versementEffet = new VersementEffet(montant, joueur, banque);
-                messages.push(`${joueur.nom} paie ${montant} M pour les réparations de ses maisons et hôtels.`);
+                console.log("totalMaisonsHotels", totalMaisonsHotels)
+                if (totalMaisonsHotels[0] === 0 && totalMaisonsHotels[1] === 0) {
+                    const montant = 0;
+                    console.log("montant reparations: ", montant)
+                     versementEffet = new VersementEffet(montant, joueur, banque);
+                    messages.push(`${joueur.nom} n'a ni maison ni d'hôtel. Pas de réparations.`);
+                } else {    
+                    const montant = (totalMaisonsHotels[0] * 25) + (totalMaisonsHotels[1] * 100);
+                    console.log("montant reparations: ", montant)
+                     versementEffet = new VersementEffet(montant, joueur, banque);
+                    console.log("versementEffet: ", versementEffet)
+                    messages.push(`${joueur.nom} paie ${montant} M pour les réparations de ses maisons et hôtels.`);
+                }
             }
              // réparations pour maisons 40 + hotels 115
-            if (carteTiree.titre === "Chance 5") {
+            // if (carteTiree.titre === "Chance 5") {
+            //     const totalMaisonsHotels = joueur.calculerTotalMaisonsHotels();
+            //     const montant = (totalMaisonsHotels[0] * 40) + (totalMaisonsHotels[1] * 115);
+            //     const versementEffet = new VersementEffet(montant, joueur, banque);
+            //     messages.push(`${joueur.nom} paie ${montant} M pour les réparations de ses maisons et hôtels.`);
+            // }
+
+             if (carteTiree.titre === "Chance 5") {
+                console.log("carte chance 5: réparations pour maisons  + hotels ")
                 const totalMaisonsHotels = joueur.calculerTotalMaisonsHotels();
-                const montant = (totalMaisonsHotels[0] * 40) + (totalMaisonsHotels[1] * 115);
-                const versementEffet = new VersementEffet(montant, joueur, banque);
-                messages.push(`${joueur.nom} paie ${montant} M pour les réparations de ses maisons et hôtels.`);
+                console.log("totalMaisonsHotels", totalMaisonsHotels)
+                if (totalMaisonsHotels[0] === 0 && totalMaisonsHotels[1] === 0) {
+                    const montant = 0;
+                     versementEffet = new VersementEffet(montant, joueur, banque);
+                     // 
+                    messages.push(`${joueur.nom} n'a ni maison ni d'hôtel. Pas de réparations.`);
+                } else {    
+                    const montant = (totalMaisonsHotels[0] * 40) + (totalMaisonsHotels[1] * 115);
+                    console.log("montant reparations: ", montant)
+                     versementEffet = new VersementEffet(montant, joueur, banque);
+
+                    console.log("versementEffet: ", versementEffet)
+                    messages.push(`${joueur.nom} paie ${montant} M pour les réparations de ses maisons et hôtels.`);
+                }
             }
             
         // Fonds commusn 
@@ -217,6 +253,11 @@ export class PiocheEffet extends Effet {
                     messages.push(message);
                 }
             }
+        }
+
+
+        if (versementEffet && versementEffet.montant === undefined) {
+            console.log("montant undefined pour carte tiree:",carteTiree);
         }
         return messages;
     }
