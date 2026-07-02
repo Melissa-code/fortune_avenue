@@ -71,6 +71,9 @@ class Joueur {
         console.log(`Le joueur paie ${montant}. Nouveau solde : ${this.argent}`);
     }
 
+    /* 
+    * calculer le nombre total de maisons et d'hôtels possédés par le joueur
+    */
     calculerTotalMaisonsHotels() {
         let totalMaisons = 0, totalHotels = 0;
 

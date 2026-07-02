@@ -1,6 +1,8 @@
 import Joueur from "./Joueur.js"; 
 import Banque from "./Banque.js";
 import TypesCases from "./enums/TypesCases.js";
+import { CasePropriete, CaseAction } from './CaseJeu.js';
+import EtatsJeu from './enums/EtatsJeu.js';
 
 /**
  * classe abstraite 
@@ -40,6 +42,21 @@ export class DeplacementEffet extends Effet {
 
         const nouvellePosition = jeu.casesJeu[joueur.position].nom;
         messages.push(`${joueur.nom} s'est déplacé de la case ${anciennePosition} à la case ${nouvellePosition}`);
+
+        // Arrivée sur la nouvelle case action 
+        const caseArrivee = jeu.casesJeu[joueur.position];
+        if (caseArrivee instanceof CaseAction) {
+            const messagesCase = caseArrivee.arriver(joueur, jeu);
+            messages.push(...messagesCase);
+        } else {
+            // cases Propriété 
+            const propositions = caseArrivee.arriver(joueur, jeu);
+            if (propositions.length > 0) {
+                jeu.listePropositions = propositions;
+                jeu.etat = EtatsJeu.EN_ATTENTE;
+            }
+        }
+
         return messages;
     }
 }
@@ -168,22 +185,20 @@ export class PiocheEffet extends Effet {
                 }
             }
             // réparations pour maisons 25 + hotels 100 
-            // if (carteTiree.titre === "Chance 12") {
-            //     const totalMaisonsHotels = joueur.calculerTotalMaisonsHotels();
-            //     const montant = (totalMaisonsHotels[0] * 25) + (totalMaisonsHotels[1] * 100);
-            //     const versementEffet = new Versement(montant, joueur, banque);
-            //     messages.push(`${joueur.nom} paie ${montant} M pour les réparations de ses maisons et hôtels.`);
-            // }
-            // // réparations pour maisons 40 + hotels 115
-            // if (carteTiree.titre === "Chance 5") {
-            //     const totalMaisonsHotels = joueur.calculerTotalMaisonsHotels();
-            //     const montant = (totalMaisonsHotels[0] * 40) + (totalMaisonsHotels[1] * 115);
-            //     const versementEffet = new Versement(montant, joueur, banque);
-            //     messages.push(`${joueur.nom} paie ${montant} M pour les réparations de ses maisons et hôtels.`);
-            // }
+            if (carteTiree.titre === "Chance 12") {
+                const totalMaisonsHotels = joueur.calculerTotalMaisonsHotels();
+                const montant = (totalMaisonsHotels[0] * 25) + (totalMaisonsHotels[1] * 100);
+                const versementEffet = new VersementEffet(montant, joueur, banque);
+                messages.push(`${joueur.nom} paie ${montant} M pour les réparations de ses maisons et hôtels.`);
+            }
+             // réparations pour maisons 40 + hotels 115
+            if (carteTiree.titre === "Chance 5") {
+                const totalMaisonsHotels = joueur.calculerTotalMaisonsHotels();
+                const montant = (totalMaisonsHotels[0] * 40) + (totalMaisonsHotels[1] * 115);
+                const versementEffet = new VersementEffet(montant, joueur, banque);
+                messages.push(`${joueur.nom} paie ${montant} M pour les réparations de ses maisons et hôtels.`);
+            }
             
-           
-
         // Fonds commusn 
         } else if (this.typePioche === TypesCases.FONDS_COMMUNS) {
             carteTiree = jeu.piocheFondsCommun.shift();
