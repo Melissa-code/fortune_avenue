@@ -38,10 +38,11 @@ export class CarteEffetsFactory {
     }
 
     static parseCarteDeplacement(jsonObj) {
+        const valeur_deplacement = jsonObj.type_deplacement === "absolu" ? jsonObj.index_case : jsonObj.nombreDePas;
         return new CarteAction(
             jsonObj.titre,
             jsonObj.description,    
-            [new DeplacementEffet(jsonObj.type_deplacement, jsonObj.index_case, jsonObj.bonusPassage)]
+            [new DeplacementEffet(jsonObj.type_deplacement, valeur_deplacement, jsonObj.bonusPassage)]
         );    
     }
 

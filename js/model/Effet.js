@@ -30,10 +30,11 @@ export class DeplacementEffet extends Effet {
             joueur.avancer('absolu', this.valeurDeplacement);
         } 
         else {
-            if (this.nombreDePas < 0) {
-                joueur.reculer('relatif', this.nombreDePas, this.bonusDePassage); // ex -3
+            console.log("valeur deplacement: ", this.valeurDeplacement)
+            if (this.valeurDeplacement < 0) {
+                joueur.reculer('relatif', this.valeurDeplacement, this.bonusDePassage); // ex -3
             } else {
-                joueur.avancer('relatif', this.nombreDePas, this.bonusDePassage);
+                joueur.avancer('relatif', this.valeurDeplacement, this.bonusDePassage);
             }
         }
 
@@ -148,6 +149,7 @@ export class PiocheEffet extends Effet {
         let carteTiree ; 
         let messages = [];
 
+        // chance 
         if (this.typePioche === TypesCases.CHANCE) {
             carteTiree = jeu.piocheChance.shift();
             jeu.piocheChance.push(carteTiree); 
@@ -165,7 +167,24 @@ export class PiocheEffet extends Effet {
                     messages.push(message);
                 }
             }
+            // réparations pour maisons 25 + hotels 100 
+            // if (carteTiree.titre === "Chance 12") {
+            //     const totalMaisonsHotels = joueur.calculerTotalMaisonsHotels();
+            //     const montant = (totalMaisonsHotels[0] * 25) + (totalMaisonsHotels[1] * 100);
+            //     const versementEffet = new Versement(montant, joueur, banque);
+            //     messages.push(`${joueur.nom} paie ${montant} M pour les réparations de ses maisons et hôtels.`);
+            // }
+            // // réparations pour maisons 40 + hotels 115
+            // if (carteTiree.titre === "Chance 5") {
+            //     const totalMaisonsHotels = joueur.calculerTotalMaisonsHotels();
+            //     const montant = (totalMaisonsHotels[0] * 40) + (totalMaisonsHotels[1] * 115);
+            //     const versementEffet = new Versement(montant, joueur, banque);
+            //     messages.push(`${joueur.nom} paie ${montant} M pour les réparations de ses maisons et hôtels.`);
+            // }
+            
+           
 
+        // Fonds commusn 
         } else if (this.typePioche === TypesCases.FONDS_COMMUNS) {
             carteTiree = jeu.piocheFondsCommun.shift();
             jeu.piocheFondsCommun.push(carteTiree)
@@ -182,14 +201,6 @@ export class PiocheEffet extends Effet {
                 for (let message of messagesEffets) {
                     messages.push(message);
                 }
-            }
-
-            // réparations pour maisons 25 + hotels 100 
-            if (carteTiree === "Carte chance 12") {
-                const totalMaisonsHotels = joueur.calculerTotalMaisonsHotels();
-                const montant = (totalMaisonsHotels[0] * 25) + (totalMaisonsHotels[1] * 100);
-                const versementEffet = new Versement(montant, joueur, banque);
-                messages.push(`${joueur.nom} paie ${montant} M pour les réparations de ses maisons et hôtels.`);
             }
         }
         return messages;
