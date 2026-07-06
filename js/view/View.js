@@ -241,11 +241,11 @@ class View {
   }
 
   #afficherSortiePrison(joueur, x, cardY, headerH, ligneH, iconSize, ligneActuelle) {
-    const cleY = cardY + headerH + ligneH * ligneActuelle + 6;
+    const cleY = cardY + headerH + ligneH * ligneActuelle + 4;
     this.ctx.drawImage(this.imageSortiePrison, x + 8, cleY, iconSize / 1.7, iconSize / 1.7);
     this.ctx.font = `bold 14px Roboto`;
-    this.ctx.fillStyle = '#da2c38';
-    this.ctx.fillText(`Carte "Sortie de Prison"`, x + 5 + iconSize + 6, cleY + iconSize * 0.4);
+    this.ctx.fillStyle = '#2C6E49';
+    this.ctx.fillText(`Carte sortie de prison`, x + 5 + iconSize + 6, cleY + iconSize * 0.4);
     this.ctx.fillStyle = 'black';
     return ligneActuelle + 1; 
   }
@@ -360,7 +360,7 @@ class View {
       ligneActuelle = this.#afficherPrison(joueur, x, cardY, headerH, ligneH, iconSize, ligneActuelle);
     }
 
-    // carte sortie prison
+    // carte sortie prison joueur.cartechanceSortiePrison === true
     if (joueur.carteChanceSortiePrison || joueur.carteFondsCommunsSortiePrison) {
       console.log("joueur.carteChanceSortiePrison: ", joueur.carteChanceSortiePrison)
       ligneActuelle = this.#afficherSortiePrison(joueur, x, cardY, headerH, ligneH, iconSize, ligneActuelle);

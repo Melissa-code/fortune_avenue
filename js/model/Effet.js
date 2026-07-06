@@ -180,7 +180,7 @@ export class PiocheEffet extends Effet {
 
             // sortir de prison avec carte chance n°9
             if (carteTiree.titre === "Chance 9") {
-                joueur.cartechanceSortiePrison = true;
+                joueur.carteChanceSortiePrison = true;
                 messages.push("carte chance n°9: vous pouvez sortir de prison avec cette carte.");
             } else {
                 // appliquer les effets de la carte
@@ -244,7 +244,7 @@ export class PiocheEffet extends Effet {
 
             // sortir de prison avec carte fonds commun n°5
             if (carteTiree.titre === "Fonds commun 5") {
-                joueur.cartechanceSortiePrison = true;
+                joueur.carteFondsCommunsSortiePrison = true;
                 messages.push("carte fonds commun n°5: vous pouvez sortir de prison avec cette carte.");
             } else {
                 // appliquer les effets de la carte
