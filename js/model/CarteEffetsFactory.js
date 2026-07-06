@@ -1,6 +1,6 @@
 import TypesEffets from "./enums/TypesEffets.js";
 import { CarteAction } from "./Carte.js";
-import { DeplacementEffet, VersementEffet, PrisonEffet } from "./Effet.js";
+import { DeplacementEffet, VersementEffet, ReparationsEffet, PrisonEffet } from "./Effet.js";
 
 
 export class CarteEffetsFactory {
@@ -27,8 +27,8 @@ export class CarteEffetsFactory {
                 return CarteEffetsFactory.parseCarteVersement(jsonObj);   
             case TypesEffets.ALLER_EN_PRISON:
                 return CarteEffetsFactory.parseCarteAllerEnPrison(jsonObj);
-            // case TypesEffets.REPARATIONS:
-            //     return CarteEffetsFactory.parseCarteReparations(jsonObj);
+            case TypesEffets.REPARATIONS:
+                return CarteEffetsFactory.parseCarteReparations(jsonObj);
             case TypesEffets.SORTIR_DE_PRISON:
                 return CarteEffetsFactory.parseCarteSortirDePrison(jsonObj);
             default:
@@ -51,7 +51,12 @@ export class CarteEffetsFactory {
         return new CarteAction(
             jsonObj.titre,
             jsonObj.description,    
-            [new VersementEffet(jsonObj.montant, jsonObj.source, jsonObj.destinataire, estCollectif)],
+            [new VersementEffet(
+                jsonObj.montant, 
+                jsonObj.source, 
+                jsonObj.destinataire, 
+                estCollectif)
+            ],
         );    
     }   
 
@@ -63,13 +68,18 @@ export class CarteEffetsFactory {
         );    
     }   
 
-    // static parseCarteReparations(jsonObj) {             
-    //     return new CarteAction(
-    //         jsonObj.titre,
-    //         jsonObj.description,      
-    //         [new VersementEffet(jsonObj.montant, jsonObj.source, jsonObj.destinataire, false)],
-    //     );    
-    // }
+    static parseCarteReparations(jsonObj) {             
+        return new CarteAction(
+            jsonObj.titre,
+            jsonObj.description,      
+            [new ReparationsEffet(
+                jsonObj.montant_par_maison, 
+                jsonObj.montant_par_hotel, 
+                jsonObj.source, 
+                jsonObj.destinataire
+            )],
+        );    
+    }
 
     static parseCarteSortirDePrison(jsonObj) {             
         return new CarteAction(

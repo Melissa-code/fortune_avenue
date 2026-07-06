@@ -128,6 +128,35 @@ export class VersementEffet extends Effet {
     }
 }
 
+export class ReparationsEffet extends Effet {
+    constructor(montant_par_maison, montant_par_hotel, source, destinataire) {
+        super(); 
+        this.montant_par_maison = montant_par_maison;
+        this.montant_par_hotel = montant_par_hotel;
+        this.source = source; 
+        this.destinataire = destinataire; 
+    }
+
+    appliquer(joueur, jeu = null, banque = null) {
+        let messages = [];
+        const totalMaisonsHotels = joueur.calculerTotalMaisonsHotels();
+        const nbMaisons = totalMaisonsHotels[0];
+        const nbHotels = totalMaisonsHotels[1];
+        const montantTotal = (nbMaisons * this.montant_par_maison) + (nbHotels * this.montant_par_hotel);
+
+        if (nbMaisons === 0 && nbHotels === 0) {
+            messages.push(`${joueur.nom} n'a ni maison ni d'hôtel. Pas de réparations.`);
+            return messages;
+        }
+
+        joueur.payer(montantTotal);
+        banque.recevoir(montantTotal);
+        messages.push(`${joueur.nom} paie ${montantTotal} M pour les réparations.`);
+
+        return messages;
+    }
+}
+
 /**
  * Entree/Sortie: 
  * - déplacement du joueur en prison
@@ -153,6 +182,7 @@ export class PrisonEffet extends Effet {
             // visite (ex: case départ -> direct case 10)
             messages.push(`Prison : ${joueur.nom} est en simple visite.`);
         }
+
         return messages;
     }
 }
@@ -167,7 +197,7 @@ export class PiocheEffet extends Effet {
     }
 
     appliquer(joueur, jeu = null, banque = null) {
-        let carteTiree ; 
+        let carteTiree; 
         let messages = [];
         let versementEffet;
         
@@ -187,51 +217,6 @@ export class PiocheEffet extends Effet {
                 const messagesEffets = carteTiree.executer(joueur, jeu, banque);
                 for (let message of messagesEffets) {
                     messages.push(message);
-                }
-            }
-            // réparations pour maisons 25 + hotels 100 
-            if (carteTiree.titre === "Chance 12") {
-                console.log("joueur: ", joueur.nom, " - banque: ", banque.nom, " - montant: ", this.montant)
-                console.log("carte chance 12: réparations pour maisons 25 + hotels 100")
-                const totalMaisonsHotels = joueur.calculerTotalMaisonsHotels();
-                console.log("totalMaisonsHotels", totalMaisonsHotels)
-                if (totalMaisonsHotels[0] === 0 && totalMaisonsHotels[1] === 0) {
-                    const montant = 0;
-                    console.log("montant reparations: ", montant)
-                     versementEffet = new VersementEffet(montant, joueur, banque);
-                    messages.push(`${joueur.nom} n'a ni maison ni d'hôtel. Pas de réparations.`);
-                } else {    
-                    const montant = (totalMaisonsHotels[0] * 25) + (totalMaisonsHotels[1] * 100);
-                    console.log("montant reparations: ", montant)
-                     versementEffet = new VersementEffet(montant, joueur, banque);
-                    console.log("versementEffet: ", versementEffet)
-                    messages.push(`${joueur.nom} paie ${montant} M pour les réparations de ses maisons et hôtels.`);
-                }
-            }
-             // réparations pour maisons 40 + hotels 115
-            // if (carteTiree.titre === "Chance 5") {
-            //     const totalMaisonsHotels = joueur.calculerTotalMaisonsHotels();
-            //     const montant = (totalMaisonsHotels[0] * 40) + (totalMaisonsHotels[1] * 115);
-            //     const versementEffet = new VersementEffet(montant, joueur, banque);
-            //     messages.push(`${joueur.nom} paie ${montant} M pour les réparations de ses maisons et hôtels.`);
-            // }
-
-             if (carteTiree.titre === "Chance 5") {
-                console.log("carte chance 5: réparations pour maisons  + hotels ")
-                const totalMaisonsHotels = joueur.calculerTotalMaisonsHotels();
-                console.log("totalMaisonsHotels", totalMaisonsHotels)
-                if (totalMaisonsHotels[0] === 0 && totalMaisonsHotels[1] === 0) {
-                    const montant = 0;
-                     versementEffet = new VersementEffet(montant, joueur, banque);
-                     // 
-                    messages.push(`${joueur.nom} n'a ni maison ni d'hôtel. Pas de réparations.`);
-                } else {    
-                    const montant = (totalMaisonsHotels[0] * 40) + (totalMaisonsHotels[1] * 115);
-                    console.log("montant reparations: ", montant)
-                     versementEffet = new VersementEffet(montant, joueur, banque);
-
-                    console.log("versementEffet: ", versementEffet)
-                    messages.push(`${joueur.nom} paie ${montant} M pour les réparations de ses maisons et hôtels.`);
                 }
             }
             
@@ -255,10 +240,6 @@ export class PiocheEffet extends Effet {
             }
         }
 
-
-        if (versementEffet && versementEffet.montant === undefined) {
-            console.log("montant undefined pour carte tiree:",carteTiree);
-        }
         return messages;
     }
 }
