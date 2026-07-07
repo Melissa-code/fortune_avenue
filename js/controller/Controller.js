@@ -45,9 +45,30 @@ class Controller {
         } 
         else if (this.jeu.listeStatuts.length > 0) {
             this.view.afficherZoneEvenements(); 
+
+            console.log("caseApresDeplacementCarte:", this.jeu.caseApresDeplacementCarte); // DEBUG
+
+            // modale propositions après carte 
+            if (this.jeu.caseApresDeplacementCarte) {
+                console.log("stockage case arrivée:", this.jeu.casesJeu[this.jeu.joueurs[this.jeu.joueurActuelIndex].position].nom); 
+                setTimeout(() => {
+                    const caseArrivee = this.jeu.caseApresDeplacementCarte;
+                    this.jeu.caseApresDeplacementCarte = null;
+                    
+                    const propositions = caseArrivee.arriver(this.jeu.joueurs[this.jeu.joueurActuelIndex], this.jeu);
+                    if (propositions && propositions.length > 0) {
+                        this.jeu.listePropositions = propositions;
+                        this.jeu.etat = EtatsJeu.EN_ATTENTE;
+                        this.view.refresh();
+                        this.view.afficherMenuPropositions(this.jeu.listePropositions, this.jeu.joueurActuelIndex);
+                    } else {
+                        this.jeu.terminerTour();
+                    }
+                }, 2000); 
+            } else {
             this.jeu.terminerTour();
-        } 
-        else {
+            }
+        } else {
             this.jeu.terminerTour();
         }
     }

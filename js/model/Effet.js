@@ -48,14 +48,18 @@ export class DeplacementEffet extends Effet {
             const messagesCase = caseArrivee.arriver(joueur, jeu);
             messages.push(...messagesCase);
         }
-        // } else {
-        //     // cases Propriété 
-        //     const propositions = caseArrivee.arriver(joueur, jeu);
-        //     if (propositions.length > 0) {
-        //         jeu.listePropositions = propositions;
-        //         jeu.etat = EtatsJeu.EN_ATTENTE;
-        //     }
-        // }
+        // cases Propriété 
+        else {     
+            // stocke case d'arrivée dans jeu pour traiter après affichage de la carte
+            jeu.caseApresDeplacementCarte = jeu.casesJeu[joueur.position];
+            console.log("type case arrivée:", caseArrivee.nom); // DEBUG
+            console.log("case arrivée:",  jeu.caseApresDeplacementCarte.nom); // DEBUG
+            // const propositions = caseArrivee.arriver(joueur, jeu);
+            // if (propositions.length > 0) {
+            //     jeu.listePropositions = propositions;
+            //     jeu.etat = EtatsJeu.EN_ATTENTE;
+            // }
+        }
 
         return messages;
     }

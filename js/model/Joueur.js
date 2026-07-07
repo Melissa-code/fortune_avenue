@@ -44,11 +44,6 @@ class Joueur {
         const anciennePosition = this.position;
         this.position = nouvellePosition;
         this.gererArriveeSurCase(anciennePosition);
-
-        // if (bonusDePassage !== 0) {
-        //     console.log(`Le joueur ${this.nom} reçoit un bonus de passage de ${bonusDePassage}.`);
-        //     this.recevoir(bonusDePassage);
-        // }
     }
 
     recevoir(montant) {
