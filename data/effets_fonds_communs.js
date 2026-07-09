@@ -12,7 +12,7 @@ const effetsFondsCommunsJson = [
     }, 
     {
         "titre": "Fonds communs 2",
-        "description": "Erreur de la banque en votre faveur. Recevez 200 M.",
+        "description": "Erreur de la banque en votre faveur. \n Recevez 200 M.",
         "type": TypesEffets.VERSEMENT,
         "montant": 200,
         "source": "banque",

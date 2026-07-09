@@ -432,11 +432,25 @@ class View {
     this.ctx.fillText('Evénements', x + this.espacement / 3, y + headerH * 0.6);
   }
 
+  #faireRetourChariot(messages) {
+    console.log("faireRetourChariot messages:", messages);
+        let nouveauMessages = [];
+
+        for (let message of messages) {
+           
+            message.split("\n").forEach((m) => nouveauMessages.push(m));
+            
+        }
+        return nouveauMessages;
+    }
+
   #afficherTextesEvenements(x, y, largeur, hauteur) {
     const headerH = this.espacement * 1.5;
     this.ctx.fillStyle = '#000000';
     this.ctx.font = '15px Roboto';
-    const statuts = this.jeu.listeStatuts;
+
+    console.log("listeStatuts:", this.jeu.listeStatuts);
+    const statuts = this.#faireRetourChariot(this.jeu.listeStatuts);
     
     for (let i = 0; i < statuts.length; i++) {
         this.ctx.fillText(

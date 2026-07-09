@@ -78,7 +78,7 @@ class Controller {
                     } else {
                         this.jeu.terminerTour();
                     }
-                }, 2000); 
+                }, 4000); 
             } else {
             this.jeu.terminerTour();
             }

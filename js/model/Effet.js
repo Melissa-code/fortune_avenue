@@ -59,12 +59,6 @@ export class DeplacementEffet extends Effet {
 
             console.log("type case arrivée:", caseArrivee.nom); // DEBUG
             console.log("case arrivée:",  jeu.caseApresDeplacementCarte.nom); // DEBUG
-
-            // const propositions = caseArrivee.arriver(joueur, jeu);
-            // if (propositions.length > 0) {
-            //     jeu.listePropositions = propositions;
-            //     jeu.etat = EtatsJeu.EN_ATTENTE;
-            // }
         }
 
         return messages;
@@ -122,9 +116,10 @@ export class ChoixEffet extends Effet {
     }
 
     appliquer(joueur, jeu = null, banque = null) {
-        console.log('propostions choix', Proposition.getListePropositionsChoix());
+        console.log('propostions choix', Proposition.getListePropositionsFondsCommuns());
         jeu.listePropositions = Proposition.getListePropositionsFondsCommuns();
-        jeu.EtatsJeu = EtatsJeu.EN_ATTENTE;
+        // jeu.EtatsJeu = EtatsJeu.EN_ATTENTE;
+        // jeu.choix = true;
         return []; 
     }
 }
@@ -310,4 +305,5 @@ export class PiocheEffet extends Effet {
 
         return messages;
     }
+
 }
