@@ -3,6 +3,7 @@ import Banque from "./Banque.js";
 import TypesCases from "./enums/TypesCases.js";
 import { CasePropriete, CaseAction } from './CaseJeu.js';
 import EtatsJeu from './enums/EtatsJeu.js';
+import { Proposition } from './Proposition.js';
 
 /**
  * classe abstraite 
@@ -109,6 +110,24 @@ export class GareProcheEffet extends Effet {
     }
 }
 
+/**
+ * Choix: versement amende ou tirer une carte chance 
+ */
+export class ChoixEffet extends Effet {
+    constructor(montant, source, destinataire) {
+        super();
+        this.montant = montant;
+        this.source = source;
+        this.destinataire = destinataire;
+    }
+
+    appliquer(joueur, jeu = null, banque = null) {
+        console.log('propostions choix', Proposition.getListePropositionsChoix());
+        jeu.listePropositions = Proposition.getListePropositionsFondsCommuns();
+        jeu.EtatsJeu = EtatsJeu.EN_ATTENTE;
+        return []; 
+    }
+}
 
 /**
  * montant, source(banque/joueur), destination (banque/joueur)

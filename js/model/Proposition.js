@@ -166,7 +166,7 @@ export class PropositionJouerCarteFondsCommunsSortiePrison extends Proposition {
     }
 }
 
-
+// -------------------- Choix (carte fonds commun) --------------------------
 
 export class PropositionPayerAmende extends Proposition {
     constructor() {

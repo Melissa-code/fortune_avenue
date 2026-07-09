@@ -100,7 +100,7 @@ const effetsFondsCommunsJson = [
     {
         "titre": "Fonds communs 13",
         "description": "Payez une amende de 10 M ou bien tirez une carte « CHANCE ».",
-        "type": TypesEffets.VERSEMENT,
+        "type": TypesEffets.CHOIX,
         "montant": 10,
         "source": "joueur",
         "destinataire": "banque"

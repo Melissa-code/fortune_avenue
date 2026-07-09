@@ -1,6 +1,6 @@
 import TypesEffets from "./enums/TypesEffets.js";
 import { CarteAction } from "./Carte.js";
-import { DeplacementEffet, VersementEffet, GareProcheEffet, ReparationsEffet, PrisonEffet } from "./Effet.js";
+import { DeplacementEffet, VersementEffet, GareProcheEffet, ReparationsEffet, PrisonEffet, ChoixEffet } from "./Effet.js";
 
 
 export class CarteEffetsFactory {
@@ -33,6 +33,8 @@ export class CarteEffetsFactory {
                 return CarteEffetsFactory.parseCarteAllerEnPrison(jsonObj);
             case TypesEffets.SORTIR_DE_PRISON:
                 return CarteEffetsFactory.parseCarteSortirDePrison(jsonObj);
+            case TypesEffets.CHOIX: 
+                return CarteEffetsFactory.parseCarteChoix(jsonObj);
             default:
                 console.error(`Type de carte chance inconnu: ${jsonObj.type}`);
                 return null;
@@ -109,5 +111,13 @@ export class CarteEffetsFactory {
         }
 
         return pioche; 
+    }
+
+    static parseCarteChoix(jsonObj) {
+        return new CarteAction(
+            jsonObj.titre,
+            jsonObj.description,    
+            [new ChoixEffet(jsonObj.montant, jsonObj.source, jsonObj.destinataire)]
+        ); 
     }
 }
