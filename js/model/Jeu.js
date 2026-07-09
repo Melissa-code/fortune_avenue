@@ -22,6 +22,7 @@ class Jeu {
         this.etat = EtatsJeu.EN_COURS; 
         this.listePropositions = []; 
         this.listeStatuts = [];
+        this.caseApresDeplacementCarte = null; //stocke case d'arrivée après le déplacement du joueur 
         this.casesJeu = CaseJeuFactory.chargerDataCasesJeu(); 
 
         this.piocheChance = CarteEffetsFactory.chargerDataEffetsCartes(effetsChanceJson);
@@ -122,12 +123,12 @@ class Jeu {
         }
         else if (caseJeu instanceof CasePropriete && caseJeu.proprietaire === joueurCourant) {
             this.listeStatuts = [`${joueurCourant.nom} est sur sa propriété "${caseJeu.nom}".`];
-            return;
+            // return;
         }
         
         if (caseJeu instanceof CaseAction) {
             this.listeStatuts  = caseJeu.arriver(joueurCourant, this); //obj message ou liste propositions
-            return;
+            // return;
         }
 
         if (caseJeu instanceof CasePropriete) {

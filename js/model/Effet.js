@@ -34,13 +34,15 @@ export class DeplacementEffet extends Effet {
         else {
             console.log("valeur deplacement: ", this.valeurDeplacement)
             if (this.valeurDeplacement) {
-                
                 joueur.avancer('relatif', this.valeurDeplacement, this.bonusDePassage);
             }
         }
 
         const nouvellePosition = jeu.casesJeu[joueur.position].nom;
         messages.push(`${joueur.nom} s'est déplacé de la case ${anciennePosition} à la case ${nouvellePosition}`);
+        if (joueur.aTraverseCaseDepart) {
+            messages.push(`${joueur.nom} passe par la case départ et reçoit 200 M.`);
+        }
 
         // Arrivée sur la nouvelle case action 
         const caseArrivee = jeu.casesJeu[joueur.position];
@@ -49,11 +51,14 @@ export class DeplacementEffet extends Effet {
             messages.push(...messagesCase);
         }
         // cases Propriété 
-        else {     
+        else {   
+            console.log("case propriété: ", caseArrivee.nom);  
             // stocke case d'arrivée dans jeu pour traiter après affichage de la carte
             jeu.caseApresDeplacementCarte = jeu.casesJeu[joueur.position];
+
             console.log("type case arrivée:", caseArrivee.nom); // DEBUG
             console.log("case arrivée:",  jeu.caseApresDeplacementCarte.nom); // DEBUG
+
             // const propositions = caseArrivee.arriver(joueur, jeu);
             // if (propositions.length > 0) {
             //     jeu.listePropositions = propositions;
@@ -64,6 +69,46 @@ export class DeplacementEffet extends Effet {
         return messages;
     }
 }
+
+export class GareProcheEffet extends Effet {
+    constructor() {
+        super(); 
+    }
+
+    appliquer(joueur, jeu = null, banque = null) {
+        let messages = []; 
+        const positionActuelle = joueur.position;
+        const garesPositions = [5, 15, 25, 35]; 
+        let gareLaPlusProche = null;
+
+        // prochaine gare
+        for (const gare of garesPositions) {
+            if (gare > positionActuelle) {
+                gareLaPlusProche = gare;
+                break; //1re gare trouvée
+            }
+        }
+
+        if (gareLaPlusProche === null) {
+            gareLaPlusProche = 5; // si aucune gare après , revenir à la 1re gare
+        }
+
+        const anciennePosition = jeu.casesJeu[joueur.position].nom;
+        joueur.avancer('absolu', gareLaPlusProche);
+        const nouvellePosition = jeu.casesJeu[joueur.position].nom;
+        messages.push(`${joueur.nom} se rend à la gare la plus proche : ${nouvellePosition}`);
+
+        if (joueur.aTraverseCaseDepart) {
+            messages.push(`${joueur.nom} passe par la case départ et reçoit 200 M.`);
+        }
+
+        // propositions (achat?)
+        jeu.caseApresDeplacementCarte = jeu.casesJeu[joueur.position];
+
+        return messages;
+    }
+}
+
 
 /**
  * montant, source(banque/joueur), destination (banque/joueur)

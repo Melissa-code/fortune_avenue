@@ -5,8 +5,6 @@ import TypesMessagesModale from "./enums/TypesMessages.js";
 import EtatsJeu from './enums/EtatsJeu.js';
 
 
-// #region Case (propriete, action) 
-
 export class CaseJeu {
     constructor(nom) {
         this.nom = nom;
@@ -17,11 +15,7 @@ export class CaseJeu {
     }
 }
 
-// #endregion 
-
-
-// #region Case de proprietes (rue, gare, societe)
-
+// Case de proprietes (rue, gare, societe)
 export class CasePropriete extends CaseJeu {
     constructor(nom, prix, loyers) {
         super(nom); 
@@ -59,7 +53,6 @@ export class CasePropriete extends CaseJeu {
     /**
      * Retourne l'index du loyer en fonction du nombre de propriétés du même type
      */
-
     calculerLoyer() {
         // à surcharger
     }
@@ -107,11 +100,8 @@ export class CasePropriete extends CaseJeu {
     }
 }
 
-// #endregion 
 
-
-// #region Case rue
-
+// Case rue
 export class CaseRue extends CasePropriete {
     constructor(nom, prix, loyers, couleur, prixMaison, prixHotel, hypotheque) {
         super(nom, prix, loyers);
@@ -176,11 +166,7 @@ export class CaseRue extends CasePropriete {
     }
 }
 
-// #endregion 
-
-
-// #region Case gare
-
+// Case gare
 export class CaseGare extends CasePropriete {
     constructor(nom, prix, loyers, typeCase, hypotheque) {
         super(nom, prix, loyers);
@@ -200,11 +186,7 @@ export class CaseGare extends CasePropriete {
     }
 }
 
-// #endregion
-
-
-// #region Case Societe
-
+// Case Societe
 export class CaseSociete extends CasePropriete {
     constructor(nom, prix, loyers, hypotheque) {
         super(nom, prix, loyers);
@@ -230,10 +212,7 @@ export class CaseSociete extends CasePropriete {
     }
 }
 
-// #endregion
-
-
-// #region Case d'action 
+// Case d'action 
 
 export class CaseAction extends CaseJeu {
     constructor(nom, type = null, prix = null) {
@@ -280,6 +259,5 @@ export class CaseAction extends CaseJeu {
     }
 }
 
-// #endregion
 
 

@@ -18,11 +18,10 @@ class Joueur {
      * traverse case départ: joueur reçoit 200M ou non 
      */
     // gererArriveeSurCase(anciennePosition, reculer) {
-    gererArriveeSurCase(anciennePosition) {
+    gererArriveeSurCase(anciennePosition, estDerriere = false) {
         console.log("ancienne position: ", anciennePosition, "nouvelle position: ", this.position);
         
-        // if (!reculer && this.position < anciennePosition) {
-        if (this.position < anciennePosition) {
+        if (!estDerriere && this.position < anciennePosition) {
             this.recevoir(200);
             this.aTraverseCaseDepart = true;
         } else {
@@ -34,16 +33,18 @@ class Joueur {
         if (typeDeplacement === 'absolu') {
             const nouvellePosition = valeurDeplacement; // index case 
             this.#seDeplacer(nouvellePosition, false, bonusDePassage);
+        // relatif 
         } else {
-            const nouvellePosition = (this.position + valeurDeplacement) % 40; //repart après 40
-            this.#seDeplacer(nouvellePosition, false, bonusDePassage);
+            const nouvellePosition = (this.position + valeurDeplacement + 40) % 40; //repart après 40
+            const estDerriere = valeurDeplacement < 0;
+            this.#seDeplacer(nouvellePosition, estDerriere, bonusDePassage);
         }
     }
 
-    #seDeplacer(nouvellePosition, bonusDePassage) {
+    #seDeplacer(nouvellePosition, estDerriere, bonusDePassage) {
         const anciennePosition = this.position;
         this.position = nouvellePosition;
-        this.gererArriveeSurCase(anciennePosition);
+        this.gererArriveeSurCase(anciennePosition, estDerriere);
     }
 
     recevoir(montant) {

@@ -1,6 +1,6 @@
 import TypesEffets from "./enums/TypesEffets.js";
 import { CarteAction } from "./Carte.js";
-import { DeplacementEffet, VersementEffet, ReparationsEffet, PrisonEffet } from "./Effet.js";
+import { DeplacementEffet, VersementEffet, GareProcheEffet, ReparationsEffet, PrisonEffet } from "./Effet.js";
 
 
 export class CarteEffetsFactory {
@@ -23,12 +23,14 @@ export class CarteEffetsFactory {
         switch (jsonObj.type) {
             case TypesEffets.DEPLACEMENT:
                 return CarteEffetsFactory.parseCarteDeplacement(jsonObj);
+            case TypesEffets.GARE_PROCHE_EFFET: 
+                return CarteEffetsFactory.parseCarteGareProche(jsonObj);
             case TypesEffets.VERSEMENT:
                 return CarteEffetsFactory.parseCarteVersement(jsonObj);   
-            case TypesEffets.ALLER_EN_PRISON:
-                return CarteEffetsFactory.parseCarteAllerEnPrison(jsonObj);
             case TypesEffets.REPARATIONS:
                 return CarteEffetsFactory.parseCarteReparations(jsonObj);
+            case TypesEffets.ALLER_EN_PRISON:
+                return CarteEffetsFactory.parseCarteAllerEnPrison(jsonObj);
             case TypesEffets.SORTIR_DE_PRISON:
                 return CarteEffetsFactory.parseCarteSortirDePrison(jsonObj);
             default:
@@ -43,6 +45,14 @@ export class CarteEffetsFactory {
             jsonObj.titre,
             jsonObj.description,    
             [new DeplacementEffet(jsonObj.type_deplacement, valeur_deplacement, jsonObj.bonusPassage)]
+        );    
+    }
+
+    static parseCarteGareProche(jsonObj) {
+        return new CarteAction(
+            jsonObj.titre,
+            jsonObj.description,    
+            [new GareProcheEffet(jsonObj.type_deplacement, jsonObj.nombreDePas, jsonObj.bonusPassage)]
         );    
     }
 

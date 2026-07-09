@@ -21,8 +21,8 @@ function demarrer(jeu) {
 
     //  TEST 
     joueur1.position = 22;
-    const caseChance = jeu.casesJeu[22];
-    jeu.listeStatuts = caseChance.arriver(joueur1, jeu);
+    const caseFondsCommun = jeu.casesJeu[2];
+    jeu.listeStatuts = caseFondsCommun.arriver(joueur1, jeu);
     controller.view.refresh();
 
 }

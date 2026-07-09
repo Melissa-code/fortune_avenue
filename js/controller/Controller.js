@@ -20,6 +20,7 @@ class Controller {
     }
 
     lancerDe() {
+        console.log(" LANCER DE"); 
         if (this.jeu.etat !== EtatsJeu.EN_COURS) return; //sécurité: ne pas lancer le dé si en attente de propositions
 
         const joueurCourant = this.jeu.joueurs[this.jeu.joueurActuelIndex];
@@ -36,9 +37,22 @@ class Controller {
         this.jeu.listeStatuts = []; //pour le vider à chaque tour
         this.view.refresh();
 
-        this.jeu.avancerJoueurCourant(valeurDeplacement);   
+        try {
+            this.jeu.avancerJoueurCourant(valeurDeplacement);  
+        } catch (error) {
+            console.error("erreur avancerJoueurCourant:", error);
+        }
 
-        this.view.refresh();
+        try {
+            this.view.refresh();
+        } catch (error) {
+            console.error("erreur view.refresh():", error);
+        }
+
+        //DEBUG
+        console.log("après refresh - listeStatuts:", this.jeu.listeStatuts.length);
+        console.log("listePropositions:", this.jeu.listePropositions.length);
+        console.log("caseApresDeplacementCarte:", this.jeu.caseApresDeplacementCarte);
 
         if (this.jeu.listePropositions.length > 0) {
             this.view.afficherMenuPropositions(this.jeu.listePropositions, this.jeu.joueurActuelIndex);
