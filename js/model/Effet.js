@@ -42,6 +42,7 @@ export class DeplacementEffet extends Effet {
         const nouvellePosition = jeu.casesJeu[joueur.position].nom;
         messages.push(`${joueur.nom} s'est déplacé de la case ${anciennePosition} à la case ${nouvellePosition}`);
         if (joueur.aTraverseCaseDepart) {
+            joueur.recevoir(200);
             messages.push(`${joueur.nom} passe par la case départ et reçoit 200 M.`);
         }
 

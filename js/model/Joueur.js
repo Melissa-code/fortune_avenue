@@ -17,12 +17,10 @@ class Joueur {
     /**
      * traverse case départ: joueur reçoit 200M ou non 
      */
-    // gererArriveeSurCase(anciennePosition, reculer) {
     gererArriveeSurCase(anciennePosition, estDerriere = false) {
         console.log("ancienne position: ", anciennePosition, "nouvelle position: ", this.position);
         
-        if (!estDerriere && this.position < anciennePosition) {
-            this.recevoir(200);
+        if (!estDerriere && this.position < anciennePosition && this.position !== 0) {
             this.aTraverseCaseDepart = true;
         } else {
             this.aTraverseCaseDepart = false;
