@@ -433,31 +433,52 @@ class View {
   }
 
   #faireRetourChariot(messages) {
-    console.log("faireRetourChariot messages:", messages);
-        let nouveauMessages = [];
+    let messagesFormates = [];
 
-        for (let message of messages) {
-           
-            message.split("\n").forEach((m) => nouveauMessages.push(m));
-            
+    for (let message of messages) {
+        let prefixe = '';
+        if (message.startsWith('//')) { 
+          prefixe = '//';
         }
-        return nouveauMessages;
+
+        message.split("\n").forEach((ligne, index) => {
+            // 1re ligne garde préfixe // et les suivantes aussi
+            messagesFormates.push(index === 0 ? ligne : prefixe + ligne);
+        });
     }
+
+    return messagesFormates;
+  }
 
   #afficherTextesEvenements(x, y, largeur, hauteur) {
     const headerH = this.espacement * 1.5;
     this.ctx.fillStyle = '#000000';
-    this.ctx.font = '15px Roboto';
 
-    console.log("listeStatuts:", this.jeu.listeStatuts);
+    // Dans data \n pour retour chariot
     const statuts = this.#faireRetourChariot(this.jeu.listeStatuts);
     
+    // gestion bold italic: **bold** //italic
     for (let i = 0; i < statuts.length; i++) {
-        this.ctx.fillText(
-          statuts[i], 
-          x + this.espacement / 3, 
-          y + headerH + this.espacement / 2 + i * this.espacement / 2
-        );
+      let texte = statuts[i];
+
+      if (texte.startsWith('**')) {
+        this.ctx.font = 'bold 15px Roboto';
+        texte = texte.slice(2); // remove prefix
+      } else if (texte.startsWith('//') || texte.includes('\n')) {
+        this.ctx.font = 'italic 15px Roboto';
+        this.ctx.fillStyle = '#555555';
+        texte = texte.slice(2);
+      } else {
+        this.ctx.font = '15px Roboto';
+        this.ctx.fillStyle = '#000000';
+      }
+
+      this.ctx.fillText(
+        // statuts[i], 
+        texte,
+        x + this.espacement / 3, 
+        y + headerH + this.espacement / 2 + i * this.espacement / 2
+      );
     }
   }
 

@@ -43,6 +43,7 @@ export class CarteEffetsFactory {
 
     static parseCarteDeplacement(jsonObj) {
         const valeur_deplacement = jsonObj.type_deplacement === "absolu" ? jsonObj.index_case : jsonObj.nombreDePas;
+        
         return new CarteAction(
             jsonObj.titre,
             jsonObj.description,    
@@ -60,6 +61,7 @@ export class CarteEffetsFactory {
 
     static parseCarteVersement(jsonObj) {
         const estCollectif = jsonObj.titre === "Fonds communs 9"; 
+        
         return new CarteAction(
             jsonObj.titre,
             jsonObj.description,    
@@ -101,6 +103,15 @@ export class CarteEffetsFactory {
         );    
     }
 
+    // choix entre piocher carte "chance" ou versement d'une amende (ex: Fonds communs 9)
+    static parseCarteChoix(jsonObj) {
+        return new CarteAction(
+            jsonObj.titre,
+            jsonObj.description,    
+            [new ChoixEffet(jsonObj.montant, jsonObj.source, jsonObj.destinataire)]
+        ); 
+    }
+
     static melangerCartes(effetsCartesJson) {
         const pioche = effetsCartesJson; 
 
@@ -111,13 +122,5 @@ export class CarteEffetsFactory {
         }
 
         return pioche; 
-    }
-
-    static parseCarteChoix(jsonObj) {
-        return new CarteAction(
-            jsonObj.titre,
-            jsonObj.description,    
-            [new ChoixEffet(jsonObj.montant, jsonObj.source, jsonObj.destinataire)]
-        ); 
     }
 }

@@ -118,7 +118,6 @@ export class ChoixEffet extends Effet {
     appliquer(joueur, jeu = null, banque = null) {
         console.log('propostions choix', Proposition.getListePropositionsFondsCommuns());
         jeu.listePropositions = Proposition.getListePropositionsFondsCommuns();
-        // jeu.EtatsJeu = EtatsJeu.EN_ATTENTE;
         // jeu.choix = true;
         return []; 
     }
@@ -237,10 +236,10 @@ export class PrisonEffet extends Effet {
         if (this.allerEnPrison) {
             joueur.position = 10; 
             joueur.estEnPrison = true; 
-            messages.push(`${joueur.nom} est envoyé(e) en prison!`);
+            messages.push(`${joueur.nom} est envoyé(e) en prison !`);
         } else if (joueur.estEnPrison) {
             joueur.estEnPrison = false; 
-            messages.push(`${joueur.nom} est libéré(e) de prison!`);
+            messages.push(`${joueur.nom} est libéré(e) de prison !`);
         } else {
             // visite (ex: case départ -> direct case 10)
             messages.push(`Prison : ${joueur.nom} est en simple visite.`);
@@ -252,6 +251,7 @@ export class PrisonEffet extends Effet {
 
 /**
  * Pioche une carte dans la pioche chance ou fonds commun
+ * @return {Array} messages de str
  */
 export class PiocheEffet extends Effet {
     constructor(typePioche) {
@@ -264,17 +264,17 @@ export class PiocheEffet extends Effet {
         let messages = [];
         let versementEffet;
         
-        // chance 
+        // Chance 
         if (this.typePioche === TypesCases.CHANCE) {
-            carteTiree = jeu.piocheChance.shift();
-            jeu.piocheChance.push(carteTiree); 
-            messages.push(`Carte ${carteTiree.titre}`);
-            messages.push(`"${carteTiree.description}"`);
+            carteTiree = jeu.piocheChance.shift(); // tire 1re carte de la pioche
+            jeu.piocheChance.push(carteTiree); // remet la carte au fond 
+            messages.push(`**Carte ${carteTiree.titre}`);
+            messages.push(`//\"${carteTiree.description}"`);
 
             // sortir de prison avec carte chance n°9
             if (carteTiree.titre === "Chance 9") {
                 joueur.carteChanceSortiePrison = true;
-                messages.push("carte chance n°9: vous pouvez sortir de prison avec cette carte.");
+                messages.push("Vous pouvez sortir de prison avec cette carte.");
             } else {
                 // appliquer les effets de la carte
                 const messagesEffets = carteTiree.executer(joueur, jeu, banque);
@@ -287,8 +287,8 @@ export class PiocheEffet extends Effet {
         } else if (this.typePioche === TypesCases.FONDS_COMMUNS) {
             carteTiree = jeu.piocheFondsCommun.shift();
             jeu.piocheFondsCommun.push(carteTiree)
-            messages.push(`Carte ${carteTiree.titre}`);
-            messages.push(`"${carteTiree.description}"`);
+            messages.push(`**Carte ${carteTiree.titre}`);
+            messages.push(`//\"${carteTiree.description}"`);
 
             // sortir de prison avec carte fonds commun n°5
             if (carteTiree.titre === "Fonds commun 5") {
@@ -305,5 +305,4 @@ export class PiocheEffet extends Effet {
 
         return messages;
     }
-
 }
