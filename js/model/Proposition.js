@@ -168,18 +168,19 @@ export class PropositionJouerCarteFondsCommunsSortiePrison extends Proposition {
 // -------------------- Choix (carte fonds commun) --------------------------
 
 export class PropositionPayerAmende extends Proposition {
-    constructor() {
-        super("Payer une amende", "voulez-vous payer l'amende de 10 M ?");
+    constructor(montant = 10) {
+        super("Payer une amende", `voulez-vous payer l'amende de ${montant} M ?`);
+        this.montant = montant;
     }
 
     estDisponible() {
         return true;
     }
 
-    valider(joueur, jeu, caseJeu, banque, prixAmende) {
-        const versement = new VersementEffet(prixAmende, joueur, banque); 
+    valider(joueur, jeu, caseJeu, banque) {
+        const versement = new VersementEffet(this.montant, joueur, banque); 
         versement.appliquer(joueur, banque);
-        return { titre: "Paiement", message: `${joueur.nom} a choisi de payer l'amende de ${prixAmende} M.` };
+        return { titre: "Paiement", message: `${joueur.nom} a choisi de payer l'amende de ${this.montant} M.` };
     }
 }
 

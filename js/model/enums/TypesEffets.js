@@ -1,6 +1,6 @@
 const TypesEffets = Object.freeze({
     DEPLACEMENT: "deplacement",
-    GARE_PROCHE_EFFET: "gare_proche_effet",
+    GARE_PROCHE: "gare_proche_effet",
     VERSEMENT: "versement",
     REPARATIONS: "reparations",
     PIOCHER: "piocher",

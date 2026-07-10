@@ -23,7 +23,7 @@ export class CarteEffetsFactory {
         switch (jsonObj.type) {
             case TypesEffets.DEPLACEMENT:
                 return CarteEffetsFactory.parseCarteDeplacement(jsonObj);
-            case TypesEffets.GARE_PROCHE_EFFET: 
+            case TypesEffets.GARE_PROCHE: 
                 return CarteEffetsFactory.parseCarteGareProche(jsonObj);
             case TypesEffets.VERSEMENT:
                 return CarteEffetsFactory.parseCarteVersement(jsonObj);   

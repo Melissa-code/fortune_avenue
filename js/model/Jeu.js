@@ -124,12 +124,12 @@ class Jeu {
         }
         else if (caseJeu instanceof CasePropriete && caseJeu.proprietaire === joueurCourant) {
             this.listeStatuts = [`${joueurCourant.nom} est sur sa propriété "${caseJeu.nom}".`];
-            return;
+            //return;
         }
         
         if (caseJeu instanceof CaseAction) {
             this.listeStatuts  = caseJeu.arriver(joueurCourant, this); //obj message ou liste propositions
-            return;
+            //return;
         }
 
         if (caseJeu instanceof CasePropriete) {

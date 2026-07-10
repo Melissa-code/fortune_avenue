@@ -108,7 +108,7 @@ const effetsFondsCommunsJson = [
     {
         "titre": "Fonds communs 14",
         "description": "Rendez-vous à la gare la plus proche.\nSi vous passez par la case départ, recevez 200 M.",
-        "type": TypesEffets.GARE_PROCHE_EFFET,
+        "type": TypesEffets.GARE_PROCHE,
         "type_deplacement": "relatif",
         "index_case": null,
         "nombreDePas": 0,

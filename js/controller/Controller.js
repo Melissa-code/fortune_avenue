@@ -40,22 +40,30 @@ class Controller {
         try {
             this.jeu.avancerJoueurCourant(valeurDeplacement);  
         } catch (error) {
-            console.error("erreur avancerJoueurCourant:", error);
+            console.error("ERREUR avancerJoueurCourant:", error.stack);
         }
+
+        console.log("ICI APRES AVANCER");
 
         try {
             this.view.refresh();
         } catch (error) {
-            console.error("erreur view.refresh():", error);
+            console.error("ERREUR refresh:", error.stack);
         }
 
-        //DEBUG
-        console.log("après refresh - listeStatuts:", this.jeu.listeStatuts.length);
-        console.log("listePropositions:", this.jeu.listePropositions.length);
-        console.log("caseApresDeplacementCarte:", this.jeu.caseApresDeplacementCarte);
+        console.log("ICI APRES REFRESH");
 
         if (this.jeu.listePropositions.length > 0) {
-            this.view.afficherMenuPropositions(this.jeu.listePropositions, this.jeu.joueurActuelIndex);
+            if (this.jeu.listeStatuts.length > 0 && this.jeu.listeStatuts[0].startsWith("**Fonds communs")) {
+                console.log("listeStatuts.length:", this.jeu.listeStatuts.length); // DEBUG
+                // carte avec choix -> afficher événements d'abord puis modale
+                this.view.afficherZoneEvenements();
+                setTimeout(() => {
+                    this.view.afficherMenuPropositions(this.jeu.listePropositions, this.jeu.joueurActuelIndex);
+                }, 4000);
+            } else {
+                this.view.afficherMenuPropositions(this.jeu.listePropositions, this.jeu.joueurActuelIndex);
+            }
         } 
         else if (this.jeu.listeStatuts.length > 0) {
             this.view.afficherZoneEvenements(); 
