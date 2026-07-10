@@ -12,7 +12,7 @@ const effetsFondsCommunsJson = [
     }, 
     {
         "titre": "Fonds communs 2",
-        "description": "Erreur de la banque en votre faveur. \n Recevez 200 M.",
+        "description": "Erreur de la banque en votre faveur.\nRecevez 200 M.",
         "type": TypesEffets.VERSEMENT,
         "montant": 200,
         "source": "banque",
@@ -36,12 +36,12 @@ const effetsFondsCommunsJson = [
     }, 
     {
         "titre": "Fonds communs 5",
-        "description": "Vous êtes libéré de prison. Cette carte peut être conservée jusqu’à ce qu’elle soit utilisée ou vendue.",
+        "description": "Vous êtes libéré de prison.\nCette carte peut être conservée jusqu’à ce qu’elle soit utilisée ou vendue.",
         "type": TypesEffets.SORTIR_DE_PRISON
     }, 
     {
         "titre": "Fonds communs 6",
-        "description": "Aller en prison. Rendez-vous directement à la prison. Ne franchissez pas la case départ, ne touchez pas 200 M.",
+        "description": "Aller en prison.\nRendez-vous directement à la prison.\nNe franchissez pas la case départ, ne touchez pas 200 M.",
         "type": TypesEffets.ALLER_EN_PRISON,
         "type_deplacement": "absolu",
         "index_case": 10,
@@ -67,7 +67,7 @@ const effetsFondsCommunsJson = [
     }, 
     {
         "titre": "Fonds communs 9",
-        "description": "C’est votre anniversaire. Chaque joueur doit vous donner 100 M.",
+        "description": "C’est votre anniversaire.\nChaque joueur doit vous donner 100 M.",
         "type": TypesEffets.VERSEMENT,
         "montant": 100,
         "source": "banque",
@@ -99,7 +99,7 @@ const effetsFondsCommunsJson = [
     }, 
     {
         "titre": "Fonds communs 13",
-        "description": "Payez une amende de 10 M ou bien tirez une carte « CHANCE ».",
+        "description": "Payez une amende de 10 M\nou bien tirez une carte « CHANCE ».",
         "type": TypesEffets.CHOIX,
         "montant": 10,
         "source": "joueur",
@@ -107,7 +107,7 @@ const effetsFondsCommunsJson = [
     }, 
     {
         "titre": "Fonds communs 14",
-        "description": "Rendez-vous à la gare la plus proche. Si vous passez par la case départ, recevez 200 M.",
+        "description": "Rendez-vous à la gare la plus proche.\nSi vous passez par la case départ, recevez 200 M.",
         "type": TypesEffets.GARE_PROCHE_EFFET,
         "type_deplacement": "relatif",
         "index_case": null,
@@ -116,7 +116,7 @@ const effetsFondsCommunsJson = [
     }, 
     {
         "titre": "Fonds communs 15",
-        "description": "Vous avez gagné le deuxième Prix de Beauté. Recevez 100 M.",
+        "description": "Vous avez gagné le deuxième Prix de Beauté.\nRecevez 100 M.",
         "type": TypesEffets.VERSEMENT,
         "montant": 100,
         "source": "banque",
