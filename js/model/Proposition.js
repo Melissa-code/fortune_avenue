@@ -330,10 +330,10 @@ export class PropositionDecliner extends Proposition {
     }
 }
 
+// -------------------------------------------------------------------------------------------
+//  LISTES (ne créer les objets qu'une seule fois pour optimiser la mémoire et performances)
 
-//  LISTES (ne créer les obkets qu'une seule fois pour optimiser la mémoire et performances)
-
-// Propositions[] liées aux propriétés 
+// Propositions[] liées aux propriétés (acaht/refus/construire...)
 Proposition.LISTE_PROPOSITIONS = [
     new PropositionAcheterPropriete(),
     new PropositionHypothequer(),
@@ -351,6 +351,7 @@ Proposition.LISTE_PROPOSITIONS_SORTIE_PRISON = [
     new PropositionAcheterCartePourSortiePrison(),
 ]
 
+// Propositions[] liées à l'action fonds communs 13 (payer amende ou tirer carte chance)
 Proposition.LISTE_PROPOSITIONS_FONDSCOMMUNS = [
     new PropositionPayerAmende(),
     new PropositionTirerCarteChance(),

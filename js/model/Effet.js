@@ -260,49 +260,31 @@ export class PiocheEffet extends Effet {
     }
 
     appliquer(joueur, jeu = null, banque = null) {
-        let carteTiree; 
-        let messages = [];
-        let versementEffet;
-        
-        // Chance 
         if (this.typePioche === TypesCases.CHANCE) {
-            carteTiree = jeu.piocheChance.shift(); // tire 1re carte de la pioche
-            jeu.piocheChance.push(carteTiree); // remet la carte au fond 
-            messages.push(`**Carte ${carteTiree.titre}`);
-            messages.push(`//\"${carteTiree.description}"`);
+            return this.#piocher(jeu.piocheChance, "Chance 9", "carteChanceSortiePrison", joueur, jeu, banque);
+        } else {
+            return this.#piocher(jeu.piocheFondsCommun, "Fonds communs 5", "carteFondsCommunsSortiePrison", joueur, jeu, banque);
+        }
+    }
 
-            // sortir de prison avec carte chance n°9
-            if (carteTiree.titre === "Chance 9") {
-                joueur.carteChanceSortiePrison = true;
-                messages.push("Vous pouvez sortir de prison avec cette carte.");
-            } else {
-                // appliquer les effets de la carte
-                const messagesEffets = carteTiree.executer(joueur, jeu, banque);
-                for (let message of messagesEffets) {
-                    messages.push(message);
-                }
-            }
-            
-        // Fonds commusn 
-        } else if (this.typePioche === TypesCases.FONDS_COMMUNS) {
-            carteTiree = jeu.piocheFondsCommun.shift();
-            jeu.piocheFondsCommun.push(carteTiree)
-            messages.push(`**Carte ${carteTiree.titre}`);
-            messages.push(`//\"${carteTiree.description}"`);
+    #piocher(pioche, titreCarteSortiePrison, carteSortiePrisonJoueur, joueur, jeu, banque) {
+        const carteTiree = pioche.shift();
+        pioche.push(carteTiree); // remet la carte au fond
+        const messages = [];
+        messages.push(`**Carte ${carteTiree.titre}`);
+        messages.push(`//\"${carteTiree.description}"`);
 
-            // sortir de prison avec carte fonds commun n°5
-            if (carteTiree.titre === "Fonds commun 5") {
-                joueur.carteFondsCommunsSortiePrison = true;
-                messages.push("carte fonds commun n°5: vous pouvez sortir de prison avec cette carte.");
-            } else {
-                // appliquer les effets de la carte
-                const messagesEffets = carteTiree.executer(joueur, jeu, banque);
-                for (let message of messagesEffets) {
-                    messages.push(message);
-                }
+        // cartes pour sortie de prison
+        if (carteTiree.titre === titreCarteSortiePrison) {
+            joueur[carteSortiePrisonJoueur] = true;
+            messages.push("Vous pouvez sortir de prison avec cette carte.");
+        // appliquer les effets de la carte
+        } else {
+            const messagesEffets = carteTiree.executer(joueur, jeu, banque);
+            for (let message of messagesEffets) {
+                messages.push(message);
             }
         }
-
         return messages;
     }
 }
