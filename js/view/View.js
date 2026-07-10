@@ -474,7 +474,6 @@ class View {
       }
 
       this.ctx.fillText(
-        // statuts[i], 
         texte,
         x + this.espacement / 3, 
         y + headerH + this.espacement / 2 + i * this.espacement / 2

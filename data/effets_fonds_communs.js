@@ -12,7 +12,7 @@ const effetsFondsCommunsJson = [
     }, 
     {
         "titre": "Fonds communs 2",
-        "description": "Erreur de la banque en votre faveur.\nRecevez 200 M.",
+        "description": "Erreur de la banque en votre faveur. Recevez 200 M.",
         "type": TypesEffets.VERSEMENT,
         "montant": 200,
         "source": "banque",
@@ -41,7 +41,7 @@ const effetsFondsCommunsJson = [
     }, 
     {
         "titre": "Fonds communs 6",
-        "description": "Aller en prison.\nRendez-vous directement à la prison.\nNe franchissez pas la case départ, ne touchez pas 200 M.",
+        "description": "Aller en prison. Rendez-vous directement à la prison.\nNe franchissez pas la case départ, ne touchez pas 200 M.",
         "type": TypesEffets.ALLER_EN_PRISON,
         "type_deplacement": "absolu",
         "index_case": 10,

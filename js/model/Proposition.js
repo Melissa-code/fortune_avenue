@@ -1,7 +1,6 @@
-import { VersementEffet } from "./Effet.js";
+import { VersementEffet, PiocheEffet } from "./Effet.js";
 import EtatsJeu from './enums/EtatsJeu.js';
 import { CaseRue } from './CaseJeu.js';
-
 
 /**
  * classe abstraite pour les propositions faites au joueur 
@@ -194,8 +193,10 @@ export class PropositionTirerCarteChance extends Proposition {
     }
 
     valider(joueur, jeu, caseJeu, banque, typePioche) {
-        const piocheEffet = new PiocheEffet(typePioche);
-        return piocheEffet.appliquer(joueur, jeu, banque);//message
+        const piocheEffet = new PiocheEffet("chance");
+        const messages = piocheEffet.appliquer(joueur, jeu, banque);
+        jeu.listeStatuts = messages;
+        return { titre: "Carte Chance", message: "Vous tirez une carte chance..." };//object (!= array)
     }
 }
 

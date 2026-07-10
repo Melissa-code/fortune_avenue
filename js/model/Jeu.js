@@ -23,6 +23,7 @@ class Jeu {
         this.listePropositions = []; 
         this.listeStatuts = [];
         this.caseApresDeplacementCarte = null; //stocke case d'arrivée après le déplacement du joueur 
+        this.choixChanceOuVersement = false; // pour choix dans modale: carte chance/fonds commun
         this.casesJeu = CaseJeuFactory.chargerDataCasesJeu(); 
 
         this.piocheChance = CarteEffetsFactory.chargerDataEffetsCartes(effetsChanceJson);
@@ -123,12 +124,12 @@ class Jeu {
         }
         else if (caseJeu instanceof CasePropriete && caseJeu.proprietaire === joueurCourant) {
             this.listeStatuts = [`${joueurCourant.nom} est sur sa propriété "${caseJeu.nom}".`];
-            // return;
+            return;
         }
         
         if (caseJeu instanceof CaseAction) {
             this.listeStatuts  = caseJeu.arriver(joueurCourant, this); //obj message ou liste propositions
-            // return;
+            return;
         }
 
         if (caseJeu instanceof CasePropriete) {
@@ -190,5 +191,3 @@ class Jeu {
 
 export default Jeu; 
 
-// revoir reculer Deplacemnt , argent NAN ? , FC 13 et C5
-// carte libéré de prison + hypothequer a corriger 

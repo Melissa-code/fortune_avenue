@@ -118,8 +118,8 @@ export class ChoixEffet extends Effet {
     appliquer(joueur, jeu = null, banque = null) {
         console.log('propostions choix', Proposition.getListePropositionsFondsCommuns());
         jeu.listePropositions = Proposition.getListePropositionsFondsCommuns();
-        // jeu.choix = true;
-        return []; 
+        jeu.etat = EtatsJeu.EN_ATTENTE;
+        return ['**Fonds communs 13']; 
     }
 }
 

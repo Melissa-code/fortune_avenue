@@ -89,7 +89,7 @@ class Controller {
 
     /**
      * numProposition (n° proposition choisie par le user)
-     * recupérer message , ex: "Achat", "Le joueur ... a acheté la case ..." qui disparait ap 3sec 
+     * recupérer message , ex: "Achat", "Le joueur ... a acheté la case ..." qui disparait ap 2sec 
      */
     soumettreProposition(numProposition) {
         if (this.jeu.etat === EtatsJeu.EN_ATTENTE && !isNaN(numProposition)) {
@@ -100,6 +100,11 @@ class Controller {
                 this.view.afficherTexteModale(resultat.titre, resultat.message);
                 setTimeout(() => {
                     this.view.refresh();
+
+                    // si listeStatuts après proposition, afficher zoneEvenements
+                    if (this.jeu.listeStatuts.length > 0) {
+                        this.view.afficherZoneEvenements();
+                    }
                     this.jeu.terminerTour();
                     this.view.refresh();
                 }, 2000);
@@ -107,7 +112,5 @@ class Controller {
         } 
     }
 }
-
-// afficher les propriétés sur zone joueurs
 
 export default Controller;
