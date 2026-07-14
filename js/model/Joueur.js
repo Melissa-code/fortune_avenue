@@ -1,4 +1,5 @@
-import { Effet, DeplacementEffet, VersementEffet, PrisonEffet } from './Effet.js'; 
+import { CaseRue } from './CaseJeu.js';
+import { log } from '../../logger.js';
 
 class Joueur {
     constructor(nom, pion, argent = 1500) {
@@ -8,53 +9,61 @@ class Joueur {
         this.argent = argent;
         this.proprietes = [];
         this.estEnPrison = false; 
-        this.carteChanceSortiePrison = false; //carte chance n°9 et carte fonds communn°5 (2 dans le jeu)
+        this.carteChanceSortiePrison = false; // carte chance n°9/fonds communn°5 (2 dans le jeu)
         this.carteFondsCommunsSortiePrison = false;
-        this.compteurPourSortirPrison = 0; // ap 3 tours
+        this.compteurPourSortirPrison = 0; // après 3 tours
         this.aTraverseCaseDepart = false; 
     }
 
     /**
-     * traverse case départ: joueur reçoit 200M ou non 
+     * traverse la case départ: joueur reçoit 200M ou non 
+     * ne gère pas arrivée sur case départ (carte chance/fonds communs)
      */
     gererArriveeSurCase(anciennePosition, estDerriere = false) {
-        if (!estDerriere && this.position < anciennePosition && this.position !== 0) {
+        if (!estDerriere && 
+            this.position < anciennePosition && 
+            this.position !== 0
+        ) {
             this.aTraverseCaseDepart = true;
         } else {
             this.aTraverseCaseDepart = false;
         }
     }
 
-    avancer(typeDeplacement, valeurDeplacement, bonusDePassage = 0) {
+    avancer(typeDeplacement, valeurDeplacement) {
+        const anciennePosition = this.position;
+
         if (typeDeplacement === 'absolu') {
             const nouvellePosition = valeurDeplacement; // index case 
-            this.#seDeplacer(nouvellePosition, false, bonusDePassage);
+            this.position = nouvellePosition;
+            this.gererArriveeSurCase(anciennePosition, false);
         // relatif 
         } else {
-            const nouvellePosition = (this.position + valeurDeplacement + 40) % 40; //repart après 40
+            const nouvellePosition = (this.position + valeurDeplacement + 40) % 40; // repart après 40 => 0
             const estDerriere = valeurDeplacement < 0;
-            this.#seDeplacer(nouvellePosition, estDerriere, bonusDePassage);
+            this.position = nouvellePosition;
+            this.gererArriveeSurCase(anciennePosition, estDerriere);
         }
     }
 
-    #seDeplacer(nouvellePosition, estDerriere, bonusDePassage) {
-        const anciennePosition = this.position;
-        this.position = nouvellePosition;
-        this.gererArriveeSurCase(anciennePosition, estDerriere);
-    }
-
     recevoir(montant) {
+        if (typeof montant !== 'number' || montant < 0) {
+            log(`Recevoir: montant ${montant} M est invalide : il doit être un nombre positif.`);
+            return;
+        }
         this.argent += montant; 
-        console.log(`Le joueur reçoit ${montant}. Nouveau solde : ${this.argent}`);
     }
 
     payer(montant) {
+        if (typeof montant !== 'number' || montant < 0) {
+            log(`Payer: montant ${montant} M est invalide : il doit être un nombre positif.`);
+            return;
+        }
         this.argent -= montant;
-        console.log(`Le joueur paie ${montant}. Nouveau solde : ${this.argent}`);
     }
 
     /* 
-    * calculer le nombre total de maisons et d'hôtels possédés par le joueur
+    * calcule et retourne nb total de maisons et hôtels possédés par le joueur
     */
     calculerTotalMaisonsHotels() {
         let totalMaisons = 0;
