@@ -6,7 +6,7 @@ export class Carte {
         this.titre = titre; 
     }
 
-    executer(joueur, jeu, banque = null) {
+    executer(joueur, jeu, _banque = null) {
         return []; 
     }
 }
@@ -30,7 +30,7 @@ export class CarteAction extends Carte {
 
         for (let effet of this.effets) {
             const messagesEffet = effet.appliquer(joueur, jeu, banque);
-            // Ajoute messages de l'effet à la liste des messages
+            // ajoute messages de l'effet à la liste des messages
             for (let message of messagesEffet) {
                 messages.push(message);
             }
