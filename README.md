@@ -41,32 +41,67 @@ Ce projet vise à explorer :
 
 Ouvrir le fichier `index.html` dans le navigateur pour commencer à jouer
 
+## 4. Tests 
 
-## 4. Technologies utilisées
+Les tests unitaires sont écrits avec [Jest](https://jestjs.io/).
+
+### Lancer les tests 
+
+```bash
+npm test
+```
+
+### Structure des tests
+
+```
+tests/
+├── Carte.test.js
+├── Effet.test.js
+└── ...
+```
+
+## ESLinter 
+
+### Lancer ESLint
+
+```bash
+npx eslint js/model/Carte.js
+```
+
+
+## 5. Technologies utilisées
 
 - **[HTML](https://developer.mozilla.org/fr/docs/Web/HTML)**: structure du jeu
 - **[CSS](https://developer.mozilla.org/fr/docs/Web/CSS)**: design et mise en page
 - **[JavaScript](https://developer.mozilla.org/fr/docs/Web/JavaScript)**: logique du jeu 
 - **[Canvas API](https://developer.mozilla.org/en-US/docs/Web/API/Canvas_API)**: rendu du jeu
+- **[Jest](https://archive.jestjs.io/docs/en/22.x/getting-started.html)**: tests unitaires
+- **[ESLint](https://eslint.org/docs/latest/)**: analyse statique du code
 
 ### Outils
 
 - **[Git](https://git-scm.com/docs/git)**: versioning du jeu
-- **[Figma](https://help.figma.com/hc/fr)**: design du jeu (création du plateau, des cartes...) 
+- **[Figma](https://help.figma.com/hc/fr)**: design du plateau et des cartes
 
+### IDE 
+- **[VSCODE](https://code.visualstudio.com/)**
+ - Ajouter dans `settings.json` (`Ctrl`+`Shift`+`P` → "Open User Settings JSON") :
+```json
+    "editor.rulers": [80]
+```
 
-## 5. Contributions 
+## 6. Contributions 
 
 Les contributions, suggestions et issues sont les bienvenues.
 N’hésitez pas à ouvrir une issue pour proposer une idée ou signaler un bug.
 
 
-## 6. Author 
+## 7. Author 
 
 Melissa-code 
 
 
-## 7. Licence 
+## 8. Licence 
 
 Sous licence MIT 
 © 2026 Fortune Avenue Project
