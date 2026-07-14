@@ -11,6 +11,8 @@ export class Carte {
     }
 }
 
+//----------------------- Carte Action ---------------------
+
 /**
  * carte piochée (chance/fonds communs) avec effets 
  */

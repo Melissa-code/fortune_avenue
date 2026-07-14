@@ -50,7 +50,7 @@ const effetsFondsCommunsJson = [
     }, 
     {
         "titre": "Fonds communs 7",
-        "description": "Retournez à Belleville.",
+        "description": "Avancez jusqu'à Belleville.",
         "type": TypesEffets.DEPLACEMENT,
         "type_deplacement": "absolu",
         "index_case": 1,

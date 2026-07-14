@@ -1,5 +1,4 @@
 import ImagesResultatsDe from "../model/enums/ImagesResultatsDe.js";
-import ImagesPions from '../model/enums/ImagesPions.js';
 import EtatsJeu from '../model/enums/EtatsJeu.js';
 import ImagesUI from '../model/enums/imagesUI.js';
 

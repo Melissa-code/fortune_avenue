@@ -1,7 +1,7 @@
 import Joueur from "./Joueur.js"; 
 import Banque from "./Banque.js";
 import TypesCases from "./enums/TypesCases.js";
-import { CasePropriete, CaseAction } from './CaseJeu.js';
+import { CaseAction } from './CaseJeu.js';
 import EtatsJeu from './enums/EtatsJeu.js';
 import { Proposition } from './Proposition.js';
 
@@ -9,14 +9,18 @@ import { Proposition } from './Proposition.js';
  * classe abstraite 
  */
 export class Effet {
-    appliquer(joueur = null, jeu = null, banque = null) {
+
+    appliquer(_joueur = null, _jeu = null, _banque = null) {
         // surcharger la methd 
     }
 }
 
+//----------------------- Deplacement effet -----------------------------------
+
 /**
  * type de deplacement: absolu (index case) ou relatif (nb de pas/N° sur dé)
  */
+
 export class DeplacementEffet extends Effet {
     constructor(typeDeplacement, valeurDeplacement, bonusDePassage = 0) {
         super(); 
@@ -24,48 +28,56 @@ export class DeplacementEffet extends Effet {
         this.valeurDeplacement = valeurDeplacement; 
         this.bonusDePassage = bonusDePassage;
     }
-
-    appliquer(joueur, jeu = null, banque = null) {
+    
+    appliquer(joueur, jeu = null, _banque = null) {
         const anciennePosition = jeu.casesJeu[joueur.position].nom;
         let messages = [];
         
-        if (this.typeDeplacement === 'absolu') {
-            joueur.avancer('absolu', this.valeurDeplacement);
-        } else {
-            if (this.valeurDeplacement) {
-                joueur.avancer('relatif', this.valeurDeplacement, this.bonusDePassage);
-            }
-        }
-
+        this.#deplacerJoueur(joueur);
+        
         const nouvellePosition = jeu.casesJeu[joueur.position].nom;
-        messages.push(`${joueur.nom} s'est déplacé(e) de la case ${anciennePosition} à la case ${nouvellePosition}.`);
-        if (joueur.aTraverseCaseDepart) {
-            joueur.recevoir(200);
-            messages.push(`${joueur.nom} passe par la case départ et reçoit 200 M.`);
-        }
-
-        // Arrivée sur la nouvelle case action 
-        const caseArrivee = jeu.casesJeu[joueur.position];
-        if (caseArrivee instanceof CaseAction) {
-            const messagesCase = caseArrivee.arriver(joueur, jeu);
-            messages.push(...messagesCase);
-        }
-        // cases Propriété 
-        else {   
-            // stocke case d'arrivée dans jeu pour traiter après affichage de la carte
-            jeu.caseApresDeplacementCarte = jeu.casesJeu[joueur.position];
-        }
+        messages.push(`${joueur.nom} s'est déplacé(e) de ${anciennePosition} à ${nouvellePosition}.`);
+        
+        messages.push(...this.#gererCaseDepart(joueur));
+        messages.push(...this.#gererCaseArrivee(joueur, jeu));
 
         return messages;
     }
+
+    #deplacerJoueur(joueur) {
+        if (this.typeDeplacement === 'absolu') {
+            joueur.avancer('absolu', this.valeurDeplacement);
+        } else if (this.valeurDeplacement) {
+            joueur.avancer('relatif', this.valeurDeplacement, this.bonusDePassage);
+        }
+    }
+
+    #gererCaseDepart(joueur) {
+        if (joueur.aTraverseCaseDepart) {
+            joueur.recevoir(200);
+            return [`${joueur.nom} passe par la case départ et reçoit 200 M.`];
+        }
+        return [];
+    }
+
+    #gererCaseArrivee(joueur, jeu) {
+        const caseArrivee = jeu.casesJeu[joueur.position];
+        if (caseArrivee instanceof CaseAction) {
+            return caseArrivee.arriver(joueur, jeu);
+        }
+        jeu.caseApresDeplacementCarte = caseArrivee;
+        return [];
+    }
 }
+
+//----------------------- Gare la plus proche effet --------------------------
 
 export class GareProcheEffet extends Effet {
     constructor() {
         super(); 
     }
 
-    appliquer(joueur, jeu = null, banque = null) {
+    appliquer(joueur, jeu = null, _banque = null) {
         let messages = []; 
         const positionActuelle = joueur.position;
         const garesPositions = [5, 15, 25, 35]; 
@@ -75,7 +87,7 @@ export class GareProcheEffet extends Effet {
         for (const gare of garesPositions) {
             if (gare > positionActuelle) {
                 gareLaPlusProche = gare;
-                break; //1re gare trouvée
+                break; // 1re gare trouvée
             }
         }
 
@@ -83,7 +95,7 @@ export class GareProcheEffet extends Effet {
             gareLaPlusProche = 5; // si aucune gare après , revenir à la 1re gare
         }
 
-        const anciennePosition = jeu.casesJeu[joueur.position].nom;
+        // const anciennePosition = jeu.casesJeu[joueur.position].nom;
         joueur.avancer('absolu', gareLaPlusProche);
         const nouvellePosition = jeu.casesJeu[joueur.position].nom;
         messages.push(`${joueur.nom} se rend à la gare la plus proche : ${nouvellePosition}.`);
@@ -92,12 +104,14 @@ export class GareProcheEffet extends Effet {
             messages.push(`${joueur.nom} passe par la case départ et reçoit 200 M.`);
         }
 
-        // propositions (achat?)
+        // propositions (ex achat?)
         jeu.caseApresDeplacementCarte = jeu.casesJeu[joueur.position];
 
         return messages;
     }
 }
+
+//----------------------- Choix effet ----------------------------------------
 
 /**
  * Choix: versement amende ou tirer une carte chance 
@@ -110,13 +124,15 @@ export class ChoixEffet extends Effet {
         this.destinataire = destinataire;
     }
 
-    appliquer(joueur, jeu = null, banque = null) {
+    appliquer(joueur, jeu = null, _banque = null) {
         jeu.listePropositions = Proposition.getListePropositionsFondsCommuns();
-        console.log("ChoixEffet - listePropositions:", jeu.listePropositions.length); // DEBUG
         jeu.etat = EtatsJeu.EN_ATTENTE;
+
         return []; 
     }
 }
+
+//----------------------- Versement effet -------------------------------------
 
 /**
  * montant, source(banque/joueur), destination (banque/joueur)
@@ -130,29 +146,26 @@ export class VersementEffet extends Effet {
         this.estCollectif = estCollectif; // si plusieurs joueurs ou non
     }
 
-    appliquer(joueur, jeu = null) {
+    appliquer(joueur, jeu = null, _banque = null) {
         let messages = []; 
         let banque = jeu.banque;
-
-        if (this.montant === undefined)
-            console.trace("prob montant:",this);
-        
-        // 1- joueur paie banque (achat/taxe) - attention string != obj
+     
+        // 1- joueur paie banque case taxe) - attention string != obj
         if (this.source === "joueur" && this.destinataire === "banque") {
             joueur.payer(this.montant);
             banque.recevoir(this.montant);
-            (this.montant > 0 ? messages.push(`${joueur.nom} paye ${this.montant} M à la banque.`) : messages.push(`${joueur.nom} ne paie rien à la banque.`))
-            // messages.push(`Taxe ! ${joueur.nom} paye ${this.montant} M à la banque.`);
-        }
-
-        else if (this.source === "banque" && this.destinataire === "joueur") {
+            (this.montant > 0 ? messages.push(
+                `${joueur.nom} paye ${this.montant} M à la banque.`) : messages.push(`${joueur.nom} ne paie rien à la banque.`
+            ));
+        // ou banque paie joueur (case taxe) - attention string != obj
+        } else if (this.source === "banque" && this.destinataire === "joueur") {
             joueur.recevoir(this.montant); 
-            // console.log("Le joueur a recu de la banque : ", this.montant);
             messages.push(`${joueur.nom} reçoit ${this.montant} M de la banque.`);
 
-        // 2- autres joueurs paient joueur courant (carte anniversaire)
+        // 2- Les autres joueurs paient le joueur courant (carte anniversaire)
         } else if (this.estCollectif) {
             let tousLesJoueurs = jeu.getJoueurs(); 
+
             for (let joueurAdverse of tousLesJoueurs) {
                 if (joueurAdverse !== joueur) {
                     joueurAdverse.payer(this.montant);
@@ -160,27 +173,31 @@ export class VersementEffet extends Effet {
                     messages.push(`${joueur.nom} reçoit ${this.montant} M de ${joueurAdverse.nom}.`);
                 }
             }
-            console.log("argent du joueur ap recevoir argent: ", joueur.argent)
 
+        // 3- Joueur paie Banque (obj)
         } else if (this.source instanceof Joueur && this.destinataire instanceof Banque) {
             this.source.payer(this.montant);
             this.destinataire.recevoir(this.montant);
             messages.push(`${this.destinataire.nom} reçoit ${this.montant} M de ${this.source.nom}.`);
    
+        // 4- Joueur paie autre Joueur (obj)
         } else if (this.source instanceof Joueur && this.destinataire instanceof Joueur) {
             this.source.payer(this.montant);
             this.destinataire.recevoir(this.montant);
             messages.push(`${this.destinataire.nom} reçoit ${this.montant} M de ${this.source.nom}.`);
    
-         // 3- banque paie joueur (case départ/gain)
+         // 3- Banque paie Joueur (obj)
         } else if (this.source instanceof Banque && this.destinataire instanceof Joueur) {
             joueur.recevoir(this.montant);
             // console.log("argent du joueur ap recevoir argent: ", joueur.argent)
             messages.push(`${joueur.nom} reçoit ${this.montant} M de la banque.`)
         }
+
         return messages;
     }
 }
+
+//----------------------- Reparations effet -----------------------------------
 
 export class ReparationsEffet extends Effet {
     constructor(montant_par_maison, montant_par_hotel, source, destinataire) {
@@ -191,7 +208,7 @@ export class ReparationsEffet extends Effet {
         this.destinataire = destinataire; 
     }
 
-    appliquer(joueur, jeu = null, banque = null) {
+    appliquer(joueur, _jeu = null, banque = null) {
         let messages = [];
         const totalMaisonsHotels = joueur.calculerTotalMaisonsHotels();
         const nbMaisons = totalMaisonsHotels[0];
@@ -211,6 +228,8 @@ export class ReparationsEffet extends Effet {
     }
 }
 
+//----------------------- Prison effet ----------------------------------------
+
 /**
  * Entree/Sortie: 
  * - déplacement du joueur en prison
@@ -222,7 +241,7 @@ export class PrisonEffet extends Effet {
         this.allerEnPrison = allerEnPrison; //bool 
     }
 
-    appliquer(joueur, jeu = null, banque = null) {
+    appliquer(joueur, _jeu = null, _banque = null) {
         let messages = [];
 
         if (this.allerEnPrison) {
@@ -240,6 +259,7 @@ export class PrisonEffet extends Effet {
         return messages;
     }
 }
+//----------------------- Pioche effet ---------------------------------------
 
 /**
  * Pioche une carte dans la pioche chance ou fonds commun
@@ -264,7 +284,7 @@ export class PiocheEffet extends Effet {
         pioche.push(carteTiree); // remet la carte au fond
         const messages = [];
         messages.push(`**Carte ${carteTiree.titre}`);
-        messages.push(`//\"${carteTiree.description}"`);
+        messages.push(`//"${carteTiree.description}"`);
 
         // cartes pour sortie de prison
         if (carteTiree.titre === titreCarteSortiePrison) {
@@ -277,6 +297,7 @@ export class PiocheEffet extends Effet {
                 messages.push(message);
             }
         }
+
         return messages;
     }
 }
