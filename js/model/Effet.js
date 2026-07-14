@@ -28,7 +28,7 @@ export class DeplacementEffet extends Effet {
         this.valeurDeplacement = valeurDeplacement; 
         this.bonusDePassage = bonusDePassage;
     }
-    
+
     appliquer(joueur, jeu = null, _banque = null) {
         const anciennePosition = jeu.casesJeu[joueur.position].nom;
         let messages = [];
@@ -79,24 +79,10 @@ export class GareProcheEffet extends Effet {
 
     appliquer(joueur, jeu = null, _banque = null) {
         let messages = []; 
-        const positionActuelle = joueur.position;
-        const garesPositions = [5, 15, 25, 35]; 
-        let gareLaPlusProche = null;
 
-        // prochaine gare
-        for (const gare of garesPositions) {
-            if (gare > positionActuelle) {
-                gareLaPlusProche = gare;
-                break; // 1re gare trouvée
-            }
-        }
-
-        if (gareLaPlusProche === null) {
-            gareLaPlusProche = 5; // si aucune gare après , revenir à la 1re gare
-        }
-
-        // const anciennePosition = jeu.casesJeu[joueur.position].nom;
+        const gareLaPlusProche = this.#trouverGareLaPlusProche(joueur.position);
         joueur.avancer('absolu', gareLaPlusProche);
+
         const nouvellePosition = jeu.casesJeu[joueur.position].nom;
         messages.push(`${joueur.nom} se rend à la gare la plus proche : ${nouvellePosition}.`);
 
@@ -104,12 +90,24 @@ export class GareProcheEffet extends Effet {
             messages.push(`${joueur.nom} passe par la case départ et reçoit 200 M.`);
         }
 
-        // propositions (ex achat?)
+        // pour propositions (ex achat)
         jeu.caseApresDeplacementCarte = jeu.casesJeu[joueur.position];
 
         return messages;
     }
+
+    #trouverGareLaPlusProche(positionActuelle) {
+        const garesPositions = [5, 15, 25, 35]; 
+
+        for (const gare of garesPositions) {
+            if (gare > positionActuelle) {
+                return gare;
+            }
+        }
+        return 5; // revenir à la 1re gare
+    }
 }
+
 
 //----------------------- Choix effet ----------------------------------------
 
