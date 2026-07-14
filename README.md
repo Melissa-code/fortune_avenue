@@ -51,13 +51,14 @@ Ouvrir le fichier `index.html` dans le navigateur pour commencer à jouer
 
 ### Outils
 
-- **[Validation JSON](https://jsonlint.com/)**
+- **[Git](https://git-scm.com/docs/git)**: versioning du jeu
+- **[Figma](https://help.figma.com/hc/fr)**: design du jeu (création du plateau, des cartes...) 
 
 
 ## 5. Contributions 
 
 Les contributions, suggestions et issues sont les bienvenues.
-N’hésitez pas à ouvrir une issue pour proposer une idée ou signaler un bug
+N’hésitez pas à ouvrir une issue pour proposer une idée ou signaler un bug.
 
 
 ## 6. Author 

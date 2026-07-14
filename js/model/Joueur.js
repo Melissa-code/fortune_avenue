@@ -18,8 +18,6 @@ class Joueur {
      * traverse case départ: joueur reçoit 200M ou non 
      */
     gererArriveeSurCase(anciennePosition, estDerriere = false) {
-        console.log("ancienne position: ", anciennePosition, "nouvelle position: ", this.position);
-        
         if (!estDerriere && this.position < anciennePosition && this.position !== 0) {
             this.aTraverseCaseDepart = true;
         } else {
@@ -68,7 +66,7 @@ class Joueur {
                 totalHotels += propriete.nombreHotels;
             }
         }
-        console.log("totalMaisonsHotels", [totalMaisons, totalHotels])
+    
         return [totalMaisons, totalHotels];
     }
 }

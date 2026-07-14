@@ -20,10 +20,10 @@ function demarrer(jeu) {
     controller.view.refresh();
 
     //  TEST 
-    joueur1.position = 2;
-    const caseFondsCommun = jeu.casesJeu[2];
-    jeu.listeStatuts = caseFondsCommun.arriver(joueur1, jeu);
-    controller.view.refresh();
+    // joueur1.position = 2;
+    // const caseFondsCommun = jeu.casesJeu[2];
+    // jeu.listeStatuts = caseFondsCommun.arriver(joueur1, jeu);
+    // controller.view.refresh();
 
 }
 

@@ -20,7 +20,6 @@ class Controller {
     }
 
     lancerDe() {
-        console.log(" LANCER DE"); 
         if (this.jeu.etat !== EtatsJeu.EN_COURS) return; //sécurité: ne pas lancer le dé si en attente de propositions
 
         const joueurCourant = this.jeu.joueurs[this.jeu.joueurActuelIndex];
@@ -43,19 +42,14 @@ class Controller {
             console.error("ERREUR avancerJoueurCourant:", error.stack);
         }
 
-        console.log("ICI APRES AVANCER");
-
         try {
             this.view.refresh();
         } catch (error) {
             console.error("ERREUR refresh:", error.stack);
         }
 
-        console.log("ICI APRES REFRESH");
-
         if (this.jeu.listePropositions.length > 0) {
             if (this.jeu.listeStatuts.length > 0 && this.jeu.listeStatuts[0].startsWith("**Fonds communs")) {
-                console.log("listeStatuts.length:", this.jeu.listeStatuts.length); // DEBUG
                 // carte avec choix -> afficher événements d'abord puis modale
                 this.view.afficherZoneEvenements();
                 setTimeout(() => {
@@ -67,8 +61,6 @@ class Controller {
         } 
         else if (this.jeu.listeStatuts.length > 0) {
             this.view.afficherZoneEvenements(); 
-
-            console.log("caseApresDeplacementCarte:", this.jeu.caseApresDeplacementCarte); // DEBUG
 
             // modale propositions après carte 
             if (this.jeu.caseApresDeplacementCarte) {

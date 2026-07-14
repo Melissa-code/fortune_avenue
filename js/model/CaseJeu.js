@@ -240,8 +240,6 @@ export class CaseAction extends CaseJeu {
             console.log('Aucun effet associé à cette case d\'action.'); 
         } 
 
-        console.log('effets case',this);
-
         for (let effet of this.effets) {
             if (effet instanceof VersementEffet) {
                 if (effet.montant===undefined)

@@ -31,16 +31,14 @@ export class DeplacementEffet extends Effet {
         
         if (this.typeDeplacement === 'absolu') {
             joueur.avancer('absolu', this.valeurDeplacement);
-        } 
-        else {
-            console.log("valeur deplacement: ", this.valeurDeplacement)
+        } else {
             if (this.valeurDeplacement) {
                 joueur.avancer('relatif', this.valeurDeplacement, this.bonusDePassage);
             }
         }
 
         const nouvellePosition = jeu.casesJeu[joueur.position].nom;
-        messages.push(`${joueur.nom} s'est déplacé de la case ${anciennePosition} à la case ${nouvellePosition}`);
+        messages.push(`${joueur.nom} s'est déplacé(e) de la case ${anciennePosition} à la case ${nouvellePosition}.`);
         if (joueur.aTraverseCaseDepart) {
             joueur.recevoir(200);
             messages.push(`${joueur.nom} passe par la case départ et reçoit 200 M.`);
@@ -54,12 +52,8 @@ export class DeplacementEffet extends Effet {
         }
         // cases Propriété 
         else {   
-            console.log("case propriété: ", caseArrivee.nom);  
             // stocke case d'arrivée dans jeu pour traiter après affichage de la carte
             jeu.caseApresDeplacementCarte = jeu.casesJeu[joueur.position];
-
-            console.log("type case arrivée:", caseArrivee.nom); // DEBUG
-            console.log("case arrivée:",  jeu.caseApresDeplacementCarte.nom); // DEBUG
         }
 
         return messages;
@@ -92,7 +86,7 @@ export class GareProcheEffet extends Effet {
         const anciennePosition = jeu.casesJeu[joueur.position].nom;
         joueur.avancer('absolu', gareLaPlusProche);
         const nouvellePosition = jeu.casesJeu[joueur.position].nom;
-        messages.push(`${joueur.nom} se rend à la gare la plus proche : ${nouvellePosition}`);
+        messages.push(`${joueur.nom} se rend à la gare la plus proche : ${nouvellePosition}.`);
 
         if (joueur.aTraverseCaseDepart) {
             messages.push(`${joueur.nom} passe par la case départ et reçoit 200 M.`);
@@ -145,11 +139,9 @@ export class VersementEffet extends Effet {
         
         // 1- joueur paie banque (achat/taxe) - attention string != obj
         if (this.source === "joueur" && this.destinataire === "banque") {
-            console.log("joueur: ", joueur.nom, " - banque: ", banque.nom, " - montant: ", this.montant)
             joueur.payer(this.montant);
             banque.recevoir(this.montant);
-            (this.montant > 0 ? messages.push(`${joueur.nom} paye ${this.montant} M à la banque.`) : messages.push(`${joueur.nom} ne paie rien à la banque.`));
-                
+            (this.montant > 0 ? messages.push(`${joueur.nom} paye ${this.montant} M à la banque.`) : messages.push(`${joueur.nom} ne paie rien à la banque.`))
             // messages.push(`Taxe ! ${joueur.nom} paye ${this.montant} M à la banque.`);
         }
 
@@ -173,7 +165,6 @@ export class VersementEffet extends Effet {
         } else if (this.source instanceof Joueur && this.destinataire instanceof Banque) {
             this.source.payer(this.montant);
             this.destinataire.recevoir(this.montant);
-             console.log("proprietes du joueuur :", joueur.proprietes)
             messages.push(`${this.destinataire.nom} reçoit ${this.montant} M de ${this.source.nom}.`);
    
         } else if (this.source instanceof Joueur && this.destinataire instanceof Joueur) {

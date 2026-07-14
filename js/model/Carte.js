@@ -18,7 +18,7 @@ export class CarteAction extends Carte {
     constructor(titre, description, effets = []) {
         super(titre); 
         this.description = description;
-        this.effets = effets;   //[Effets]
+        this.effets = effets;// effets[]
     }
 
     ajouterEffet(effet) {

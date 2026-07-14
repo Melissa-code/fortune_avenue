@@ -130,10 +130,7 @@ this.espacement  = tailleDe / 2  // unité de base réutilisée partout
 │  │   D x D px   │  │  canvas - D   │    │
 │  └──────────────┘  └───────────────┘    │
 └─────────────────────────────────────────┘
-````
-
-
-
+```
 ---
 
 
