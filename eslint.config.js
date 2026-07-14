@@ -7,7 +7,12 @@ export default defineConfig([
     files: ["**/*.{js,mjs,cjs}"], 
     plugins: { js }, 
     extends: ["js/recommended"], 
-    languageOptions: { globals: globals.browser },
+    languageOptions: { 
+      globals: {
+        ...globals.browser,
+        ...globals.jest // pour les tests unitaires avec Jest
+      } 
+    },
     // custom rules: _banque paramètre inutilisé par ex dans Carte.js (pour polymorphisme)
     rules: {
       "no-unused-vars": ["error", { 
