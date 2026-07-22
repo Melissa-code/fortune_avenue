@@ -1,7 +1,7 @@
 import effetsChanceJson from "../../data/effets_chance.js";
 import effetsFondsCommunsJson from "../../data/effets_fonds_communs.js"; 
 import TypesMessagesModale from "./enums/TypesMessages.js";  
-import { Effet, DeplacementEffet, VersementEffet, PrisonEffet, PiocheEffet } from './Effet.js'; 
+import { VersementEffet } from './Effet.js'; 
 import EtatsJeu from './enums/EtatsJeu.js';
 import Joueur from './Joueur.js'; 
 import De from './De.js';
@@ -37,10 +37,6 @@ class Jeu {
         const joueur = new Joueur(nom, pion); 
         this.joueurs.push(joueur);
         return joueur;
-    }
-
-    determinerPremierJoueur() {
-
     }
 
     getJoueurs() {

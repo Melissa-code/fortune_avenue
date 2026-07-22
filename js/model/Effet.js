@@ -140,56 +140,80 @@ export class VersementEffet extends Effet {
         this.montant = montant; 
         this.source = source; 
         this.destinataire = destinataire; 
-        this.estCollectif = estCollectif; // si plusieurs joueurs ou non
+        this.estCollectif = estCollectif; // si plusieurs joueurs
     }
 
-    appliquer(joueur, jeu = null, _banque = null) {
-        let messages = []; 
-        let banque = jeu.banque;
-     
-        // 1- joueur paie banque case taxe) - attention string != obj
+    appliquer(joueur, jeu = null, banque = null) {
+        if (this.estCollectif) return this.#versementCollectif(joueur, jeu);
         if (this.source === "joueur" && this.destinataire === "banque") {
-            joueur.payer(this.montant);
-            banque.recevoir(this.montant);
-            (this.montant > 0 ? messages.push(
-                `${joueur.nom} paye ${this.montant} M à la banque.`) : messages.push(`${joueur.nom} ne paie rien à la banque.`
-            ));
-        // ou banque paie joueur (case taxe) - attention string != obj
-        } else if (this.source === "banque" && this.destinataire === "joueur") {
-            joueur.recevoir(this.montant); 
-            messages.push(`${joueur.nom} reçoit ${this.montant} M de la banque.`);
-
-        // 2- Les autres joueurs paient le joueur courant (carte anniversaire)
-        } else if (this.estCollectif) {
-            let tousLesJoueurs = jeu.getJoueurs(); 
-
-            for (let joueurAdverse of tousLesJoueurs) {
-                if (joueurAdverse !== joueur) {
-                    joueurAdverse.payer(this.montant);
-                    joueur.recevoir(this.montant); 
-                    messages.push(`${joueur.nom} reçoit ${this.montant} M de ${joueurAdverse.nom}.`);
-                }
-            }
-
-        // 3- Joueur paie Banque (obj)
-        } else if (this.source instanceof Joueur && this.destinataire instanceof Banque) {
-            this.source.payer(this.montant);
-            this.destinataire.recevoir(this.montant);
-            messages.push(`${this.destinataire.nom} reçoit ${this.montant} M de ${this.source.nom}.`);
-   
-        // 4- Joueur paie autre Joueur (obj)
-        } else if (this.source instanceof Joueur && this.destinataire instanceof Joueur) {
-            this.source.payer(this.montant);
-            this.destinataire.recevoir(this.montant);
-            messages.push(`${this.destinataire.nom} reçoit ${this.montant} M de ${this.source.nom}.`);
-   
-         // 3- Banque paie Joueur (obj)
-        } else if (this.source instanceof Banque && this.destinataire instanceof Joueur) {
-            joueur.recevoir(this.montant);
-            // console.log("argent du joueur ap recevoir argent: ", joueur.argent)
-            messages.push(`${joueur.nom} reçoit ${this.montant} M de la banque.`)
+            return this.#versementStrJoueurVersBanque(joueur, banque);
         }
+        if (this.source === "banque" && this.destinataire === "joueur") {
+            return this.#versementStrBanqueVersJoueur(joueur);
+        }
+        if (this.source instanceof Joueur && this.destinataire instanceof Banque) {
+            return this.#versementObjJoueurVersBanque();
+        }
+        if (this.source instanceof Joueur && this.destinataire instanceof Joueur) {
+            return this.#versementObjJoueurVersJoueur();
+        }
+        if (this.source instanceof Banque && this.destinataire instanceof Joueur) {
+            return this.#versementObjBanqueVersJoueur(joueur);
+        }
+        
+        return [];
+    }
 
+    #versementCollectif(joueur, jeu) {
+        const messages = [];
+
+        for (let joueurAdverse of jeu.getJoueurs()) {
+            if (joueurAdverse !== joueur) {
+                joueurAdverse.payer(this.montant);
+                joueur.recevoir(this.montant);
+                messages.push(`${joueur.nom} reçoit ${this.montant} M de ${joueurAdverse.nom}.`);
+            }
+        }
+        return messages;
+    }
+
+    #versementStrJoueurVersBanque(joueur, banque) {
+        const messages = [];
+        joueur.payer(this.montant);
+        banque.recevoir(this.montant);
+        (this.montant > 0 ? messages.push(
+            `${joueur.nom} paye ${this.montant} M à la banque.`) : messages.push(`${joueur.nom} ne paie rien à la banque.`
+        ));
+        return messages;
+    }
+
+    #versementStrBanqueVersJoueur(joueur) {
+        const messages = [];
+        joueur.recevoir(this.montant);
+        messages.push(`${joueur.nom} reçoit ${this.montant} M de la banque.`);
+        return messages;
+    }
+
+    #versementObjJoueurVersBanque() {
+        const messages = [];
+        this.source.payer(this.montant);
+        this.destinataire.recevoir(this.montant);
+        messages.push(`${this.destinataire.nom} reçoit ${this.montant} M de ${this.source.nom}.`);
+        return messages;
+    }
+
+    #versementObjJoueurVersJoueur() {
+        const messages = [];
+        this.source.payer(this.montant);
+        this.destinataire.recevoir(this.montant);
+        messages.push(`${this.destinataire.nom} reçoit ${this.montant} M de ${this.source.nom}.`);
+        return messages;
+    }
+
+    #versementObjBanqueVersJoueur(joueur) {
+        const messages = [];
+        joueur.recevoir(this.montant);
+        messages.push(`${joueur.nom} reçoit ${this.montant} M de la banque.`);
         return messages;
     }
 }
