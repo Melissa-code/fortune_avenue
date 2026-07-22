@@ -20,7 +20,6 @@ export class Effet {
 /**
  * type de deplacement: absolu (index case) ou relatif (nb de pas/N° sur dé)
  */
-
 export class DeplacementEffet extends Effet {
     constructor(typeDeplacement, valeurDeplacement, bonusDePassage = 0) {
         super(); 
@@ -108,7 +107,6 @@ export class GareProcheEffet extends Effet {
         return 5; // revenir à la 1re gare
     }
 }
-
 
 //----------------------- Choix effet ----------------------------------------
 

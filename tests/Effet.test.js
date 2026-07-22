@@ -126,3 +126,28 @@ describe('trouverGareLaPlusProche() déplacement', () => {
         expect(effet.trouverGareLaPlusProche(35)).toBe(5);
     });
 });
+
+//----------------------- Tests Choix effet  --------------------------
+
+describe('ChoixEffet', () => {
+    test('appliquer() met listePropositions et état EN_ATTENTE', () => {
+        const joueur = creerJoueur();
+        const jeu = { listePropositions: [], etat: 'EN_COURS' };
+        const effet = new ChoixEffet(10, 'joueur', 'banque');
+
+        effet.appliquer(joueur, jeu);
+
+        expect(jeu.listePropositions.length).toBeGreaterThan(0);
+        expect(jeu.etat).toBe('EN_ATTENTE');
+    });
+
+    test('appliquer() retourne un tableau vide', () => {
+        const joueur = creerJoueur();
+        const jeu = { listePropositions: [], etat: 'EN_COURS' };
+        const effet = new ChoixEffet(10, 'joueur', 'banque');
+
+        const messages = effet.appliquer(joueur, jeu);
+
+        expect(messages).toEqual([]);
+    });
+});
