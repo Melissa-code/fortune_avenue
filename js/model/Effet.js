@@ -80,7 +80,7 @@ export class GareProcheEffet extends Effet {
     appliquer(joueur, jeu = null, _banque = null) {
         let messages = []; 
 
-        const gareLaPlusProche = this.#trouverGareLaPlusProche(joueur.position);
+        const gareLaPlusProche = this.trouverGareLaPlusProche(joueur.position);
         joueur.avancer('absolu', gareLaPlusProche);
 
         const nouvellePosition = jeu.casesJeu[joueur.position].nom;
@@ -96,7 +96,7 @@ export class GareProcheEffet extends Effet {
         return messages;
     }
 
-    #trouverGareLaPlusProche(positionActuelle) {
+    trouverGareLaPlusProche(positionActuelle) {
         const garesPositions = [5, 15, 25, 35]; 
 
         for (const gare of garesPositions) {
@@ -104,6 +104,7 @@ export class GareProcheEffet extends Effet {
                 return gare;
             }
         }
+
         return 5; // revenir à la 1re gare
     }
 }

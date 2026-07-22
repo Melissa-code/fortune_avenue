@@ -3,7 +3,7 @@ import { CaseRue } from '../js/model/CaseJeu.js';
 
 describe('Joueur', () => {
 
-    // Test de la méthode gererArriveeSurCase()
+    // Tests de la méthode gererArriveeSurCase()
     test('gererArriveeSurCase() MAJ correctement', () => {
         const joueur = new Joueur('Test Joueur 1', 'Pion du joueur 1');
         
@@ -25,7 +25,7 @@ describe('Joueur', () => {
         expect(joueur.aTraverseCaseDepart).toBe(false);
     });
 
-    // Test de la méthode avancer()
+    // Tests de la méthode avancer()
     test('avancer() MAJ correctement la position du joueur', () => {
         const joueur = new Joueur('Test Joueur 1', 'Pion du joueur 1');
         
@@ -73,7 +73,7 @@ describe('Joueur', () => {
         expect(joueur.aTraverseCaseDepart).toBe(false);
     });
 
-    // Test de la méthode recevoir() 
+    // Tests de la méthode recevoir() 
     test('recevoir() MAJ de l\'argent du joueur', () => {
         const joueur = new Joueur('Test Joueur 1', 'Pion du joueur 1');
         const montant = 100;
@@ -88,7 +88,7 @@ describe('Joueur', () => {
         expect(joueur.argent).toBe(1500); 
     });
 
-    // Test de la méthode payer()
+    // Tests de la méthode payer()
     test('payer() MAJ de l\'argent du joueur', () => {
         const joueur = new Joueur('Test Joueur 1', 'Pion du joueur 1');
         const montant = 200;
@@ -103,7 +103,7 @@ describe('Joueur', () => {
         expect(joueur.argent).toBe(1500); 
     });
 
-    // Test de la méthode calculerTotalMaisonsHotels()
+    // Tests de la méthode calculerTotalMaisonsHotels()
     test('calculerTotalMaisonsHotels() retourne le nombre total de maisons et d\'hôtels possédés par le joueur', () => {
         const joueur = new Joueur('Test Joueur 1', 'Pion du joueur 1');
         const propriete1 = new CaseRue('Rue 1', 100, 10, 50, 200, 500, 1000);

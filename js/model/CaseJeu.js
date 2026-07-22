@@ -174,7 +174,7 @@ export class CaseGare extends CasePropriete {
         this.hypotheque = hypotheque || null;
     }
 
-    calculerLoyer(jeu=null) {
+    calculerLoyer(jeu = null) {
         if (this.hypotheque || this.estLibre()) return 0; 
         let montant = 0; 
 

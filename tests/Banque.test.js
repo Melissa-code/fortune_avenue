@@ -3,7 +3,7 @@ import Banque from '../js/model/Banque.js';
 //----------------------- Tests Banque ---------------------------
 
 describe('Banque', () => {
-    // payer 
+    
     test('payer() maj de l\'argent de la banque', () => {
         const banque = new Banque();
         const montant = 1000;
@@ -17,7 +17,6 @@ describe('Banque', () => {
         expect(banque.argent).toEqual(0); // ne peut pas être négatif
     });
 
-    // recevoir 
     test('recevoir() met à jour l\'argent de la banque', () => {
         const banque = new Banque();
         banque.recevoir(14640);
