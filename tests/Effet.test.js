@@ -2,7 +2,7 @@ import { jest } from '@jest/globals';
 import { Effet, DeplacementEffet, GareProcheEffet, ChoixEffet, VersementEffet, PrisonEffet, ReparationsEffet, PiocheEffet } from '../js/model/Effet.js';
 import Joueur from '../js/model/Joueur.js';
 import Banque from '../js/model/Banque.js';
-import Jeu from '../js/model/Jeu.js';
+import TypesCases from '../js/model/enums/TypesCases.js';
 
 // mock joueur
 function creerJoueur(position = 0, nom = 'Melissa') {
@@ -25,11 +25,13 @@ function creerBanque() {
 }
 
 // mock jeu
-function creerJeu(cases, joueurs = []) {
+function creerJeu(cases, joueurs = [], piocheChance = [], piocheFondsCommun = []) {
     return {
         casesJeu: cases,
         caseApresDeplacementCarte: null,
         getJoueurs: () => joueurs,
+        piocheChance: piocheChance,
+        piocheFondsCommun: piocheFondsCommun,
     };
 }
 
@@ -305,3 +307,104 @@ describe('PrisonEffet', () => {
 
 //----------------------- Tests Pioche effet ---------------------------------
 
+describe('PiocheEffet', () => {
+    test('appliquer() le joueur pioche dans Chance quand typePioche = CHANCE', () => {
+        const joueur = creerJoueur();
+        const carteTiree = { 
+            titre: 'Chance 3', 
+            description: 'Avancez de 3 cases', 
+            executer: jest.fn(() => []) 
+        };
+        const jeu = creerJeu([], [joueur]);
+        jeu.piocheChance.push(carteTiree);
+
+        const effet = new PiocheEffet(TypesCases.CHANCE);
+        effet.appliquer(joueur, jeu);   
+
+        expect(carteTiree.executer).toHaveBeenCalledWith(joueur, jeu, null); //banque = null
+        expect(jeu.piocheChance).toContain(carteTiree); 
+        expect(jeu.piocheChance.length).toBe(1);
+    });
+
+    test('appliquer() pioche dans Fonds communs', () => {
+        const joueur = creerJoueur();
+        const jeu = creerJeu([], [joueur]);
+        const carteTiree = { 
+            titre: 'Fonds communs 6', 
+            description: 'Recevez 50 M.', 
+            executer: jest.fn(() => []) 
+        };
+        jeu.piocheFondsCommun.push(carteTiree);
+    
+        const effet = new PiocheEffet(TypesCases.FONDS_COMMUNS); 
+        effet.appliquer(joueur, jeu);
+
+        expect(carteTiree.executer).toHaveBeenCalledWith(joueur, jeu, null);
+        expect(jeu.piocheFondsCommun).toContain(carteTiree);
+        expect(jeu.piocheFondsCommun.length).toBe(1);
+    });
+
+    test('appliquer() remet la carte tirée au fond de la pioche', () => {
+        const carte1 = { titre: 'A', description: 'desc A', executer: jest.fn(() => []) };
+        const carte2 = { titre: 'B', description: 'desc B', executer: jest.fn(() => []) };
+        const jeu = creerJeu([carte1, carte2], []);
+        const joueur = creerJoueur();
+        jeu.piocheFondsCommun.push(carte1);
+        jeu.piocheFondsCommun.push(carte2);
+
+        const effet = new PiocheEffet(TypesCases.FONDS_COMMUNS);
+        effet.appliquer(joueur, jeu);
+
+        expect(jeu.piocheFondsCommun).toEqual([carte2, carte1]); // carte1 remise au fond
+    });
+
+    test('appliquer() construit les messages titre et description', () => {
+        const carteTiree = { titre: 'Chance 9', description: 'Avancez de 3 cases.', executer: jest.fn(() => []) };
+        const jeu = creerJeu([carteTiree], []);
+        const joueur = creerJoueur();
+        jeu.piocheChance.push(carteTiree);
+
+        const effet = new PiocheEffet(TypesCases.CHANCE);
+        const messages = effet.appliquer(joueur, jeu);
+
+        expect(messages[0]).toBe('**Carte Chance 9');
+        expect(messages[1]).toBe('//"Avancez de 3 cases."');
+    });
+
+    test('appliquer() carte "sortie de prison" n\'exécute pas la carte', () => {
+        const carteTiree = { 
+            titre: 'Chance 9', 
+            description: 'Sortez de prison', 
+            executer: jest.fn(() => []) 
+        };
+        const jeu = creerJeu([carteTiree], []);
+        const joueur = creerJoueur();
+        jeu.piocheChance.push(carteTiree);
+
+        const effet = new PiocheEffet(TypesCases.CHANCE);
+        const messages = effet.appliquer(joueur, jeu);
+
+        expect(joueur.carteChanceSortiePrison).toBe(true);
+        expect(carteTiree.executer).not.toHaveBeenCalled();
+        expect(messages).toContain('Vous pouvez sortir de prison avec cette carte.');
+    });
+
+    test('appliquer() carte, exécute executer() et ajoute ses messages', () => {
+        const carteTiree = {
+            titre: 'Chance 3',
+            description: 'Avancez de 3 cases',
+            executer: jest.fn(() => ['Reculez de 3 cases.'])
+        };
+        const jeu = creerJeu([carteTiree], []);
+        const joueur = creerJoueur();
+        const banque = creerBanque();
+        jeu.piocheChance.push(carteTiree);
+
+        const effet = new PiocheEffet(TypesCases.CHANCE);
+        const messages = effet.appliquer(joueur, jeu, banque);
+
+        expect(carteTiree.executer).toHaveBeenCalledWith(joueur, jeu, banque);
+        expect(messages).toContain('Reculez de 3 cases.');
+        expect(messages.length).toBe(3); 
+    });
+});
