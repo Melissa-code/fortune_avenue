@@ -149,7 +149,7 @@ export class VersementEffet extends Effet {
             return this.#versementStrJoueurVersBanque(joueur, banque);
         }
         if (this.source === "banque" && this.destinataire === "joueur") {
-            return this.#versementStrBanqueVersJoueur(joueur);
+            return this.#versementStrBanqueVersJoueur(joueur, banque);
         }
         if (this.source instanceof Joueur && this.destinataire instanceof Banque) {
             return this.#versementObjJoueurVersBanque();
@@ -158,7 +158,7 @@ export class VersementEffet extends Effet {
             return this.#versementObjJoueurVersJoueur();
         }
         if (this.source instanceof Banque && this.destinataire instanceof Joueur) {
-            return this.#versementObjBanqueVersJoueur(joueur);
+            return this.#versementObjBanqueVersJoueur();
         }
         
         return [];
@@ -187,9 +187,10 @@ export class VersementEffet extends Effet {
         return messages;
     }
 
-    #versementStrBanqueVersJoueur(joueur) {
+    #versementStrBanqueVersJoueur(joueur, banque) {
         const messages = [];
         joueur.recevoir(this.montant);
+        banque.payer(this.montant);
         messages.push(`${joueur.nom} reçoit ${this.montant} M de la banque.`);
         return messages;
     }
@@ -210,10 +211,11 @@ export class VersementEffet extends Effet {
         return messages;
     }
 
-    #versementObjBanqueVersJoueur(joueur) {
+    #versementObjBanqueVersJoueur() {
         const messages = [];
-        joueur.recevoir(this.montant);
-        messages.push(`${joueur.nom} reçoit ${this.montant} M de la banque.`);
+        this.source.payer(this.montant);
+        this.destinataire.recevoir(this.montant);
+        messages.push(`${this.destinataire.nom} reçoit ${this.montant} M de ${this.source.nom}.`);
         return messages;
     }
 }

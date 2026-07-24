@@ -1,32 +1,35 @@
 import { jest } from '@jest/globals';
-import { 
-    Effet, 
-    DeplacementEffet, 
-    GareProcheEffet, 
-    ChoixEffet, 
-    VersementEffet, 
-    PrisonEffet, 
-    ReparationsEffet,
-    PiocheEffet 
-} from '../js/model/Effet.js';
-
+import { Effet, DeplacementEffet, GareProcheEffet, ChoixEffet, VersementEffet, PrisonEffet, ReparationsEffet, PiocheEffet } from '../js/model/Effet.js';
+import Joueur from '../js/model/Joueur.js';
+import Banque from '../js/model/Banque.js';
+import Jeu from '../js/model/Jeu.js';
 
 // mock joueur
-function creerJoueur(position = 0) {
+function creerJoueur(position = 0, nom = 'Melissa') {
     return {
-        nom: 'Melissa',
+        nom,
         position,
         aTraverseCaseDepart: false,
         recevoir: jest.fn(),
+        payer: jest.fn(),
         avancer: jest.fn()
     };
 }
 
+// mock banque
+function creerBanque() {
+    return {
+        recevoir: jest.fn(),
+        payer: jest.fn(),
+    };
+}
+
 // mock jeu
-function creerJeu(cases) {
+function creerJeu(cases, joueurs = []) {
     return {
         casesJeu: cases,
-        caseApresDeplacementCarte: null
+        caseApresDeplacementCarte: null,
+        getJoueurs: () => joueurs,
     };
 }
 
@@ -150,4 +153,91 @@ describe('ChoixEffet', () => {
 
         expect(messages).toEqual([]);
     });
+});
+
+//----------------------- Tests Versement effet -------------------------------------
+
+describe('VersementEffet', () => {
+    test('appliquer() estCollectif: chaque adversaire paie', () => {
+        const melanie = creerJoueur('Mélanie');
+        const john = creerJoueur('John');
+        const jude = creerJoueur('Jude');
+        const jeu = creerJeu([], [melanie, john, jude]);//cases
+
+        const effet = new VersementEffet(20, null, null, true);
+        const messages = effet.appliquer(melanie, jeu);
+
+        expect(john.payer).toHaveBeenCalledWith(20);
+        expect(jude.payer).toHaveBeenCalledWith(20);
+        expect(melanie.recevoir).toHaveBeenCalledWith(20);
+        expect(melanie.recevoir).toHaveBeenCalledTimes(2);
+        expect(messages.length).toBe(2);
+    }); 
+
+    test('appliquer() versement de joueur à banque (string , ex: taxe)', () => {
+        const joueur = creerJoueur();
+        const banque = creerBanque();
+        const effet = new VersementEffet(100, 'joueur', 'banque');
+
+        const messages = effet.appliquer(joueur, null, banque);
+
+        expect(joueur.payer).toHaveBeenCalledWith(100);
+        expect(banque.recevoir).toHaveBeenCalledWith(100);
+        expect(messages).toEqual(['Melissa paye 100 M à la banque.']);
+    });
+
+    test('appliquer() versement de banque à joueur (string)', () => {
+        const joueur = creerJoueur();
+        const banque = creerBanque();
+        const effet = new VersementEffet(10, 'banque', 'joueur');
+
+        const messages = effet.appliquer(joueur, null, banque);
+
+        expect(joueur.recevoir).toHaveBeenCalledWith(10);
+        expect(banque.payer).toHaveBeenCalledWith(10);
+        expect(messages).toEqual(['Melissa reçoit 10 M de la banque.']);
+    });
+
+    test('appliquer() objet Joueur => objet Banque (instanceof)', () => {
+        const source = new Joueur('Alice'); // vraie instance car intanceof 
+        const destinataire = new Banque();  
+        jest.spyOn(source, 'payer'); // run vraie methode payer()
+        jest.spyOn(destinataire, 'recevoir');
+
+        const effet = new VersementEffet(30, source, destinataire);
+        const messages = effet.appliquer();
+
+        expect(source.payer).toHaveBeenCalledWith(30);
+        expect(destinataire.recevoir).toHaveBeenCalledWith(30);
+        expect(messages).toEqual(['la banque reçoit 30 M de Alice.']);
+    });
+
+    test('appliquer() objet Joueur => objet Joueur (instanceof)', () => {
+        const source = new Joueur('Etienne'); 
+        const destinataire = new Joueur('Bob');  
+        jest.spyOn(source, 'payer'); 
+        jest.spyOn(destinataire, 'recevoir');
+
+        const effet = new VersementEffet(12, source, destinataire);
+        const messages = effet.appliquer();
+
+        expect(source.payer).toHaveBeenCalledWith(12);
+        expect(destinataire.recevoir).toHaveBeenCalledWith(12);
+        expect(messages).toEqual(['Bob reçoit 12 M de Etienne.']);
+    });
+
+    test('appliquer() objet Banque => objet Joueur (instanceof)', () => {
+        const source = new Banque(); 
+        const destinataire = new Joueur('Charlie');  
+        jest.spyOn(source, 'payer'); 
+        jest.spyOn(destinataire, 'recevoir');
+
+        const effet = new VersementEffet(17, source, destinataire);
+        const messages = effet.appliquer();
+
+        expect(source.payer).toHaveBeenCalledWith(17);
+        expect(destinataire.recevoir).toHaveBeenCalledWith(17);
+        expect(messages).toEqual(['Charlie reçoit 17 M de la banque.']);
+    });
+
 });
