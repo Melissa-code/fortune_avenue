@@ -270,3 +270,38 @@ describe('ReparationsEffet', () => {
         expect(messages).toEqual([`${joueur.nom} n'a ni maison ni d'hôtel. Pas de réparations.`]);
     }); 
 }); 
+
+//----------------------- Tests Prison effet ---------------------------------
+
+describe('PrisonEffet', () => {
+    test('appliquer() le joueur est envoyé en prison', () => {
+        const joueur = creerJoueur();
+        const effet = new PrisonEffet(true);
+        const messages = effet.appliquer(joueur);
+
+        expect(joueur.position).toBe(10); // case prison position
+        expect(joueur.estEnPrison).toBe(true);
+        expect(messages).toEqual([`${joueur.nom} est envoyé(e) en prison !`]);
+    });
+
+    test('appliquer() le joueur est en simple visite', () => {
+        const joueur = creerJoueur();
+        const effet = new PrisonEffet(false);
+        const messages = effet.appliquer(joueur);
+        
+        expect(messages).toEqual([`Prison : ${joueur.nom} est en simple visite.`]);
+    });
+
+    test('appliquer() le joueur est libéré de prison', () => {
+        const joueur = creerJoueur();
+        joueur.estEnPrison = true; // au prealable
+        const effet = new PrisonEffet(false);
+        const messages = effet.appliquer(joueur);
+
+        expect(joueur.estEnPrison).toBe(false);
+        expect(messages).toEqual([`${joueur.nom} est libéré(e) de prison !`]);  
+    }); 
+});
+
+//----------------------- Tests Pioche effet ---------------------------------
+
