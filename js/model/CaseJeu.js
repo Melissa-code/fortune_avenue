@@ -198,7 +198,8 @@ export class CaseGare extends CasePropriete {
   }
 }
 
-// Case Societe
+// ----------------------------- Case Societe --------------------------------
+
 export class CaseSociete extends CasePropriete {
   constructor(nom, prix, loyers, hypotheque) {
     super(nom, prix, loyers);

@@ -260,5 +260,53 @@ describe('CaseRue', () => {
     });
 });
 
+// ------------------------ Tests Cases Gares ----------------------------------
 
-    
+describe('Case Gare', () => {
+
+    test('calculerLoyer() retourne 0 si hypothéquée', () => {
+        const gare = new CaseGare('Gare du Nord', 200, [25, 50, 100, 200]);
+        gare.proprietaire = { nom: 'Judith', proprietes: [] };
+        gare.hypotheque = 100;
+
+        expect(gare.calculerLoyer()).toBe(0);
+    });
+
+    test('calculerLoyer() retourne 0 si pas de propriétaire', () => {
+        const gare = new CaseGare('Gare du Nord', 200, [25, 50, 100, 200]);
+
+        expect(gare.calculerLoyer()).toBe(0);
+    });
+
+    test('calculerLoyer() retourne loyers[0] si le joueur possède 1 seule gare', () => {
+        const gare = new CaseGare('Gare du Nord', 200, [25, 50, 100, 200]);
+        const proprietaire = { nom: 'Alain', proprietes: [gare] };
+        gare.proprietaire = proprietaire;
+
+        expect(gare.calculerLoyer()).toBe(25);
+    });
+
+    test('calculerLoyer() retourne loyers[1] si le joueur possède 2 gares', () => {
+        const gare1 = new CaseGare('Gare du Nord', 200, [25, 50, 100, 200]);
+        const gare2 = new CaseGare('Gare de Lyon', 200, [25, 50, 100, 200]);
+        const proprietaire = { nom: 'Marie', proprietes: [gare1, gare2] };
+        gare1.proprietaire = proprietaire;
+
+        expect(gare1.calculerLoyer()).toBe(50);
+    });
+
+    test('calculerLoyer() retourne loyers[3] si le joueur possède 4 gares', () => {
+        const gare1 = new CaseGare('Gare 1', 200, [25, 50, 100, 200]);
+        const gare2 = new CaseGare('Gare 2', 200, [25, 50, 100, 200]);
+        const gare3 = new CaseGare('Gare 3', 200, [25, 50, 100, 200]);
+        const gare4 = new CaseGare('Gare 4', 200, [25, 50, 100, 200]);
+        const proprietaire = { 
+            nom: 'Eve', 
+            proprietes: [gare1, gare2, gare3, gare4] 
+        };
+        gare1.proprietaire = proprietaire;
+
+        expect(gare1.calculerLoyer()).toBe(200);
+    });
+
+});
