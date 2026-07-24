@@ -262,8 +262,8 @@ describe('CaseRue', () => {
 
 // ------------------------ Tests Cases Gares ----------------------------------
 
-describe('Case Gare', () => {
-
+describe('CaseGare', () => {
+    //tests pour calculerLoyer()
     test('calculerLoyer() retourne 0 si hypothéquée', () => {
         const gare = new CaseGare('Gare du Nord', 200, [25, 50, 100, 200]);
         gare.proprietaire = { nom: 'Judith', proprietes: [] };
@@ -308,5 +308,47 @@ describe('Case Gare', () => {
 
         expect(gare1.calculerLoyer()).toBe(200);
     });
-
 });
+
+
+// ---------------------  tests Cases societes -------------------------------
+
+describe('CaseSociete', () => {
+    test('calculerLoyer() retourne 0 si hypothéquée', () => {
+        const societe = new CaseSociete('Société Test', 150, [4, 10]);
+        societe.proprietaire = { nom: 'Julien', proprietes: [] };
+        societe.hypotheque = 100;
+        
+        expect(societe.calculerLoyer({ de: { valeurAffichee: 5 } })).toBe(0);
+    });
+
+    test('calculerLoyer() retourne 0 si pas de propriétaire', () => {
+        const societe = new CaseSociete('Société Test', 150, [4, 10]);
+        const jeu = { de: { valeurAffichee: 6 } };
+
+        expect(societe.calculerLoyer(jeu)).toBe(0);
+    });
+
+    test('retourne dé x4 si le joueur possède 1 seule société', () => {
+        const societe = new CaseSociete('Compagnie des eaux', 150, []);
+        const proprietaire = { nom: 'May', proprietes: [societe] };
+        societe.proprietaire = proprietaire;
+        const jeu = { de: { valeurAffichee: 6 } };
+
+        expect(societe.calculerLoyer(jeu)).toBe(24); // 6 * 4
+    });
+
+    test('retourne dé x10 si le joueur possède 2 sociétés', () => {
+        const societe1 = new CaseSociete('Compagnie des eaux', 150, []);
+        const societe2 = new CaseSociete('Compagnie électricité', 150, []);
+        const proprietaire = { nom: 'Alice', proprietes: [societe1, societe2] };
+        societe1.proprietaire = proprietaire;
+        const jeu = { de: { valeurAffichee: 5 } };
+
+        expect(societe1.calculerLoyer(jeu)).toBe(50); // 5 * 10
+    });
+});
+
+// -------------------------- Tests Case d'action ----------------------------
+
+

@@ -221,12 +221,11 @@ export class CaseSociete extends CasePropriete {
       montant = jeu.de.valeurAffichee * 10; // 2 societes -> 10 fois le résultat du dé
     }
 
-    console.log("montant loyer société", montant);
     return montant;
   }
 }
 
-// Case d'action
+// --------------------------  Case d'action ---------------------------------
 
 export class CaseAction extends CaseJeu {
   constructor(nom, type = null, prix = null) {
