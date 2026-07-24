@@ -183,7 +183,7 @@ describe('VersementEffet', () => {
 
         expect(joueur.payer).toHaveBeenCalledWith(100);
         expect(banque.recevoir).toHaveBeenCalledWith(100);
-        expect(messages).toEqual(['Melissa paye 100 M à la banque.']);
+        expect(messages).toEqual([`${joueur.nom} paye 100 M à la banque.`]);
     });
 
     test('appliquer() versement de banque à joueur (string)', () => {
@@ -195,7 +195,7 @@ describe('VersementEffet', () => {
 
         expect(joueur.recevoir).toHaveBeenCalledWith(10);
         expect(banque.payer).toHaveBeenCalledWith(10);
-        expect(messages).toEqual(['Melissa reçoit 10 M de la banque.']);
+        expect(messages).toEqual([`${joueur.nom} reçoit 10 M de la banque.`]);
     });
 
     test('appliquer() objet Joueur => objet Banque (instanceof)', () => {
@@ -209,7 +209,7 @@ describe('VersementEffet', () => {
 
         expect(source.payer).toHaveBeenCalledWith(30);
         expect(destinataire.recevoir).toHaveBeenCalledWith(30);
-        expect(messages).toEqual(['la banque reçoit 30 M de Alice.']);
+        expect(messages).toEqual([`${destinataire.nom} reçoit 30 M de ${source.nom}.`]);
     });
 
     test('appliquer() objet Joueur => objet Joueur (instanceof)', () => {
@@ -223,7 +223,7 @@ describe('VersementEffet', () => {
 
         expect(source.payer).toHaveBeenCalledWith(12);
         expect(destinataire.recevoir).toHaveBeenCalledWith(12);
-        expect(messages).toEqual(['Bob reçoit 12 M de Etienne.']);
+        expect(messages).toEqual([`${destinataire.nom} reçoit 12 M de ${source.nom}.`]);
     });
 
     test('appliquer() objet Banque => objet Joueur (instanceof)', () => {
@@ -237,7 +237,36 @@ describe('VersementEffet', () => {
 
         expect(source.payer).toHaveBeenCalledWith(17);
         expect(destinataire.recevoir).toHaveBeenCalledWith(17);
-        expect(messages).toEqual(['Charlie reçoit 17 M de la banque.']);
+        expect(messages).toEqual([`${destinataire.nom} reçoit 17 M de la banque.`]);
+    });
+});
+
+//----------------------- Tests Réparations effet ----------------------------
+
+describe('ReparationsEffet', () => {  
+    test('appliquer() le joueur paie pour les réparations', () => {
+        const joueur = creerJoueur();
+        joueur.calculerTotalMaisonsHotels = jest.fn(() => [3, 1]); //3 maisons et 1 hôtel
+        const banque = creerBanque();
+        const effet = new ReparationsEffet(50, 20, joueur, banque); // 50 M par maison, 20 M par hôtel
+        
+        const messages = effet.appliquer(joueur, null, banque);
+
+        expect(joueur.payer).toHaveBeenCalledWith(170);
+        expect(banque.recevoir).toHaveBeenCalledWith(170);
+        expect(messages).toEqual([`${joueur.nom} paie 170 M pour les réparations.`]);
     });
 
-});
+    test('appliquer() le joueur ne paie aucune réparations avec 0 maison et 0 hôtel', () => {
+        const joueur = creerJoueur();
+        joueur.calculerTotalMaisonsHotels = jest.fn(() => [0, 0]); 
+        const banque = creerBanque();
+        const effet = new ReparationsEffet(50, 20, joueur, banque);
+
+        const messages = effet.appliquer(joueur, null, banque);
+
+        expect(joueur.payer).not.toHaveBeenCalled();
+        expect(banque.recevoir).not.toHaveBeenCalled();
+        expect(messages).toEqual([`${joueur.nom} n'a ni maison ni d'hôtel. Pas de réparations.`]);
+    }); 
+}); 
