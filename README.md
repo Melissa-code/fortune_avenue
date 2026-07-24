@@ -66,6 +66,9 @@ tests/
 
 ```bash
 npx eslint js/model/Carte.js
+npx eslint js/model/Carte.js --fix
+
+npx prettier --write tests/Effet.test.js
 ```
 
 
@@ -76,7 +79,8 @@ npx eslint js/model/Carte.js
 - **[JavaScript](https://developer.mozilla.org/fr/docs/Web/JavaScript)**: logique du jeu 
 - **[Canvas API](https://developer.mozilla.org/en-US/docs/Web/API/Canvas_API)**: rendu du jeu
 - **[Jest](https://archive.jestjs.io/docs/en/22.x/getting-started.html)**: tests unitaires
-- **[ESLint](https://eslint.org/docs/latest/)**: analyse statique du code
+- **[ESLint](https://eslint.org/docs/latest/)**: analyse statique du code (erreurs/mauvaises pratiques)
+- **[Prettier](https://prettier.io/docs/)**: formate indentation, largeur de ligne, style cohérent
 
 ### Outils
 
