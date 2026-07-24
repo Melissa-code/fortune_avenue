@@ -142,10 +142,6 @@ export class CaseRue extends CasePropriete {
 
     let effet = new VersementEffet(prixConstruction, this.proprietaire, banque);
     effet.appliquer(this.proprietaire, banque);
-
-    console.log(
-      `${this.proprietaire.nom} paye ${prixConstruction}€ pour construire un(e) ${typeConstruction}.`,
-    );
   }
 
   construire(typeConstruction, banque) {
@@ -179,7 +175,8 @@ export class CaseRue extends CasePropriete {
   }
 }
 
-// Case gare
+// ----------------------------- Cases gares ----------------------------------
+
 export class CaseGare extends CasePropriete {
   constructor(nom, prix, loyers, typeCase, hypotheque) {
     super(nom, prix, loyers);
