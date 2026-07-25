@@ -326,7 +326,7 @@ export class PropositionDecliner extends Proposition {
     }
 
     valider(joueur, jeu, casePropriete, banque) {
-        return { titre: "Refus", message: `${joueur.nom} a décliné l'achat de ${casePropriete.nom} pour ${casePropriete.prixAchat} €.`}
+        return { titre: "Refus", message: `${joueur.nom} a décliné l'achat de ${casePropriete.nom} pour ${casePropriete.prixAchat} M.`}
     }
 }
 
