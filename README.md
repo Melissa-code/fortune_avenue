@@ -60,9 +60,9 @@ tests/
 └── ...
 ```
 
-## ESLinter 
+## ESLinter et Prettier
 
-### Lancer ESLint
+### Lancer ESLint et Prettier
 
 ```bash
 npx eslint js/model/Carte.js

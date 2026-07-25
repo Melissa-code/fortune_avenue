@@ -239,26 +239,25 @@ export class CaseAction extends CaseJeu {
     this.effets.push(effet);
   }
 
+  getPropositionsFondsCommuns() {
+    return Proposition.getListePropositionsFondsCommuns();
+  }
+
   arriver(joueur, jeu) {
+    // Payez une amende ou tirez une carte CHANCE
     if (this.nom === "Fonds communs 13") {
-      console.log("CAse Fonds communs 13: filtrer propositions valables");
-      jeu.listePropositions =
-        this.filtrerPropositionsValablesFondsCommuns(joueur);
+      jeu.listePropositions = this.getPropositionsFondsCommuns();
       jeu.etat = EtatsJeu.EN_ATTENTE;
       return jeu.listePropositions || [];
     }
 
     const messagesEffets = [];
 
-    if (this.effets.length === 0) {
-      console.log("Aucun effet associé à cette case d'action.");
-    }
-
     for (let effet of this.effets) {
-      if (effet instanceof VersementEffet) {
-        if (effet.montant === undefined)
-          console.trace("effet montant undefined", effet);
+      if (effet instanceof VersementEffet && effet.montant === undefined) {
+        console.log(`VersementEffet sans montant sur la case "${this.nom}"`);
       }
+
       const messages = effet.appliquer(joueur, jeu, jeu.banque); // return array de messages
       messagesEffets.push(...messages);
     }
