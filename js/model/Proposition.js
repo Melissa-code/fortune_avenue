@@ -211,6 +211,8 @@ export class PropositionPayerAmende extends Proposition {
   }
 }
 
+// -------------------------- Tirer une carte chance ------------------------
+
 export class PropositionTirerCarteChance extends Proposition {
   constructor() {
     super("Tirer une carte chance", "voulez-vous tirer une carte chance ?");

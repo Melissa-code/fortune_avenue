@@ -4,9 +4,16 @@ import {
     PropositionJouerDeSortiePrison, 
     PropositionJouerCarteChanceSortiePrison, 
     PropositionJouerCarteFondsCommunsSortiePrison, 
-    PropositionAcheterCartePourSortiePrison 
+    PropositionAcheterCartePourSortiePrison, 
+    PropositionPayerAmende, 
+    PropositionTirerCarteChance, 
+    PropositionAcheterPropriete,
+    PropositionConstruireMaison, 
+    PropositionConctruireHotel, 
+    PropositionDecliner,
 } from '../js/model/Proposition.js';
 import Joueur from '../js/model/Joueur.js';
+import Banque from '../js/model/Banque.js';
 import EtatsJeu from '../js/model/enums/EtatsJeu.js';
 
 describe('Proposition', () => {
@@ -75,14 +82,14 @@ describe('PropositionJouerDeSortiePrison', () => {
 
     // estDisponible() retourne true par défaut
     test('retourne true si la proposition est disponible', () => {
-        const proposition = new Proposition('Titre', 'Description');
+        const proposition = new PropositionJouerDeSortiePrison('Titre', 'Description');
         proposition.estDisponible = () => true;
 
         expect(proposition.estDisponible()).toBe(true);
     });
 
     test('retourne false si la proposition n\'est pas disponible', () => {
-        const proposition = new Proposition('Titre', 'Description');
+        const proposition = new PropositionJouerDeSortiePrison('Titre', 'Description');
         proposition.estDisponible = () => false;    
 
         expect(proposition.estDisponible()).toBe(false);
@@ -379,3 +386,97 @@ describe('acheter carte pour sortir de prison', () => {
 
 // ------------- Tests Choix (carte fonds commun) -----------------------
 
+describe('PropositionPayerAmendeFondsCommuns', () => {
+
+    afterEach(() => {
+        jest.restoreAllMocks();
+    });
+
+    // tests estDisponible()
+    test('retourne toujours true', () => {
+        const proposition = new PropositionPayerAmende(50);
+
+        expect(proposition.estDisponible()).toBe(true);
+    });
+
+    test('valider() : le joueur paye l\'amende', () => {
+        const proposition = new PropositionPayerAmende(50);
+        const joueur = new Joueur('Edouard');
+        const banque = new Banque();
+        jest.spyOn(joueur, 'payer');
+        jest.spyOn(banque, 'recevoir');
+
+        const resultat = proposition.valider(joueur, null, null, banque);
+
+        expect(joueur.payer).toHaveBeenCalledWith(50);
+        expect(banque.recevoir).toHaveBeenCalledWith(50);
+        expect(resultat).toEqual({
+            titre: 'Paiement',
+            message: `${joueur.nom} a choisi de payer l'amende de 50 M.`
+        });
+    });
+}); 
+
+// ------------- Tests Choix (tirer carte chance) -----------------------
+
+describe('PropositionTirerCarteChance', () => {
+
+    // tests estDisponible()
+    test('retourne toujours true', () => {
+        const proposition = new PropositionTirerCarteChance();  
+        expect(proposition.estDisponible()).toBe(true);
+    });
+
+    // tests valider()
+    test('tire une carte chance, exécute son effet, et met à jour jeu.listeStatuts', () => {
+        const proposition = new PropositionTirerCarteChance();
+
+        const carte = {
+            titre: 'Chance 3',
+            description: 'Avancez de 3 cases',
+            executer: jest.fn(() => ['Vous avancez de 3 cases.'])
+        };
+
+        const joueur = { nom: 'Alice' };
+        const jeu = {
+            piocheChance: [carte],
+            piocheFondsCommun: [],
+            listeStatuts: []
+        };
+        const banque = {};
+
+        const resultat = proposition.valider(joueur, jeu, null, banque);
+
+        expect(carte.executer).toHaveBeenCalledWith(joueur, jeu, banque);
+        expect(jeu.listeStatuts).toEqual([
+            '**Carte Chance 3',
+            '//"Avancez de 3 cases"',
+            'Vous avancez de 3 cases.'
+        ]);
+        expect(resultat).toEqual({
+            titre: 'Carte Chance',
+            message: 'Vous tirez une carte chance...'
+        });
+    });
+
+    test('gère le cas d\'une carte "sortie de prison"', () => {
+        const proposition = new PropositionTirerCarteChance();
+
+        const carte = {
+            titre: 'Chance 9',
+            description: 'Sortez de prison',
+            executer: jest.fn(() => [])
+        };
+
+        const joueur = { nom: 'Bob' };
+        const jeu = {
+            piocheChance: [carte],
+            listeStatuts: []
+        };
+
+        proposition.valider(joueur, jeu, null, {});
+
+        expect(joueur.carteChanceSortiePrison).toBe(true);
+        expect(carte.executer).not.toHaveBeenCalled();
+    });
+});
