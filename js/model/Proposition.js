@@ -82,6 +82,8 @@ export class PropositionJouerDeSortiePrison extends Proposition {
   }
 }
 
+// ------------------ carte chance sortie de prison ---------------------
+
 export class PropositionJouerCarteChanceSortiePrison extends Proposition {
   constructor() {
     super(
@@ -101,16 +103,14 @@ export class PropositionJouerCarteChanceSortiePrison extends Proposition {
   valider(joueur, _jeu, _caseJeu, _banque) {
     if (!this.estDisponible(joueur)) return false;
 
-    if (joueur.carteChanceSortiePrison === true) {
-      joueur.carteChanceSortiePrison = false;
-      joueur.estEnPrison = false;
-      joueur.compteurPourSortirPrison = 0;
-      return { titre: "Libre", message: "Vous sortez de prison !" };
-    }
-
-    return { titre: "Raté", message: "Vous restez en prison !" };
+    joueur.carteChanceSortiePrison = false;
+    joueur.estEnPrison = false;
+    joueur.compteurPourSortirPrison = 0;
+    return { titre: "Libre", message: "Vous sortez de prison !" };
   }
 }
+
+// ------------------ carte fonds commun sortie de prison ------------------
 
 export class PropositionJouerCarteFondsCommunsSortiePrison extends Proposition {
   constructor() {
@@ -131,16 +131,14 @@ export class PropositionJouerCarteFondsCommunsSortiePrison extends Proposition {
   valider(joueur, _jeu, _caseJeu, _banque) {
     if (!this.estDisponible(joueur)) return false;
 
-    if (joueur.carteFondsCommunsSortiePrison === true) {
-      joueur.carteFondsCommunsSortiePrison = false;
-      joueur.estEnPrison = false;
-      joueur.compteurPourSortirPrison = 0;
-      return { titre: "Libre", message: "Vous sortez de prison !" };
-    }
-
-    return { titre: "Raté", message: "Vous restez en prison !" };
+    joueur.carteFondsCommunsSortiePrison = false;
+    joueur.estEnPrison = false;
+    joueur.compteurPourSortirPrison = 0;
+    return { titre: "Libre", message: "Vous sortez de prison !" };
   }
 }
+
+// ------------------ acheter carte sortie de prison ------------------
 
 export class PropositionAcheterCartePourSortiePrison extends Proposition {
   constructor() {
@@ -176,10 +174,12 @@ export class PropositionAcheterCartePourSortiePrison extends Proposition {
       this.joueur2.carteChanceSortiePrison = false;
       joueur.carteChanceSortiePrison = true;
       joueur.estEnPrison = false;
+      joueur.compteurPourSortirPrison = 0
     } else if (this.joueur2.carteFondsCommunsSortiePrison === true) {
       this.joueur2.carteFondsCommunsSortiePrison = false;
       joueur.carteFondsCommunsSortiePrison = true;
       joueur.estEnPrison = false;
+      joueur.compteurPourSortirPrison = 0
     }
 
     return {

@@ -6,6 +6,7 @@ import {
     PropositionJouerCarteFondsCommunsSortiePrison, 
     PropositionAcheterCartePourSortiePrison 
 } from '../js/model/Proposition.js';
+import Joueur from '../js/model/Joueur.js';
 import EtatsJeu from '../js/model/enums/EtatsJeu.js';
 
 describe('Proposition', () => {
@@ -68,7 +69,7 @@ describe('Proposition', () => {
     });
 }); 
 
-// ------------------ tests pour sortir de prison ---------------------------
+// ------------------ tests pour sortir de prison avec dé --------------------
 
 describe('PropositionJouerDeSortiePrison', () => {
 
@@ -162,3 +163,219 @@ describe('PropositionJouerDeSortiePrison', () => {
         });
     });
 }); 
+
+// -------------- tests carte chance sortie de prison ---------------------
+
+describe('carte chance pour sortir de prison', () => {
+
+    // tests estDisponible()
+    test('retourne true si le joueur a la carte', () => {
+        const proposition = new PropositionJouerCarteChanceSortiePrison();
+        const joueur = { carteChanceSortiePrison: true };
+
+        expect(proposition.estDisponible(joueur)).toBe(true);
+    });
+
+    test('retourne false si le joueur n\'a pas la carte', () => {
+        const proposition = new PropositionJouerCarteChanceSortiePrison();
+        const joueur = { carteChanceSortiePrison: false };
+
+        expect(proposition.estDisponible(joueur)).toBe(false);
+    });
+
+    test('retourne false si la propriété est absente', () => {
+        const proposition = new PropositionJouerCarteChanceSortiePrison();
+        const joueur = {};
+
+        expect(proposition.estDisponible(joueur)).toBe(false);
+    });
+
+    // tests valider()
+    test('le joueur sort de prison', () => {
+        const proposition = new PropositionJouerCarteChanceSortiePrison();
+        const joueur = {
+            estEnPrison: true,
+            compteurPourSortirPrison: 1,
+            carteChanceSortiePrison: true,
+        };
+
+        const resultat = proposition.valider(joueur);
+
+        expect(joueur.estEnPrison).toBe(false); 
+        expect(joueur.compteurPourSortirPrison).toBe(0);
+        expect(joueur.carteChanceSortiePrison).toBe(false);
+        expect(resultat).toEqual({
+            titre: 'Libre',
+            message: 'Vous sortez de prison !'
+        });
+    }); 
+
+    test('le joueur n\'a pas de carte chance pour sortir de prison', () => {
+        const proposition = new PropositionJouerCarteChanceSortiePrison();
+        const joueur = {
+            estEnPrison: true,
+            compteurPourSortirPrison: 1,
+            carteChanceSortiePrison: false,
+        };      
+        const resultat = proposition.valider(joueur);
+
+        expect(joueur.estEnPrison).toBe(true); 
+        expect(joueur.compteurPourSortirPrison).toBe(1);
+        expect(joueur.carteChanceSortiePrison).toBe(false);
+        expect(resultat).toBe(false);
+    });
+}); 
+
+// -------------- tests carte fonds commun sortie de prison ---------------
+
+ describe('carte fonds commun pour sortir de prison', () => {
+
+    // tests estDisponible() 
+        test('retourne true si le joueur a la carte', () => {
+            const proposition = new PropositionJouerCarteFondsCommunsSortiePrison();
+            const joueur = { carteFondsCommunsSortiePrison: true };
+
+            expect(proposition.estDisponible(joueur)).toBe(true);
+        });
+
+        test('retourne false si le joueur n\'a pas la carte', () => {
+            const proposition = new PropositionJouerCarteFondsCommunsSortiePrison();
+            const joueur = { carteFondsCommunsSortiePrison: false };
+
+            expect(proposition.estDisponible(joueur)).toBe(false);
+        });
+
+        test('retourne false si la propriété est absente', () => {
+            const proposition = new PropositionJouerCarteFondsCommunsSortiePrison();
+            const joueur = {};
+
+            expect(proposition.estDisponible(joueur)).toBe(false);
+        });
+
+        // tests valider()
+        test('le joueur sort de prison si il a la carte', () => {
+            const proposition = new PropositionJouerCarteFondsCommunsSortiePrison();
+            const joueur = {
+                estEnPrison: true,
+                compteurPourSortirPrison: 1,
+                carteFondsCommunsSortiePrison: true,
+            };
+
+            const resultat = proposition.valider(joueur);
+
+            expect(joueur.estEnPrison).toBe(false);
+            expect(joueur.compteurPourSortirPrison).toBe(0);
+            expect(joueur.carteFondsCommunsSortiePrison).toBe(false);
+            expect(resultat).toEqual({
+                titre: 'Libre',
+                message: 'Vous sortez de prison !'
+            });
+        });
+
+        test('retourne false si le joueur n\'a pas la carte', () => {
+            const proposition = new PropositionJouerCarteFondsCommunsSortiePrison();
+            const joueur = {
+                estEnPrison: true,
+                compteurPourSortirPrison: 1,
+                carteFondsCommunsSortiePrison: false,
+            };
+
+            const resultat = proposition.valider(joueur);
+
+            expect(joueur.estEnPrison).toBe(true);
+            expect(joueur.compteurPourSortirPrison).toBe(1);
+            expect(resultat).toBe(false);
+        });
+    });
+    
+// ----------------- tests acheter carte sortie de prison ------------------
+
+describe('acheter carte pour sortir de prison', () => {
+
+    // tests estDisponible()
+    test('retourne true si autre joueur a la carte chance ou fonds commun', () => {
+        const proposition = new PropositionAcheterCartePourSortiePrison();
+        const joueur = { 
+            estEnPrison: true,
+            carteChanceSortiePrison: false,
+            carteFondsCommunsSortiePrison: false,
+        };
+        const autreJoueur = {
+            carteChanceSortiePrison: true,
+            carteFondsCommunsSortiePrison: false,
+        };
+        const jeu = { getJoueurs: () => [joueur, autreJoueur] };
+        
+        expect(proposition.estDisponible(joueur, jeu)).toBe(true);
+    });
+
+    test('retourne false si aucun autre joueur n\'a la carte chance ou fonds commun', () => {
+        const proposition = new PropositionAcheterCartePourSortiePrison();
+        const joueur = { 
+            estEnPrison: true,
+            carteChanceSortiePrison: false,
+            carteFondsCommunsSortiePrison: false,
+        };
+        const autreJoueur = {
+            carteChanceSortiePrison: false,
+            carteFondsCommunsSortiePrison: false,
+        };
+        const jeu = { getJoueurs: () => [joueur, autreJoueur] };
+        expect(proposition.estDisponible(joueur, jeu)).toBe(false);
+    });
+
+    // valider(): joueur achete la carte
+    test('le joueur achète la carte chance pour sortir de prison', () => {
+        const proposition = new PropositionAcheterCartePourSortiePrison();
+        const joueur = new Joueur('Edouard');
+        joueur.estEnPrison = true;
+        joueur.compteurPourSortirPrison = 1;
+        jest.spyOn(joueur, 'payer');
+
+        const autreJoueur = new Joueur('Autre');
+        autreJoueur.carteChanceSortiePrison = true;
+        autreJoueur.carteFondsCommunsSortiePrison = false;
+        jest.spyOn(autreJoueur, 'recevoir');
+
+        const jeu = { getJoueurs: () => [joueur, autreJoueur] };
+
+        const resultat = proposition.valider(joueur, jeu);
+        
+        expect(joueur.estEnPrison).toBe(false);
+        expect(joueur.carteChanceSortiePrison).toBe(true);
+        expect(joueur.compteurPourSortirPrison).toBe(0);
+        expect(joueur.payer).toHaveBeenCalledWith(25);
+        expect(autreJoueur.recevoir).toHaveBeenCalledWith(25);
+        expect(resultat).toEqual({
+            titre: 'Libre',
+            message: `${joueur.nom} a acheté la carte pour sortir de prison.`
+        });
+    }); 
+
+    test('retourne false si aucun autre joueur n\'a la carte chance ou fonds commun', () => {
+        const proposition = new PropositionAcheterCartePourSortiePrison();
+        
+        const joueur = new Joueur('Edouard');
+        joueur.estEnPrison = true;
+        joueur.compteurPourSortirPrison = 1;
+        jest.spyOn(joueur, 'payer');
+
+        const autreJoueur = new Joueur('Autre');
+        autreJoueur.carteChanceSortiePrison = false;
+        autreJoueur.carteFondsCommunsSortiePrison = false;
+        jest.spyOn(autreJoueur, 'recevoir');
+
+        const jeu = { getJoueurs: () => [joueur, autreJoueur] };
+
+        const resultat = proposition.valider(joueur, jeu);
+
+        expect(joueur.estEnPrison).toBe(true);
+        expect(joueur.compteurPourSortirPrison).toBe(1);
+        expect(joueur.payer).not.toHaveBeenCalled();
+        expect(autreJoueur.recevoir).not.toHaveBeenCalled();
+        expect(resultat).toBe(false);
+    });
+}); 
+
+// ------------- Tests Choix (carte fonds commun) -----------------------
+
