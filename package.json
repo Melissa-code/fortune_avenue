@@ -4,7 +4,7 @@
   "description": "Il s'agit d'un jeu de plateau inspiré du Monopoly développé en **JavaScript**",
   "main": "main.js",
   "scripts": {
-    "test": "node --experimental-vm-modules node_modules/.bin/jest"
+    "test": "cross-env NODE_OPTIONS=--experimental-vm-modules jest" 
   },
   "repository": {
     "type": "git",
@@ -20,6 +20,7 @@
   "homepage": "https://github.com/Melissa-code/fortune_avenue#readme",
   "devDependencies": {
     "@eslint/js": "^10.0.1",
+    "cross-env": "^10.1.0",
     "eslint": "^10.7.0",
     "globals": "^17.7.0",
     "jest": "^30.4.2"

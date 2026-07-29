@@ -1,12 +1,13 @@
-# Fortune Avenue 
+# <img src="./images/favicon/favicon_white.svg" alt="logo" width="17" /> Fortune Avenue 
 
 Il s'agit d'un jeu de plateau inspiré du Monopoly développé en **JavaScript**
 
 
 ## 1. Description du projet
 
-**Fortune Avenue** est une version simplifiée du célèbre jeu Monopoly codée en **vanilla JavaScript**
-L’objectif : gérer vos propriétés, encaisser des loyers et rester le dernier joueur solvable
+**Fortune Avenue** est une version simplifiée du Monopoly codée en **vanilla JavaScript**
+
+**L’objectif**: gérer vos propriétés, encaisser des loyers et rester le dernier joueur solvable
 
 Ce projet vise à explorer :
 - la **programmation orientée objet** en JavaScript 
@@ -28,8 +29,8 @@ Ce projet vise à explorer :
 ## Aperçu 
 
 <div style="display:flex; gap:2rem">
-  <img src="./images/technical/achat.png" width="600">
-  <img src="./images/technical/prison.png" width="600">
+  <img src="./images/technical/achat.png" width="500">
+  <img src="./images/technical/prison.png" width="500">
 </div>
 
 ## 3. Installation 
@@ -37,6 +38,7 @@ Ce projet vise à explorer :
 ```
   git clone https://github.com/Melissa-code/fortune_avenue.git
   cd fortune_avenue
+  npm install
 ```
 
 Ouvrir le fichier `index.html` dans le navigateur pour commencer à jouer
@@ -44,6 +46,26 @@ Ouvrir le fichier `index.html` dans le navigateur pour commencer à jouer
 ## 4. Tests 
 
 Les tests unitaires sont écrits avec [Jest](https://jestjs.io/).
+
+> **Note de compatibilité :** Le projet utilise les modules ECMAScript (ESM) 
+natifs. 
+Afin d'assurer la compatibilité des tests à la fois sur **macOS/Linux** et **Windows**, 
+nous utilisons `cross-env` pour passer l'option `--experimental-vm-modules` à Node.js
+
+### Prérequis/Installation
+
+Si vous venez d'installer le projet ou si les dépendances de développement 
+ne sont pas encore présentes :
+
+```bash
+npm install
+```
+
+Si vous ajoutez cross-env au projet pour la première fois, installez-le avec : 
+
+```bash
+npm install --save-dev cross-env
+```
 
 ### Lancer les tests 
 
