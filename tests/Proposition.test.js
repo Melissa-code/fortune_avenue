@@ -778,3 +778,33 @@ describe('PropositionConctruireHotel', () => {
         });
     });
 });
+
+// ----------------------- Tests décliner ----------------------------------
+
+describe('PropositionDecliner', () => {
+
+    test('estDisponible() retourne toujours true', () => {
+        const proposition = new PropositionDecliner();
+        const joueur = {};
+        const caseJeu = {};
+        const jeu = {};
+        expect(proposition.estDisponible(joueur, caseJeu, jeu)).toBe(true);
+    });
+
+    // tests valider()
+    test('valider() retourne un message de déclinaison', () => {
+        const proposition = new PropositionDecliner();
+        const joueur = { nom: 'Alice' };
+        const caseJeu = { nom: 'Rue de la Paix', prixAchat: 200 };
+        const jeu = {};
+        const banque = {};
+
+        const resultat = proposition.valider(joueur, jeu, caseJeu, banque);
+
+        expect(resultat).toEqual({
+            titre: 'Refus',
+            message: `${joueur.nom} a décliné l'achat de ${caseJeu.nom} pour ${caseJeu.prixAchat} M.`
+        });
+    });
+});
+
