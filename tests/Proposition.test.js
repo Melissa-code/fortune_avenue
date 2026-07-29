@@ -12,6 +12,7 @@ import {
     PropositionConctruireHotel, 
     PropositionDecliner,
 } from '../js/model/Proposition.js';
+import { CaseRue } from '../js/model/CaseJeu.js';
 import Joueur from '../js/model/Joueur.js';
 import Banque from '../js/model/Banque.js';
 import EtatsJeu from '../js/model/enums/EtatsJeu.js';
@@ -574,5 +575,108 @@ describe('PropositionAcheterPropriete', () => {
             message: 'Hocine a acheté Rue de la Paix pour 200 M.'
         });
     });
+}); 
 
+// -------------------- Tests contruire maisons ------------------------
+
+describe('PropositionConstruireMaison', () => {
+
+    afterEach(() => {
+        jest.restoreAllMocks();
+    });
+
+    // tests estDisponible() 
+    test('retourne false si caseRue n\'est pas une CaseRue', () => {
+        const proposition = new PropositionConstruireMaison();
+        const joueur = { argent: 500 };
+        const casePasRue = { nombreMaisons: 0, prixMaison: 50 }; // pas une vraie CaseRue
+        const jeu = { possederTouteLaCollectionCases: jest.fn(() => true) };
+
+        expect(proposition.estDisponible(joueur, casePasRue, jeu)).toBe(false);
+    });
+
+    test('retourne false si le joueur n\'est pas propriétaire', () => {
+        const proposition = new PropositionConstruireMaison();
+        const joueur = { argent: 500 };
+        const caseRue = new CaseRue('Rue Test', 200, [10], 'bleu', 50, 100);
+        caseRue.proprietaire = { nom: 'Autre' }; // pas "joueur"
+        const jeu = { possederTouteLaCollectionCases: jest.fn(() => true) };
+
+        expect(proposition.estDisponible(joueur, caseRue, jeu)).toBe(false);
+    });
+
+    test('retourne false si le joueur ne possède pas toute la collection', () => {
+        const proposition = new PropositionConstruireMaison();
+        const joueur = { argent: 500 };
+        const caseRue = new CaseRue('Rue Test', 200, [10], 'bleu', 50, 100);
+        caseRue.proprietaire = joueur;
+        const jeu = { possederTouteLaCollectionCases: jest.fn(() => false) };
+
+        expect(proposition.estDisponible(joueur, caseRue, jeu)).toBe(false);
+    });
+
+    test('retourne false si déjà 4 maisons', () => {
+        const proposition = new PropositionConstruireMaison();
+        const joueur = { argent: 500 };
+        const caseRue = new CaseRue('Rue Test', 200, [10], 'bleu', 50, 100);
+        caseRue.proprietaire = joueur;
+        caseRue.nombreMaisons = 4;
+        const jeu = { possederTouteLaCollectionCases: jest.fn(() => true) };
+
+        expect(proposition.estDisponible(joueur, caseRue, jeu)).toBe(false);
+    });
+
+    test('retourne false si pas assez d\'argent', () => {
+        const proposition = new PropositionConstruireMaison();
+        const joueur = { argent: 10 };
+        const caseRue = new CaseRue('Rue Test', 200, [10], 'bleu', 50, 100);
+        caseRue.proprietaire = joueur;
+        const jeu = { possederTouteLaCollectionCases: jest.fn(() => true) };
+
+        expect(proposition.estDisponible(joueur, caseRue, jeu)).toBe(false);
+    });
+
+    test('retourne true si toutes les conditions sont réunies', () => {
+        const proposition = new PropositionConstruireMaison();
+        const joueur = { argent: 500 };
+        const caseRue = new CaseRue('Rue Test', 200, [10], 'bleu', 50, 100);
+        caseRue.proprietaire = joueur;
+        caseRue.nombreMaisons = 2;
+        const jeu = { possederTouteLaCollectionCases: jest.fn(() => true) };
+
+        expect(proposition.estDisponible(joueur, caseRue, jeu)).toBe(true);
+    });
+
+    // tests valider()
+    test('retourne false si non disponible', () => {
+        const proposition = new PropositionConstruireMaison();
+        const joueur = { argent: 10 }; // pas assez d'argent
+        const caseRue = new CaseRue('Rue Test', 200, [10], 'bleu', 50, 100);
+        caseRue.proprietaire = joueur;
+        const jeu = { possederTouteLaCollectionCases: jest.fn(() => true) };
+        jest.spyOn(caseRue, 'construire');
+
+        const resultat = proposition.valider(joueur, jeu, caseRue, {});
+
+        expect(resultat).toBe(false);
+        expect(caseRue.construire).not.toHaveBeenCalled();
+    });
+
+    test('construit la maison et retourne le message', () => {
+        const proposition = new PropositionConstruireMaison();
+        const joueur = { nom: 'Alice', argent: 500 };
+        const caseRue = new CaseRue('Rue de la Paix', 200, [10], 'bleu', 50, 100);
+        caseRue.proprietaire = joueur;
+        const jeu = { possederTouteLaCollectionCases: jest.fn(() => true) };
+        const banque = {};
+        jest.spyOn(caseRue, 'construire').mockImplementation(() => {});
+
+        const resultat = proposition.valider(joueur, jeu, caseRue, banque);
+
+        expect(caseRue.construire).toHaveBeenCalledWith('maison', banque);
+        expect(resultat).toEqual({
+            titre: 'Construction: ',
+            message: 'Alice a construit une maison sur Rue de la Paix.'
+        });
+    });
 }); 
