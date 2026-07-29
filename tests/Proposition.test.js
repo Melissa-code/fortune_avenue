@@ -480,3 +480,99 @@ describe('PropositionTirerCarteChance', () => {
         expect(carte.executer).not.toHaveBeenCalled();
     });
 });
+
+// ------------------- tests PropositionAcheterPropriete -------------------
+
+describe('PropositionAcheterPropriete', () => {
+
+    afterEach(() => {
+        jest.restoreAllMocks();
+    });
+
+    // tests estDisponible()
+    test('retourne true si case libre et assez d\'argent', () => {
+        const proposition = new PropositionAcheterPropriete();
+        const joueur = { argent: 500 };
+        const casePropriete = {
+            nom: 'Rue de la Paix',
+            prixAchat: 200,
+            estLibre: () => true
+        };
+
+        const resultat = proposition.estDisponible(joueur, casePropriete);
+
+        expect(resultat).toBe(true);
+        expect(proposition.description).toBe(
+            'voulez-vous acheter "Rue de la Paix" pour 200 M ?'
+        );
+    });
+
+    test('retourne false si case pas libre', () => {
+        const proposition = new PropositionAcheterPropriete();
+        const joueur = { argent: 500 };
+        const casePropriete = {
+            prixAchat: 200,
+            estLibre: () => false
+        };
+
+        expect(proposition.estDisponible(joueur, casePropriete)).toBe(false);
+    });
+
+    test('retourne false si pas assez d\'argent', () => {
+        const proposition = new PropositionAcheterPropriete();
+        const joueur = { argent: 100 };
+        const casePropriete = {
+            prixAchat: 200,
+            estLibre: () => true
+        };
+
+        expect(proposition.estDisponible(joueur, casePropriete)).toBe(false);
+    });
+
+    // tests valider()
+    test('retourne false si non disponible', () => {
+        const proposition = new PropositionAcheterPropriete();
+        const joueur = new Joueur('Boris');
+        joueur.argent = 100;
+        const casePropriete = {
+            prixAchat: 200,
+            estLibre: () => true,
+            proprietaire: null
+        };
+        const banque = new Banque();
+
+        const resultat = proposition.valider(joueur, null, casePropriete, banque);
+
+        expect(resultat).toBe(false); // pas assez d'argent
+        expect(joueur.proprietes).not.toContain(casePropriete);
+        expect(casePropriete.proprietaire).toBeNull();
+    });
+
+    test('achète la propriété : proprietaire, proprietes, paiement, message', () => {
+        const proposition = new PropositionAcheterPropriete();
+        const joueur = new Joueur('Hocine');
+        joueur.argent = 500;
+        jest.spyOn(joueur, 'payer');
+
+        const casePropriete = {
+            nom: 'Rue de la Paix',
+            prixAchat: 200,
+            estLibre: () => true,
+            proprietaire: null
+        };
+        const banque = new Banque();
+        jest.spyOn(banque, 'recevoir');
+
+        const resultat = proposition.valider(joueur, null, casePropriete, banque);
+
+        expect(casePropriete.proprietaire).toBe(joueur);
+        expect(joueur.proprietes).toContain(casePropriete);
+        expect(joueur.payer).toHaveBeenCalledWith(200);
+        expect(banque.recevoir).toHaveBeenCalledWith(200);
+        expect(resultat).toEqual({
+            titre: 'Achat',
+            message: 'Hocine a acheté Rue de la Paix pour 200 M.'
+        });
+    });
+
+}); 

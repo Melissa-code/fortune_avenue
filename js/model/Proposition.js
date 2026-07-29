@@ -268,28 +268,7 @@ export class PropositionAcheterPropriete extends Proposition {
   }
 }
 
-export class PropositionHypothequer extends Proposition {
-  constructor() {
-    super("Hypothéquer", "voulez-vous hypothéquer cette propriété ?");
-  }
-
-  estDisponible(_joueur, _casePropriete) {}
-
-  valider(_joueur, _jeu, _casePropriete, _banque) {}
-}
-
-export class PropositionLeverHypotheque extends Proposition {
-  constructor() {
-    super(
-      "Lever l'hypothèque",
-      "voulez-vous lever l'hypothèque sur cette propriété ?",
-    );
-  }
-
-  estDisponible(_joueur, _casePropriete) {}
-
-  valider(_joueur, _jeu, _casePropriete, _banque) {}
-}
+// ----------- Propositions construction de maisons et hôtels --------------
 
 export class PropositionConstruireMaison extends Proposition {
   constructor(_quantite) {
@@ -351,6 +330,8 @@ export class PropositionConctruireHotel extends Proposition {
   }
 }
 
+// ------------------------ Décliner ----------------------------------
+
 export class PropositionDecliner extends Proposition {
   constructor() {
     super("Décliner", "aucune action vous finissez votre tour.");
@@ -366,6 +347,31 @@ export class PropositionDecliner extends Proposition {
       message: `${joueur.nom} a décliné l'achat de ${casePropriete.nom} pour ${casePropriete.prixAchat} M.`,
     };
   }
+}
+
+// --------- TODO Hypothequer / Lever Hypotheque ---------------------------
+
+export class PropositionHypothequer extends Proposition {
+  constructor() {
+    super("Hypothéquer", "voulez-vous hypothéquer cette propriété ?");
+  }
+
+  estDisponible(_joueur, _casePropriete) {}
+
+  valider(_joueur, _jeu, _casePropriete, _banque) {}
+}
+
+export class PropositionLeverHypotheque extends Proposition {
+  constructor() {
+    super(
+      "Lever l'hypothèque",
+      "voulez-vous lever l'hypothèque sur cette propriété ?",
+    );
+  }
+
+  estDisponible(_joueur, _casePropriete) {}
+
+  valider(_joueur, _jeu, _casePropriete, _banque) {}
 }
 
 // -------------------------------------------------------------------------------------------
