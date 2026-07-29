@@ -1,6 +1,6 @@
 # <img src="./images/favicon/favicon_white.svg" alt="logo" width="17" /> Fortune Avenue 
 
-Il s'agit d'un jeu de plateau inspiré du Monopoly développé en **JavaScript**
+Jeu de plateau inspiré du Monopoly développé en **JavaScript**
 
 
 ## 1. Description du projet
@@ -28,9 +28,9 @@ Ce projet vise à explorer :
 
 ## Aperçu 
 
-<div style="display:flex; gap:2rem">
-  <img src="./images/technical/achat.png" width="500">
-  <img src="./images/technical/prison.png" width="500">
+<div style="display:flex; gap:1rem">
+  <img src="./images/technical/achat.png" width="300">
+  <img src="./images/technical/prison.png" width="300">
 </div>
 
 ## 3. Installation 
