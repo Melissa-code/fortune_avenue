@@ -1,35 +1,44 @@
 # Fortune Avenue 
 
-Il s'agit d'un jeu de plateau inspiré du Monopoly développé en **JavaScript**
+Jeu de plateau développé en **JavaScript**
 
 
 ## 1. Description du projet
 
-**Fortune Avenue** est une version simplifiée du célèbre jeu Monopoly codée en **vanilla JavaScript**
-L’objectif : gérer vos propriétés, encaisser des loyers et rester le dernier joueur solvable
+Fortune Avenue est une version simplifiée du jeu Monopoly codée en **vanilla JavaScript**.
 
-Ce projet vise à explorer :
-- la **programmation orientée objet** en JavaScript 
-- la **gestion des états de jeu** (tours, actions, événements aléatoires)
-- et le **rendu graphique dynamique** via la **Canvas API**
+**L’objectif :** gérer ses propriétés, encaisser des loyers et rester le dernier joueur solvable
+
+Ce projet met en application :
+- **programmation orientée objet avancée (POO)** avec l'héritage, le polymorphisme, l'architecture modulaire,
+- **gestion des états de jeu** avec les tours, les actions, les événements aléatoires,
+- **rendu graphique dynamique** via la **Canvas API**,
+- **qualité de code** via des tests unitaires automatisés avec **Jest**,
+- **bonnes pratiques du Web** avec l'intégration SEO, le balisage Open Graph et l'accessibilité `.sr-only`
 
 
 ## 2. Principales fonctionnalités 
 
-- **Plateau de jeu** (structure du plateau : case dans un Json/array, gérer les types de cases comme Départ, Chance, Fonds communs, afficher le plateau)
-- **Gestion des joueurs** (créer des joueurs, changer de tour, détection de la faillite, afficher un tableau de board)
-- **Déplacement** (lancement des 2 dés, rejouer avec le double 6, déplacer un pion sur le plateau, gérer la case départ, mettre le pion sur le plateau)
-- **Gérer les transactions** (achats, ventes, loyers, enchères, échanges, créer une banque, gérer la somme d'argent du joueur, ajouter des maisons...)
-- **Cartes “Chance” et “Fonds Communs”** (piocher une carte aléatoire, Gagner ou perdre de l’argent, avancer ou reculer, aller en prison ou sortir de prison)
-- **Gérer les cases** (taxes, prison..)
-- **Gérer l'interface et l'expérience utilisateur** (Afficher le plateau, le tour du joueur courant, le solde, bouton “Lancer les dés”, “Acheter”, “Passer le tour”, )
+- **Plateau et modélisation des cases :**  
+  structure de données modulaire (`Array` / `JSON`) gérant les différents types de cases (Départ, Propriétés, Chance, Fonds Communs, Taxes, Prison) via le polymorphisme et l'héritage
 
+- **Moteur de jeu et déplacements :**  
+  lancement des dés, calcul dynamique des déplacements, positionnement des pions sur le Canvas et gestion des règles spécifiques (bonus de passage sur la case Départ, gestion du tour de jeu)
+
+- **Économie et transactions :**  
+  module de banque, gestion du capital des joueurs, achat et vente de propriétés, calcul et encaissement des loyers, construction de maisons et détection automatique de la faillite
+
+- **Cartes Événements (Chance et Fonds Communs) :**  
+  tirage aléatoire générant des effets variés (gains ou pertes d'argent, déplacements forcés, envois ou sorties de prison)
+
+- **Interface Utilisateur et expérience (UI/UX) :**  
+  tableau de bord dynamique affichant le tour courant, le solde des joueurs et un plateau de jeu avec le dé
 
 ## Aperçu 
 
-<div style="display:flex; gap:2rem">
-  <img src="./images/technical/achat.png" width="600">
-  <img src="./images/technical/prison.png" width="600">
+<div style="display:flex; gap:1rem">
+  <img src="./images/technical/achat.png" width="300">
+  <img src="./images/technical/prison.png" width="300">
 </div>
 
 ## 3. Installation 
