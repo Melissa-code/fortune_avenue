@@ -148,7 +148,7 @@ describe("Controller", () => {
   test("priorise les propositions sur les statuts si les deux sont présents", () => {
     jeu.listePropositions = ["acheter"];
     jeu.listeStatuts = ["un statut"];
-    
+
     const spyProp = jest.spyOn(
       controller,
       "afficherPropositionsApresDeplacement",
@@ -162,6 +162,36 @@ describe("Controller", () => {
 
     expect(spyProp).toHaveBeenCalled();
     expect(spyCarte).not.toHaveBeenCalled();
+  });
+
+  
+  // ------ Tests afficher les propositions après le déplacement -------
+
+  test("affiche directement le menu si ce n'est pas une carte Fonds communs avec choix", () => {
+    jeu.listePropositions = ["acheter"];
+    jeu.listeStatuts = ["Taxe de luxe"];
+
+    controller.afficherPropositionsApresDeplacement();
+
+    expect(view.afficherMenuPropositions).toHaveBeenCalledWith(["acheter"], 0);
+    expect(view.afficherZoneEvenements).not.toHaveBeenCalled();
+  });
+
+  test("affiche d'abord les événements puis le menu après le délai si carte Fonds communs avec choix", () => {
+    jeu.listePropositions = ["choix1", "choix2"];
+    jeu.listeStatuts = ["**Fonds communs: choisissez"];
+
+    controller.afficherPropositionsApresDeplacement();
+
+    expect(view.afficherZoneEvenements).toHaveBeenCalled();
+    expect(view.afficherMenuPropositions).not.toHaveBeenCalled();
+
+    jest.advanceTimersByTime(Controller.DELAI_AFFICHAGE_EVENEMENT);
+
+    expect(view.afficherMenuPropositions).toHaveBeenCalledWith(
+      ["choix1", "choix2"],
+      0,
+    );
   });
 
 });
