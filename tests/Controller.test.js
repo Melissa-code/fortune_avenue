@@ -194,4 +194,76 @@ describe("Controller", () => {
     );
   });
 
+    
+  // ---- Tests afficher la carte et résoudre le déplacement éventuel ------
+
+  test("affiche la zone événements dans tous les cas", () => {
+    controller.afficherCarteEtResoudreDeplacementEventuel();
+    expect(view.afficherZoneEvenements).toHaveBeenCalled();
+  });
+
+  test("termine le tour s'il n'y a pas de case à résoudre après la carte", () => {
+    jeu.caseApresDeplacementCarte = null;
+
+    controller.afficherCarteEtResoudreDeplacementEventuel();
+
+    expect(jeu.terminerTour).toHaveBeenCalled();
+  });
+
+
+  // ----- Tests appliquer l'effet de la case destination de la carte -------
+
+  test("planifie appliquerEffetCaseDestinationCarte après le délai s'il y a une case à résoudre", () => {
+    jeu.caseApresDeplacementCarte = { arriver: jest.fn().mockReturnValue([]) };
+    const spy = jest.spyOn(controller, "appliquerEffetCaseDestinationCarte");
+
+    controller.afficherCarteEtResoudreDeplacementEventuel();
+
+    expect(spy).not.toHaveBeenCalled();
+    expect(jeu.terminerTour).not.toHaveBeenCalled();
+
+    jest.advanceTimersByTime(Controller.DELAI_AFFICHAGE_EVENEMENT);
+
+    expect(spy).toHaveBeenCalled();
+  });
+
+  test("remet caseApresDeplacementCarte à null", () => {
+    jeu.caseApresDeplacementCarte = { arriver: jest.fn().mockReturnValue([]) };
+
+    controller.appliquerEffetCaseDestinationCarte();
+
+    expect(jeu.caseApresDeplacementCarte).toBeNull();
+  });
+
+  test("affiche le menu de propositions si la case en génère", () => {
+    const propositions = ["acheter", "enchérir"];
+    jeu.caseApresDeplacementCarte = {
+      arriver: jest.fn().mockReturnValue(propositions),
+    };
+
+    controller.appliquerEffetCaseDestinationCarte();
+
+    expect(jeu.listePropositions).toBe(propositions);
+    expect(jeu.etat).toBe(EtatsJeu.EN_ATTENTE);
+    expect(view.afficherMenuPropositions).toHaveBeenCalledWith(propositions, 0);
+  });
+
+  test("termine le tour si la case ne génère aucune proposition", () => {
+    jeu.caseApresDeplacementCarte = { arriver: jest.fn().mockReturnValue([]) };
+
+    controller.appliquerEffetCaseDestinationCarte();
+
+    expect(jeu.terminerTour).toHaveBeenCalled();
+  });
+
+  test("termine le tour si arriver() retourne null/undefined", () => {
+    jeu.caseApresDeplacementCarte = {
+      arriver: jest.fn().mockReturnValue(null),
+    };
+
+    controller.appliquerEffetCaseDestinationCarte();
+
+    expect(jeu.terminerTour).toHaveBeenCalled();
+  });
+
 });
