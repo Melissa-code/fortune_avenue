@@ -1,6 +1,5 @@
 import EtatsJeu from '../model/enums/EtatsJeu.js';
 
-
 class Controller {
     constructor(jeu) {
         this.jeu = jeu;
@@ -89,7 +88,7 @@ class Controller {
 
     /**
      * numProposition (n° proposition choisie par le user)
-     * recupérer message , ex: "Achat", "Le joueur ... a acheté la case ..." qui disparait ap 2sec 
+     * recupérer message qui disparait ap 2sec 
      */
     soumettreProposition(numProposition) {
         if (this.jeu.etat === EtatsJeu.EN_ATTENTE && !isNaN(numProposition)) {

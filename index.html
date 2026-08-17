@@ -3,15 +3,25 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="">
+    <meta name="description" content="Fortune Avenue - jeu de transactions et de stratégie en ligne conçu pour 2 joueurs. Aurez-vous les capacités d'invoquer la ruine de votre rival ?">
+    <!-- Open Graph pour Facebook, Discord, WhatsApp (aperçu réseaux sociaux) -->
+    <meta property="og:title" content="Fortune Avenue: jeu de plateau en ligne pour deux joueurs" />
+    <meta property="og:description" content="Affrontez votre rival dans ce jeu de transactions immobilières à 2 joueurs !" />
+    <meta property="og:image" content="./images/technical/prison.png" />
+    <meta property="og:type" content="website" />
     <link rel="icon" type="image/png" href="./images/favicon/favicon_white.svg" />
     <link rel="stylesheet" href="./css/style.css">
-    <title>Fortune Avenue</title>
+    <title>Fortune Avenue - jeu de plateau et transactions en ligne 2 joueurs</title>
 </head>
 
 <body>
     <main class="game-grid">
-        <h1>Fortune Avenue</h1>
+        <h1 class="sr-only">Fortune Avenue - jeu de stratégie et de transactions immobilières</h1>
+        <p class="sr-only">
+            <strong>Fortune Avenue</strong> 
+            Fortune Avenue est un jeu de stratégie et de transactions immobilières en ligne conçu pour 2 joueurs. 
+            Lancez les dés, achetez des propriétés, gérez votre capital et utilisez vos cartes pour ruiner votre adversaire dans ce duel tactique.
+        </p>
         <div class="game-container">
             <!-- canvas taille dynamique (par defaut 330x150px)-->
             <canvas id="game-canvas" class="game-canvas" tabindex="0"></canvas> 
