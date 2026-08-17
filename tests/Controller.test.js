@@ -58,7 +58,7 @@ describe("Controller", () => {
     jest.clearAllMocks();
   });
 
-   // ----------------- Tests Lancer le dé ----------------------
+  // ----------------- Tests Lancer le dé ----------------------
 
   test("ne fait rien si l'état n'est pas EN_COURS", () => {
     jeu.etat = EtatsJeu.EN_ATTENTE;
@@ -83,6 +83,85 @@ describe("Controller", () => {
     controller.lancerDe();
 
     expect(jeu.terminerTour).toHaveBeenCalled();
+  });
+
+
+  // ---------- Tests déplacer le joueur courant ---------------
+
+  test("réinitialise listePropositions et listeStatuts avant déplacement", () => {
+    jeu.listePropositions = ["ancienne"];
+    jeu.listeStatuts = ["ancien"];
+
+    controller.deplacerJoueurCourant();
+
+    expect(jeu.listePropositions).toEqual([]);
+    expect(jeu.listeStatuts).toEqual([]);
+  });
+
+  test("appelle avancerJoueurCourant avec la valeur du dé", () => {
+    jeu.de.lancer.mockReturnValue(6);
+
+    controller.deplacerJoueurCourant();
+
+    expect(jeu.avancerJoueurCourant).toHaveBeenCalledWith(6);
+  });
+
+  test("rafraîchit la vue avant et après le déplacement", () => {
+    controller.deplacerJoueurCourant();
+    expect(view.refresh).toHaveBeenCalledTimes(2);
+  });
+
+  
+  // --------- Tests traiter le résultat du déplacement ------------
+
+  test("affiche les propositions si listePropositions est non vide", () => {
+    jeu.listePropositions = ["acheter"];
+    const spy = jest.spyOn(controller, "afficherPropositionsApresDeplacement");
+
+    controller.traiterResultatDeplacement();
+
+    expect(spy).toHaveBeenCalled();
+  });
+
+  test("affiche la carte si pas de proposition mais des statuts", () => {
+    jeu.listePropositions = [];
+    jeu.listeStatuts = ["Vous gagnez 200€."];
+    const spy = jest.spyOn(
+      controller,
+      "afficherCarteEtResoudreDeplacementEventuel",
+    );
+
+    controller.traiterResultatDeplacement();
+
+    expect(spy).toHaveBeenCalled();
+  });
+
+  test("termine le tour si ni proposition ni statut", () => {
+    jeu.listePropositions = [];
+    jeu.listeStatuts = [];
+
+    controller.traiterResultatDeplacement();
+
+    expect(jeu.terminerTour).toHaveBeenCalled();
+  });
+
+  test("priorise les propositions sur les statuts si les deux sont présents", () => {
+    jeu.listePropositions = ["acheter"];
+    jeu.listeStatuts = ["un statut"];
+    
+    const spyProp = jest.spyOn(
+      controller,
+      "afficherPropositionsApresDeplacement",
+    );
+    const spyCarte = jest.spyOn(
+      controller,
+      "afficherCarteEtResoudreDeplacementEventuel",
+    );
+
+    controller.traiterResultatDeplacement();
+
+    expect(spyProp).toHaveBeenCalled();
+    expect(spyCarte).not.toHaveBeenCalled();
   });
 
 });
