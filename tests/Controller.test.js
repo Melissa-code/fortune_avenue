@@ -12,7 +12,7 @@ function creerJoueur(estEnPrison = false, position = 0, nom = "Melissa") {
 }
 
 // mock jeu
-function creerJeu(overrides = {}) {
+function creerJeu() {
   return {
     etat: EtatsJeu.EN_COURS,
     joueurActuelIndex: 0,
@@ -30,7 +30,7 @@ function creerJeu(overrides = {}) {
 }
 
 // mock view
-function creerView(overrides = {}) {
+function creerView() {
   return {
     refresh: jest.fn(),
     afficherMenuPropositions: jest.fn(),
@@ -86,7 +86,6 @@ describe("Controller", () => {
     });
   });
 
-
   // ---------- Tests déplacer le joueur courant ---------------
 
   describe("deplacerJoueurCourant", () => {
@@ -114,13 +113,15 @@ describe("Controller", () => {
     });
   });
 
-  
   // --------- Tests traiter le résultat du déplacement ------------
 
   describe("traiterResultatDeplacement", () => {
     test("affiche les propositions si listePropositions est non vide", () => {
       jeu.listePropositions = ["acheter"];
-      const spy = jest.spyOn(controller, "afficherPropositionsApresDeplacement");
+      const spy = jest.spyOn(
+        controller,
+        "afficherPropositionsApresDeplacement",
+      );
 
       controller.traiterResultatDeplacement();
 
@@ -169,7 +170,6 @@ describe("Controller", () => {
     });
   });
 
-  
   // ------ Tests afficher les propositions après le déplacement -------
 
   describe("afficherPropositionsApresDeplacement", () => {
@@ -179,7 +179,10 @@ describe("Controller", () => {
 
       controller.afficherPropositionsApresDeplacement();
 
-      expect(view.afficherMenuPropositions).toHaveBeenCalledWith(["acheter"], 0);
+      expect(view.afficherMenuPropositions).toHaveBeenCalledWith(
+        ["acheter"],
+        0,
+      );
       expect(view.afficherZoneEvenements).not.toHaveBeenCalled();
     });
 
@@ -199,9 +202,8 @@ describe("Controller", () => {
         0,
       );
     });
-   });
+  });
 
-    
   // ---- Tests afficher la carte et résoudre le déplacement éventuel ------
 
   describe("afficherCarteEtResoudreDeplacementEventuel", () => {
@@ -219,12 +221,13 @@ describe("Controller", () => {
     });
   });
 
-
   // ----- Tests appliquer l'effet de la case destination de la carte -------
 
   describe("appliquerEffetCaseDestinationCarte", () => {
     test("planifie appliquerEffetCaseDestinationCarte après le délai s'il y a une case à résoudre", () => {
-      jeu.caseApresDeplacementCarte = { arriver: jest.fn().mockReturnValue([]) };
+      jeu.caseApresDeplacementCarte = {
+        arriver: jest.fn().mockReturnValue([]),
+      };
       const spy = jest.spyOn(controller, "appliquerEffetCaseDestinationCarte");
 
       controller.afficherCarteEtResoudreDeplacementEventuel();
@@ -238,7 +241,9 @@ describe("Controller", () => {
     });
 
     test("remet caseApresDeplacementCarte à null", () => {
-      jeu.caseApresDeplacementCarte = { arriver: jest.fn().mockReturnValue([]) };
+      jeu.caseApresDeplacementCarte = {
+        arriver: jest.fn().mockReturnValue([]),
+      };
 
       controller.appliquerEffetCaseDestinationCarte();
 
@@ -255,11 +260,16 @@ describe("Controller", () => {
 
       expect(jeu.listePropositions).toBe(propositions);
       expect(jeu.etat).toBe(EtatsJeu.EN_ATTENTE);
-      expect(view.afficherMenuPropositions).toHaveBeenCalledWith(propositions, 0);
+      expect(view.afficherMenuPropositions).toHaveBeenCalledWith(
+        propositions,
+        0,
+      );
     });
 
     test("termine le tour si la case ne génère aucune proposition", () => {
-      jeu.caseApresDeplacementCarte = { arriver: jest.fn().mockReturnValue([]) };
+      jeu.caseApresDeplacementCarte = {
+        arriver: jest.fn().mockReturnValue([]),
+      };
 
       controller.appliquerEffetCaseDestinationCarte();
 
@@ -277,11 +287,9 @@ describe("Controller", () => {
     });
   });
 
-  
   // ----------- Tests soumettre une proposition -------------------
 
   describe("soumettreProposition", () => {
-
     beforeEach(() => {
       jest.useFakeTimers();
       jeu = creerJeu();
@@ -355,11 +363,9 @@ describe("Controller", () => {
     });
   });
 
-
   // ------------- Tests terminer le tour après la modale ---------------
 
   describe("terminerTourApresModale", () => {
-
     test("affiche la zone événements si des statuts sont présents", () => {
       jeu.listeStatuts = ["Un événement"];
 
