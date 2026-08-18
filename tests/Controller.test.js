@@ -58,7 +58,38 @@ describe("Controller", () => {
     jest.clearAllMocks();
   });
 
+  // --------------------- Tests sortir de prison ------------------------
+  
+  describe("sortirDePrison", () => {
+    test("passe l'état en EN_ATTENTE et affiche le menu si des propositions existent", () => {
+      const propositions = ["payer", "carte", "double"];
+      jeu.filtrerPropositionsValablesSortiePrison.mockReturnValue(propositions);
+
+      controller.sortirDePrison(jeu.joueurs[0]);
+
+      expect(jeu.listePropositions).toBe(propositions);
+      expect(jeu.etat).toBe(EtatsJeu.EN_ATTENTE);
+      expect(view.afficherMenuPropositions).toHaveBeenCalledWith(propositions, 0);
+    });
+
+    test("ne change rien si aucune proposition de sortie n'est valable", () => {
+      jeu.filtrerPropositionsValablesSortiePrison.mockReturnValue([]);
+      const etatInitial = jeu.etat;
+
+      controller.sortirDePrison(jeu.joueurs[0]);
+
+      expect(jeu.etat).toBe(etatInitial);
+      expect(view.afficherMenuPropositions).not.toHaveBeenCalled();
+    });
+
+    test("appelle toujours view.refresh()", () => {
+      controller.sortirDePrison(jeu.joueurs[0]);
+      expect(view.refresh).toHaveBeenCalled();
+    });
+  });
+
   // ----------------- Tests Lancer le dé ----------------------
+
   describe("lancerDe", () => {
     test("ne fait rien si l'état n'est pas EN_COURS", () => {
       jeu.etat = EtatsJeu.EN_ATTENTE;
