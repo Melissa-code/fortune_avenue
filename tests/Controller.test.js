@@ -59,213 +59,223 @@ describe("Controller", () => {
   });
 
   // ----------------- Tests Lancer le dé ----------------------
+  describe("lancerDe", () => {
+    test("ne fait rien si l'état n'est pas EN_COURS", () => {
+      jeu.etat = EtatsJeu.EN_ATTENTE;
 
-  test("ne fait rien si l'état n'est pas EN_COURS", () => {
-    jeu.etat = EtatsJeu.EN_ATTENTE;
+      controller.lancerDe();
 
-    controller.lancerDe();
+      expect(jeu.de.lancer).not.toHaveBeenCalled();
+      expect(jeu.avancerJoueurCourant).not.toHaveBeenCalled();
+    });
 
-    expect(jeu.de.lancer).not.toHaveBeenCalled();
-    expect(jeu.avancerJoueurCourant).not.toHaveBeenCalled();
-  });
+    test("lance le dé et déplace le joueur si non en prison", () => {
+      controller.lancerDe();
 
-  test("lance le dé et déplace le joueur si non en prison", () => {
-    controller.lancerDe();
+      expect(jeu.de.lancer).toHaveBeenCalled();
+      expect(jeu.avancerJoueurCourant).toHaveBeenCalledWith(4);
+    });
 
-    expect(jeu.de.lancer).toHaveBeenCalled();
-    expect(jeu.avancerJoueurCourant).toHaveBeenCalledWith(4);
-  });
+    test("termine le tour si ni proposition ni statut après déplacement", () => {
+      jeu.listePropositions = [];
+      jeu.listeStatuts = [];
 
-  test("termine le tour si ni proposition ni statut après déplacement", () => {
-    jeu.listePropositions = [];
-    jeu.listeStatuts = [];
+      controller.lancerDe();
 
-    controller.lancerDe();
-
-    expect(jeu.terminerTour).toHaveBeenCalled();
+      expect(jeu.terminerTour).toHaveBeenCalled();
+    });
   });
 
 
   // ---------- Tests déplacer le joueur courant ---------------
 
-  test("réinitialise listePropositions et listeStatuts avant déplacement", () => {
-    jeu.listePropositions = ["ancienne"];
-    jeu.listeStatuts = ["ancien"];
+  describe("deplacerJoueurCourant", () => {
+    test("réinitialise listePropositions et listeStatuts avant déplacement", () => {
+      jeu.listePropositions = ["ancienne"];
+      jeu.listeStatuts = ["ancien"];
 
-    controller.deplacerJoueurCourant();
+      controller.deplacerJoueurCourant();
 
-    expect(jeu.listePropositions).toEqual([]);
-    expect(jeu.listeStatuts).toEqual([]);
-  });
+      expect(jeu.listePropositions).toEqual([]);
+      expect(jeu.listeStatuts).toEqual([]);
+    });
 
-  test("appelle avancerJoueurCourant avec la valeur du dé", () => {
-    jeu.de.lancer.mockReturnValue(6);
+    test("appelle avancerJoueurCourant avec la valeur du dé", () => {
+      jeu.de.lancer.mockReturnValue(6);
 
-    controller.deplacerJoueurCourant();
+      controller.deplacerJoueurCourant();
 
-    expect(jeu.avancerJoueurCourant).toHaveBeenCalledWith(6);
-  });
+      expect(jeu.avancerJoueurCourant).toHaveBeenCalledWith(6);
+    });
 
-  test("rafraîchit la vue avant et après le déplacement", () => {
-    controller.deplacerJoueurCourant();
-    expect(view.refresh).toHaveBeenCalledTimes(2);
+    test("rafraîchit la vue avant et après le déplacement", () => {
+      controller.deplacerJoueurCourant();
+      expect(view.refresh).toHaveBeenCalledTimes(2);
+    });
   });
 
   
   // --------- Tests traiter le résultat du déplacement ------------
 
-  test("affiche les propositions si listePropositions est non vide", () => {
-    jeu.listePropositions = ["acheter"];
-    const spy = jest.spyOn(controller, "afficherPropositionsApresDeplacement");
+  describe("traiterResultatDeplacement", () => {
+    test("affiche les propositions si listePropositions est non vide", () => {
+      jeu.listePropositions = ["acheter"];
+      const spy = jest.spyOn(controller, "afficherPropositionsApresDeplacement");
 
-    controller.traiterResultatDeplacement();
+      controller.traiterResultatDeplacement();
 
-    expect(spy).toHaveBeenCalled();
-  });
+      expect(spy).toHaveBeenCalled();
+    });
 
-  test("affiche la carte si pas de proposition mais des statuts", () => {
-    jeu.listePropositions = [];
-    jeu.listeStatuts = ["Vous gagnez 200€."];
-    const spy = jest.spyOn(
-      controller,
-      "afficherCarteEtResoudreDeplacementEventuel",
-    );
+    test("affiche la carte si pas de proposition mais des statuts", () => {
+      jeu.listePropositions = [];
+      jeu.listeStatuts = ["Vous gagnez 200€."];
+      const spy = jest.spyOn(
+        controller,
+        "afficherCarteEtResoudreDeplacementEventuel",
+      );
 
-    controller.traiterResultatDeplacement();
+      controller.traiterResultatDeplacement();
 
-    expect(spy).toHaveBeenCalled();
-  });
+      expect(spy).toHaveBeenCalled();
+    });
 
-  test("termine le tour si ni proposition ni statut", () => {
-    jeu.listePropositions = [];
-    jeu.listeStatuts = [];
+    test("termine le tour si ni proposition ni statut", () => {
+      jeu.listePropositions = [];
+      jeu.listeStatuts = [];
 
-    controller.traiterResultatDeplacement();
+      controller.traiterResultatDeplacement();
 
-    expect(jeu.terminerTour).toHaveBeenCalled();
-  });
+      expect(jeu.terminerTour).toHaveBeenCalled();
+    });
 
-  test("priorise les propositions sur les statuts si les deux sont présents", () => {
-    jeu.listePropositions = ["acheter"];
-    jeu.listeStatuts = ["un statut"];
+    test("priorise les propositions sur les statuts si les deux sont présents", () => {
+      jeu.listePropositions = ["acheter"];
+      jeu.listeStatuts = ["un statut"];
 
-    const spyProp = jest.spyOn(
-      controller,
-      "afficherPropositionsApresDeplacement",
-    );
-    const spyCarte = jest.spyOn(
-      controller,
-      "afficherCarteEtResoudreDeplacementEventuel",
-    );
+      const spyProp = jest.spyOn(
+        controller,
+        "afficherPropositionsApresDeplacement",
+      );
+      const spyCarte = jest.spyOn(
+        controller,
+        "afficherCarteEtResoudreDeplacementEventuel",
+      );
 
-    controller.traiterResultatDeplacement();
+      controller.traiterResultatDeplacement();
 
-    expect(spyProp).toHaveBeenCalled();
-    expect(spyCarte).not.toHaveBeenCalled();
+      expect(spyProp).toHaveBeenCalled();
+      expect(spyCarte).not.toHaveBeenCalled();
+    });
   });
 
   
   // ------ Tests afficher les propositions après le déplacement -------
 
-  test("affiche directement le menu si ce n'est pas une carte Fonds communs avec choix", () => {
-    jeu.listePropositions = ["acheter"];
-    jeu.listeStatuts = ["Taxe de luxe"];
+  describe("afficherPropositionsApresDeplacement", () => {
+    test("affiche directement le menu si ce n'est pas une carte Fonds communs avec choix", () => {
+      jeu.listePropositions = ["acheter"];
+      jeu.listeStatuts = ["Taxe de luxe"];
 
-    controller.afficherPropositionsApresDeplacement();
+      controller.afficherPropositionsApresDeplacement();
 
-    expect(view.afficherMenuPropositions).toHaveBeenCalledWith(["acheter"], 0);
-    expect(view.afficherZoneEvenements).not.toHaveBeenCalled();
-  });
+      expect(view.afficherMenuPropositions).toHaveBeenCalledWith(["acheter"], 0);
+      expect(view.afficherZoneEvenements).not.toHaveBeenCalled();
+    });
 
-  test("affiche d'abord les événements puis le menu après le délai si carte Fonds communs avec choix", () => {
-    jeu.listePropositions = ["choix1", "choix2"];
-    jeu.listeStatuts = ["**Fonds communs: choisissez"];
+    test("affiche d'abord les événements puis le menu après le délai si carte Fonds communs avec choix", () => {
+      jeu.listePropositions = ["choix1", "choix2"];
+      jeu.listeStatuts = ["**Fonds communs: choisissez"];
 
-    controller.afficherPropositionsApresDeplacement();
+      controller.afficherPropositionsApresDeplacement();
 
-    expect(view.afficherZoneEvenements).toHaveBeenCalled();
-    expect(view.afficherMenuPropositions).not.toHaveBeenCalled();
+      expect(view.afficherZoneEvenements).toHaveBeenCalled();
+      expect(view.afficherMenuPropositions).not.toHaveBeenCalled();
 
-    jest.advanceTimersByTime(Controller.DELAI_AFFICHAGE_EVENEMENT);
+      jest.advanceTimersByTime(Controller.DELAI_AFFICHAGE_EVENEMENT);
 
-    expect(view.afficherMenuPropositions).toHaveBeenCalledWith(
-      ["choix1", "choix2"],
-      0,
-    );
-  });
+      expect(view.afficherMenuPropositions).toHaveBeenCalledWith(
+        ["choix1", "choix2"],
+        0,
+      );
+    });
+   });
 
     
   // ---- Tests afficher la carte et résoudre le déplacement éventuel ------
 
-  test("affiche la zone événements dans tous les cas", () => {
-    controller.afficherCarteEtResoudreDeplacementEventuel();
-    expect(view.afficherZoneEvenements).toHaveBeenCalled();
-  });
+  describe("afficherCarteEtResoudreDeplacementEventuel", () => {
+    test("affiche la zone événements dans tous les cas", () => {
+      controller.afficherCarteEtResoudreDeplacementEventuel();
+      expect(view.afficherZoneEvenements).toHaveBeenCalled();
+    });
 
-  test("termine le tour s'il n'y a pas de case à résoudre après la carte", () => {
-    jeu.caseApresDeplacementCarte = null;
+    test("termine le tour s'il n'y a pas de case à résoudre après la carte", () => {
+      jeu.caseApresDeplacementCarte = null;
 
-    controller.afficherCarteEtResoudreDeplacementEventuel();
+      controller.afficherCarteEtResoudreDeplacementEventuel();
 
-    expect(jeu.terminerTour).toHaveBeenCalled();
+      expect(jeu.terminerTour).toHaveBeenCalled();
+    });
   });
 
 
   // ----- Tests appliquer l'effet de la case destination de la carte -------
 
-  test("planifie appliquerEffetCaseDestinationCarte après le délai s'il y a une case à résoudre", () => {
-    jeu.caseApresDeplacementCarte = { arriver: jest.fn().mockReturnValue([]) };
-    const spy = jest.spyOn(controller, "appliquerEffetCaseDestinationCarte");
+  describe("appliquerEffetCaseDestinationCarte", () => {
+    test("planifie appliquerEffetCaseDestinationCarte après le délai s'il y a une case à résoudre", () => {
+      jeu.caseApresDeplacementCarte = { arriver: jest.fn().mockReturnValue([]) };
+      const spy = jest.spyOn(controller, "appliquerEffetCaseDestinationCarte");
 
-    controller.afficherCarteEtResoudreDeplacementEventuel();
+      controller.afficherCarteEtResoudreDeplacementEventuel();
 
-    expect(spy).not.toHaveBeenCalled();
-    expect(jeu.terminerTour).not.toHaveBeenCalled();
+      expect(spy).not.toHaveBeenCalled();
+      expect(jeu.terminerTour).not.toHaveBeenCalled();
 
-    jest.advanceTimersByTime(Controller.DELAI_AFFICHAGE_EVENEMENT);
+      jest.advanceTimersByTime(Controller.DELAI_AFFICHAGE_EVENEMENT);
 
-    expect(spy).toHaveBeenCalled();
+      expect(spy).toHaveBeenCalled();
+    });
+
+    test("remet caseApresDeplacementCarte à null", () => {
+      jeu.caseApresDeplacementCarte = { arriver: jest.fn().mockReturnValue([]) };
+
+      controller.appliquerEffetCaseDestinationCarte();
+
+      expect(jeu.caseApresDeplacementCarte).toBeNull();
+    });
+
+    test("affiche le menu de propositions si la case en génère", () => {
+      const propositions = ["acheter", "enchérir"];
+      jeu.caseApresDeplacementCarte = {
+        arriver: jest.fn().mockReturnValue(propositions),
+      };
+
+      controller.appliquerEffetCaseDestinationCarte();
+
+      expect(jeu.listePropositions).toBe(propositions);
+      expect(jeu.etat).toBe(EtatsJeu.EN_ATTENTE);
+      expect(view.afficherMenuPropositions).toHaveBeenCalledWith(propositions, 0);
+    });
+
+    test("termine le tour si la case ne génère aucune proposition", () => {
+      jeu.caseApresDeplacementCarte = { arriver: jest.fn().mockReturnValue([]) };
+
+      controller.appliquerEffetCaseDestinationCarte();
+
+      expect(jeu.terminerTour).toHaveBeenCalled();
+    });
+
+    test("termine le tour si arriver() retourne null/undefined", () => {
+      jeu.caseApresDeplacementCarte = {
+        arriver: jest.fn().mockReturnValue(null),
+      };
+
+      controller.appliquerEffetCaseDestinationCarte();
+
+      expect(jeu.terminerTour).toHaveBeenCalled();
+    });
   });
-
-  test("remet caseApresDeplacementCarte à null", () => {
-    jeu.caseApresDeplacementCarte = { arriver: jest.fn().mockReturnValue([]) };
-
-    controller.appliquerEffetCaseDestinationCarte();
-
-    expect(jeu.caseApresDeplacementCarte).toBeNull();
-  });
-
-  test("affiche le menu de propositions si la case en génère", () => {
-    const propositions = ["acheter", "enchérir"];
-    jeu.caseApresDeplacementCarte = {
-      arriver: jest.fn().mockReturnValue(propositions),
-    };
-
-    controller.appliquerEffetCaseDestinationCarte();
-
-    expect(jeu.listePropositions).toBe(propositions);
-    expect(jeu.etat).toBe(EtatsJeu.EN_ATTENTE);
-    expect(view.afficherMenuPropositions).toHaveBeenCalledWith(propositions, 0);
-  });
-
-  test("termine le tour si la case ne génère aucune proposition", () => {
-    jeu.caseApresDeplacementCarte = { arriver: jest.fn().mockReturnValue([]) };
-
-    controller.appliquerEffetCaseDestinationCarte();
-
-    expect(jeu.terminerTour).toHaveBeenCalled();
-  });
-
-  test("termine le tour si arriver() retourne null/undefined", () => {
-    jeu.caseApresDeplacementCarte = {
-      arriver: jest.fn().mockReturnValue(null),
-    };
-
-    controller.appliquerEffetCaseDestinationCarte();
-
-    expect(jeu.terminerTour).toHaveBeenCalled();
-  });
-});
 
   
   // ----------- Tests soumettre une proposition -------------------
@@ -345,3 +355,32 @@ describe("Controller", () => {
     });
   });
 
+
+  // ------------- Tests terminer le tour après la modale ---------------
+
+  describe("terminerTourApresModale", () => {
+
+    test("affiche la zone événements si des statuts sont présents", () => {
+      jeu.listeStatuts = ["Un événement"];
+
+      controller.terminerTourApresModale();
+
+      expect(view.afficherZoneEvenements).toHaveBeenCalled();
+    });
+
+    test("n'affiche pas la zone événements si aucun statut", () => {
+      jeu.listeStatuts = [];
+
+      controller.terminerTourApresModale();
+
+      expect(view.afficherZoneEvenements).not.toHaveBeenCalled();
+    });
+
+    test("termine toujours le tour et rafraîchit la vue", () => {
+      controller.terminerTourApresModale();
+
+      expect(jeu.terminerTour).toHaveBeenCalled();
+      expect(view.refresh).toHaveBeenCalled();
+    });
+  });
+});
