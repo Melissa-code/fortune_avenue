@@ -265,5 +265,83 @@ describe("Controller", () => {
 
     expect(jeu.terminerTour).toHaveBeenCalled();
   });
-
 });
+
+  
+  // ----------- Tests soumettre une proposition -------------------
+
+  describe("soumettreProposition", () => {
+
+    beforeEach(() => {
+      jest.useFakeTimers();
+      jeu = creerJeu();
+      view = creerView();
+      controller = new Controller(jeu);
+      controller.view = view;
+
+      jeu.etat = EtatsJeu.EN_ATTENTE;
+      jeu.listePropositions = ["choix0", "choix1", "choix2"];
+    });
+
+    test("ne fait rien si l'état n'est pas EN_ATTENTE", () => {
+      jeu.etat = EtatsJeu.EN_COURS;
+
+      controller.soumettreProposition(1);
+
+      expect(jeu.soumettreProposition).not.toHaveBeenCalled();
+    });
+
+    test("ne fait rien si numProposition n'est pas un nombre", () => {
+      controller.soumettreProposition(NaN);
+      expect(jeu.soumettreProposition).not.toHaveBeenCalled();
+    });
+
+    test("ne fait rien si numProposition est négatif", () => {
+      controller.soumettreProposition(-1);
+      expect(jeu.soumettreProposition).not.toHaveBeenCalled();
+    });
+
+    test("ne fait rien si numProposition dépasse les propositions disponibles (régression bug clavier)", () => {
+      controller.soumettreProposition(9);
+      expect(jeu.soumettreProposition).not.toHaveBeenCalled();
+    });
+
+    test("appelle jeu.soumettreProposition avec un index valide", () => {
+      jeu.soumettreProposition.mockReturnValue(null);
+
+      controller.soumettreProposition(1);
+
+      expect(jeu.soumettreProposition).toHaveBeenCalledWith(1);
+      expect(view.refresh).toHaveBeenCalled();
+    });
+
+    test("n'affiche pas de modale si jeu.soumettreProposition ne retourne rien", () => {
+      jeu.soumettreProposition.mockReturnValue(null);
+
+      controller.soumettreProposition(0);
+
+      expect(view.afficherTexteModale).not.toHaveBeenCalled();
+    });
+
+    test("affiche la modale puis termine le tour après le délai si un résultat est retourné", () => {
+      const resultat = {
+        titre: "Achat",
+        message: "Vous avez acheté la propriété",
+      };
+      jeu.soumettreProposition.mockReturnValue(resultat);
+      const spy = jest.spyOn(controller, "terminerTourApresModale");
+
+      controller.soumettreProposition(0);
+
+      expect(view.afficherTexteModale).toHaveBeenCalledWith(
+        resultat.titre,
+        resultat.message,
+      );
+      expect(spy).not.toHaveBeenCalled();
+
+      jest.advanceTimersByTime(Controller.DELAI_AFFICHAGE_MODALE);
+
+      expect(spy).toHaveBeenCalled();
+    });
+  });
+
