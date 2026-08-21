@@ -137,5 +137,4 @@ Melissa-code
 
 ## 8. Licence 
 
-Sous licence MIT 
 © 2026 Fortune Avenue Project
