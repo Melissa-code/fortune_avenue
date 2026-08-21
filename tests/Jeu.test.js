@@ -171,7 +171,7 @@ describe("Jeu", () => {
     test('sur propriété d\'un autre propriétaire -> paie le loyer', () => {
         const jeu = new Jeu();
         const joueur = jeu.ajouterJoueur('Mélanie', 'yacht');
-        joueur.avancer = jest.fn((type, val) => { joueur.position = 3; });
+        joueur.avancer = jest.fn((_type, _val) => { joueur.position = 3; });
 
         const autreProprietaire = { nom: 'Fred' };
         const caseRue = Object.create(CasePropriete.prototype);

@@ -53,7 +53,7 @@ Ouvrir le fichier `index.html` dans le navigateur pour commencer à jouer
 
 ## 4. Tests 
 
-Les tests unitaires sont écrits avec [Jest](https://jestjs.io/).
+Les tests sont écrits avec [Jest](https://jestjs.io/).
 
 > **Note de compatibilité :** Le projet utilise les modules ECMAScript (ESM) natifs. 
 Afin d'assurer la compatibilité des tests à la fois sur **macOS/Linux** et **Windows**, 
@@ -77,7 +77,12 @@ npm install --save-dev cross-env
 ### Lancer les tests 
 
 ```bash
-npm test (ou npm test tests.View.test.js)
+npm test 
+```
+
+```bash
+# Lancer un fichier de test spécifique
+npm test tests.View.test.js
 ```
 
 ### Structure des tests
@@ -85,31 +90,46 @@ npm test (ou npm test tests.View.test.js)
 ```
 tests/
 ├── Controller.test.js
+├── Controller.integration.test.js
 ├── View.test.js
 ├── Carte.test.js
 ├── Effet.test.js
 └── ...
 ```
 
-Les dépendances (`Jeu`, `View`, `Controller`) sont mockées avec `jest.fn()` plutôt qu'instanciées réellement
+#### Tests unitaires
+
+Chaque classe est testée individuellement. Les dépendances (`Jeu`, `View`, `Controller`) sont mockées avec `jest.fn()` plutôt qu'instanciées réellement
 via des fonctions utilitaires `creerJeu()`, `creerView()`, `creerJoueur()` en haut de chaque fichier de test. 
 Cette approche isole chaque classe testée: un bug dans `Jeu` ne fait pas échouer les tests de `Controller` et inversement.
+
+#### Tests d'intégration 
+
+Le fichier `Controller.integration.test.js` valide le comportement global du contrôleur en faisant interagir les différents composants du jeu en conditions réelles.
 
 > **Note :** `View.test.js` s'exécute dans l'environnement `jsdom` (configuré dans `package.json`, clé `"jest"`) 
 car il manipule le DOM et le Canvas. Les autres fichiers utilisent l'environnement Node par défaut.
 
 
-## ESLinter et Prettier
+## Qualité du code (ESLinter et Prettier)
+
+Le projet utilise ESLint pour détecter les erreurs de code et Prettier pour uniformiser le formatage.
 
 ### Lancer ESLint et Prettier
 
 ```bash
-npx eslint js/model/Carte.js
-npx eslint js/model/Carte.js --fix
+# Vérifier le code avec ESLint
+npm run lint
 
+# Corriger automatiquement les erreurs ESLint réparables
+npm run lint:fix
+
+# Formater l'ensemble du code avec Prettier
+npx prettier --write .
+
+# Formater un fichier avec Prettier
 npx prettier --write tests/Effet.test.js
 ```
-
 
 ## 5. Technologies utilisées
 
@@ -117,7 +137,7 @@ npx prettier --write tests/Effet.test.js
 - **[CSS](https://developer.mozilla.org/fr/docs/Web/CSS)**: design et mise en page
 - **[JavaScript](https://developer.mozilla.org/fr/docs/Web/JavaScript)**: logique du jeu 
 - **[Canvas API](https://developer.mozilla.org/en-US/docs/Web/API/Canvas_API)**: rendu du jeu
-- **[Jest](https://archive.jestjs.io/docs/en/22.x/getting-started.html)**: tests unitaires
+- **[Jest](https://archive.jestjs.io/docs/en/22.x/getting-started.html)**: tests unitaires et d'intégration
 - **[ESLint](https://eslint.org/docs/latest/)**: analyse statique du code (erreurs/mauvaises pratiques)
 - **[Prettier](https://prettier.io/docs/)**: formate indentation, largeur de ligne, style cohérent
 

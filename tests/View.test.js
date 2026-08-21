@@ -50,6 +50,9 @@ function creerCanvas(ctx) {
 function creerDocument(canvas) {
   return {
     querySelector: jest.fn().mockReturnValue(canvas),
+    fonts: {
+      ready: new Promise(() => {}), // jamais résolue : le refresh() auto ne se déclenche pas pendant les tests
+    },
   };
 }
 

@@ -2,29 +2,27 @@ import ImagesPions from './js/model/enums/ImagesPions.js';
 import Jeu from './js/model/Jeu.js';
 import View from './js/view/View.js';
 import Controller from './js/controller/Controller.js';
-import EtatsJeu from './js/model/enums/EtatsJeu.js';
 
-
-window.jeu = new Jeu(); // var globale pour debug avec window.jeu dans console
-
-function demarrer(jeu) {
+/**
+ * Démarre une nouvelle partie: crée le jeu, les joueurs, 
+ * le controller et la vue (les relie entre eux)
+ */
+function demarrer() {
+    const jeu = new Jeu();
     const controller = new Controller(jeu);
-    // window.controller = controller; 
 
-    const joueur1 = jeu.ajouterJoueur("Melissa", ImagesPions.MOTO);
-    const joueur2 = jeu.ajouterJoueur("Pierre", ImagesPions.SMARTPHONE);
+    jeu.ajouterJoueur("Melissa", ImagesPions.MOTO);
+    jeu.ajouterJoueur("Pierre", ImagesPions.SMARTPHONE);
 
-    const view = new View(jeu, controller, document); // view appelle controller pour signaler les actions user (click, choix proposition) 
-    controller.view = view; // controller appelle view pour afficher les propositions et refresh ap actions user
-
+    // view appelle controller pour signaler les actions user (click, choix proposition)
+    const view = new View(jeu, controller, document);
+    // controller appelle view pour afficher les propositions et rafraîchir après les actions user
+    controller.view = view;
     controller.view.refresh();
 
-    //  TEST 
-    // joueur1.position = 2;
-    // const caseFondsCommun = jeu.casesJeu[2];
-    // jeu.listeStatuts = caseFondsCommun.arriver(joueur1, jeu);
-    // controller.view.refresh();
-
+    return jeu;
 }
 
-demarrer(window.jeu);
+// var globale pour debug avec window.jeu dans la console
+window.jeu = demarrer();
+
