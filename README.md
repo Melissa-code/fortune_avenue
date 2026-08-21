@@ -41,6 +41,10 @@ Ce projet met en application :
   <img src="./images/technical/prison.png" width="300">
 </div>
 
+⚠️ Ce jeu est optimisé pour ordinateur et nécessite l'utilisation des flèches du clavier. 
+Il n'est pas compatible avec les appareils mobiles ou tablettes.
+
+
 ## 3. Installation 
 
 ```

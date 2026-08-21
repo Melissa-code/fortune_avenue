@@ -16,12 +16,25 @@
 
 <body>
     <main class="game-grid">
+        <!-- title & description -->
         <h1 class="sr-only">Fortune Avenue - jeu de stratégie et de transactions immobilières</h1>
         <p class="sr-only">
-            <strong>Fortune Avenue</strong> 
-            Fortune Avenue est un jeu de stratégie et de transactions immobilières en ligne conçu pour 2 joueurs. 
-            Lancez les dés, achetez des propriétés, gérez votre capital et utilisez vos cartes pour ruiner votre adversaire dans ce duel tactique.
+            <strong>Fortune Avenue</strong> est un jeu de stratégie et de transactions 
+            immobilières en ligne conçu pour 2 joueurs. Lancez les dés, achetez 
+            des propriétés, gérez votre capital et utilisez vos cartes pour ruiner 
+            votre adversaire dans ce duel tactique.
         </p>
+
+        <!-- Alert message for mobiles phones -->
+        <div class="mobile-warning">
+            <img src="./images/favicon/favicon_white.svg" alt="Fortune Avenue">
+            <p>
+                <strong>Fortune Avenue</strong>
+                Ce jeu nécessite un écran d'ordinateur pour un affichage optimal du plateau et des menus.
+            </p>
+        </div> 
+        
+        <!-- Game zone --> 
         <div class="game-container">
             <!-- canvas taille dynamique (par defaut 330x150px)-->
             <canvas id="game-canvas" class="game-canvas" tabindex="0"></canvas> 

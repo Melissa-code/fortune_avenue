@@ -38,6 +38,10 @@ button {
     height: 100vh;
 }
 
+.mobile-warning {
+    display: none;
+}
+
 /* cache mais laisse 100% accessible à Google */
 .sr-only {
     position: absolute;
@@ -49,4 +53,47 @@ button {
     clip: rect(0, 0, 0, 0);
     white-space: nowrap;
     border: 0;
+}
+
+
+/* game zone for desktop only - mobiles / tablettes */
+@media (max-width: 1024px) {
+    .game-container {
+        display: none; 
+    }
+   
+    .mobile-warning {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+        text-align: center;
+        padding: 40px 24px;
+        background: linear-gradient(135deg, #123024 0%, #081c15 100%);
+        color: #ffffff;
+    }
+
+    .mobile-warning img {
+        width: 100px;
+        height: auto;
+        margin-bottom: 24px;
+    }
+
+    .mobile-warning p {
+        max-width: 320px;
+        font-family: 'Roboto', sans-serif;
+        font-size: 17px;
+        line-height: 1.6;
+        color: rgba(255, 255, 255, 0.9);
+        margin: 0;
+    }
+
+    .mobile-warning strong {
+        display: block;
+        font-size: 22px;
+        font-weight: 700;
+        margin-bottom: 12px;
+        color: #ffffff;
+    }
 }
