@@ -10,7 +10,8 @@ export default defineConfig([
     languageOptions: { 
       globals: {
         ...globals.browser,
-        ...globals.jest // pour les tests unitaires avec Jest
+        ...globals.jest, // pour les tests unitaires avec Jest
+        ...globals.node,
       } 
     },
     // custom rules: _banque paramètre inutilisé par ex dans Carte.js (pour polymorphisme)

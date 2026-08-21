@@ -248,7 +248,7 @@ describe("View", () => {
   // --------------- Tests afficher modale ----------------
 
   describe("afficherModale", () => {
-    
+
     test("retourne les coordonnées et dimensions de la modale", () => {
       const modale = view.afficherModale("Titre test");
 
@@ -270,6 +270,36 @@ describe("View", () => {
     });
   });
 
+  // --------------- Tests afficher le résultat du dé ----------------
 
+  describe("afficherResultatDe", () => {
 
+    test("ne dessine rien si l'image du dé n'est pas encore chargée (complete=false)", () => {
+      view.imagesResultatsDe[0].complete = false;
+      jeu.de.valeurAffichee = 2; // index 0
+
+      view.afficherResultatDe();
+
+      expect(ctx.drawImage).not.toHaveBeenCalled();
+    });
+
+    test("applique une transparence (globalAlpha 0.5) si l'état est EN_ATTENTE", () => {
+      jeu.etat = EtatsJeu.EN_ATTENTE;
+      jeu.de.valeurAffichee = 2;
+      view.imagesResultatsDe[0].complete = true;
+
+      view.afficherResultatDe();
+
+      expect(ctx.globalAlpha).toBe(0.5);
+    });
+
+    test("dessine l'image du dé si elle est chargée", () => {
+      jeu.de.valeurAffichee = 2;
+      view.imagesResultatsDe[0].complete = true;
+
+      view.afficherResultatDe();
+
+      expect(ctx.drawImage).toHaveBeenCalled();
+    });
+  });
 });
