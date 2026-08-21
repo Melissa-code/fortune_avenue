@@ -55,8 +55,7 @@ Ouvrir le fichier `index.html` dans le navigateur pour commencer à jouer
 
 Les tests unitaires sont écrits avec [Jest](https://jestjs.io/).
 
-> **Note de compatibilité :** Le projet utilise les modules ECMAScript (ESM) 
-natifs. 
+> **Note de compatibilité :** Le projet utilise les modules ECMAScript (ESM) natifs. 
 Afin d'assurer la compatibilité des tests à la fois sur **macOS/Linux** et **Windows**, 
 nous utilisons `cross-env` pour passer l'option `--experimental-vm-modules` à Node.js
 
@@ -78,17 +77,27 @@ npm install --save-dev cross-env
 ### Lancer les tests 
 
 ```bash
-npm test
+npm test (ou npm test tests.View.test.js)
 ```
 
 ### Structure des tests
 
 ```
 tests/
+├── Controller.test.js
+├── View.test.js
 ├── Carte.test.js
 ├── Effet.test.js
 └── ...
 ```
+
+Les dépendances (`Jeu`, `View`, `Controller`) sont mockées avec `jest.fn()` plutôt qu'instanciées réellement
+via des fonctions utilitaires `creerJeu()`, `creerView()`, `creerJoueur()` en haut de chaque fichier de test. 
+Cette approche isole chaque classe testée: un bug dans `Jeu` ne fait pas échouer les tests de `Controller` et inversement.
+
+> **Note :** `View.test.js` s'exécute dans l'environnement `jsdom` (configuré dans `package.json`, clé `"jest"`) 
+car il manipule le DOM et le Canvas. Les autres fichiers utilisent l'environnement Node par défaut.
+
 
 ## ESLinter et Prettier
 

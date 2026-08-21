@@ -380,7 +380,7 @@ describe("Controller", () => {
       jeu.soumettreProposition.mockReturnValue(resultat);
       const spy = jest.spyOn(controller, "terminerTourApresModale");
 
-      controller.soumettreProposition(0);
+      controller.soumettreProposition(1);
 
       expect(view.afficherTexteModale).toHaveBeenCalledWith(
         resultat.titre,

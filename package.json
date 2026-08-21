@@ -5,6 +5,8 @@
   "main": "main.js",
   "scripts": {
     "test": "cross-env NODE_OPTIONS=--experimental-vm-modules jest",
+    "test:unit": "cross-env NODE_OPTIONS=--experimental-vm-modules jest --testPathIgnorePatterns=integration",
+    "test:integration": "cross-env NODE_OPTIONS=--experimental-vm-modules jest integration",
     "lint": "eslint .",
     "lint:fix": "eslint . --fix"
   },

@@ -126,7 +126,6 @@ describe("View", () => {
   // --------------- Tests identifier cible ----------------
 
   describe("identifierCible", () => {
-    
     test("retourne DE si le clic est dans la zone du dé", () => {
       const x = view.positionDeX + 2;
       const y = view.positionDeY + 2;
@@ -145,7 +144,6 @@ describe("View", () => {
   // --------------- Tests initialiser evenements  ----------------
 
   describe("initialiserEvenement (click sur le dé)", () => {
-
     test("appelle controller.lancerDe() si le clic est sur le dé", () => {
       canvas.__trigger("click", {
         clientX: view.positionDeX + 2,
@@ -177,11 +175,15 @@ describe("View", () => {
   // --------------- Tests refresh ----------------
 
   describe("refresh", () => {
-
     test("vide le canvas avant de redessiner", () => {
       view.refresh();
 
-      expect(ctx.clearRect).toHaveBeenCalledWith(0, 0, canvas.width, canvas.height);
+      expect(ctx.clearRect).toHaveBeenCalledWith(
+        0,
+        0,
+        canvas.width,
+        canvas.height,
+      );
     });
 
     test("affiche le menu de propositions si l'état est EN_ATTENTE", () => {
@@ -191,7 +193,10 @@ describe("View", () => {
 
       view.refresh();
 
-      expect(spyMenu).toHaveBeenCalledWith(jeu.listePropositions, jeu.joueurActuelIndex);
+      expect(spyMenu).toHaveBeenCalledWith(
+        jeu.listePropositions,
+        jeu.joueurActuelIndex,
+      );
       expect(spyEvenements).not.toHaveBeenCalled();
     });
 
@@ -210,15 +215,18 @@ describe("View", () => {
   // --------------- Tests afficher le menu de propositions ----------------
 
   describe("afficherMenuPropositions", () => {
-
     test("texte au singulier si une seule proposition", () => {
       const spy = jest.spyOn(view, "afficherTexteModale");
-      const propositions = [{ titre: "Acheter", description: "Achetez cette propriété" }];
+      const propositions = [
+        { titre: "Acheter", description: "Achetez cette propriété" },
+      ];
 
       view.afficherMenuPropositions(propositions, 0);
 
       const [, texte] = spy.mock.calls[0];
-      expect(texte).toContain("Appuyez sur la touche [1] de votre clavier pour choisir.");
+      expect(texte).toContain(
+        "Appuyez sur la touche [1] de votre clavier pour choisir.",
+      );
     });
 
     test("texte au pluriel avec la bonne borne si plusieurs propositions", () => {
@@ -231,14 +239,19 @@ describe("View", () => {
       view.afficherMenuPropositions(propositions, 0);
 
       const [, texte] = spy.mock.calls[0];
-      expect(texte).toContain("Appuyez sur une touche de [1] à [2] de votre clavier pour choisir.");
+      expect(texte).toContain(
+        "Appuyez sur une touche de [1] à [2] de votre clavier pour choisir.",
+      );
     });
 
     test("le titre de la modale contient le nom du joueur courant", () => {
       const spy = jest.spyOn(view, "afficherTexteModale");
       jeu.joueurs[0] = creerJoueurVue({ nom: "Bob" });
 
-      view.afficherMenuPropositions([{ titre: "Acheter", description: "..." }], 0);
+      view.afficherMenuPropositions(
+        [{ titre: "Acheter", description: "..." }],
+        0,
+      );
 
       const [titre] = spy.mock.calls[0];
       expect(titre).toBe("Propositions à Bob");
@@ -248,7 +261,6 @@ describe("View", () => {
   // --------------- Tests afficher modale ----------------
 
   describe("afficherModale", () => {
-
     test("retourne les coordonnées et dimensions de la modale", () => {
       const modale = view.afficherModale("Titre test");
 
@@ -265,7 +277,7 @@ describe("View", () => {
       expect(ctx.fillText).toHaveBeenCalledWith(
         "Mon titre",
         expect.any(Number),
-        expect.any(Number)
+        expect.any(Number),
       );
     });
   });
@@ -273,7 +285,6 @@ describe("View", () => {
   // --------------- Tests afficher le résultat du dé ----------------
 
   describe("afficherResultatDe", () => {
-
     test("ne dessine rien si l'image du dé n'est pas encore chargée (complete=false)", () => {
       view.imagesResultatsDe[0].complete = false;
       jeu.de.valeurAffichee = 2; // index 0

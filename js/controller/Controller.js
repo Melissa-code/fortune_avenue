@@ -138,8 +138,8 @@ class Controller {
   soumettreProposition(numProposition) {
     if (this.jeu.etat !== EtatsJeu.EN_ATTENTE || isNaN(numProposition)) return;
     if (
-      numProposition < 0 ||
-      numProposition >= this.jeu.listePropositions.length
+      numProposition < 1 ||
+      numProposition > this.jeu.listePropositions.length
     )
       return;
 

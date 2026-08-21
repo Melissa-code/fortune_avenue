@@ -156,7 +156,7 @@ class Jeu {
     const joueurCourant = this.joueurs[this.joueurActuelIndex];
     const numProp = numProposition - 1; // n-1 dans la liste de propositions
 
-    if (numProp < 0 || numProp > this.listePropositions.length) return;
+    if (numProp < 0 || numProp >= this.listePropositions.length) return;
 
     // Valider proposition (bool) et appliquer ses effets (ex: acheter la case/payer pour sortir de prison...)
     const success = this.listePropositions[numProp].valider(
