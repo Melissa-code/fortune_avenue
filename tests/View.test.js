@@ -174,10 +174,10 @@ describe("View", () => {
     });
   });
 
-// --------------- Tests refresh ----------------
+  // --------------- Tests refresh ----------------
 
   describe("refresh", () => {
-    
+
     test("vide le canvas avant de redessiner", () => {
       view.refresh();
 
@@ -204,6 +204,69 @@ describe("View", () => {
 
       expect(spyEvenements).toHaveBeenCalled();
       expect(spyMenu).not.toHaveBeenCalled();
+    });
+  });
+
+  // --------------- Tests afficher le menu de propositions ----------------
+
+  describe("afficherMenuPropositions", () => {
+
+    test("texte au singulier si une seule proposition", () => {
+      const spy = jest.spyOn(view, "afficherTexteModale");
+      const propositions = [{ titre: "Acheter", description: "Achetez cette propriété" }];
+
+      view.afficherMenuPropositions(propositions, 0);
+
+      const [, texte] = spy.mock.calls[0];
+      expect(texte).toContain("Appuyez sur la touche [1] de votre clavier pour choisir.");
+    });
+
+    test("texte au pluriel avec la bonne borne si plusieurs propositions", () => {
+      const spy = jest.spyOn(view, "afficherTexteModale");
+      const propositions = [
+        { titre: "Acheter", description: "..." },
+        { titre: "Décliner", description: "..." },
+      ];
+
+      view.afficherMenuPropositions(propositions, 0);
+
+      const [, texte] = spy.mock.calls[0];
+      expect(texte).toContain("Appuyez sur une touche de [1] à [2] de votre clavier pour choisir.");
+    });
+
+    test("le titre de la modale contient le nom du joueur courant", () => {
+      const spy = jest.spyOn(view, "afficherTexteModale");
+      jeu.joueurs[0] = creerJoueurVue({ nom: "Bob" });
+
+      view.afficherMenuPropositions([{ titre: "Acheter", description: "..." }], 0);
+
+      const [titre] = spy.mock.calls[0];
+      expect(titre).toBe("Propositions à Bob");
+    });
+  });
+
+  // --------------- Tests afficher modale ----------------
+
+  describe("afficherModale", () => {
+    
+    test("retourne les coordonnées et dimensions de la modale", () => {
+      const modale = view.afficherModale("Titre test");
+
+      expect(modale).toHaveProperty("x");
+      expect(modale).toHaveProperty("y");
+      expect(modale).toHaveProperty("width");
+      expect(modale).toHaveProperty("height");
+      expect(modale).toHaveProperty("headerH");
+    });
+
+    test("dessine le titre passé en paramètre", () => {
+      view.afficherModale("Mon titre");
+
+      expect(ctx.fillText).toHaveBeenCalledWith(
+        "Mon titre",
+        expect.any(Number),
+        expect.any(Number)
+      );
     });
   });
 
