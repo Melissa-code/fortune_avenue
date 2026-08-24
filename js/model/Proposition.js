@@ -88,7 +88,7 @@ export class PropositionJouerCarteChanceSortiePrison extends Proposition {
   constructor() {
     super(
       "Jouer la carte chance",
-      "Voulez-vous jouer la carte n° 9 'Sortir de prison' pour sortir de prison ?",
+      "Voulez-vous jouer la carte n° 9 'Sortir de prison' ?",
     );
   }
 
@@ -116,7 +116,7 @@ export class PropositionJouerCarteFondsCommunsSortiePrison extends Proposition {
   constructor() {
     super(
       "Jouer la carte fonds commun",
-      "voulez-vous jouer la carte n° 5 'Sortir de prison' pour sortir de prison ?",
+      "voulez-vous jouer la carte n° 5 'Sortir de prison' ?",
     );
   }
 
@@ -144,7 +144,7 @@ export class PropositionAcheterCartePourSortiePrison extends Proposition {
   constructor() {
     super(
       "Acheter la carte",
-      "voulez-vous acheter la carte 'Sortir de prison' pour sortir de prison ?",
+      "voulez-vous acheter la carte 'Sortir de prison' ?",
     );
   }
 
@@ -274,7 +274,7 @@ export class PropositionConstruireMaison extends Proposition {
   constructor(_quantite) {
     super(
       "Contruire une maison",
-      "voulez-vous construire une maison sur cette propriété ?",
+      "voulez-vous construire une maison ?",
     );
   }
 
@@ -305,7 +305,7 @@ export class PropositionConctruireHotel extends Proposition {
   constructor() {
     super(
       "Construire un hôtel",
-      "voulez-vous construire un hôtel sur cette propriété ? ",
+      "voulez-vous construire un hôtel ? ",
     );
   }
 
