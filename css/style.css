@@ -20,7 +20,7 @@ body {
     min-height: 100vh; /* 100% hauteur */
     margin: 0.5rem;
     background-color: #2C6E49;
-     overflow: hidden;
+    overflow: hidden;
 }
 
 main {
@@ -82,7 +82,6 @@ button {
 
     .mobile-warning p {
         max-width: 320px;
-        font-family: 'Roboto', sans-serif;
         font-size: 17px;
         line-height: 1.6;
         color: rgba(255, 255, 255, 0.9);

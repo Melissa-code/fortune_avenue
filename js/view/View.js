@@ -195,8 +195,8 @@ class View {
         }
 
         //décalage pour éviter superposition pions pour lisibilité
-        const decalageX = i * (taillePion / 2);
-        const decalageY = i * (taillePion / 2);
+        const decalageX = i * (taillePion / 2.5);
+        const decalageY = i * (taillePion / 2.5);
         this.ctx.drawImage(
           imagePion,
           x + decalageX,
@@ -634,7 +634,7 @@ class View {
     this.ctx.fillRect(0, 0, this.myCanvas.width, this.myCanvas.height);
 
     // cadre
-    const largeurModale = this.dimensionPlateauJeu * 0.8;
+    const largeurModale = this.dimensionPlateauJeu * 1;
     const hauteurModale = this.dimensionPlateauJeu * 0.3;
     const zoneModaleX = this.myCanvas.width / 2 - largeurModale / 2;
     const zoneModaleY = this.myCanvas.height / 2 - hauteurModale / 2;

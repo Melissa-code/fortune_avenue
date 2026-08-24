@@ -36,7 +36,7 @@ const effetsFondsCommunsJson = [
     }, 
     {
         "titre": "Fonds communs 5",
-        "description": "Vous êtes libéré de prison.\nCette carte peut être conservée jusqu’à ce qu’elle soit utilisée ou vendue.",
+        "description": "Vous êtes libéré de prison. Cette carte peut être conservée \njusqu’à ce qu’elle soit utilisée ou vendue.",
         "type": TypesEffets.SORTIR_DE_PRISON
     }, 
     {
@@ -67,7 +67,7 @@ const effetsFondsCommunsJson = [
     }, 
     {
         "titre": "Fonds communs 9",
-        "description": "C’est votre anniversaire.\nChaque joueur doit vous donner 100 M.",
+        "description": "C’est votre anniversaire.Chaque joueur vous donne 100 M.",
         "type": TypesEffets.VERSEMENT,
         "montant": 100,
         "source": "banque",
@@ -99,7 +99,7 @@ const effetsFondsCommunsJson = [
     }, 
     {
         "titre": "Fonds communs 13",
-        "description": "Payez une amende de 10 M\nou bien tirez une carte « CHANCE ».",
+        "description": "Payez une amende de 10 M ou bien tirez une carte « CHANCE ».",
         "type": TypesEffets.CHOIX,
         "montant": 10,
         "source": "joueur",
@@ -116,7 +116,7 @@ const effetsFondsCommunsJson = [
     }, 
     {
         "titre": "Fonds communs 15",
-        "description": "Vous avez gagné le deuxième Prix de Beauté.\nRecevez 100 M.",
+        "description": "Vous avez gagné le deuxième Prix de Beauté.Recevez 100 M.",
         "type": TypesEffets.VERSEMENT,
         "montant": 100,
         "source": "banque",

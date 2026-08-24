@@ -73,7 +73,7 @@ const effetsChanceJson = [
     },
     {
         "titre": "Chance 9",
-        "description": `Vous êtes libéré de prison.\nCette carte peut être conservée jusqu’à ce qu’elle soit utilisée ou vendue.`,
+        "description": `Vous êtes libéré de prison. Cette carte peut être conservée \njusqu’à ce qu’elle soit utilisée ou vendue.`,
         "type": TypesEffets.SORTIR_DE_PRISON
     },
     {
@@ -87,7 +87,7 @@ const effetsChanceJson = [
     },
     {
         "titre": "Chance 11",
-        "description": `Aller en prison.\n Rendez-vous directement à la prison.\nNe passez pas par la case départ, ne touchez pas 200 M.`,
+        "description": `Aller en prison. Rendez-vous directement à la prison.\nNe passez pas par la case départ, ne touchez pas 200 M.`,
         "type": TypesEffets.ALLER_EN_PRISON,
         "type_deplacement": "absolu",
         "index_case": 10,
