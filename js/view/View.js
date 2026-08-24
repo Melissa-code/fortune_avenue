@@ -241,57 +241,6 @@ class View {
     this.imageHotel.onload = () => this.refresh();
   }
 
-  /**
-   * Afficher les infos des joueurs (argent, propriétés, prison...) dans une zone  
-   */
-  #afficherPrison(joueur, x, cardY, headerH, ligneH, iconSize, ligneActuelle) {
-    const prisonY = cardY + headerH + ligneH * ligneActuelle + 6;
-    this.ctx.drawImage(
-      this.imagePrison,
-      x + 8,
-      prisonY,
-      iconSize / 1.7,
-      iconSize / 1.7,
-    );
-    this.ctx.font = `bold 14px Roboto`;
-    this.ctx.fillStyle = "#da2c38";
-    this.ctx.fillText(
-      `En Prison`,
-      x + 5 + iconSize + 6,
-      prisonY + iconSize * 0.4,
-    );
-    this.ctx.fillStyle = "black";
-    return ligneActuelle + 1;
-  }
-
-  #afficherSortiePrison(
-    joueur,
-    x,
-    cardY,
-    headerH,
-    ligneH,
-    iconSize,
-    ligneActuelle,
-  ) {
-    const cleY = cardY + headerH + ligneH * ligneActuelle + 4;
-    this.ctx.drawImage(
-      this.imageSortiePrison,
-      x + 8,
-      cleY,
-      iconSize / 1.7,
-      iconSize / 1.7,
-    );
-    this.ctx.font = `bold 14px Roboto`;
-    this.ctx.fillStyle = "#2C6E49";
-    this.ctx.fillText(
-      `Carte sortie de prison`,
-      x + 5 + iconSize + 6,
-      cleY + iconSize * 0.4,
-    );
-    this.ctx.fillStyle = "black";
-    return ligneActuelle + 1;
-  }
-
   #afficherTagsProprietes(
     proprietes,
     x,
@@ -365,6 +314,92 @@ class View {
     this.ctx.fill();
   }
 
+  /**
+   * Dessine un badge (fond coloré, icône dans rond blanc et texte)
+   * et retourne la nouvelle position X pour empiler les badges de droite à gauche
+   */
+  #afficherBadge(rightX, y, hauteur, headerH, icone, texte, couleurFond) {
+    this.ctx.save();
+
+    this.ctx.font = 'bold 12px Roboto';
+    const textMetrics = this.ctx.measureText(texte);
+    const textWidth = textMetrics.width;
+
+    // rond blanc pour l'icône et dimensions du badge
+    const pionSize = headerH * 0.40;
+    const rondRayon = pionSize * 0.65;
+    const rondDiametre = rondRayon * 2;
+    const paddingHautBas = 6;
+    const hauteurBadge = rondDiametre + paddingHautBas;
+    const paddingGauche = 2;   
+    const paddingDroite = 10;   
+    const espaceEntreRondEtTexte = 6;
+    const largeurBadge = paddingGauche + rondDiametre + espaceEntreRondEtTexte + textWidth + paddingDroite;
+    const x = rightX - largeurBadge; 
+
+    // fond de la pilule coloré
+    this.ctx.fillStyle = couleurFond;
+    this.ctx.beginPath();
+    this.ctx.roundRect(x, y, largeurBadge, hauteurBadge, hauteur / 2);
+    this.ctx.fill();
+
+    // rond blanc pour l'icône (aligné avec le padding de gauche)
+    const rondCentreX = x + paddingGauche + rondRayon;
+    const rondCentreY = y + hauteurBadge / 2;
+    
+    this.ctx.fillStyle = '#FFFFFF';
+    this.ctx.beginPath();
+    this.ctx.arc(rondCentreX, rondCentreY, rondRayon, 0, Math.PI * 2);
+    this.ctx.fill();
+
+    // icône au centre du rond blanc
+    const iconeSize = rondDiametre * 0.65;
+    this.ctx.drawImage(
+      icone, 
+      rondCentreX - iconeSize / 2, 
+      rondCentreY - iconeSize / 2, 
+      iconeSize, 
+      iconeSize
+    );
+
+    // texte à droite du rond blanc
+    this.ctx.fillStyle = '#FFFFFF'; 
+    this.ctx.textBaseline = 'middle';
+    this.ctx.textAlign = 'left';
+    
+    const texteX = rondCentreX + rondRayon + espaceEntreRondEtTexte;
+    const texteY = y + hauteurBadge / 2;
+    this.ctx.fillText(texte, texteX, texteY);
+
+    this.ctx.restore(); // remet le canvas comme il était avant (font, fillStyle)
+
+    return x;
+  }
+
+  /**
+   * Badges "en prison" et "carte sortie de prison" dans le coin droit du header de la carte joueur
+   */
+  #afficherBadgesStatutHeader(joueur, x, cardY, largeurCard, headerH) {
+    const badgeH = headerH * 0.65; 
+    const badgeY = cardY + (headerH - badgeH) / 2;
+    let badgeX = x + largeurCard - 8; // Position de départ vers la droite
+
+    // Badge rouge "En Prison" 
+    if (joueur.estEnPrison) {
+      const texte = "En prison";
+      const couleur = '#da2c38'; 
+      badgeX = this.#afficherBadge(badgeX, badgeY, badgeH, headerH, this.imagePrison, texte, couleur);
+      badgeX -= 8; // espace entre deux badges si les deux s'affichent
+    }
+
+    // Badge vert "Carte Sortie de Prison"
+    if (joueur.carteChanceSortiePrison || joueur.carteFondsCommunsSortiePrison) {
+      const texte = "Carte sortie de prison";
+      const couleur = '#2C6E49'; 
+      badgeX = this.#afficherBadge(badgeX, badgeY, badgeH, headerH, this.imageSortiePrison, texte, couleur);
+    }
+  }
+
   #afficherCardJoueur(
     joueur,
     imgPion,
@@ -396,7 +431,10 @@ class View {
     );
     this.ctx.fillStyle = "#FFFFFF";
     this.ctx.font = `bold 16px Roboto`;
-    this.ctx.fillText(joueur.nom, x + pionSize + 50, cardY + headerH * 0.65);
+    this.ctx.fillText(joueur.nom, x + pionSize + 30, cardY + headerH * 0.65);
+
+    // badges statut (prison / carte sortie prison) : coin droit du header
+    this.#afficherBadgesStatutHeader(joueur, x, cardY, largeurCard, headerH);
 
     // content card
     this.ctx.fillStyle = "#FFFFFF";
@@ -433,40 +471,7 @@ class View {
       cardY + headerH + ligneH * 0.5,
     );
 
-    let ligneActuelle = 0.8;
-
-    // prison
-    if (joueur.estEnPrison) {
-      ligneActuelle = this.#afficherPrison(
-        joueur,
-        x,
-        cardY,
-        headerH,
-        ligneH,
-        iconSize,
-        ligneActuelle,
-      );
-    }
-
-    // carte sortie prison joueur.cartechanceSortiePrison === true
-    if (
-      joueur.carteChanceSortiePrison ||
-      joueur.carteFondsCommunsSortiePrison
-    ) {
-      console.log(
-        "joueur.carteChanceSortiePrison: ",
-        joueur.carteChanceSortiePrison,
-      );
-      ligneActuelle = this.#afficherSortiePrison(
-        joueur,
-        x,
-        cardY,
-        headerH,
-        ligneH,
-        iconSize,
-        ligneActuelle,
-      );
-    }
+    let ligneActuelle = 0.7;
 
     // tags propriétés achetées
     if (joueur.proprietes.length > 0) {
@@ -502,10 +507,7 @@ class View {
     for (let i = 0; i < joueurs.length; i++) {
       const joueur = joueurs[i];
       const estActif = i === this.jeu.joueurActuelIndex;
-      const nbLignes =
-        2 +
-        (joueur.estEnPrison ? 1 : 0) +
-        (joueur.proprietes.length > 0 ? 1 : 0);
+      const nbLignes = 2 + (joueur.proprietes.length > 0 ? 1 : 0);
       const hauteurCard = ligneH * nbLignes + this.espacement;
 
       this.#afficherCardJoueur(
