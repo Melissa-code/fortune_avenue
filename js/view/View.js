@@ -167,6 +167,17 @@ class View {
       const positionJoueur = joueurs[i].position;
 
       if (imagePion && imagePion.complete) {
+        // calcule les dimensions réelles en respectant le ratio d'origine
+        const ratio = imagePion.naturalWidth / imagePion.naturalHeight;
+        let largeurDessin = taillePion;
+        let hauteurDessin = taillePion;
+
+        if (ratio > 1) {
+          hauteurDessin = taillePion / ratio; // image plus large que haute
+        } else {
+          largeurDessin = taillePion * ratio; // image plus haute que large
+        } 
+
         let x;
         let y;
 
@@ -201,8 +212,8 @@ class View {
           imagePion,
           x + decalageX,
           y + decalageY,
-          taillePion,
-          taillePion,
+          largeurDessin,
+          hauteurDessin,
         );
       }
     }
@@ -341,9 +352,8 @@ class View {
     }
   }
 
-  #afficherRondDerriereIconeJoueur(x, cardY, headerH) {
-    const pionSize = headerH * 0.5;
-    const pionX = x + 15;
+  #afficherRondDerriereIconeJoueur(x, cardY, headerH, pionSize, decalageX) {
+    const pionX = x + decalageX; 
     const pionY = cardY + (headerH - pionSize) / 2;
 
     const centreX = pionX + pionSize / 2;
@@ -374,11 +384,12 @@ class View {
     this.ctx.fill();
 
     // header : img pion + nom joueur
-    const pionSize = headerH * 0.35;
-    this.#afficherRondDerriereIconeJoueur(x, cardY, headerH);
+    const pionSize = headerH * 0.40;     
+    const decalageX = headerH * 0.2;
+    this.#afficherRondDerriereIconeJoueur(x, cardY, headerH, pionSize, decalageX);
     this.ctx.drawImage(
       imgPion,
-      x + 20,
+      x + decalageX,
       cardY + (headerH - pionSize) / 2,
       pionSize,
       pionSize,
@@ -405,7 +416,7 @@ class View {
     this.ctx.stroke();
 
     // argent
-    const iconSize = ligneH * 0.8;
+    const iconSize = ligneH * 0.9;
     const iconY = cardY + headerH + ligneH * 0.1;
     this.ctx.drawImage(
       this.imageArgent,
@@ -414,7 +425,7 @@ class View {
       iconSize / 1.7,
       iconSize / 1.7,
     );
-    this.ctx.font = `15px Roboto`;
+    this.ctx.font = `14px Roboto`;
     this.ctx.fillStyle = "#000000";
     this.ctx.fillText(
       `${joueur.argent} M`,
