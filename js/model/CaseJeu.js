@@ -163,7 +163,7 @@ export class CaseRue extends CasePropriete {
    * surcharge de la méthode calculerIndexLoyer pour les rues
    */
   calculerLoyer(jeu) {
-    if (this.isHypotheque || !this.proprietaire) return 0;
+    if (this.isHypotheque || this.estLibre()) return 0;
 
     if (this.nombreHotels > 0) return this.loyers[5];
     if (this.nombreMaisons > 0) return this.loyers[this.nombreMaisons]; // 1 à 4
@@ -185,7 +185,7 @@ export class CaseGare extends CasePropriete {
   }
 
   calculerLoyer(_jeu = null) {
-    if (this.hypotheque || this.estLibre()) return 0;
+    if (this.isHypotheque || this.estLibre()) return 0;
     let montant;
 
     const joueurProprietes = this.proprietaire.proprietes || [];
@@ -207,7 +207,7 @@ export class CaseSociete extends CasePropriete {
   }
 
   calculerLoyer(jeu) {
-    if (this.hypotheque || this.estLibre()) return 0;
+    if (this.isHypotheque || this.estLibre()) return 0;
 
     let montant;
     const joueurProprietes = this.proprietaire.proprietes || [];
