@@ -350,8 +350,9 @@ describe('acheter carte pour sortir de prison', () => {
         const resultat = proposition.valider(joueur, jeu);
         
         expect(joueur.estEnPrison).toBe(false);
-        expect(joueur.carteChanceSortiePrison).toBe(true);
-        expect(joueur.compteurPourSortirPrison).toBe(0);
+        expect(joueur.carteChanceSortiePrison).toBe(false);// joueur 1 ne la garde pas
+         expect(autreJoueur.carteChanceSortiePrison).toBe(false); // autre joueur ne l'a plus non plus
+        expect(joueur.compteurPourSortirPrison).toBe(0);//
         expect(joueur.payer).toHaveBeenCalledWith(25);
         expect(autreJoueur.recevoir).toHaveBeenCalledWith(25);
         expect(resultat).toEqual({

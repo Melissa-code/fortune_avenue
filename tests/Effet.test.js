@@ -289,7 +289,7 @@ describe("ReparationsEffet", () => {
     expect(joueur.payer).not.toHaveBeenCalled();
     expect(banque.recevoir).not.toHaveBeenCalled();
     expect(messages).toEqual([
-      `${joueur.nom} n'a ni maison ni d'hôtel. Pas de réparations.`,
+      `${joueur.nom} n'a ni maison ni hôtel. Aucune réparation à effectuer.`,
     ]);
   });
 });

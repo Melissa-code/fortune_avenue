@@ -228,7 +228,7 @@ describe("View", () => {
 
       const [, texte] = spy.mock.calls[0];
       expect(texte).toContain(
-        "Appuyez sur la touche [1] de votre clavier pour choisir.",
+        "Appuyez sur la touche [1] de votre clavier.",
       );
     });
 

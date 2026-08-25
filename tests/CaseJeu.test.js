@@ -282,7 +282,7 @@ describe("CaseGare", () => {
   test("calculerLoyer() retourne 0 si hypothéquée", () => {
     const gare = new CaseGare("Gare du Nord", 200, [25, 50, 100, 200]);
     gare.proprietaire = { nom: "Judith", proprietes: [] };
-    gare.hypotheque = 100;
+    gare.isHypotheque = true;
 
     expect(gare.calculerLoyer()).toBe(0);
   });
@@ -331,9 +331,9 @@ describe("CaseSociete", () => {
   test("calculerLoyer() retourne 0 si hypothéquée", () => {
     const societe = new CaseSociete("Société Test", 150, [4, 10]);
     societe.proprietaire = { nom: "Julien", proprietes: [] };
-    societe.hypotheque = 100;
+    societe.isHypotheque = true;
 
-    expect(societe.calculerLoyer({ de: { valeurAffichee: 5 } })).toBe(0);
+    expect(societe.calculerLoyer({ de: { valeurAffichee: 5 } })).toBe(0); 
   });
 
   test("calculerLoyer() retourne 0 si pas de propriétaire", () => {
