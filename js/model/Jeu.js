@@ -126,13 +126,21 @@ class Jeu {
     ) {
       this.listeStatuts = this.payerLoyer(joueurCourant, caseJeu); //loyer: objet message loyer ou null
       return;
+
     } else if (
       caseJeu instanceof CasePropriete &&
       caseJeu.proprietaire === joueurCourant
     ) {
-      this.listeStatuts = [
-        `${joueurCourant.nom} est sur sa propriété "${caseJeu.nom}".`,
-      ];
+      const propositions = caseJeu.arriver(joueurCourant, this);
+      if (propositions.length > 0) {
+        // modale (proposition construire maison etc)
+        this.listePropositions = propositions;
+        this.etat = EtatsJeu.EN_ATTENTE;
+      } else {
+        this.listeStatuts = [
+          `${joueurCourant.nom} est sur sa propriété "${caseJeu.nom}".`,
+        ];
+      }
       return;
     }
 

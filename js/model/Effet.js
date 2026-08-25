@@ -252,7 +252,7 @@ export class ReparationsEffet extends Effet {
 
     if (nbMaisons === 0 && nbHotels === 0) {
       messages.push(
-        `${joueur.nom} n'a ni maison ni d'hôtel. Pas de réparations.`,
+        `${joueur.nom} n'a ni maison ni hôtel. Aucune réparation à effectuer.`,
       );
       return messages;
     }
