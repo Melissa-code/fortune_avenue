@@ -171,12 +171,20 @@ class Jeu {
   }
 
   terminerTour() {
+    const joueurCourant = this.joueurs[this.joueurActuelIndex];
+    this.verifierFaillite(joueurCourant);
+    if (this.etat === EtatsJeu.TERMINE) return; // partie terminée
+
     this.etat = EtatsJeu.EN_COURS;
     this.changerJoueur();
-    // this.verifierFinJeu();
   }
 
-  verifierFinJeu() {}
+  verifierFaillite(joueur) {
+    if (joueur.argent <= 0) {
+      this.etat = EtatsJeu.TERMINE; 
+      this.listeStatuts = [`${joueur.nom} est en faillite. Partie terminée.`];
+    }
+  }
 }
 
 export default Jeu;

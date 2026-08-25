@@ -97,6 +97,7 @@ class Controller {
 
     if (!this.jeu.caseApresDeplacementCarte) {
       this.jeu.terminerTour();
+      this.view.refresh();
       return;
     }
 

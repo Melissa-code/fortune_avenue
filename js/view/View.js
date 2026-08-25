@@ -176,7 +176,7 @@ class View {
           hauteurDessin = taillePion / ratio; // image plus large que haute
         } else {
           largeurDessin = taillePion * ratio; // image plus haute que large
-        } 
+        }
 
         let x;
         let y;
@@ -302,7 +302,7 @@ class View {
   }
 
   #afficherRondDerriereIconeJoueur(x, cardY, headerH, pionSize, decalageX) {
-    const pionX = x + decalageX; 
+    const pionX = x + decalageX;
     const pionY = cardY + (headerH - pionSize) / 2;
 
     const centreX = pionX + pionSize / 2;
@@ -318,24 +318,38 @@ class View {
    * Dessine un badge rouge/vert : en prison/carte sortie de prison
    * et retourne la nouvelle position X pour empiler les badges de droite à gauche
    */
-  #afficherBadge(rightX, y, hauteur, headerH, icone, texte, couleurFond, couleurTexte) {
+  #afficherBadge(
+    rightX,
+    y,
+    hauteur,
+    headerH,
+    icone,
+    texte,
+    couleurFond,
+    couleurTexte,
+  ) {
     this.ctx.save();
 
-    this.ctx.font = 'bold 12px Roboto';
+    this.ctx.font = "bold 12px Roboto";
     const textMetrics = this.ctx.measureText(texte);
     const textWidth = textMetrics.width;
 
     // rond blanc pour l'icône et dimensions du badge
-    const pionSize = headerH * 0.40;
+    const pionSize = headerH * 0.4;
     const rondRayon = pionSize * 0.65;
     const rondDiametre = rondRayon * 2;
     const paddingHautBas = 4;
     const hauteurBadge = rondDiametre + paddingHautBas;
-    const paddingGauche = 2;   
-    const paddingDroite = 10;   
+    const paddingGauche = 2;
+    const paddingDroite = 10;
     const espaceEntreRondEtTexte = 6;
-    const largeurBadge = paddingGauche + rondDiametre + espaceEntreRondEtTexte + textWidth + paddingDroite;
-    const x = rightX - largeurBadge; 
+    const largeurBadge =
+      paddingGauche +
+      rondDiametre +
+      espaceEntreRondEtTexte +
+      textWidth +
+      paddingDroite;
+    const x = rightX - largeurBadge;
 
     // fond coloré
     this.ctx.fillStyle = couleurFond;
@@ -346,8 +360,8 @@ class View {
     // rond blanc pour l'icône (aligné avec le padding de gauche)
     const rondCentreX = x + paddingGauche + rondRayon;
     const rondCentreY = y + hauteurBadge / 2;
-    
-    this.ctx.fillStyle = '#FFFFFF';
+
+    this.ctx.fillStyle = "#FFFFFF";
     this.ctx.beginPath();
     this.ctx.arc(rondCentreX, rondCentreY, rondRayon, 0, Math.PI * 2);
     this.ctx.fill();
@@ -355,18 +369,18 @@ class View {
     // icône au centre du rond blanc
     const iconeSize = rondDiametre * 0.65;
     this.ctx.drawImage(
-      icone, 
-      rondCentreX - iconeSize / 2, 
-      rondCentreY - iconeSize / 2, 
-      iconeSize, 
-      iconeSize
+      icone,
+      rondCentreX - iconeSize / 2,
+      rondCentreY - iconeSize / 2,
+      iconeSize,
+      iconeSize,
     );
 
     // texte à droite du rond blanc
     this.ctx.fillStyle = couleurTexte;
-    this.ctx.textBaseline = 'middle';
-    this.ctx.textAlign = 'left';
-    
+    this.ctx.textBaseline = "middle";
+    this.ctx.textAlign = "left";
+
     const texteX = rondCentreX + rondRayon + espaceEntreRondEtTexte;
     const texteY = y + hauteurBadge / 2;
     this.ctx.fillText(texte, texteX, texteY);
@@ -377,28 +391,49 @@ class View {
   }
 
   /**
-   * Badges "en prison" et "carte sortie de prison" dans le header 
+   * Badges "en prison" et "carte sortie de prison" dans le header
    */
   #afficherBadgesStatutHeader(joueur, x, cardY, largeurCard, headerH) {
-    const badgeH = headerH * 0.65; 
+    const badgeH = headerH * 0.65;
     const badgeY = cardY + (headerH - badgeH) / 2;
     let badgeX = x + largeurCard - 10; // Position à droite
 
-    // Badge rouge "En Prison" 
+    // Badge rouge "En Prison"
     if (joueur.estEnPrison) {
       const texte = "En prison ! ";
-      const couleur = '#da2c38';
-      const couleurTexte = "#FFFFFF"; 
-      badgeX = this.#afficherBadge(badgeX, badgeY, badgeH, headerH, this.imagePrison, texte, couleur, couleurTexte);
+      const couleur = "#da2c38";
+      const couleurTexte = "#FFFFFF";
+      badgeX = this.#afficherBadge(
+        badgeX,
+        badgeY,
+        badgeH,
+        headerH,
+        this.imagePrison,
+        texte,
+        couleur,
+        couleurTexte,
+      );
       badgeX -= 8; // espace entre deux badges si les deux s'affichent
     }
 
     // Badge vert "Carte Sortie de Prison"
-    if (joueur.carteChanceSortiePrison || joueur.carteFondsCommunsSortiePrison) {
+    if (
+      joueur.carteChanceSortiePrison ||
+      joueur.carteFondsCommunsSortiePrison
+    ) {
       const texte = "Carte sortie de prison";
-      const couleur = '#A8D5BA'; 
+      const couleur = "#A8D5BA";
       const couleurTexte = "#000000";
-      badgeX = this.#afficherBadge(badgeX, badgeY, badgeH, headerH, this.imageSortiePrison, texte, couleur, couleurTexte);
+      this.#afficherBadge(
+        badgeX,
+        badgeY,
+        badgeH,
+        headerH,
+        this.imageSortiePrison,
+        texte,
+        couleur,
+        couleurTexte,
+      );
     }
   }
 
@@ -421,9 +456,15 @@ class View {
     this.ctx.fill();
 
     // header : img pion + nom joueur
-    const pionSize = headerH * 0.40;     
+    const pionSize = headerH * 0.4;
     const decalageX = headerH * 0.2;
-    this.#afficherRondDerriereIconeJoueur(x, cardY, headerH, pionSize, decalageX);
+    this.#afficherRondDerriereIconeJoueur(
+      x,
+      cardY,
+      headerH,
+      pionSize,
+      decalageX,
+    );
     this.ctx.drawImage(
       imgPion,
       x + decalageX,
@@ -756,7 +797,7 @@ class View {
 
     // n° dynamiques
     if (listePropositions.length === 1) {
-      texte += "\nAppuyez sur la touche [1] de votre clavier pour choisir.";
+      texte += "\nAppuyez sur la touche [1] de votre clavier.";
     } else {
       texte += `\nAppuyez sur une touche de [1] à [${listePropositions.length}] de votre clavier pour choisir.`;
     }
@@ -791,8 +832,6 @@ class View {
    * Identifier cible cliquée par x et y -> retourne le type de cible (string)
    */
   identifierCible(x, y) {
-    // console.log(`positions de x: ${x}, y : ${y}`);
-
     //zone de detection du clic sur le dé
     if (
       x >= this.positionDeX &&

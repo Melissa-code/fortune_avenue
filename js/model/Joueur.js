@@ -2,7 +2,7 @@ import { CaseRue } from './CaseJeu.js';
 import { log } from '../../logger.js';
 
 class Joueur {
-    constructor(nom, pion, argent = 1500) {
+    constructor(nom, pion, argent = 200) {
         this.nom = nom;
         this.pion = pion; //img
         this.position = 0; 
