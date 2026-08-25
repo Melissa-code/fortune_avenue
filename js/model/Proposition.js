@@ -172,12 +172,12 @@ export class PropositionAcheterCartePourSortiePrison extends Proposition {
 
     if (this.joueur2.carteChanceSortiePrison === true) {
       this.joueur2.carteChanceSortiePrison = false;
-      joueur.carteChanceSortiePrison = true;
+      joueur.carteChanceSortiePrison = false; // il l'utilise donc ne l'a plus
       joueur.estEnPrison = false;
       joueur.compteurPourSortirPrison = 0
     } else if (this.joueur2.carteFondsCommunsSortiePrison === true) {
       this.joueur2.carteFondsCommunsSortiePrison = false;
-      joueur.carteFondsCommunsSortiePrison = true;
+      joueur.carteFondsCommunsSortiePrison = false; 
       joueur.estEnPrison = false;
       joueur.compteurPourSortirPrison = 0
     }
