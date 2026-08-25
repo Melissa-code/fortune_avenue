@@ -315,10 +315,10 @@ class View {
   }
 
   /**
-   * Dessine un badge (fond coloré, icône dans rond blanc et texte)
+   * Dessine un badge rouge/vert : en prison/carte sortie de prison
    * et retourne la nouvelle position X pour empiler les badges de droite à gauche
    */
-  #afficherBadge(rightX, y, hauteur, headerH, icone, texte, couleurFond) {
+  #afficherBadge(rightX, y, hauteur, headerH, icone, texte, couleurFond, couleurTexte) {
     this.ctx.save();
 
     this.ctx.font = 'bold 12px Roboto';
@@ -329,7 +329,7 @@ class View {
     const pionSize = headerH * 0.40;
     const rondRayon = pionSize * 0.65;
     const rondDiametre = rondRayon * 2;
-    const paddingHautBas = 6;
+    const paddingHautBas = 4;
     const hauteurBadge = rondDiametre + paddingHautBas;
     const paddingGauche = 2;   
     const paddingDroite = 10;   
@@ -337,7 +337,7 @@ class View {
     const largeurBadge = paddingGauche + rondDiametre + espaceEntreRondEtTexte + textWidth + paddingDroite;
     const x = rightX - largeurBadge; 
 
-    // fond de la pilule coloré
+    // fond coloré
     this.ctx.fillStyle = couleurFond;
     this.ctx.beginPath();
     this.ctx.roundRect(x, y, largeurBadge, hauteurBadge, hauteur / 2);
@@ -363,7 +363,7 @@ class View {
     );
 
     // texte à droite du rond blanc
-    this.ctx.fillStyle = '#FFFFFF'; 
+    this.ctx.fillStyle = couleurTexte;
     this.ctx.textBaseline = 'middle';
     this.ctx.textAlign = 'left';
     
@@ -377,26 +377,28 @@ class View {
   }
 
   /**
-   * Badges "en prison" et "carte sortie de prison" dans le coin droit du header de la carte joueur
+   * Badges "en prison" et "carte sortie de prison" dans le header 
    */
   #afficherBadgesStatutHeader(joueur, x, cardY, largeurCard, headerH) {
     const badgeH = headerH * 0.65; 
     const badgeY = cardY + (headerH - badgeH) / 2;
-    let badgeX = x + largeurCard - 8; // Position de départ vers la droite
+    let badgeX = x + largeurCard - 10; // Position à droite
 
     // Badge rouge "En Prison" 
     if (joueur.estEnPrison) {
-      const texte = "En prison";
-      const couleur = '#da2c38'; 
-      badgeX = this.#afficherBadge(badgeX, badgeY, badgeH, headerH, this.imagePrison, texte, couleur);
+      const texte = "En prison ! ";
+      const couleur = '#da2c38';
+      const couleurTexte = "#FFFFFF"; 
+      badgeX = this.#afficherBadge(badgeX, badgeY, badgeH, headerH, this.imagePrison, texte, couleur, couleurTexte);
       badgeX -= 8; // espace entre deux badges si les deux s'affichent
     }
 
     // Badge vert "Carte Sortie de Prison"
     if (joueur.carteChanceSortiePrison || joueur.carteFondsCommunsSortiePrison) {
       const texte = "Carte sortie de prison";
-      const couleur = '#2C6E49'; 
-      badgeX = this.#afficherBadge(badgeX, badgeY, badgeH, headerH, this.imageSortiePrison, texte, couleur);
+      const couleur = '#A8D5BA'; 
+      const couleurTexte = "#000000";
+      badgeX = this.#afficherBadge(badgeX, badgeY, badgeH, headerH, this.imageSortiePrison, texte, couleur, couleurTexte);
     }
   }
 
