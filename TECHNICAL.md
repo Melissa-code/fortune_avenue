@@ -208,12 +208,15 @@ Il liste toutes les pages importantes du site (ex: pour une application de type 
 
 ## Partie 5: analytics et monitoring 
 
-Mise en place d'un suivi de trafic éthique et respectueux de la vie privée sur l'application.
+Mise en place d'un suivi de trafic éthique et respectueux de la vie privée sur l'application. 
+Qui vient, combien de personnes visitent le site, d'où elles viennent (Google, GitHub, lien direct..)
+et combien de temps elles y restent.
 
 ### 1. Choix de l'outil
 
 Utilisation de **Simple Analytics**, un outil qui compte et analyse les visiteurs du site *Fortune Avenue* et 
 une alternative européenne légère à Google Analytics :
+
 - 0 cookie, 0 traceur,
 - aucun bandeau de consentement obligatoire requis pour les visiteurs,
 - conforme au RGPD, 
@@ -235,4 +238,3 @@ puis ajout direct du script de suivi asynchrone dans le fichier `index.html` (ju
 <img src="./images/technical/dashboard_simple_analytics.png" width="400" alt="tableau de bord de Simple Analytics"> 
 
 => Vérification du bon fonctionnement en production (premier visiteur enregistré après le déploiement sur Netlify).
-
