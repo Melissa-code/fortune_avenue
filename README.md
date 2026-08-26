@@ -34,14 +34,16 @@ Ce projet met en application :
 - **Interface Utilisateur et expérience (UI/UX) :**  
   tableau de bord dynamique affichant le tour courant, le solde des joueurs et un plateau de jeu avec le dé
 
-## Aperçu 
+### Aperçu :
 
 <div style="display:flex; gap:1rem">
   <img src="./images/technical/achat.png" width="300">
   <img src="./images/technical/prison.png" width="300">
 </div>
 
-⚠️ Ce jeu est optimisé pour ordinateur et nécessite l'utilisation des flèches du clavier. 
+<br/>
+
+⚠️ **Ce jeu est optimisé pour ordinateur** et nécessite l'utilisation des flèches du clavier. 
 Il n'est pas compatible avec les appareils mobiles ou tablettes.
 
 
@@ -70,11 +72,8 @@ ne sont pas encore présentes :
 
 ```bash
 npm install
-```
 
-Si vous ajoutez cross-env au projet pour la première fois, installez-le avec : 
-
-```bash
+# Pour ajouter `cross-env` au projet pour la première fois, l'installer avec 
 npm install --save-dev cross-env
 ```
 
@@ -82,9 +81,7 @@ npm install --save-dev cross-env
 
 ```bash
 npm test 
-```
 
-```bash
 # Lancer un fichier de test spécifique
 npm test tests.View.test.js
 ```
@@ -97,7 +94,6 @@ tests/
 ├── Controller.integration.test.js
 ├── View.test.js
 ├── Carte.test.js
-├── Effet.test.js
 └── ...
 ```
 
@@ -115,7 +111,7 @@ Le fichier `Controller.integration.test.js` valide le comportement global du con
 car il manipule le DOM et le Canvas. Les autres fichiers utilisent l'environnement Node par défaut.
 
 
-## Qualité du code (ESLinter et Prettier)
+## 5. Qualité du code (ESLinter et Prettier)
 
 Le projet utilise ESLint pour détecter les erreurs de code et Prettier pour uniformiser le formatage.
 
@@ -135,7 +131,25 @@ npx prettier --write .
 npx prettier --write tests/Effet.test.js
 ```
 
-## 5. Technologies utilisées
+
+## 6. Déploiement CI/CD 
+
+Le projet utilise un pipeline de **CI/CD** automatisé via **GitHub Actions** 
+et hébergé sur **Netlify**
+
+### Processus de déploiement (Test-First)
+
+1. **Tests automatiques :** à chaque `push` ou `merge` sur la branche `main`, GitHub Actions exécute la suite de tests **Jest**
+2. **Condition de déploiement :** seulement si tous les tests passent avec succès, le déploiement vers Netlify est déclenché automatiquement
+3. **Sécurité :** aucun code défectueux ou avec des tests en échec ne peut atteindre la production
+
+### Configuration requise 
+
+Pour que le déploiement automatique fonctionne, les identifiants de connexion Netlify 
+doivent être configurés dans les **Secrets GitHub** du dépôt (`Settings > Secrets and variables > Actions`)
+
+
+## 7. Technologies utilisées
 
 - **[HTML](https://developer.mozilla.org/fr/docs/Web/HTML)**: structure du jeu
 - **[CSS](https://developer.mozilla.org/fr/docs/Web/CSS)**: design et mise en page
@@ -157,17 +171,16 @@ npx prettier --write tests/Effet.test.js
     "editor.rulers": [80]
 ```
 
-## 6. Contributions 
+## 8. Contributions 
 
 Les contributions, suggestions et issues sont les bienvenues.
 N’hésitez pas à ouvrir une issue pour proposer une idée ou signaler un bug.
 
 
-## 7. Author 
+## 9. Author
 
-Melissa-code 
+Melissa-code
 
-
-## 8. Licence 
+## 10. Licence 
 
 © 2026 Fortune Avenue Project
