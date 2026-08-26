@@ -41,7 +41,7 @@ Ce projet met en application :
 
 ### Aperçu :
 
-| Événements | Sortie de prison | Version Mobile |
+| Événements | Sortie de prison | Mobile |
 | :---: | :---: | :---: |
 | <img src="./images/technical/interface_evenements.png" width="400" alt="interface événements"> | <img src="./images/technical/interface_sortie_prison.png" width="400" alt="interface sortie de prison"> | <img src="./images/technical/interface_mobile.png" width="110" alt="interface pour mobile"> |
 
@@ -186,8 +186,8 @@ N’hésitez pas à ouvrir une issue pour proposer une idée ou signaler un bug.
 
 ## 9. Author
 
-Melissa-code
+Melissa-code: création et développement du projet
 
 ## 10. Licence 
 
-© 2026 Fortune Avenue Project
+© 2026 Fortune Avenue Project (Melissa-code) 

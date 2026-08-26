@@ -181,3 +181,27 @@ C'est **découplage**
 MVC "Façon Jeu JS" (Event-Driven)
 Tout le monde reste "vivant" en même temps dans la mémoire du navigateur (!= une fois la page affichée, le Controller "meurt"/ Il ne reste pas en mémoire dans Symfony). On appelle ça le MVC Smalltalk ou Observer Pattern.
 la View est l'élément qui capte les interactions physiques (clics sur le canvas). View reçoit Controller pour pouvoir lui envoyer les événements (clics).
+
+---
+
+## Partie 4: SEO 
+
+Deux fichiers texte placés à la racine du projet améliorent le référencement naturel (SEO) du site par les moteurs de recherche comme Google.
+
+### 1. Fichier robots.txt
+
+Il est destiné aux robots des moteurs de recherche (les crawlers comme Googlebot).
+Il leur indique clairement ce qu'ils ont le droit de visiter et ce qu'ils doivent ignorer. 
+Il sert généralement à autoriser les robots à explorer tout le site et à leur donner l'adresse exacte du sitemap. 
+
+[Robot.txt-Cloudflare](https://www.cloudflare.com/fr-fr/learning/bots/what-is-robots-txt/)
+
+### 2. Fichier sitemap.xml
+
+C'est le plan du site web, écrit dans un format structuré (XML) que les robots adorent lire.
+Il liste toutes les pages importantes du site (ex: pour une application de type jeu en single page, il liste au moins la page d'accueil principale). 
+Ça permet aux moteurs de recherche de découvrir le site plus rapidement, de savoir qu'il existe, et d'indexer les pages de façon optimale. 
+
+[sitemaps.org](https://www.sitemaps.org/fr/protocol.html)
+
+
