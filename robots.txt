@@ -1,4 +1,4 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://mon-domaine.com/sitemap.xml
+Sitemap: https://fortuneavenue.netlify.app/sitemap.xml
