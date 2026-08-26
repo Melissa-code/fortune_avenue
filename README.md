@@ -139,9 +139,10 @@ et hébergé sur **Netlify**
 
 ### Processus de déploiement (Test-First)
 
-1. **Tests automatiques :** à chaque `push` ou `merge` sur la branche `main`, GitHub Actions exécute la suite de tests **Jest**
-2. **Condition de déploiement :** seulement si tous les tests passent avec succès, le déploiement vers Netlify est déclenché automatiquement
-3. **Sécurité :** aucun code défectueux ou avec des tests en échec ne peut atteindre la production
+1. **Analyse statique (Linter) :** le code est vérifié pour respecter les bonnes pratiques et éviter les erreurs de syntaxe
+2. **Tests automatiques :** à chaque `push` ou `merge` sur la branche `main`, GitHub Actions exécute la suite de tests **Jest**
+3. **Condition de déploiement :** seulement si tous les tests passent avec succès, le déploiement vers Netlify est déclenché automatiquement
+4. **Sécurité :** aucun code défectueux ou avec des tests en échec ne peut atteindre la production
 
 ### Configuration requise 
 
