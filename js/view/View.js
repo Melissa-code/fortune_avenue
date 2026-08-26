@@ -1,6 +1,6 @@
 import ImagesResultatsDe from "../model/enums/ImagesResultatsDe.js";
 import EtatsJeu from "../model/enums/EtatsJeu.js";
-import ImagesUI from "../model/enums/imagesUI.js";
+import ImagesUI from "../model/enums/ImagesUI.js";
 
 class View {
   static IMG_PLATEAU_JEU = "./images/gameboard_v2.svg";
