@@ -2,19 +2,24 @@
 
 Jeu de plateau développé en **JavaScript**
 
+<a href="https://fortuneavenue.netlify.app/">
+  <img src="https://img.shields.io/badge/🎲_JOUER-2C6E49?style=for-the-badge" alt="Jouer à Fortune Avenue">
+</a>
+
 
 ## 1. Description du projet
 
 Fortune Avenue est une version simplifiée du jeu Monopoly codée en **vanilla JavaScript**.
 
-**L’objectif :** gérer ses propriétés, encaisser des loyers et rester le dernier joueur solvable
+**L’objectif**: gérer ses propriétés, encaisser des loyers et rester le dernier joueur solvable. 
 
 Ce projet met en application :
+
 - **programmation orientée objet avancée (POO)** avec l'héritage, le polymorphisme, l'architecture modulaire,
 - **gestion des états de jeu** avec les tours, les actions, les événements aléatoires,
 - **rendu graphique dynamique** via la **Canvas API**,
-- **qualité de code** via des tests unitaires automatisés avec **Jest**,
-- **bonnes pratiques du Web** avec l'intégration SEO, le balisage Open Graph et l'accessibilité `.sr-only`
+- **qualité de code** via des tests unitaires automatisés avec **Jest**, une analyse statique (linter) et un pipeline CI/CD automatisé,
+- **bonnes pratiques du Web** avec l'intégration SEO (`robots.txt`, `sitemap.xml`), le balisage Open Graph et l'accessibilité `.sr-only`
 
 
 ## 2. Principales fonctionnalités 
@@ -36,12 +41,10 @@ Ce projet met en application :
 
 ### Aperçu :
 
-<div style="display:flex; gap:1rem">
-  <img src="./images/technical/achat.png" width="300">
-  <img src="./images/technical/prison.png" width="300">
-</div>
+| Événements | Sortie de prison | Version Mobile |
+| :---: | :---: | :---: |
+| <img src="./images/technical/interface_evenements.png" width="400" alt="interface événements"> | <img src="./images/technical/interface_sortie_prison.png" width="400" alt="interface sortie de prison"> | <img src="./images/technical/interface_mobile.png" width="110" alt="interface pour mobile"> |
 
-<br/>
 
 ⚠️ **Ce jeu est optimisé pour ordinateur** et nécessite l'utilisation des flèches du clavier. 
 Il n'est pas compatible avec les appareils mobiles ou tablettes.
@@ -56,6 +59,7 @@ Il n'est pas compatible avec les appareils mobiles ou tablettes.
 ```
 
 Ouvrir le fichier `index.html` dans le navigateur pour commencer à jouer
+
 
 ## 4. Tests 
 
@@ -164,6 +168,8 @@ doivent être configurés dans les **Secrets GitHub** du dépôt (`Settings > Se
 
 - **[Git](https://git-scm.com/docs/git)**: versioning du jeu
 - **[Figma](https://help.figma.com/hc/fr)**: design du plateau et des cartes
+- **[GitHub Actions](https://docs.github.com/fr/actions)**: CI CD 
+- **[Netlify](https://docs.netlify.com/)**: serveur de production 
 
 ### IDE 
 - **[VSCODE](https://code.visualstudio.com/)**
