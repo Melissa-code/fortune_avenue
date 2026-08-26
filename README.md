@@ -170,6 +170,7 @@ doivent être configurés dans les **Secrets GitHub** du dépôt (`Settings > Se
 - **[Figma](https://help.figma.com/hc/fr)**: design du plateau et des cartes
 - **[GitHub Actions](https://docs.github.com/fr/actions)**: CI CD 
 - **[Netlify](https://docs.netlify.com/)**: serveur de production 
+- **[Simple Analytics](https://dashboard.simpleanalytics.com/)**: suivi de trafic éthique respectueux de la vie privée (sans cookies ni bannières de consentement)
 
 ### IDE 
 - **[VSCODE](https://code.visualstudio.com/)**

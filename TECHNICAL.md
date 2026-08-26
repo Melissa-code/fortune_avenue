@@ -204,4 +204,35 @@ Il liste toutes les pages importantes du site (ex: pour une application de type 
 
 [sitemaps.org](https://www.sitemaps.org/fr/protocol.html)
 
+---
+
+## Partie 5: analytics et monitoring 
+
+Mise en place d'un suivi de trafic éthique et respectueux de la vie privée sur l'application.
+
+### 1. Choix de l'outil
+
+Utilisation de **Simple Analytics**, un outil qui compte et analyse les visiteurs du site *Fortune Avenue* et 
+une alternative européenne légère à Google Analytics :
+- 0 cookie, 0 traceur,
+- aucun bandeau de consentement obligatoire requis pour les visiteurs,
+- conforme au RGPD, 
+- léger: une ligne de script. Il ne ralentit pas le jeu en JavaScript ou le Canvas.
+
+
+### 2. Intégration technique
+
+Création d'un compte sur [Simple Analytics](https://dashboard.simpleanalytics.com/) 
+puis ajout direct du script de suivi asynchrone dans le fichier `index.html` (juste avant la balise de fermeture `</body>`) :
+
+```html
+<!-- 100% privacy-first analytics -->
+<script async src="[https://scripts.simpleanalyticscdn.com/latest.js](https://scripts.simpleanalyticscdn.com/latest.js)"></script>
+```
+
+### 3. Aperçu du Dashboard en production 
+
+<img src="./images/technical/dashboard_simple_analytics.png" width="400" alt="tableau de bord de Simple Analytics"> 
+
+=> Vérification du bon fonctionnement en production (premier visiteur enregistré après le déploiement sur Netlify).
 
