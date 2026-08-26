@@ -1,4 +1,4 @@
-name: CI Test Fortune Avenue 
+name: CI Test Fortune Avenue and deploy to Netlify
 
 on: 
   push: 
@@ -26,3 +26,12 @@ jobs:
 
     - name: Lancement des tests Jest 
       run: npm test 
+
+    - name: Déploiement sur Netlify
+      uses: nwtgck/actions-netlify@v3.0
+      with:
+        publish-dir: '.' # dossier racine projet 
+        production-deploy: true
+      env:
+        NETLIFY_AUTH_TOKEN: ${{ secrets.NETLIFY_AUTH_TOKEN }}
+        NETLIFY_SITE_ID: ${{ secrets.NETLIFY_SITE_ID }}
