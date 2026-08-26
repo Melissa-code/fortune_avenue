@@ -10,7 +10,7 @@ jobs:
 
     strategy: 
       matrix: 
-        node-version: [ 22.x ]
+        node-version: [ 18.x, 20.x, 22.x ]
 
     steps: 
     - uses: actions/checkout@v4
@@ -23,6 +23,9 @@ jobs:
 
     - name: Installation des dependances 
       run: npm install 
+
+    - name: Lancement du linter 
+      run: npm run lint
 
     - name: Lancement des tests Jest 
       run: npm test 
