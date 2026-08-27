@@ -212,7 +212,9 @@ Mise en place d'un suivi de trafic éthique et respectueux de la vie privée sur
 Qui vient, combien de personnes visitent le site, d'où elles viennent (Google, GitHub, lien direct..)
 et combien de temps elles y restent.
 
-### 1. Choix de l'outil
+### 1. Simple Analytics (suivi du trafic)
+
+#### 1.1. Choix de l'outil
 
 Utilisation de **Simple Analytics**, un outil qui compte et analyse les visiteurs du site *Fortune Avenue* et 
 une alternative européenne légère à Google Analytics :
@@ -223,7 +225,7 @@ une alternative européenne légère à Google Analytics :
 - léger: une ligne de script. Il ne ralentit pas le jeu en JavaScript ou le Canvas.
 
 
-### 2. Intégration technique
+#### 1.2. Intégration technique
 
 Création d'un compte sur [Simple Analytics](https://dashboard.simpleanalytics.com/) 
 puis ajout direct du script de suivi asynchrone dans le fichier `index.html` (juste avant la balise de fermeture `</body>`) :
@@ -233,8 +235,42 @@ puis ajout direct du script de suivi asynchrone dans le fichier `index.html` (ju
 <script async src="[https://scripts.simpleanalyticscdn.com/latest.js](https://scripts.simpleanalyticscdn.com/latest.js)"></script>
 ```
 
-### 3. Aperçu du Dashboard en production 
+#### 1.3. Aperçu du Dashboard en production 
 
 <img src="./images/technical/dashboard_simple_analytics.png" width="400" alt="tableau de bord de Simple Analytics"> 
 
-=> Vérification du bon fonctionnement en production (premier visiteur enregistré après le déploiement sur Netlify).
+=> Vérification du bon fonctionnement en production (premier visiteur enregistré après le déploiement sur Netlify)
+
+--- 
+
+### 2. Sentry (monitoring des erreurs)
+
+Mise en place d'une surveillance proactive des bugs et des exceptions JavaScript 
+en production pour assurer une maintenance rapide du jeu.
+
+#### 2.1. Choix de l'outil
+
+Utilisation de [Sentry](), un outil de référence pour le suivi et le monitoring des erreurs en temps réel :
+- détection automatique des plantages et exceptions non gérées,
+- remontée d'un contexte technique précis (navigateur, version, ligne de code source),
+- centralisation des anomalies pour prioriser les corrections.
+
+#### 2.2. Intégration technique
+
+Création d'un projet sur Sentry puis intégration du script de chargement dans 
+le <head> du fichier index.html :
+
+```html
+<!-- Sentry: monitoring -->
+<script
+    src="[https://js-de.sentry-cdn.com/8b5aef1305368388209ec462f20f7dfc.min.js](https://js-de.sentry-cdn.com/8b5aef1305368388209ec462f20f7dfc.min.js)"
+    crossorigin="anonymous">
+</script>
+```
+
+#### 2.3. Aperçu du dashboard en production 
+
+<img src="./images/technical/sentry_error.png" width="500" alt="tableau de bord de Sentry avec erreur"> 
+
+=> Vérification du bon fonctionnement en production :
+remontée validée via une erreur de test simulée sur le site hébergé sur Netlify

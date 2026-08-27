@@ -20,7 +20,8 @@ Ce projet met en application :
 - **rendu graphique dynamique** via la **Canvas API**,
 - **qualité de code** via des tests unitaires automatisés avec **Jest**, une analyse statique (linter) et un pipeline CI/CD automatisé,
 - **bonnes pratiques du Web** avec l'intégration SEO (`robots.txt`, `sitemap.xml`), le balisage Open Graph et l'accessibilité `.sr-only`
-
+- **surveillance et monitoring des erreurs en production** via **Sentry** pour garantir la fiabilité du site
+- **suivi d'audience éthique et respectueux de la vie privée** via **Simple Analytics** sans cookies
 
 ## 2. Principales fonctionnalités 
 
@@ -171,6 +172,8 @@ doivent être configurés dans les **Secrets GitHub** du dépôt (`Settings > Se
 - **[GitHub Actions](https://docs.github.com/fr/actions)**: CI CD 
 - **[Netlify](https://docs.netlify.com/)**: serveur de production 
 - **[Simple Analytics](https://dashboard.simpleanalytics.com/)**: suivi de trafic éthique respectueux de la vie privée (sans cookies ni bannières de consentement)
+- **[Sentry](https://sentry.io/)**: suivi des erreurs en temps réel et monitoring de production
+
 
 ### IDE 
 - **[VSCODE](https://code.visualstudio.com/)**
